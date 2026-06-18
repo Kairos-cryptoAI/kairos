@@ -35,16 +35,16 @@ deterministic risk filters and are executed by a separate engine.
 ## Repositories
 | repo | layer / role |
 | --- | --- |
-| [kairos-core](https://github.com/TheLitis/kairos-core) | shared contracts, message bus, config, logging |
-| [kairos-llm](https://github.com/TheLitis/kairos-llm) | LLM gateway: effort→model routing, cost accounting, breaker hooks |
-| [kairos-quant-scouts](https://github.com/TheLitis/kairos-quant-scouts) | **1A** — market data + indicators → `MarketSnapshot` |
-| [kairos-text-scouts](https://github.com/TheLitis/kairos-text-scouts) | **1B** — news/X + local filter + LLM sentiment |
-| [kairos-router](https://github.com/TheLitis/kairos-router) | **2** — FSM + hysteresis (`USE_MEDIUM`/`USE_HIGH`) |
-| [kairos-aggregator](https://github.com/TheLitis/kairos-aggregator) | **3** — tactical decisions (medium/high) |
-| [kairos-macro-strategist](https://github.com/TheLitis/kairos-macro-strategist) | **4** — strategic allocation (xhigh) |
-| [kairos-risk-manager](https://github.com/TheLitis/kairos-risk-manager) | **5** — risk filters + circuit breaker |
-| [kairos-execution-engine](https://github.com/TheLitis/kairos-execution-engine) | **6** — EVEDEX/CCXT execution + trailing stops |
-| [kairos-deploy](https://github.com/TheLitis/kairos-deploy) | docker-compose, TimescaleDB, monitoring |
+| [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | shared contracts, message bus, config, logging |
+| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | LLM gateway: effort→model routing, cost accounting, breaker hooks |
+| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | **1A** — market data + indicators → `MarketSnapshot` |
+| [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | **1B** — news/X + local filter + LLM sentiment |
+| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | **2** — FSM + hysteresis (`USE_MEDIUM`/`USE_HIGH`) |
+| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | **3** — tactical decisions (medium/high) |
+| [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | **4** — strategic allocation (xhigh) |
+| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | **5** — risk filters + circuit breaker |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | **6** — EVEDEX/CCXT execution + trailing stops |
+| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | docker-compose, TimescaleDB, monitoring |
 
 ## Architecture guarantees
 - The LLM has **no direct access** to the exchange API.
@@ -56,7 +56,7 @@ deterministic risk filters and are executed by a separate engine.
 
 ## Quick start
 ```bash
-git clone https://github.com/TheLitis/kairos-deploy.git && cd kairos-deploy
+git clone https://github.com/Kairos-cryptoAI/kairos-deploy.git && cd kairos-deploy
 make clone                 # clone all sibling repos
 cp .env.example .env       # add your OpenAI key; DRY_RUN stays true
 make build && make up
