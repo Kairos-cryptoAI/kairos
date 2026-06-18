@@ -9,11 +9,11 @@
 flowchart TD
     subgraph L1[Layer 1 · Scouts]
         QS[Quant Scouts<br/>order book, funding, OI, RSI/MACD]
-        TS[Text Scouts<br/>news/X + local filter + LLM low]
+        TS[Text Scouts<br/>news/X + local filter + DeepSeek-Flash]
     end
     R[Layer 2 · Router<br/>deterministic FSM + hysteresis]
-    AG[Layer 3 · Aggregator<br/>tactical · medium/high]
-    MS[Layer 4 · Macro-Strategist<br/>strategic · xhigh]
+    AG[Layer 3 · Aggregator<br/>tactical · DeepSeek-Pro / GPT-5.5]
+    MS[Layer 4 · Macro-Strategist<br/>strategic · GPT-5.5 xhigh]
     RM[Layer 5 · Risk Manager<br/>+ Circuit Breaker · deterministic]
     EX[Layer 6 · Execution Engine<br/>EVEDEX EIP-712 / CCXT · trailing stops]
 
