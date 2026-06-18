@@ -16,6 +16,7 @@ is reserved for the highest cost-of-error decisions.
 | Risk → Execution | `kairos.risk.validated_order` | `ValidatedOrder` |
 | Execution → all | `kairos.execution.report` | `ExecutionReport` |
 | Circuit Breaker → all | `kairos.system.control` | mode broadcast |
+| any LLM layer → Risk | `kairos.llm.health` | `LLMHealthEvent` |
 
 ## Layer 1 — Scouts
 Collect everything, forward only dry, compressed content.
@@ -49,6 +50,10 @@ a model):
 - DeepSeek-V4-Flash down → `TEXT_LOCAL_FILTER` (Text Scouts filter locally).
 - GPT-5.5 down → `CONFLICT_SAFE` (conflict decisions forced to `WAIT_CONFIRMATION`).
 - two or more models down → `LOCAL_QUANT_MODE` (local stop-loss scripts protect positions).
+
+The breakers are fed **automatically**: every layer emits an `LLMHealthEvent` after each model
+call, the Risk Manager subscribes to `kairos.llm.health`, resets a breaker on a healthy call and
+trips it on 5xx/timeouts, then broadcasts the resulting mode (see ADR-0006).
 
 ## Layer 6 — Execution Engine
 Atomic order execution; switches only on the validated `reason_code`. EVEDEX adapter is
