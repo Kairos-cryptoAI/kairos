@@ -1,32 +1,42 @@
 # Kairos — Concept Specification
 
-> Global architecture of an AI trader: a futures-trading management system with LLM
-> analytics. Concept plan, 2026-06-18. (Condensed from the updated design document.)
+Kairos is a layered futures-trading management system with LLM-assisted analysis and
+deterministic execution controls. This specification describes the current implementation
+direction; it is not a production-readiness claim.
 
 ## Base principle
-The whole system rests on one constraint: **the LLM never trades directly and never works
-with a raw stream of numbers.** The model is the analytical brain that controls the
-parameters of hard-coded mathematical strategies; it does not replace the trading engine.
 
-## Model strategy — DeepSeek-first + GPT escalation
-Cheap DeepSeek models carry the routine flow; GPT-5.5 is reserved for the highest
-cost-of-error decisions:
-- Text Scouts → DeepSeek-V4-Flash (non-thinking).
-- Aggregator-Normal → DeepSeek-V4-Pro.
-- Aggregator-Conflict → GPT-5.5 (`high`).
-- Macro-Strategist → GPT-5.5 (`xhigh`).
+**The LLM never trades directly and never works with a raw stream of numbers.** Models receive
+typed, compressed and pre-validated context. Deterministic components retain authority over
+routing, risk, account freshness, system degradation and exchange execution.
 
-## Layers
-1. **Scouts** — data collection, filtering, sentiment (DeepSeek-V4-Flash).
-2. **The Router** — finite-state machine + hysteresis (`ROUTE_PRO` / `ROUTE_GPT`).
-3. **The Aggregator** — tactical decision (DeepSeek-V4-Pro / GPT-5.5 `high`).
-4. **Macro-Strategist** — strategic capital allocation (GPT-5.5 `xhigh`).
-5. **Risk Manager & Circuit Breaker** — validation, limits, per-model emergency modes.
-6. **Execution Engine** — atomic order execution.
+## Model strategy — DeepSeek-first with GPT escalation
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full per-layer breakdown and
-[`docs/BUDGET.md`](docs/BUDGET.md) for the cost model.
+- Text Scouts: DeepSeek-V4-Flash, non-thinking, with deterministic local fallback.
+- Aggregator normal path: DeepSeek-V4-Pro.
+- Aggregator conflict path: GPT-5.6 Sol with `high` reasoning effort.
+- Macro Strategist: GPT-5.6 Sol with `xhigh` reasoning effort.
 
-## Target venue
-Production: [EVEDEX](https://exchange.evedex.com/) (EIP-712 signed orders, Centrifugo WS).
-Testing: Binance USD-M futures and other venues via CCXT.
+OpenAI calls use the Responses API with SDK-native Pydantic structured parsing. DeepSeek uses
+its OpenAI-compatible Chat Completions endpoint with explicit non-thinking mode and the same
+schema validated locally.
+
+## Runtime layers
+
+1. **Scouts** collect and compress market and text inputs.
+2. **Router** applies deterministic FSM/hysteresis and system-mode routing policy.
+3. **Aggregator** produces schema-validated tactical commands.
+4. **Macro Strategist** combines market, account and shock context into strategic allocation.
+5. **Risk Manager** validates account freshness, exposure and strategy limits and owns the
+   system circuit breaker.
+6. **Execution Engine** reconciles the venue, submits validated orders and publishes account
+   snapshots back to Risk and Macro.
+
+Persistence and backtest repositories support these layers, but durable inbox/outbox wiring is
+not yet end-to-end and historical replay is not a substitute for an external live-venue canary.
+
+The target live venue is [EVEDEX](https://exchange.evedex.com/) with EIP-712-authenticated order
+operations; CCXT/Binance paths support development and dry-run verification. Live external
+exchange qualification remains outstanding.
+
+See [architecture](docs/ARCHITECTURE.md), [status](docs/STATUS.md), and the [ADRs](docs/adr/).

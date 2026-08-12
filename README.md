@@ -1,69 +1,84 @@
 # Kairos — AI Futures Trader
 
-> An LLM-directed, **deterministically-guarded** futures trading system. The model is the
-> analytical *brain* that tunes hard-coded math strategies — it never touches the exchange
-> and never sees raw number streams. Trades on [EVEDEX](https://exchange.evedex.com/);
-> testable on Binance / other venues via CCXT.
+Kairos is a pre-production, LLM-assisted futures-trading system with deterministic risk
+guards. Models receive compact typed context, never raw streams, and cannot call an exchange.
+Every order must be approved by the Risk Manager and submitted by the Execution Engine.
 
 ```mermaid
 flowchart TD
-    subgraph L1[Layer 1 · Scouts]
-        QS[Quant Scouts<br/>order book, funding, OI, RSI/MACD]
-        TS[Text Scouts<br/>news/X + local filter + DeepSeek-Flash]
-    end
-    R[Layer 2 · Router<br/>deterministic FSM + hysteresis]
-    AG[Layer 3 · Aggregator<br/>tactical · DeepSeek-Pro / GPT-5.5]
-    MS[Layer 4 · Macro-Strategist<br/>strategic · GPT-5.5 xhigh]
-    RM[Layer 5 · Risk Manager<br/>+ Circuit Breaker · deterministic]
-    EX[Layer 6 · Execution Engine<br/>EVEDEX EIP-712 / CCXT · trailing stops]
-
-    QS -- MarketSnapshot --> R
-    TS -- SentimentSignal --> R
-    R -- RouterDecision --> AG
-    AG -- TacticalCommand --> RM
-    MS -- StrategicAllocation --> RM
-    RM -- ValidatedOrder --> EX
-    EX -- ExecutionReport --> RM
-    RM -. SYSTEM_CONTROL / LOCAL_QUANT_MODE .-> EX
+    Q["Quant Scouts<br/>closed 1m bars, OI, liquidations"] --> R["Router<br/>deterministic FSM"]
+    T["Text Scouts<br/>local filter + DeepSeek V4 Flash"] --> R
+    R --> A["Aggregator<br/>DeepSeek V4 Pro / GPT-5.6 Sol"]
+    A --> K["Risk Manager<br/>deterministic limits"]
+    M["Macro Strategist<br/>GPT-5.6 Sol xhigh"] --> K
+    K --> E["Execution Engine<br/>EVEDEX / CCXT"]
+    E -- "AccountSnapshot" --> K
+    E -- "AccountSnapshot" --> M
+    E -- "ExecutionReport" --> O["published event<br/>no durable consumer wired"]
+    K -. "SystemMode" .-> R
+    K -. "SystemMode" .-> A
+    K -. "SystemMode" .-> M
+    K -. "SystemMode" .-> E
 ```
 
 ## The one rule
-**The LLM never trades directly and never works with a raw stream of numbers.** It only
-receives structured, compressed, pre-validated data, and all critical actions pass through
-deterministic risk filters and are executed by a separate engine.
+
+**The LLM never trades directly and never works with a raw stream of numbers.** It analyzes
+validated, compressed context. Deterministic code owns sizing, limits, degradation modes,
+exchange authentication, reconciliation, and execution.
 
 ## Repositories
-| repo | layer / role |
+
+| repository | role |
 | --- | --- |
-| [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | shared contracts, message bus, config, logging |
-| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | LLM gateway: effort→model routing, cost accounting, breaker hooks |
-| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | **1A** — market data + indicators → `MarketSnapshot` |
-| [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | **1B** — news/X + local filter + DeepSeek-Flash sentiment |
-| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | **2** — FSM + hysteresis (`ROUTE_PRO`/`ROUTE_GPT`) |
-| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | **3** — tactical decisions (DeepSeek-Pro / GPT-5.5) |
-| [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | **4** — strategic allocation (GPT-5.5 xhigh) |
-| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | **5** — risk filters + circuit breaker |
-| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | **6** — EVEDEX/CCXT execution + trailing stops |
-| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | docker-compose, TimescaleDB, monitoring |
+| [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | typed contracts, Redis Streams bus, config and logging |
+| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI Responses / DeepSeek gateway, strict output validation, cost and health events |
+| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | closed-bar market indicators, open interest and liquidation aggregation |
+| [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | text ingestion, local filtering, sentiment and local fallback |
+| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | deterministic routing FSM and hysteresis |
+| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | tactical decisions with strict schemas |
+| [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
+| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | account-aware risk checks, sizing and system circuit breaker |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX/CCXT adapters, reconciliation and account snapshots |
+| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale migrations and transactional inbox/outbox primitives |
+| [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic historical replay and fill modelling |
+| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned deployment manifest, containers and monitoring configuration |
+| [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
 
-## Architecture guarantees
-- The LLM has **no direct access** to the exchange API.
-- Raw market data is aggregated to **compact JSON** before any model sees it.
-- API cost is controlled by the **Router** (cheap-by-default, expensive only on conflict).
-- **Risk filters run independently** of the model.
-- **Execution is separated** from analysis.
-- On failure, the system drops into a **local protective mode** (`LOCAL_QUANT_MODE`).
+## Windows-first local verification
 
-## Quick start
-```bash
-git clone https://github.com/Kairos-cryptoAI/kairos-deploy.git && cd kairos-deploy
-make clone                 # clone all sibling repos
-cp .env.example .env       # add your OpenAI key; DRY_RUN stays true
-make build && make up
+The meta-repository runner discovers `uv`, reads [`config/repositories.json`](config/repositories.json),
+and verifies every Python repository without Docker or live credentials. It does not read
+`.env` files, change Git state, or clean dirty worktrees.
+
+```powershell
+Set-Location D:\Kairos\kairos
+
+# Full 3.11 + 3.14 matrix for all Python repositories.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1
+
+# Faster focused iteration.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 `
+  -Repository kairos-core,kairos-router -PythonVersion 3.11 -FailFast
+
+# Validate only the manifest and execution plan.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 -ValidateOnly
 ```
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and
-[`docs/BUDGET.md`](docs/BUDGET.md). Influenced by ideas from
-[Hummingbot](https://github.com/hummingbot/hummingbot) (connector/executor separation).
+For each selected Python version, the runner performs locked dependency checks, Ruff lint and
+format checks, mypy, Bandit, network-free pytest, and a package build. Persistence integration
+tests that require TimescaleDB are deliberately excluded from this Docker-free pass.
 
-— MIT licensed.
+## Current delivery state
+
+As of 2026-08-12, the modernization work is carried in draft pull requests across the eleven
+Python repositories, and their GitHub Python 3.11/3.14 plus Windows CI matrices are green.
+Cross-repository Git dependencies use full commit SHAs and `uv.lock`; merge order still matters.
+
+This is **not production-ready**. The transactional inbox/outbox package is not yet wired into
+every service runtime, important replay/account histories are still process-local, and external
+live EVEDEX/provider/canary testing remains outstanding. See [project status](docs/STATUS.md)
+for the full readiness boundary.
+
+See [architecture](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and
+[budget assumptions](docs/BUDGET.md). MIT licensed.
