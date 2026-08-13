@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "requiredUvVersion": "0.12.3",
+  "pythonVersions": ["3.11", "3.14"],
+  "workspaceRoot": "..",
+  "repositories": [
+    {
+      "name": "kairos-core",
+      "path": "kairos-core",
+      "source": "kairos_core",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-llm",
+      "path": "kairos-llm",
+      "source": "kairos_llm",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-quant-scouts",
+      "path": "kairos-quant-scouts",
+      "source": "kairos_quant",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-text-scouts",
+      "path": "kairos-text-scouts",
+      "source": "kairos_text",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-router",
+      "path": "kairos-router",
+      "source": "kairos_router",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-aggregator",
+      "path": "kairos-aggregator",
+      "source": "kairos_aggregator",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-macro-strategist",
+      "path": "kairos-macro-strategist",
+      "source": "kairos_macro",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-risk-manager",
+      "path": "kairos-risk-manager",
+      "source": "kairos_risk",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-execution-engine",
+      "path": "kairos-execution-engine",
+      "source": "kairos_execution",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-persistence",
+      "path": "kairos-persistence",
+      "source": "kairos_persistence",
+      "pytestArgs": ["-q", "--tb=short", "-m", "not integration"]
+    },
+    {
+      "name": "kairos-backtest",
+      "path": "kairos-backtest",
+      "source": "kairos_backtest",
+      "pytestArgs": ["-q", "--tb=short"]
+    }
+  ]
+}
