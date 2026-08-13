@@ -71,9 +71,11 @@ tests that require TimescaleDB are deliberately excluded from this Docker-free p
 
 ## Current delivery state
 
-As of 2026-08-12, the modernization work is carried in draft pull requests across the eleven
-Python repositories, and their GitHub Python 3.11/3.14 plus Windows CI matrices are green.
-Cross-repository Git dependencies use full commit SHAs and `uv.lock`; merge order still matters.
+As of 2026-08-13, the modernization work is merged into `main` across all thirteen
+repositories. The Python 3.11/3.14, Windows, integration and deployment image-build matrices
+are green. Cross-repository Git dependencies use full commits that are retained in `main`
+history and recorded in `uv.lock`; future dependency updates must still repin consumers and
+deployment inputs in dependency order.
 
 This is **not production-ready**. The transactional inbox/outbox package is not yet wired into
 every service runtime, important replay/account histories are still process-local, and external

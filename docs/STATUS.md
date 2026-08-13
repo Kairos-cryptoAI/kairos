@@ -28,7 +28,7 @@ packaging; they do not yet establish durable delivery or external live-exchange 
 | `kairos-persistence` | Timescale migrations, typed audit and transactional inbox/outbox repositories | service-runtime integration and backup/restore exercise |
 | `kairos-backtest` | deterministic historical replay and fill model | parity/coverage against real venue behavior |
 | `kairos-deploy` | full-SHA service contexts, Compose/monitoring configuration, static validation | external deployment, secrets, metrics and recovery qualification |
-| `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized as draft PRs merge |
+| `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
 Test counts are intentionally not frozen in this document. The meaningful gate is that each
 repository's declared checks and supported Python/Windows matrix pass for the reviewed commit.
