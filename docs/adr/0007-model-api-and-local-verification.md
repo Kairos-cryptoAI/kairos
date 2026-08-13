@@ -20,8 +20,8 @@ Use the model routing implemented by `kairos-llm`:
 
 Use `uv` 0.12.3, a `.python-version` development baseline of 3.11, committed `uv.lock` files,
 and full commit SHA pins for internal Git sources. Python CI covers Linux 3.11/3.14 and Windows
-3.11. Cross-repository pull requests remain drafts until dependency SHAs and merge order are
-stable.
+3.11. Cross-repository changes land on `main` in dependency order only after dependency SHAs
+and consumer lockfiles are stable.
 
 The meta-repository owns a declarative repository manifest and a Windows-first PowerShell
 runner. Without Docker or credentials it executes lock verification, Ruff lint/format, mypy,

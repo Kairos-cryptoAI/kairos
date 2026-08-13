@@ -35,7 +35,7 @@ Docker-backed integration suite is a separate opt-in gate.
 
 - Use Conventional Commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `ci:`, `chore:`).
 - Sign commits with the contributor's configured GPG identity.
-- Keep a pull request in draft while dependent SHAs or sibling pull requests are still moving.
+- Land cross-repository changes on `main` in dependency order only after dependent SHAs are stable.
 - Explain contract changes, migration/rollback order, checks run and remaining live-test gaps.
 - Do not claim production readiness from unit tests or green CI alone.
 

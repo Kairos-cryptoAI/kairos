@@ -1,13 +1,13 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-12_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-13_
 
 ## Summary
 
 The modernization pass has moved the eleven Python repositories to locked `uv` environments,
-Python 3.11 development baselines, Linux 3.11/3.14 CI and Windows CI. Their current draft pull
-request matrices are green. Runtime services now have materially stronger ACK-after-success,
-TaskGroup shutdown, replay, schema, account-state and degradation behavior.
+Python 3.11 development baselines, Linux 3.11/3.14 CI and Windows CI. Their `main` branch
+matrices are green. Runtime services now have materially stronger ACK-after-success, TaskGroup
+shutdown, replay, schema, account-state and degradation behavior.
 
 Kairos remains **pre-production**. Green unit/CI matrices validate deterministic behavior and
 packaging; they do not yet establish durable delivery or external live-exchange correctness.
@@ -54,7 +54,8 @@ repository's declared checks and supported Python/Windows matrix pass for the re
 - `.python-version` declares 3.11; Linux CI verifies 3.11 and 3.14, with a Windows job.
 - Internal Git dependencies are pinned to full reviewed SHAs rather than floating branches.
 - Dependabot configuration covers Actions and Python dependency updates.
-- Draft pull requests keep multi-repository changes reviewable until dependent SHAs settle.
+- `main` is authoritative; multi-repository changes land in dependency order after dependent
+  SHAs settle and their consumer lockfiles are verified.
 - [`scripts/Test-Kairos.ps1`](../scripts/Test-Kairos.ps1) runs the equivalent lock, lint,
   format, mypy, Bandit, network-free pytest and build gates locally without Docker.
 
