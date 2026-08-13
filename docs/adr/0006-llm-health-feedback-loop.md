@@ -1,6 +1,6 @@
 # 6. LLM health feedback loop
 
-Date: 2026-06-18 · Revised: 2026-08-12 · Status: accepted · Extends ADR-0005.
+Date: 2026-06-18 · Revised: 2026-08-13 · Status: accepted · Extends ADR-0005; model mapping revised by [ADR-0008](0008-workload-specific-model-routing.md).
 
 ## Context
 
@@ -14,8 +14,9 @@ blocking protective position reduction.
 The LLM gateway exposes an optional, bus-agnostic health hook. Text Scouts, Aggregator and Macro
 Strategist publish `LLMHealthEvent` after calls on `kairos.llm.health`. A response is considered
 healthy only after the provider response and strict output validation succeed. Provider
-timeouts/5xx feed the per-model outage breaker; 4xx/bad output remain visible failures but do
-not by themselves prove a provider outage.
+timeouts/5xx feed the per-model outage breaker; connection/rate-limit failures also feed the
+aggregate provider breaker. Permanent 4xx/bad output remain visible failures but do not by
+themselves prove provider unavailability.
 
 Risk Manager is the single authority that consumes these events, updates per-model breakers and
 broadcasts `SystemControl` on `kairos.system.control`. The implemented subscribers are:
@@ -37,8 +38,9 @@ Current mappings are:
 | --- | --- |
 | all tracked models healthy | `NORMAL` |
 | DeepSeek-V4-Flash unavailable | `TEXT_LOCAL_FILTER` |
-| GPT-5.6 Sol unavailable | `CONFLICT_SAFE` |
-| two or more tracked models unavailable | `LOCAL_QUANT_MODE` |
+| GPT-5.6 Luna unavailable | `LOCAL_QUANT_MODE` |
+| GPT-5.6 Terra or Sol unavailable | `CONFLICT_SAFE` |
+| OpenAI provider or two or more tracked models unavailable | `LOCAL_QUANT_MODE` |
 
 ## Consequences
 

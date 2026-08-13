@@ -7,8 +7,8 @@ Every order must be approved by the Risk Manager and submitted by the Execution 
 ```mermaid
 flowchart TD
     Q["Quant Scouts<br/>closed 1m bars, OI, liquidations"] --> R["Router<br/>deterministic FSM"]
-    T["Text Scouts<br/>local filter + DeepSeek V4 Flash"] --> R
-    R --> A["Aggregator<br/>DeepSeek V4 Pro / GPT-5.6 Sol"]
+    T["Text Scouts<br/>local filter + DeepSeek V4 Flash 0731"] --> R
+    R --> A["Aggregator<br/>GPT-5.6 Luna / Terra"]
     A --> K["Risk Manager<br/>deterministic limits"]
     M["Macro Strategist<br/>GPT-5.6 Sol xhigh"] --> K
     K --> E["Execution Engine<br/>EVEDEX / CCXT"]

@@ -1,6 +1,6 @@
 # 5. DeepSeek-first + GPT escalation
 
-Date: 2026-06-18 · Status: accepted · Supersedes the GPT-5.5-only model split.
+Date: 2026-06-18 · Status: superseded by [ADR-0008](0008-workload-specific-model-routing.md) · Superseded the GPT-5.5-only model split.
 
 Model identifiers and gateway APIs were revised by [ADR-0007](0007-model-api-and-local-verification.md).
 

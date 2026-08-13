@@ -10,16 +10,18 @@ direction; it is not a production-readiness claim.
 typed, compressed and pre-validated context. Deterministic components retain authority over
 routing, risk, account freshness, system degradation and exchange execution.
 
-## Model strategy — DeepSeek-first with GPT escalation
+## Model strategy — workload-specific routing
 
-- Text Scouts: DeepSeek-V4-Flash, non-thinking, with deterministic local fallback.
-- Aggregator normal path: DeepSeek-V4-Pro.
-- Aggregator conflict path: GPT-5.6 Sol with `high` reasoning effort.
+- Text Scouts: the current `deepseek-v4-flash` API alias (DeepSeek-V4-Flash-0731), explicit
+  non-thinking mode, with deterministic local fallback.
+- Aggregator normal path: GPT-5.6 Luna with `medium` reasoning effort.
+- Aggregator conflict path: GPT-5.6 Terra with `high` reasoning effort.
 - Macro Strategist: GPT-5.6 Sol with `xhigh` reasoning effort.
 
 OpenAI calls use the Responses API with SDK-native Pydantic structured parsing. DeepSeek uses
 its OpenAI-compatible Chat Completions endpoint with explicit non-thinking mode and the same
-schema validated locally.
+schema validated locally. Routing is keyed by workload role as well as domain reasoning effort,
+so adding another `medium` or `high` caller cannot silently inherit an unrelated model.
 
 ## Runtime layers
 

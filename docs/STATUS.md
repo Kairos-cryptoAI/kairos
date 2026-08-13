@@ -17,7 +17,7 @@ packaging; they do not yet establish durable delivery or external live-exchange 
 | repository | implemented state | remaining boundary |
 | --- | --- | --- |
 | `kairos-core` | versioned contracts, topics, Redis bus, config/logging | end-to-end persistence is owned by consumers |
-| `kairos-llm` | GPT-5.6 Responses parsing, DeepSeek strict JSON, health/cost hooks | live provider qualification and operational quotas |
+| `kairos-llm` | workload routing across DeepSeek Flash 0731 and GPT-5.6 Luna/Terra/Sol, strict schemas, health/cost hooks | live provider qualification, shadow evals and operational quotas |
 | `kairos-quant-scouts` | closed 1m indicators, OI refresh, liquidation aggregation, staleness/reconnect | Binance soak and deployed venue/data-source decision |
 | `kairos-text-scouts` | real feeds, local filter, DeepSeek sentiment/fallback | external feed/provider reliability and licensing/rate limits |
 | `kairos-router` | FSM/hysteresis, SystemMode policy, ACK-after-success, graceful close | durable replay state |
@@ -39,7 +39,7 @@ repository's declared checks and supported Python/Windows matrix pass for the re
   periodically, and after relevant execution activity.
 - Risk requires recent trusted account state, applies strategic allocation constraints and
   revokes trust on explicit reconciliation failure.
-- Text, Aggregator and Macro publish `LLMHealthEvent`; Risk owns the circuit breaker and
+- Text, Aggregator and Macro publish `LLMHealthEvent`; Risk owns per-model/provider circuit breakers and
   broadcasts `SystemControl`.
 - Router, Aggregator, Macro and Execution subscribe to system control. Local degradation blocks
   new exposure without blocking protective close/reduce-only execution.
@@ -81,6 +81,9 @@ repository's declared checks and supported Python/Windows matrix pass for the re
    reconnect/soak tests, disaster recovery and staged rollback require an external environment.
 8. **Backtests are not venue qualification.** The deterministic fill model needs calibration
    against real EVEDEX behavior before results can inform live risk limits.
+9. **Model migration still needs live shadow evaluation.** Unit tests establish route selection,
+   schema handling and deterministic fallback, but do not prove that Luna/Terra/Flash-0731
+   preserve decision quality, latency and token profiles on production distributions.
 
 ## Readiness rule
 

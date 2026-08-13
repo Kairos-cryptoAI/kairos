@@ -2,8 +2,9 @@
 
 Kairos consists of six independently deployable runtime layers plus shared LLM, persistence,
 backtest and deployment packages. Services exchange versioned messages from `kairos-core` over
-Redis Streams. DeepSeek handles routine analysis; GPT-5.6 Sol is reserved for costly conflict
-and strategic reasoning.
+Redis Streams. DeepSeek-V4-Flash-0731 handles high-volume text extraction; the GPT-5.6 family
+uses Luna for routine tactical analysis, Terra for signal conflicts, and Sol for strategic
+capital allocation.
 
 ## Data and control flow
 
@@ -57,13 +58,17 @@ only from closed one-minute klines. Open interest is refreshed periodically, liq
 socket from being mistaken for fresh data.
 
 **Text Scouts** perform feed ingestion, deterministic filtering and batched sentiment analysis
-using DeepSeek-V4-Flash in explicit non-thinking mode. A failed Flash call falls back to a local
-keyword classifier with reduced confidence and publishes model health to Risk.
+using the current `deepseek-v4-flash` alias (DeepSeek-V4-Flash-0731) in explicit non-thinking
+mode. A failed Flash call falls back to a local keyword classifier with reduced confidence and
+publishes model health to Risk. The requested alias and provider-resolved model metadata are
+kept separate so an alias rollout is observable.
 
 ## Layer 2 — Router
 
-The Router is a deterministic FSM with hysteresis. It normally emits `ROUTE_PRO`, escalates to
-`ROUTE_GPT` after four consecutive quant/text conflicts, and returns after ten calm ticks.
+The Router is a deterministic FSM with hysteresis. Its existing wire-level lane names are
+`ROUTE_PRO` for the normal lane and `ROUTE_GPT` for the conflict lane; model selection no longer
+depends on those historical provider-oriented names. It escalates after four consecutive
+quant/text conflicts and returns after ten calm ticks.
 Redis messages are acknowledged only after required processing/publishing succeeds.
 
 System-mode policy is risk-preserving. `LOCAL_QUANT_MODE` suppresses routing that could lead to
@@ -71,8 +76,9 @@ new exposure; it must not turn degradation into a ban on downstream close/reduce
 
 ## Layer 3 — Aggregator
 
-The normal route calls DeepSeek-V4-Pro. A conflict route calls GPT-5.6 Sol with `high` reasoning
-effort. Both paths use strict output schemas, validate reference prices and publish replay-safe
+The normal workload calls GPT-5.6 Luna with `medium` reasoning effort. A conflict workload calls
+GPT-5.6 Terra with `high` reasoning effort. Both paths use strict output schemas, validate
+reference prices and publish replay-safe
 tactical commands. In degraded/conflict states, deterministic policy can emit
 `WAIT_CONFIRMATION` or reduce risk rather than opening exposure.
 
@@ -90,15 +96,17 @@ leverage, drawdown, notional and sizing rules. It is the authoritative publisher
 `SystemMode`; it does not consume its own control broadcast.
 
 The LLM circuit breaker receives health events from Text, Aggregator and Macro. Repeated model
-5xx/timeouts trigger degradation; healthy validated responses reset the corresponding breaker.
-Bad model output is rejected by the caller but does not prove provider unavailability.
+5xx/timeouts trigger model degradation; connection/rate-limit events also drive an aggregate
+OpenAI provider breaker. Healthy validated responses reset the corresponding model and provider
+breaker. Bad model output is rejected by the caller but does not prove provider unavailability.
 
 | condition | mode | intended effect |
 | --- | --- | --- |
 | healthy | `NORMAL` | normal routing and risk policy |
 | DeepSeek-V4-Flash unavailable | `TEXT_LOCAL_FILTER` | Text uses deterministic low-confidence fallback |
-| GPT-5.6 Sol unavailable | `CONFLICT_SAFE` | GPT conflict/macro paths become defensive |
-| two or more tracked models unavailable | `LOCAL_QUANT_MODE` | block new exposure; permit protective close/reduce-only execution |
+| GPT-5.6 Luna unavailable | `LOCAL_QUANT_MODE` | normal tactical hot path is detached; only protective risk reduction remains |
+| GPT-5.6 Terra or Sol unavailable | `CONFLICT_SAFE` | conflict and macro paths become defensive |
+| OpenAI provider or two or more model breakers unavailable | `LOCAL_QUANT_MODE` | block new exposure; permit protective close/reduce-only execution |
 
 ## Layer 6 — Execution Engine
 
@@ -115,14 +123,16 @@ External live EVEDEX behavior remains unqualified.
 
 | component | configured model/API | role |
 | --- | --- | --- |
-| Text Scouts | DeepSeek-V4-Flash, Chat Completions, non-thinking | routine text sentiment |
-| Aggregator normal | DeepSeek-V4-Pro, Chat Completions, non-thinking | routine tactical analysis |
-| Aggregator conflict | GPT-5.6 Sol, OpenAI Responses, `high` | signal conflict |
+| Text Scouts | `deepseek-v4-flash` (V4-Flash-0731), Chat Completions, non-thinking | routine text sentiment |
+| Aggregator normal | GPT-5.6 Luna, OpenAI Responses, `medium` | routine tactical analysis |
+| Aggregator conflict | GPT-5.6 Terra, OpenAI Responses, `high` | signal conflict |
 | Macro Strategist | GPT-5.6 Sol, OpenAI Responses, `xhigh` | allocation and shock response |
 
 OpenAI output is parsed directly into Pydantic models through the Responses API. DeepSeek JSON
 is locally validated against the same strict schema. No LLM package imports the message bus;
-callers publish health through an optional gateway hook.
+callers publish health through an optional gateway hook. The gateway routes by explicit workload
+role; `ReasoningEffort` remains part of domain output/audit contracts rather than serving as a
+global model identifier.
 
 ## Delivery, replay and persistence boundary
 

@@ -1,6 +1,6 @@
 # 7. Current model APIs and reproducible local verification
 
-Date: 2026-08-12 · Status: accepted · Revises the model identifiers in ADR-0005.
+Date: 2026-08-12 · Status: accepted · Revises the model identifiers in ADR-0005; routing tiers were subsequently revised by [ADR-0008](0008-workload-specific-model-routing.md).
 
 ## Context
 
