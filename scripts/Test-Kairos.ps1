@@ -199,7 +199,10 @@ foreach ($entry in $selected) {
         }
         $checks.Add([pscustomobject]@{ Name = "lint"; Args = $runArguments + @("ruff", "check", $entry.source, "tests") })
         $checks.Add([pscustomobject]@{ Name = "format"; Args = $runArguments + @("ruff", "format", "--check", $entry.source, "tests") })
-        $checks.Add([pscustomobject]@{ Name = "mypy"; Args = $runArguments + @("mypy", $entry.source) })
+        $checks.Add([pscustomobject]@{
+            Name = "mypy"
+            Args = $runArguments + @("mypy", "--python-version", $version, $entry.source)
+        })
         $checks.Add([pscustomobject]@{ Name = "bandit"; Args = $runArguments + @("bandit", "-q", "-r", $entry.source, "-x", "tests") })
         $checks.Add([pscustomobject]@{ Name = "pytest"; Args = $runArguments + @("pytest") + @($entry.pytestArgs) })
         $checks.Add([pscustomobject]@{ Name = "build"; Args = @("build", "--python", $version, "--no-sources") })

@@ -43,6 +43,9 @@ foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--chec
         throw "Runner is missing required command fragment: $requiredFragment"
     }
 }
+if (-not $runnerText.Contains('@("mypy", "--python-version", $version, $entry.source)')) {
+    throw "Runner must type-check against the selected Python matrix version"
+}
 foreach ($forbiddenFragment in @("reset --hard", "checkout --", "clean -", "Get-Content .env", "docker compose")) {
     if ($runnerText.Contains($forbiddenFragment)) {
         throw "Runner contains forbidden mutation or secret access: $forbiddenFragment"
