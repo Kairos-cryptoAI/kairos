@@ -104,6 +104,16 @@ that trade frequency is no longer the main blocker—the standalone flow-continu
 net edge. It does not replace or upgrade the frozen promotion evidence. See the
 [order-flow screen report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/orderflow-screen/REPORT.md).
 
+A third frozen, development-only regime/retest screen evaluated structural reclaim, flow
+reacceleration and absorption reclaim on reused December 2023-June 2024 `RESEARCH/FIT` data.
+Its stacked funnel reduced 41,741 breakout candidates to 12 structural intents, two
+flow-reacceleration intents and no absorption intents; only one baseline trade executed and
+stress admitted none. The XRPUSDT trade lost $15.49 net (-0.015492%, -1.63R), and every required
+frequency and positive-economics gate failed. The decision is `REJECT_ALL`; promotion, shadow
+operation, live trading and real API use remain disabled. Trials 7-9 are consumed and must not
+be rerun or retuned against this interval. This does not alter the frozen promotion evidence.
+See the [regime-retest screen report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-retest-screen/REPORT.md).
+
 ## Current delivery state
 
 As of 2026-08-17, the modernization work is merged into `main` across all thirteen

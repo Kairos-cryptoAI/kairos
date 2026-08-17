@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-17_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-18_
 
 ## Summary
 
@@ -105,6 +105,22 @@ strictly development diagnostics, does not alter the frozen promotion decision a
 not invoke an LLM, external API or real order. Full methodology, checksums and artifact hashes
 are in the
 [order-flow report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/orderflow-screen/REPORT.md).
+
+The third frozen regime/retest family evaluated structural reclaim, flow reacceleration and
+absorption reclaim on reused December 2023-June 2024 `RESEARCH/FIT` data. Its complete audited
+five-symbol slice contained 1,533,600/1,533,600 expected one-minute rows. The stacked regime,
+expansion, retest and admission funnel reduced 41,741 breakout candidates to 12 structural
+intents, two flow-reacceleration intents and no absorption intents. Only one baseline trade
+executed; stress admitted no trades. The XRPUSDT trade lost $15.49 net (-0.015492%, -1.63R),
+and every required frequency and positive-economics gate failed. The fixed decision is
+`REJECT_ALL`; promotion, shadow operation, live trading and real API use remain disabled.
+
+This remains development diagnostics on reused research data, not OOS or promotion evidence.
+Trials 7-9 are consumed and must not be rerun or retuned against this interval. A fourth
+threshold variant must not be created: the next candidate must change the signal structure
+while preserving cost-aware admission, and its cumulative lineage must be frozen before the
+remaining selection window is inspected. Full methodology and integrity evidence are in the
+[regime-retest report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-retest-screen/REPORT.md).
 
 ## Remaining limitations
 
