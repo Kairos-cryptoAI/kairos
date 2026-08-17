@@ -69,9 +69,35 @@ For each selected Python version, the runner performs locked dependency checks, 
 format checks, mypy, Bandit, network-free pytest, and a package build. Persistence integration
 tests that require TimescaleDB are deliberately excluded from this Docker-free pass.
 
+## Offline strategy promotion gate
+
+The frozen validation candidate is `confirmation_bars=12`, `minimum_hold_bars=48`, and
+`minimum_confidence=0.67`. It was replayed against official Binance Futures monthly 1m
+archives admitted through SHA-256 sidecar and ZIP CRC checks: a 12-month research interval and
+an untouched July holdout. Execution is causal: a signal formed from closed data is eligible at
+the first subsequent candle open, and its liquidity cap uses only the previous closed candle's
+volume.
+
+| evidence | baseline | stress |
+| --- | ---: | ---: |
+| 12-month research replay | -4.231727849843687% / 803 trades | -9.763199273155571% / 804 trades |
+| untouched July promotion OOS | -1.075965871769744% / 69 trades | -1.5781050811020259% / 69 trades |
+
+The rolling folds are post-selection temporal diagnostics, **not** out-of-sample promotion
+evidence. Only untouched July is promotion OOS. It returned below the +6.828606504564661%
+buy-and-hold benchmark, and zero of five symbols were positive. Actual historical funding was
+unavailable, so it is disclosed rather than silently substituted.
+
+The fail-closed result is `needs_revision` with `real_api_allowed=false`. Current blockers are
+insufficient OOS trades, non-positive return and expectancy, benchmark underperformance,
+unavailable historical funding, non-positive sensitivity results, and upstream data
+anomalies/gaps/incomplete coverage. This backtest is research evidence only; it is not live-stack,
+venue, or production qualification. See
+[ADR 9](docs/adr/0009-offline-strategy-promotion-gate.md) for the decision boundary.
+
 ## Current delivery state
 
-As of 2026-08-13, the modernization work is merged into `main` across all thirteen
+As of 2026-08-17, the modernization work is merged into `main` across all thirteen
 repositories. The Python 3.11/3.14, Windows, integration and deployment image-build matrices
 are green. Cross-repository Git dependencies use full commits that are retained in `main`
 history and recorded in `uv.lock`; future dependency updates must still repin consumers and
@@ -79,8 +105,9 @@ deployment inputs in dependency order.
 
 This is **not production-ready**. The transactional inbox/outbox package is not yet wired into
 every service runtime, important replay/account histories are still process-local, and external
-live EVEDEX/provider/canary testing remains outstanding. See [project status](docs/STATUS.md)
-for the full readiness boundary.
+live EVEDEX/provider/canary testing remains outstanding. Risk and execution now fail closed more
+consistently, but a durable execution journal and crash-safe TP/SL side-effect deduplication are
+still required. See [project status](docs/STATUS.md) for the full readiness boundary.
 
 See [architecture](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and
 [budget assumptions](docs/BUDGET.md). MIT licensed.

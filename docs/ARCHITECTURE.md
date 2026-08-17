@@ -117,7 +117,9 @@ reports plus account snapshots at startup, periodically and after relevant actio
 EVEDEX orders are authenticated with EIP-712. Fixed exchange-hosted stop loss / take profit
 orders are supported. Trailing behavior is application-managed by updating protective orders;
 the project must not describe it as a verified native server-side trailing-stop facility.
-External live EVEDEX behavior remains unqualified.
+Risk and execution paths have stronger fail-closed validation, but the execution journal is not
+yet durable and TP/SL side effects are not crash-safely deduplicated. External live EVEDEX
+behavior remains unqualified.
 
 ## Model gateway
 
@@ -146,10 +148,44 @@ restart-safe deduplication, and a complete audit trail are not yet guaranteed.
 full live-stack test and cannot qualify exchange authentication, venue semantics, provider
 latency, or operational recovery.
 
+## Offline strategy validation and promotion boundary
+
+The offline campaign governed by
+[ADR 9](adr/0009-offline-strategy-promotion-gate.md) separates parameter research from promotion
+evidence:
+
+```mermaid
+flowchart LR
+    D["Official Binance Futures 1m archives<br/>SHA-256 sidecar + ZIP CRC audit"] --> R["12-month research replay"]
+    R --> F["Freeze confirmation 12 / minimum hold 48 / confidence 0.67"]
+    F --> G["Rolling folds<br/>post-selection diagnostics, not OOS"]
+    F --> J["Untouched July<br/>promotion OOS"]
+    J --> P["Fail-closed promotion gate"]
+    P -->|"current result"| N["needs_revision<br/>real_api_allowed=false"]
+```
+
+Replay timing is causal. A decision formed from closed-candle data becomes eligible at the first
+subsequent open; the fill-capacity model uses the previous closed candle's volume. IOC fill
+attempts, partial fills, fill ratios, terminal liquidation and finite aggregate statistics are
+retained as promotion evidence. Actual historical funding was unavailable and is never replaced
+by an assumption for promotion eligibility.
+
+| evidence | baseline | stress |
+| --- | ---: | ---: |
+| 12-month research replay | -4.231727849843687% / 803 trades | -9.763199273155571% / 804 trades |
+| untouched July promotion OOS | -1.075965871769744% / 69 trades | -1.5781050811020259% / 69 trades |
+
+July's buy-and-hold benchmark was +6.828606504564661%, and zero of five symbols were positive.
+Promotion remains blocked by insufficient OOS trades, non-positive return/expectancy, benchmark
+underperformance, unavailable historical funding, non-positive sensitivity results, and an
+upstream archive anomaly/gaps/incomplete coverage. These results are offline research evidence;
+they are not live-stack or venue qualification.
+
 ## Verification boundary
 
 Every Python repository uses a locked `uv` environment and Linux Python 3.11/3.14 plus Windows
 CI. The meta runner repeats lock, lint, format, typing, security, unit and build checks locally
 without Docker. Production readiness additionally requires durable persistence integration,
 external provider/live-exchange tests, canary execution, soak/reconnect testing, secret-store
-deployment and operational backup/restore exercises.
+deployment and operational backup/restore exercises. A passing strategy promotion gate is an
+additional prerequisite for enabling real trading APIs.

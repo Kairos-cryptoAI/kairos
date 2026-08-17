@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-13_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-17_
 
 ## Summary
 
@@ -10,7 +10,9 @@ matrices are green. Runtime services now have materially stronger ACK-after-succ
 shutdown, replay, schema, account-state and degradation behavior.
 
 Kairos remains **pre-production**. Green unit/CI matrices validate deterministic behavior and
-packaging; they do not yet establish durable delivery or external live-exchange correctness.
+packaging; they do not establish durable delivery or external live-exchange correctness. The
+offline strategy promotion gate currently returns `needs_revision` and
+`real_api_allowed=false`.
 
 ## Repository state
 
@@ -24,9 +26,9 @@ packaging; they do not yet establish durable delivery or external live-exchange 
 | `kairos-aggregator` | strict tactical schema, mode handling, replay-safe publish | durable replay/context state and provider live tests |
 | `kairos-macro-strategist` | real account/market context, shock detector, modes, strict schema | durable histories and external macro/on-chain inputs |
 | `kairos-risk-manager` | reconciled account requirement, allocation enforcement, sizing/breakers | durable risk/PnL state and live integrated validation |
-| `kairos-execution-engine` | EVEDEX/CCXT adapters, reconciliation, account snapshots, protective orders | live EVEDEX/canary qualification and durable order outbox |
+| `kairos-execution-engine` | EVEDEX/CCXT adapters, reconciliation, account snapshots, protective orders, fail-closed risk/execution checks | live EVEDEX/canary qualification, durable execution journal and crash-safe TP/SL deduplication |
 | `kairos-persistence` | Timescale migrations, typed audit and transactional inbox/outbox repositories | service-runtime integration and backup/restore exercise |
-| `kairos-backtest` | deterministic historical replay and fill model | parity/coverage against real venue behavior |
+| `kairos-backtest` | deterministic causal replay, audited Binance archive ingestion and fail-closed promotion evidence | strategy revision, clean complete data, historical funding and parity against real venue behavior |
 | `kairos-deploy` | full-SHA service contexts, Compose/monitoring configuration, static validation | external deployment, secrets, metrics and recovery qualification |
 | `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
@@ -59,17 +61,46 @@ repository's declared checks and supported Python/Windows matrix pass for the re
 - [`scripts/Test-Kairos.ps1`](../scripts/Test-Kairos.ps1) runs the equivalent lock, lint,
   format, mypy, Bandit, network-free pytest and build gates locally without Docker.
 
+## Offline strategy validation and promotion evidence
+
+The campaign freezes one candidate before promotion evaluation:
+`confirmation_bars=12`, `minimum_hold_bars=48`, and `minimum_confidence=0.67`. Official Binance
+Futures monthly 1m archives for the 12-month research interval and untouched July holdout are
+audited against their SHA-256 sidecars and ZIP CRCs. The broader upstream inventory is also
+audited fail closed; a source anomaly, gaps, or incomplete coverage remains a promotion blocker
+even when the replayed window itself is available.
+
+Signals are formed only from closed candles, scheduled at the first eligible subsequent open,
+and capped by the previous closed candle's volume. This avoids same-bar price or liquidity
+look-ahead. Actual historical funding was unavailable and is reported as unavailable; an
+assumed stress rate does not satisfy the historical-funding gate.
+
+| evidence | baseline | stress |
+| --- | ---: | ---: |
+| 12-month research replay | -4.231727849843687% / 803 trades | -9.763199273155571% / 804 trades |
+| untouched July promotion OOS | -1.075965871769744% / 69 trades | -1.5781050811020259% / 69 trades |
+
+Rolling folds are post-selection diagnostics and must not be described as OOS. Only the
+untouched July interval is promotion OOS: its buy-and-hold benchmark was
++6.828606504564661%, and zero of five symbols had positive strategy returns. The resulting gate
+is `needs_revision` with `real_api_allowed=false` because of insufficient OOS trades,
+non-positive return and expectancy, benchmark underperformance, unavailable historical funding,
+non-positive sensitivity performance, and upstream anomaly/gaps/incomplete coverage. This is
+offline research evidence, not live qualification. The governing boundary is
+[ADR 9](adr/0009-offline-strategy-promotion-gate.md).
+
 ## Remaining limitations
 
 1. **Durable delivery is not integrated end-to-end.** Transactional inbox/outbox primitives
    exist, but services still rely on Redis at-least-once delivery plus process-local replay
-   caches. A crash between an external side effect and ACK/publish can still require manual
-   reconciliation.
+   caches. A durable execution journal is not yet the authoritative recovery source, so a crash
+   between an external side effect and ACK/publish can still require manual reconciliation.
 2. **State is not fully restart-safe.** Intraday PnL/account history, macro context/history and
    some deduplication windows reset on restart.
 3. **External live EVEDEX is unqualified.** EIP-712, order reconciliation, protective-order
-   updates, rate limits and failure recovery need controlled canary testing. Application-managed
-   trailing is not a verified native server-side trailing order.
+   updates, rate limits and failure recovery need controlled canary testing. TP/SL side effects
+   are not yet durably deduplicated across a crash. Application-managed trailing is not a
+   verified native server-side trailing order.
 4. **Market-data/execution venue split needs an explicit production decision.** Quant currently
    consumes Binance data while execution targets EVEDEX; symbol, basis, liquidity and latency
    assumptions need live validation.
@@ -79,8 +110,10 @@ repository's declared checks and supported Python/Windows matrix pass for the re
    queryable audit/recovery workflow must be exercised across service processes.
 7. **Deployment operations remain.** Secret-store integration, service metrics, alerts,
    reconnect/soak tests, disaster recovery and staged rollback require an external environment.
-8. **Backtests are not venue qualification.** The deterministic fill model needs calibration
-   against real EVEDEX behavior before results can inform live risk limits.
+8. **Backtests are not venue qualification.** The frozen candidate loses money in the untouched
+   July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
+   evidence. The gate therefore denies real APIs. The deterministic fill model also needs
+   calibration against real EVEDEX behavior before results can inform live risk limits.
 9. **Model migration still needs live shadow evaluation.** Unit tests establish route selection,
    schema handling and deterministic fallback, but do not prove that Luna/Terra/Flash-0731
    preserve decision quality, latency and token profiles on production distributions.
@@ -88,5 +121,5 @@ repository's declared checks and supported Python/Windows matrix pass for the re
 ## Readiness rule
 
 Do not enable live trading merely because GitHub or the local runner is green. Live eligibility
-requires the durability, live exchange/provider, canary, observability and recovery gaps above
-to be closed and independently reviewed.
+requires a passing offline strategy promotion gate plus the durability, live exchange/provider,
+canary, observability and recovery gaps above to be closed and independently reviewed.
