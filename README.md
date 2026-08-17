@@ -95,6 +95,15 @@ anomalies/gaps/incomplete coverage. This backtest is research evidence only; it 
 venue, or production qualification. See
 [ADR 9](docs/adr/0009-offline-strategy-promotion-gate.md) for the decision boundary.
 
+A subsequent development-only order-flow screen tested three mutually exclusive taker-flow
+hypotheses on reused July-December 2022 research data. The highest-frequency `PERSISTENCE`
+variant produced 387 baseline and 301 stress trades, but returned -2.9005% and -3.2540%; all six
+trial/scenario cells had negative expectancy and profit factor below 1.0. Its decision is
+`REJECT_ALL`, with every promotion, shadow and live permission still false. This result shows
+that trade frequency is no longer the main blocker—the standalone flow-continuation signal lacks
+net edge. It does not replace or upgrade the frozen promotion evidence. See the
+[order-flow screen report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/orderflow-screen/REPORT.md).
+
 ## Current delivery state
 
 As of 2026-08-17, the modernization work is merged into `main` across all thirteen

@@ -89,6 +89,23 @@ non-positive sensitivity performance, and upstream anomaly/gaps/incomplete cover
 offline research evidence, not live qualification. The governing boundary is
 [ADR 9](adr/0009-offline-strategy-promotion-gate.md).
 
+### Subsequent development-only screens
+
+The isolated `orderflow_volatility_expansion_v1` screen evaluated `IMPULSE`, `PERSISTENCE` and
+`FLIP_RELEASE` on reused July-December 2022 `RESEARCH/FIT` data. It was designed to test whether
+causal five-minute taker-flow expansion could add trade frequency without weakening the
+fail-closed economics gate. `PERSISTENCE` did supply 387 baseline and 301 stress trades, but its
+net returns were -2.9005% and -3.2540%. All six trial/scenario cells had negative expectancy and
+profit factor below 1.0, so the fixed decision was `REJECT_ALL` and every promotion, shadow and
+live permission remained false.
+
+This is useful negative evidence: frequency itself is no longer the primary constraint, while
+the standalone post-expansion continuation signal has no demonstrated net edge. The result is
+strictly development diagnostics, does not alter the frozen promotion decision above, and did
+not invoke an LLM, external API or real order. Full methodology, checksums and artifact hashes
+are in the
+[order-flow report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/orderflow-screen/REPORT.md).
+
 ## Remaining limitations
 
 1. **Durable delivery is not integrated end-to-end.** Transactional inbox/outbox primitives
