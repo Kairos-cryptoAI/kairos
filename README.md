@@ -14,7 +14,7 @@ flowchart TD
     K --> E["Execution Engine<br/>EVEDEX / CCXT"]
     E -- "AccountSnapshot" --> K
     E -- "AccountSnapshot" --> M
-    E -- "ExecutionReport" --> O["published event<br/>no durable consumer wired"]
+    E -- "ExecutionReport" --> O["durable outbox event<br/>no domain consumer wired"]
     K -. "SystemMode" .-> R
     K -. "SystemMode" .-> A
     K -. "SystemMode" .-> M
@@ -39,8 +39,8 @@ exchange authentication, reconciliation, and execution.
 | [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | tactical decisions with strict schemas |
 | [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
 | [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | account-aware risk checks, sizing and system circuit breaker |
-| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX/CCXT adapters, reconciliation and account snapshots |
-| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale migrations and transactional inbox/outbox primitives |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX/CCXT adapters, reconciliation, durable effect journal and account snapshots |
+| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale migrations, runtime inbox/outbox, execution journal and metrics |
 | [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic historical replay and fill modelling |
 | [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned deployment manifest, containers and monitoring configuration |
 | [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
@@ -116,17 +116,21 @@ See the [regime-retest screen report](https://github.com/Kairos-cryptoAI/kairos-
 
 ## Current delivery state
 
-As of 2026-08-17, the modernization work is merged into `main` across all thirteen
+As of 2026-08-18, the modernization and durable-runtime work is merged into `main` across all thirteen
 repositories. The Python 3.11/3.14, Windows, integration and deployment image-build matrices
 are green. Cross-repository Git dependencies use full commits that are retained in `main`
 history and recorded in `uv.lock`; future dependency updates must still repin consumers and
 deployment inputs in dependency order.
 
-This is **not production-ready**. The transactional inbox/outbox package is not yet wired into
-every service runtime, important replay/account histories are still process-local, and external
-live EVEDEX/provider/canary testing remains outstanding. Risk and execution now fail closed more
-consistently, but a durable execution journal and crash-safe TP/SL side-effect deduplication are
-still required. See [project status](docs/STATUS.md) for the full readiness boundary.
+All runtime services now use the transactional inbox/outbox path before Redis ACK; Execution
+journals venue mutations before submission and reconciles unresolved effects before accepting
+new risk. The Docker operations stack uses file-scoped secrets, durable-state metrics and
+alerts, and has passed local Redis reconnect plus backup/restore drills.
+
+This is still **not production-ready**. Authenticated EVEDEX semantics, long-duration
+Binance/EVEDEX basis and liquidity, paid LLM/feed quotas and quality, external secret-manager
+deployment, and a substantially longer soak/canary remain unqualified. Strategy promotion also
+remains denied independently. See [project status](docs/STATUS.md) for the full readiness boundary.
 
 See [architecture](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and
 [budget assumptions](docs/BUDGET.md). MIT licensed.

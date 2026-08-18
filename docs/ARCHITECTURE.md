@@ -21,7 +21,7 @@ flowchart LR
     K -- "ValidatedOrder" --> E["Execution"]
     E -- "AccountSnapshot" --> K
     E -- "AccountSnapshot" --> M
-    E -- "ExecutionReport" --> B["published event<br/>no durable consumer wired"]
+    E -- "ExecutionReport" --> B["durable outbox event<br/>no domain consumer wired"]
     T -. "LLMHealthEvent" .-> K
     A -. "LLMHealthEvent" .-> K
     M -. "LLMHealthEvent" .-> K
@@ -39,7 +39,7 @@ flowchart LR
 | Aggregator | `kairos.aggregator.command` / `TacticalCommand` | Risk |
 | Macro | `kairos.macro.allocation` / `StrategicAllocation` | Risk |
 | Risk | `kairos.risk.validated_order` / `ValidatedOrder` | Execution |
-| Execution | `kairos.execution.report` / `ExecutionReport` | published; no durable consumer is wired yet |
+| Execution | `kairos.execution.report` / `ExecutionReport` | durably published; no domain consumer is wired yet |
 | Execution | `kairos.account.snapshot` / `AccountSnapshot` | Risk, Macro |
 | Text, Aggregator, Macro | `kairos.llm.health` / `LLMHealthEvent` | Risk |
 | Risk circuit breaker | `kairos.system.control` / `SystemControl` | Router, Aggregator, Macro, Execution |
@@ -47,8 +47,9 @@ flowchart LR
 The account feedback is direct from Execution to both Risk and Macro (Risk does not forward it).
 It closes two important loops: Risk refuses orders without
 a recent reconciled account snapshot, and Macro includes portfolio state in strategic context.
-An explicit reconciliation failure revokes previously trusted account state. This does not yet
-make the state durable: intraday PnL/history and several replay caches reset with their process.
+An explicit reconciliation failure revokes previously trusted account state. Message delivery
+and publication are durable; some analytical histories and bounded caches still reset with
+their process.
 
 ## Layer 1 — Scouts
 
@@ -117,9 +118,12 @@ reports plus account snapshots at startup, periodically and after relevant actio
 EVEDEX orders are authenticated with EIP-712. Fixed exchange-hosted stop loss / take profit
 orders are supported. Trailing behavior is application-managed by updating protective orders;
 the project must not describe it as a verified native server-side trailing-stop facility.
-Risk and execution paths have stronger fail-closed validation, but the execution journal is not
-yet durable and TP/SL side effects are not crash-safely deduplicated. External live EVEDEX
-behavior remains unqualified.
+Execution writes a durable `PREPARED` effect before every venue mutation and records confirmation
+or reconciliation afterward. Startup recovery takes a database advisory lock, blocks new risk,
+and reconciles unresolved effects. EVEDEX TP/SL recovery uses authoritative parent-order linkage
+to avoid recreating an already-existing protective order. Venues without an authoritative
+lookup remain fail-closed rather than guessing. External live EVEDEX behavior is still
+unqualified.
 
 ## Model gateway
 
@@ -138,11 +142,16 @@ global model identifier.
 
 ## Delivery, replay and persistence boundary
 
-Consumers acknowledge only after full success and use deterministic message identities and
-replay caches. Redis Streams still provide at-least-once delivery. `kairos-persistence` now has
-Timescale migrations and transactional inbox/outbox repositories, but these primitives are not
-wired into all service publish/ACK paths. Therefore end-to-end durable exactly-once processing,
-restart-safe deduplication, and a complete audit trail are not yet guaranteed.
+Redis Streams provide at-least-once transport. Every runtime consumer claims a persistent inbox
+row, executes domain writes and required outbox inserts in one database transaction, and only
+then acknowledges the stream message. A separate dispatcher publishes committed outbox rows and
+records bounded retries/dead letters. Deterministic message identities make repeated delivery
+converge on the same durable record.
+
+This closes the prior ACK/publish crash window for service-to-service messages. It does not turn
+arbitrary external exchange APIs into exactly-once systems; that boundary is handled separately
+by the execution-effect journal and venue reconciliation described above. A metrics exporter
+reports inbox/outbox backlog and unresolved execution effects without exposing payloads.
 
 `kairos-backtest` provides deterministic historical replay and fill modelling. It is not a
 full live-stack test and cannot qualify exchange authentication, venue semantics, provider
@@ -185,7 +194,8 @@ they are not live-stack or venue qualification.
 
 Every Python repository uses a locked `uv` environment and Linux Python 3.11/3.14 plus Windows
 CI. The meta runner repeats lock, lint, format, typing, security, unit and build checks locally
-without Docker. Production readiness additionally requires durable persistence integration,
-external provider/live-exchange tests, canary execution, soak/reconnect testing, secret-store
-deployment and operational backup/restore exercises. A passing strategy promotion gate is an
-additional prerequisite for enabling real trading APIs.
+without Docker. The local Docker stack now validates durable persistence, authenticated Redis,
+file-scoped secrets, loopback monitoring, explicit reconnect soak, and isolated backup/restore.
+Production readiness still requires authenticated provider/live-exchange tests, canary
+execution, managed secret storage, encrypted off-host backups and a substantially longer soak.
+A passing strategy promotion gate is an additional prerequisite for enabling real trading APIs.

@@ -9,10 +9,10 @@ Python 3.11 development baselines, Linux 3.11/3.14 CI and Windows CI. Their `mai
 matrices are green. Runtime services now have materially stronger ACK-after-success, TaskGroup
 shutdown, replay, schema, account-state and degradation behavior.
 
-Kairos remains **pre-production**. Green unit/CI matrices validate deterministic behavior and
-packaging; they do not establish durable delivery or external live-exchange correctness. The
-offline strategy promotion gate currently returns `needs_revision` and
-`real_api_allowed=false`.
+Kairos remains **pre-production**. Durable service delivery, the execution-effect journal and
+the local operations/recovery stack are now implemented and exercised, but green unit/CI and
+local Docker results do not establish external live-exchange/provider correctness. The offline
+strategy promotion gate currently returns `needs_revision` and `real_api_allowed=false`.
 
 ## Repository state
 
@@ -22,14 +22,14 @@ offline strategy promotion gate currently returns `needs_revision` and
 | `kairos-llm` | workload routing across DeepSeek Flash 0731 and GPT-5.6 Luna/Terra/Sol, strict schemas, health/cost hooks | live provider qualification, shadow evals and operational quotas |
 | `kairos-quant-scouts` | closed 1m indicators, OI refresh, liquidation aggregation, staleness/reconnect | Binance soak and deployed venue/data-source decision |
 | `kairos-text-scouts` | real feeds, local filter, DeepSeek sentiment/fallback | external feed/provider reliability and licensing/rate limits |
-| `kairos-router` | FSM/hysteresis, SystemMode policy, ACK-after-success, graceful close | durable replay state |
-| `kairos-aggregator` | strict tactical schema, mode handling, replay-safe publish | durable replay/context state and provider live tests |
-| `kairos-macro-strategist` | real account/market context, shock detector, modes, strict schema | durable histories and external macro/on-chain inputs |
-| `kairos-risk-manager` | reconciled account requirement, allocation enforcement, sizing/breakers | durable risk/PnL state and live integrated validation |
-| `kairos-execution-engine` | EVEDEX/CCXT adapters, reconciliation, account snapshots, protective orders, fail-closed risk/execution checks | live EVEDEX/canary qualification, durable execution journal and crash-safe TP/SL deduplication |
-| `kairos-persistence` | Timescale migrations, typed audit and transactional inbox/outbox repositories | service-runtime integration and backup/restore exercise |
+| `kairos-router` | FSM/hysteresis, SystemMode policy, durable inbox/outbox, graceful close | durable FSM history beyond message replay |
+| `kairos-aggregator` | strict tactical schema, mode handling, durable publish/ACK | durable long-horizon context and provider live tests |
+| `kairos-macro-strategist` | real account/market context, shock detector, modes, durable publish/ACK | durable analytical histories and external macro/on-chain inputs |
+| `kairos-risk-manager` | reconciled account requirement, allocation enforcement, durable decisions/sizing/breakers | durable long-horizon PnL state and live integrated validation |
+| `kairos-execution-engine` | EVEDEX/CCXT adapters, reconciliation, account snapshots, protective orders, durable mutation journal and recovery | authenticated live EVEDEX/canary qualification |
+| `kairos-persistence` | Timescale migrations, runtime inbox/outbox, execution-effect journal, audit repositories and metrics exporter | external retention sizing and off-host backup policy |
 | `kairos-backtest` | deterministic causal replay, audited Binance archive ingestion and fail-closed promotion evidence | strategy revision, clean complete data, historical funding and parity against real venue behavior |
-| `kairos-deploy` | full-SHA service contexts, Compose/monitoring configuration, static validation | external deployment, secrets, metrics and recovery qualification |
+| `kairos-deploy` | full-SHA contexts, file-scoped secrets, metrics/alerts, reconnect soak and recovery tooling | managed secret backend, long soak and external recovery qualification |
 | `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
 Test counts are intentionally not frozen in this document. The meaningful gate is that each
@@ -47,8 +47,15 @@ repository's declared checks and supported Python/Windows matrix pass for the re
   new exposure without blocking protective close/reduce-only execution.
 - Quant computes indicators only from closed one-minute bars, refreshes open interest, ingests
   liquidations and exposes explicit staleness/reconnect behavior.
-- Redis-consuming services acknowledge work after required processing and publishing succeeds;
-  deterministic IDs/in-memory caches reduce replay effects.
+- Every Redis-consuming service records inbox ownership and atomically commits required domain
+  state plus outbox messages before acknowledging the stream delivery. The outbox dispatcher
+  retries independently and dead-letters bounded failures for operator review.
+- Execution records each external venue mutation as `PREPARED` before submission. Startup
+  recovery reconciles unresolved effects under a database advisory lock; EVEDEX protective
+  orders are reconciled by authoritative parent linkage before new risk is accepted.
+- The deployment exporter exposes aggregate inbox/outbox and execution-journal health. The
+  loopback Prometheus/Grafana stack has passed a fresh-volume startup, explicit Redis restart,
+  and isolated backup/restore schema drill without enabling live orders.
 
 ## Modernization and verification
 
@@ -124,35 +131,32 @@ remaining selection window is inspected. Full methodology and integrity evidence
 
 ## Remaining limitations
 
-1. **Durable delivery is not integrated end-to-end.** Transactional inbox/outbox primitives
-   exist, but services still rely on Redis at-least-once delivery plus process-local replay
-   caches. A durable execution journal is not yet the authoritative recovery source, so a crash
-   between an external side effect and ACK/publish can still require manual reconciliation.
-2. **State is not fully restart-safe.** Intraday PnL/account history, macro context/history and
+1. **State is not fully restart-safe.** Intraday PnL/account history, macro context/history and
    some deduplication windows reset on restart.
-3. **External live EVEDEX is unqualified.** EIP-712, order reconciliation, protective-order
-   updates, rate limits and failure recovery need controlled canary testing. TP/SL side effects
-   are not yet durably deduplicated across a crash. Application-managed trailing is not a
-   verified native server-side trailing order.
-4. **Market-data/execution venue split needs an explicit production decision.** Quant currently
+2. **External live EVEDEX is unqualified.** The journal/recovery path and a read-only qualifier
+   exist, but real JWT/EIP-712 auth, reconciliation, protective-order states, rate limits and
+   ambiguous network outcomes still need controlled authenticated canary testing. No real order
+   was placed. Application-managed trailing is not a verified native server-side facility.
+3. **Market-data/execution venue split needs an explicit production decision.** Quant currently
    consumes Binance data while execution targets EVEDEX; symbol, basis, liquidity and latency
-   assumptions need live validation.
-5. **External LLM/feed tests remain.** Unit fakes validate schemas and errors, not current
-   provider availability, quotas, latency or upstream content quality.
-6. **Persistence operations remain.** Timescale integration, retention, backup/restore and a
-   queryable audit/recovery workflow must be exercised across service processes.
-7. **Deployment operations remain.** Secret-store integration, service metrics, alerts,
-   reconnect/soak tests, disaster recovery and staged rollback require an external environment.
-8. **Backtests are not venue qualification.** The frozen candidate loses money in the untouched
+   assumptions need longer live observation. A short read-only comparison is not sufficient.
+4. **External LLM/feed qualification remains.** The no-order qualifiers measure latency,
+   availability, quotas, resolved models, structured-output quality and modeled cost, but the
+   real-key runs are still blocked because credentials were deliberately not supplied.
+5. **Operations need external qualification.** Local Docker secrets prevent values from
+   appearing in container environment metadata, monitoring and alerts are live, and reconnect
+   plus backup/restore drills pass. Production still needs a managed KMS/Vault backend,
+   encrypted off-host backup scheduling, a long soak, host hardening and a staged recovery drill.
+6. **Backtests are not venue qualification.** The frozen candidate loses money in the untouched
    July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
    evidence. The gate therefore denies real APIs. The deterministic fill model also needs
    calibration against real EVEDEX behavior before results can inform live risk limits.
-9. **Model migration still needs live shadow evaluation.** Unit tests establish route selection,
+7. **Model migration still needs live shadow evaluation.** Unit tests establish route selection,
    schema handling and deterministic fallback, but do not prove that Luna/Terra/Flash-0731
    preserve decision quality, latency and token profiles on production distributions.
 
 ## Readiness rule
 
 Do not enable live trading merely because GitHub or the local runner is green. Live eligibility
-requires a passing offline strategy promotion gate plus the durability, live exchange/provider,
-canary, observability and recovery gaps above to be closed and independently reviewed.
+requires a passing offline strategy promotion gate plus the live exchange/provider, long-soak,
+managed-secrets and canary gaps above to be closed and independently reviewed.

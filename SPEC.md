@@ -34,8 +34,10 @@ so adding another `medium` or `high` caller cannot silently inherit an unrelated
 6. **Execution Engine** reconciles the venue, submits validated orders and publishes account
    snapshots back to Risk and Macro.
 
-Persistence and backtest repositories support these layers, but durable inbox/outbox wiring is
-not yet end-to-end and historical replay is not a substitute for an external live-venue canary.
+Every runtime consumer now commits inbox state, domain state and outbound messages before Redis
+ACK. A durable execution-effect journal protects the external-mutation boundary and blocks new
+risk until unresolved effects are reconciled. Historical replay is still not a substitute for
+an external live-venue canary.
 
 The target live venue is [EVEDEX](https://exchange.evedex.com/) with EIP-712-authenticated order
 operations; CCXT/Binance paths support development and dry-run verification. Live external

@@ -51,5 +51,6 @@ them, followed by deploy/meta manifests. Re-lock each consumer after updating a 
 - `LOCAL_QUANT_MODE` must block new exposure while still allowing protective close/reduce-only
   actions where the contract distinguishes them.
 - Redis ACKs occur only after complete processing and required publishes succeed.
-- Until durable inbox/outbox integration is present end-to-end, preserve deterministic IDs and
-  replay-safe behavior and document any process-local deduplication window.
+- Preserve the transactional inbox/outbox boundary: domain state and required publishes commit
+  before Redis ACK. External venue mutations must be prepared in the execution journal before
+  submission and reconciled after ambiguous outcomes.
