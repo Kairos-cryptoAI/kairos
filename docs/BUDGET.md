@@ -18,7 +18,33 @@ allocation uses GPT-5.6 Sol. The calculator in `kairos-llm` uses the list prices
 The matching `kairos-llm` test reproduces this $72.204 scenario from its pricing table. It is a
 planning estimate, not a supplier quote or guaranteed ceiling. Provider prices, token volumes,
 caching, retries and routing ratios must be re-checked before deployment and monitored at
-runtime.
+runtime. In particular, this unconstrained call-volume scenario does **not** fit the funded
+OpenAI balance below.
+
+## Funded monthly envelope
+
+The funded balances reported on 2026-08-18 are `$5` DeepSeek, `$50` OpenAI and `$10` X:
+`$65` total. They cover development, qualification and the following month of shadow work;
+they are not a one-day test allowance.
+
+| provider | funded | development / recovery reserve | target runtime allocation | old unconstrained scenario |
+| --- | ---: | ---: | ---: | ---: |
+| DeepSeek | $5.00 | $0.50 | $4.50 | $4.2336 |
+| OpenAI | $50.00 | $5.00 | $45.00 | $67.9704 |
+| X | $10.00 | $1.00 | $9.00 | up to $10.00 |
+| **total** | **$65.00** | **$6.50** | **$58.50** | **$82.204** |
+
+Therefore the old scenario exceeds the funded envelope by `$17.204` and must not be run at
+its nominal call volumes. OpenAI routing needs adaptive admission and a durable provider budget:
+routine Luna calls are preferred, Terra is conflict-only, and Sol remains a scheduled strategic
+escalation. Until that durable LLM reservation path is wired into every caller, continuous paid
+soak is disabled.
+
+The first bounded qualification used an estimated `$0.00001778` of DeepSeek and `$0.00236160`
+of OpenAI. The single funded X probe reserved and committed `$0.060000`. Thus Kairos recorded
+`$0.06237938` of development usage; provider consoles remain authoritative for billed balances.
+Qualification tools must use one sample, route selection and their explicit preflight cost cap
+unless a larger experiment has been separately budgeted.
 
 ## Feed assumptions
 
@@ -29,10 +55,10 @@ registered 2026-08-18 prices, X charges
 Kairos resolves each configured handle once and durably reuses the User ID, so normal recurring
 cost is dominated by new Post reads rather than User lookup.
 
-The modeled LLM spend plus the maximum X allocation is therefore **$82.204/month**, leaving
-**$7.796** of the stated `$90` budget as contingency. This is a ceiling allocation, not a
-forecast: X charges only for returned resources and its own console spending limit must also be
-set to `$10`.
+X charges only for returned resources. Its provider console limit stays at `$10`, while normal
+runtime ingestion targets `$9` so `$1` remains available for controlled diagnostics and recovery.
+The first authenticated funded request read one User and ten Posts for exactly `$0.060000`;
+the Posts were valid but older than the qualification freshness window.
 
 ## Infrastructure assumption
 

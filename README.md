@@ -182,12 +182,15 @@ alerts, and has passed local Redis reconnect plus backup/restore drills.
 Text Scouts now uses the official X API rather than Bright Data. It resolves each configured
 handle once, durably caches the immutable User ID, then polls User Posts with durable Post
 cursors and transactional monthly spend reservations. The Bearer Token is file-mounted and
-was accepted by X, but the first no-order qualification stopped at `HTTP 402`: X API credits
-must be purchased before any Post can be read. No LLM call or order was made.
+was accepted by X. A single funded probe read one User and ten Posts for `$0.060000`; all Posts
+were older than the 30-minute freshness gate, so feed qualification remains incomplete. One
+bounded structured-output call also passed on each configured DeepSeek/OpenAI model route for
+about `$0.00237938` modeled cost. No order was made.
 
 This is still **not production-ready**. Authenticated EVEDEX semantics, long-duration
-Binance/EVEDEX basis and liquidity, paid LLM/feed quotas and quality, external secret-manager
-deployment, and a substantially longer soak/canary remain unqualified. Strategy promotion also
+Binance/EVEDEX basis and liquidity, paid LLM/feed availability tails, quotas and quality,
+durable LLM spend enforcement, external secret-manager deployment, and a substantially longer
+soak/canary remain unqualified. Strategy promotion also
 remains denied independently. See [project status](docs/STATUS.md) for the full readiness boundary.
 
 See [architecture](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and

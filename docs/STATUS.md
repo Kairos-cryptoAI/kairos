@@ -140,11 +140,13 @@ remaining selection window is inspected. Full methodology and integrity evidence
 3. **Market-data/execution venue split needs an explicit production decision.** Quant currently
    consumes Binance data while execution targets EVEDEX; symbol, basis, liquidity and latency
    assumptions need longer live observation. A short read-only comparison is not sufficient.
-4. **External LLM/feed qualification remains.** The no-order qualifiers measure latency,
-   availability, quotas, resolved models, structured-output quality and modeled cost. The X
-   Bearer Token is now securely mounted and accepted, but the first bounded User lookup returned
-   `HTTP 402`; X credits must be purchased before Post freshness/latency can be qualified. The
-   LLM providers still require their separate bounded live qualification runs.
+4. **External LLM/feed qualification has started but is not a soak.** One bounded X request
+   authenticated, read one User and ten Posts for `$0.060000`, and observed rate headers; those
+   Posts were older than the 30-minute freshness gate. One structured call passed on each model
+   route: DeepSeek Flash, GPT-5.6 Luna, Terra and Sol. The modeled LLM cost was `$0.00237938`.
+   Provider `/models` endpoints emitted no quota headers, and one sample cannot establish monthly
+   availability, latency tails, quotas or decision quality. Continuous paid testing remains
+   disabled until durable LLM budgets are connected to every caller.
 5. **Operations need external qualification.** Local Docker secrets prevent values from
    appearing in container environment metadata, monitoring and alerts are live, and reconnect
    plus backup/restore drills pass. Production still needs a managed KMS/Vault backend,
@@ -153,9 +155,9 @@ remaining selection window is inspected. Full methodology and integrity evidence
    July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
    evidence. The gate therefore denies real APIs. The deterministic fill model also needs
    calibration against real EVEDEX behavior before results can inform live risk limits.
-7. **Model migration still needs live shadow evaluation.** Unit tests establish route selection,
-   schema handling and deterministic fallback, but do not prove that Luna/Terra/Flash-0731
-   preserve decision quality, latency and token profiles on production distributions.
+7. **Model migration still needs live shadow evaluation.** The four API routes now pass one exact
+   structured-output probe, but that does not prove that Luna/Terra/Flash preserve decision
+   quality, latency tails and token profiles on production distributions.
 
 ## Readiness rule
 
