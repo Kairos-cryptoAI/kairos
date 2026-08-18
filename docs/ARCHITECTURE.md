@@ -58,11 +58,13 @@ only from closed one-minute klines. Open interest is refreshed periodically, liq
 `forceOrder` events are aggregated, and reconnect/backoff plus staleness rules prevent an open
 socket from being mistaken for fresh data.
 
-**Text Scouts** perform feed ingestion, deterministic filtering and batched sentiment analysis
-using the current `deepseek-v4-flash` alias (DeepSeek-V4-Flash-0731) in explicit non-thinking
-mode. A failed Flash call falls back to a local keyword classifier with reduced confidence and
-publishes model health to Risk. The requested alias and provider-resolved model metadata are
-kept separate so an alias rollout is observable.
+**Text Scouts** ingest GDELT/RSS and selected public accounts through the official X API,
+deterministically filter the evidence, and run batched sentiment analysis using the current
+`deepseek-v4-flash` alias (DeepSeek-V4-Flash-0731) in explicit non-thinking mode. X account
+handles are resolved once to immutable User IDs; User-ID and Post cursors plus per-request
+budget reservations are durable in PostgreSQL. A failed Flash call falls back to a local
+keyword classifier with reduced confidence and publishes model health to Risk. The requested
+alias and provider-resolved model metadata are kept separate so an alias rollout is observable.
 
 ## Layer 2 — Router
 

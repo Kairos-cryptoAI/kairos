@@ -21,7 +21,7 @@ strategy promotion gate currently returns `needs_revision` and `real_api_allowed
 | `kairos-core` | versioned contracts, topics, Redis bus, config/logging | end-to-end persistence is owned by consumers |
 | `kairos-llm` | workload routing across DeepSeek Flash 0731 and GPT-5.6 Luna/Terra/Sol, strict schemas, health/cost hooks | live provider qualification, shadow evals and operational quotas |
 | `kairos-quant-scouts` | closed 1m indicators, OI refresh, liquidation aggregation, staleness/reconnect | Binance soak and deployed venue/data-source decision |
-| `kairos-text-scouts` | real feeds, local filter, DeepSeek sentiment/fallback | external feed/provider reliability and licensing/rate limits |
+| `kairos-text-scouts` | GDELT/RSS plus official X API, durable X cursors/spend reservations, local filter, DeepSeek sentiment/fallback | purchase X credits, then qualify real latency/freshness/quota and DeepSeek quality/cost |
 | `kairos-router` | FSM/hysteresis, SystemMode policy, durable inbox/outbox, graceful close | durable FSM history beyond message replay |
 | `kairos-aggregator` | strict tactical schema, mode handling, durable publish/ACK | durable long-horizon context and provider live tests |
 | `kairos-macro-strategist` | real account/market context, shock detector, modes, durable publish/ACK | durable analytical histories and external macro/on-chain inputs |
@@ -141,8 +141,10 @@ remaining selection window is inspected. Full methodology and integrity evidence
    consumes Binance data while execution targets EVEDEX; symbol, basis, liquidity and latency
    assumptions need longer live observation. A short read-only comparison is not sufficient.
 4. **External LLM/feed qualification remains.** The no-order qualifiers measure latency,
-   availability, quotas, resolved models, structured-output quality and modeled cost, but the
-   real-key runs are still blocked because credentials were deliberately not supplied.
+   availability, quotas, resolved models, structured-output quality and modeled cost. The X
+   Bearer Token is now securely mounted and accepted, but the first bounded User lookup returned
+   `HTTP 402`; X credits must be purchased before Post freshness/latency can be qualified. The
+   LLM providers still require their separate bounded live qualification runs.
 5. **Operations need external qualification.** Local Docker secrets prevent values from
    appearing in container environment metadata, monitoring and alerts are live, and reconnect
    plus backup/restore drills pass. Production still needs a managed KMS/Vault backend,

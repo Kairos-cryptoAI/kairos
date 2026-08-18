@@ -11,7 +11,7 @@ flowchart LR
     subgraph Evidence["1 · Evidence and context"]
         direction TB
         Q["Quant Scouts<br/>closed bars · OI · liquidations"]
-        T["Text Scouts<br/>local filter<br/>DeepSeek V4 Flash 0731"]
+        T["Text Scouts<br/>GDELT · RSS · official X<br/>DeepSeek V4 Flash 0731"]
         M["Macro Strategist<br/>GPT-5.6 Sol · xhigh"]
     end
 
@@ -178,6 +178,12 @@ All runtime services now use the transactional inbox/outbox path before Redis AC
 journals venue mutations before submission and reconciles unresolved effects before accepting
 new risk. The Docker operations stack uses file-scoped secrets, durable-state metrics and
 alerts, and has passed local Redis reconnect plus backup/restore drills.
+
+Text Scouts now uses the official X API rather than Bright Data. It resolves each configured
+handle once, durably caches the immutable User ID, then polls User Posts with durable Post
+cursors and transactional monthly spend reservations. The Bearer Token is file-mounted and
+was accepted by X, but the first no-order qualification stopped at `HTTP 402`: X API credits
+must be purchased before any Post can be read. No LLM call or order was made.
 
 This is still **not production-ready**. Authenticated EVEDEX semantics, long-duration
 Binance/EVEDEX basis and liquidity, paid LLM/feed quotas and quality, external secret-manager
