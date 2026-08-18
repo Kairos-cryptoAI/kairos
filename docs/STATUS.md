@@ -145,8 +145,10 @@ remaining selection window is inspected. Full methodology and integrity evidence
    Posts were older than the 30-minute freshness gate. One structured call passed on each model
    route: DeepSeek Flash, GPT-5.6 Luna, Terra and Sol. The modeled LLM cost was `$0.00237938`.
    Provider `/models` endpoints emitted no quota headers, and one sample cannot establish monthly
-   availability, latency tails, quotas or decision quality. Continuous paid testing remains
-   disabled until durable LLM budgets are connected to every caller.
+   availability, latency tails, quotas or decision quality. Every paid LLM caller now shares a
+   durable provider-wide spend ledger with pre-call reservation, and X uses its own durable
+   monthly ledger. Continuous paid testing still needs an approved cadence, quality protocol and
+   stop conditions within those enforced limits.
 5. **Operations need external qualification.** Local Docker secrets prevent values from
    appearing in container environment metadata, monitoring and alerts are live, and reconnect
    plus backup/restore drills pass. Production still needs a managed KMS/Vault backend,

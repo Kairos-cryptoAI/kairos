@@ -65,6 +65,9 @@ handles are resolved once to immutable User IDs; User-ID and Post cursors plus p
 budget reservations are durable in PostgreSQL. A failed Flash call falls back to a local
 keyword classifier with reduced confidence and publishes model health to Risk. The requested
 alias and provider-resolved model metadata are kept separate so an alias rollout is observable.
+All paid LLM callers reserve conservative request envelopes in shared provider-wide PostgreSQL
+ledgers before contacting DeepSeek or OpenAI. Failed, cancelled and ambiguous calls retain their
+reservation; a missing durable backend fails closed rather than allowing unaccounted spend.
 
 ## Layer 2 — Router
 

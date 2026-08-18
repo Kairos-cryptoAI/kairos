@@ -35,10 +35,13 @@ they are not a one-day test allowance.
 | **total** | **$65.00** | **$6.50** | **$58.50** | **$82.204** |
 
 Therefore the old scenario exceeds the funded envelope by `$17.204` and must not be run at
-its nominal call volumes. OpenAI routing needs adaptive admission and a durable provider budget:
-routine Luna calls are preferred, Terra is conflict-only, and Sol remains a scheduled strategic
-escalation. Until that durable LLM reservation path is wired into every caller, continuous paid
-soak is disabled.
+its nominal call volumes. OpenAI routing therefore uses adaptive admission: routine Luna calls
+are preferred, Terra is conflict-only, and Sol remains a scheduled strategic escalation.
+Text Scouts, Aggregator and Macro now reserve spend before each call in shared, durable
+provider-wide PostgreSQL ledgers capped at `$4.50` for DeepSeek and `$45.00` for OpenAI. A failed
+or ambiguous call retains its reservation, and no paid call is allowed without the durable
+backend. Continuous paid soak remains disabled until its cadence and quality protocol are
+explicitly approved; the missing control is no longer budget enforcement.
 
 The first bounded qualification used an estimated `$0.00001778` of DeepSeek and `$0.00236160`
 of OpenAI. The single funded X probe reserved and committed `$0.060000`. Thus Kairos recorded
