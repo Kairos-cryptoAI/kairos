@@ -4,22 +4,74 @@ Kairos is a pre-production, LLM-assisted futures-trading system with determinist
 guards. Models receive compact typed context, never raw streams, and cannot call an exchange.
 Every order must be approved by the Risk Manager and submitted by the Execution Engine.
 
+### Decision and execution path
+
 ```mermaid
-flowchart TD
-    Q["Quant Scouts<br/>closed 1m bars, OI, liquidations"] --> R["Router<br/>deterministic FSM"]
-    T["Text Scouts<br/>local filter + DeepSeek V4 Flash 0731"] --> R
-    R --> A["Aggregator<br/>GPT-5.6 Luna / Terra"]
-    A --> K["Risk Manager<br/>deterministic limits"]
-    M["Macro Strategist<br/>GPT-5.6 Sol xhigh"] --> K
-    K --> E["Execution Engine<br/>EVEDEX / CCXT"]
-    E -- "AccountSnapshot" --> K
-    E -- "AccountSnapshot" --> M
-    E -- "ExecutionReport" --> O["durable outbox event<br/>no domain consumer wired"]
-    K -. "SystemMode" .-> R
-    K -. "SystemMode" .-> A
-    K -. "SystemMode" .-> M
-    K -. "SystemMode" .-> E
+flowchart LR
+    subgraph Evidence["1 · Evidence and context"]
+        direction TB
+        Q["Quant Scouts<br/>closed bars · OI · liquidations"]
+        T["Text Scouts<br/>local filter<br/>DeepSeek V4 Flash 0731"]
+        M["Macro Strategist<br/>GPT-5.6 Sol · xhigh"]
+    end
+
+    subgraph Decisions["2 · Decisions"]
+        direction TB
+        R["Router<br/>deterministic FSM"]
+        A["Aggregator<br/>GPT-5.6 Luna · normal<br/>GPT-5.6 Terra · conflict"]
+        K{{"Risk Manager<br/>deterministic approval"}}
+    end
+
+    subgraph Exchange["3 · Exchange boundary"]
+        E["Execution Engine<br/>EVEDEX / CCXT"]
+    end
+
+    Q --> R
+    T --> R
+    R --> A
+    A --> K
+    M --> K
+    K -->|approved command| E
 ```
+
+Models enrich or interpret evidence, but only deterministic components can approve and submit
+an order. A command rejected by the Risk Manager never reaches the exchange adapter.
+
+### Feedback, safety and durability
+
+```mermaid
+flowchart TB
+    subgraph Feedback["Account feedback"]
+        direction LR
+        E1["Execution Engine"] --> S[("Account snapshot")]
+        S --> K1["Risk Manager"]
+        S --> M1["Macro Strategist"]
+    end
+
+    subgraph Safety["Fail-safe control"]
+        direction LR
+        K2["Risk Manager"] --> C[["System mode"]]
+        C -.-> R2["Router"]
+        C -.-> A2["Aggregator"]
+        C -.-> M2["Macro Strategist"]
+        C -.-> E2["Execution Engine"]
+    end
+
+    subgraph Durability["Durable reporting"]
+        direction LR
+        E3["Execution Engine"] --> X["Execution report"]
+        X --> O[("Durable outbox")]
+        O --> N["Domain consumer<br/>not wired yet"]
+    end
+
+    M1 ~~~ K2
+    E2 ~~~ E3
+```
+
+Solid arrows carry state or reports. Dashed arrows are fail-safe mode broadcasts. Account
+snapshots close the reconciliation loop; execution reports are durable even though their
+downstream domain consumer is still pending. Repeated service names refer to the same running
+components; each row isolates one relationship to keep the diagram readable.
 
 ## The one rule
 
