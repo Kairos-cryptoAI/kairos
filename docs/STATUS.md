@@ -1,35 +1,44 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-18_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-23_
 
 ## Summary
 
-The modernization pass has moved the eleven Python repositories to locked `uv` environments,
-Python 3.11 development baselines, Linux 3.11/3.14 CI and Windows CI. Their `main` branch
-matrices are green. Runtime services now have materially stronger ACK-after-success, TaskGroup
-shutdown, replay, schema, account-state and degradation behavior.
+The strict Strategy Parity → EVEDEX DEV PAPER code path is implemented on `main`: complete
+closed-bar contracts and recovery, one shared pure Strategy Engine for research/runtime,
+immutable LLM review, deterministic loss-at-stop risk, continuous venue-quality facts, a
+protected trade FSM, official EVEDEX SDK sidecar, durable recovery and an isolated PAPER stack.
 
-Kairos remains **pre-production**. Durable service delivery, the execution-effect journal and
-the local operations/recovery stack are now implemented and exercised, but green unit/CI and
-local Docker results do not establish external live-exchange/provider correctness. The offline
-strategy promotion gate currently returns `needs_revision` and `real_api_allowed=false`.
+Kairos remains **pre-production**. The four readiness markers intentionally make four different
+claims:
+
+| marker | value | scope |
+| --- | --- | --- |
+| `TECHNICAL_PAPER_READY` | `true` | exact pinned code/integration revision set after local Windows, Docker and GitHub CI gates |
+| `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
+| `ALPHA_READY` | `false` | no strategy revision has passed offline promotion; `REJECT_ALL` remains active |
+| `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
+
+The first marker is not evidence of exchange correctness, profitability, a completed canary or
+an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READINESS.md).
 
 ## Repository state
 
 | repository | implemented state | remaining boundary |
 | --- | --- | --- |
-| `kairos-core` | versioned contracts, topics, Redis bus, config/logging | end-to-end persistence is owned by consumers |
-| `kairos-llm` | workload routing across DeepSeek Flash 0731 and GPT-5.6 Luna/Terra/Sol, strict schemas, health/cost hooks | live provider qualification, shadow evals and operational quotas |
-| `kairos-quant-scouts` | closed 1m indicators, OI refresh, liquidation aggregation, staleness/reconnect | Binance soak and deployed venue/data-source decision |
-| `kairos-text-scouts` | GDELT/RSS plus official X API, durable X cursors/spend reservations, local filter, DeepSeek sentiment/fallback | purchase X credits, then qualify real latency/freshness/quota and DeepSeek quality/cost |
-| `kairos-router` | FSM/hysteresis, SystemMode policy, durable inbox/outbox, graceful close | durable FSM history beyond message replay |
-| `kairos-aggregator` | strict tactical schema, mode handling, durable publish/ACK | durable long-horizon context and provider live tests |
-| `kairos-macro-strategist` | real account/market context, shock detector, modes, durable publish/ACK | durable analytical histories and external macro/on-chain inputs |
-| `kairos-risk-manager` | reconciled account requirement, allocation enforcement, durable decisions/sizing/breakers | durable long-horizon PnL state and live integrated validation |
-| `kairos-execution-engine` | EVEDEX/CCXT adapters, reconciliation, account snapshots, protective orders, durable mutation journal and recovery | authenticated live EVEDEX/canary qualification |
-| `kairos-persistence` | Timescale migrations, runtime inbox/outbox, execution-effect journal, audit repositories and metrics exporter | external retention sizing and off-host backup policy |
-| `kairos-backtest` | deterministic causal replay, audited Binance archive ingestion and fail-closed promotion evidence | strategy revision, clean complete data, historical funding and parity against real venue behavior |
-| `kairos-deploy` | full-SHA contexts, file-scoped secrets, metrics/alerts, reconnect soak and recovery tooling | managed secret backend, long soak and external recovery qualification |
+| `kairos-core` | strict `ClosedBarEventV1`, intent/review/venue/risk/execution/account contracts; explicit DRY_RUN/PAPER/LIVE modes | any future contract revision requires a new version, never silent field reuse |
+| `kairos-llm` | DeepSeek Flash and GPT-5.6 Luna/Terra/Sol routing, strict schemas and durable cost hooks | shadow corpus quality, latency, quota and availability qualification |
+| `kairos-quant-scouts` | complete closed Binance 1m bars, REST gap recovery, indicators and scheduled EVEDEX quality facts | real 24-hour no-gap/availability/basis/liquidity observation |
+| `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures | every current sleeve is `REJECTED`; a new revision must pass offline promotion |
+| `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, local filter and DeepSeek fallback | paid shadow freshness, source quality, latency and quota qualification |
+| `kairos-router` | immutable candidate-specific NORMAL/CONFLICT route plus isolated legacy FSM | paid review path remains shadow-only while alpha is rejected |
+| `kairos-aggregator` | strict `ALLOW/VETO/DEFER` review with immutable intent and no automatic paid retry | frozen-corpus safety/quality and latency qualification |
+| `kairos-macro-strategist` | account-aware allocation/shock context and durable publish/ACK | shadow quality and durable long-horizon analytical histories |
+| `kairos-risk-manager` | PAPER-only DEV admission, 0.25%/1% loss caps, reservations and manual canary authority | real reconciled-account and venue inputs during controlled DEV qualification |
+| `kairos-execution-engine` | official SDK 1.2.11 sidecar, SIWE/auth, protected FSM, atomic public facts and crash recovery | authenticated DEV semantics and protected canary evidence; LIVE disabled |
+| `kairos-persistence` | inbox/outbox, bars, decisions, lifecycle/effects, TCA, equity, budget and readiness metrics | retention sizing and encrypted off-host backup policy |
+| `kairos-backtest` | imports exact Strategy Engine generators; causal replay and unchanged fail-closed reports | profitable new revision, clean data, historical funding and real-venue TCA calibration |
+| `kairos-deploy` | pinned isolated `kairos-paper`, deny-by-default secrets/mounts/egress, monitoring and recovery gates | complete 24-hour/canary/7-day evidence; future managed KMS/Vault for LIVE |
 | `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
 Test counts are intentionally not frozen in this document. The meaningful gate is that each
@@ -37,29 +46,35 @@ repository's declared checks and supported Python/Windows matrix pass for the re
 
 ## Implemented cross-service flows
 
-- Execution publishes reconciled `AccountSnapshot` messages to both Risk and Macro at startup,
-  periodically, and after relevant execution activity.
-- Risk requires recent trusted account state, applies strategic allocation constraints and
-  revokes trust on explicit reconciliation failure.
-- Text, Aggregator and Macro publish `LLMHealthEvent`; Risk owns per-model/provider circuit breakers and
-  broadcasts `SystemControl`.
-- Router, Aggregator, Macro and Execution subscribe to system control. Local degradation blocks
-  new exposure without blocking protective close/reduce-only execution.
-- Quant computes indicators only from closed one-minute bars, refreshes open interest, ingests
-  liquidations and exposes explicit staleness/reconnect behavior.
+- Quant emits canonical complete closed bars, restores REST gaps and blocks a symbol on unresolved
+  gap, reorder or conflict. Strategy Engine turns those bars into deterministic intents using the
+  same pure code imported by backtest.
+- Router preserves the immutable intent while selecting a review tier. Aggregator can return only
+  `ALLOW`, `VETO`, `DEFER` and priority; any timeout/error becomes terminal `DEFER` without a
+  second paid call.
+- Quant continuously records scheduled Binance/EVEDEX observations. Risk requires a fresh
+  executable DEV book, reconciled `AccountSnapshotV2`, compatible allocation and no conflicting
+  symbol position/order before applying loss-at-stop sizing.
+- Execution publishes reconciled account snapshots at startup, periodically and after activity.
+  A newer reconciliation failure revokes prior authority; startup recovery forces snapshots
+  untrusted until effects, positions, orders and TP/SL are reconciled.
+- A first or partial fill is protected with a reconciled stop before target creation. Entry expiry,
+  stop, target and timeout converge through a durable per-trade FSM and database lock.
 - Every Redis-consuming service records inbox ownership and atomically commits required domain
   state plus outbox messages before acknowledging the stream delivery. The outbox dispatcher
   retries independently and dead-letters bounded failures for operator review.
 - Execution records each external venue mutation as `PREPARED` before submission. Startup
   recovery reconciles unresolved effects under a database advisory lock; EVEDEX protective
   orders are reconciled by authoritative parent linkage before new risk is accepted.
-- The deployment exporter exposes aggregate inbox/outbox and execution-journal health. The
-  loopback Prometheus/Grafana stack has passed a fresh-volume startup, explicit Redis restart,
-  and isolated backup/restore schema drill without enabling live orders.
+- The PAPER exporter derives missing-poll availability, account age, inbox leases, unprotected
+  exposure, auth age, durable mutation reserve, reconciliation drift and execution shortfall from
+  durable facts. Backup/restore compares critical row counts and public event sequence.
+- `kairos-paper` is isolated from the legacy stack and from paid Text/LLM services. Its strategy
+  allow-list is empty; a single manually armed `technical-canary@1` is the only pre-alpha path.
 
 ## Modernization and verification
 
-- `uv` 0.12.3 is required and `uv.lock` is committed in all eleven Python repositories.
+- `uv` 0.12.3 is required and `uv.lock` is committed in all twelve Python repositories.
 - `.python-version` declares 3.11; Linux CI verifies 3.11 and 3.14, with a Windows job.
 - Internal Git dependencies are pinned to full reviewed SHAs rather than floating branches.
 - Dependabot configuration covers Actions and Python dependency updates.
@@ -131,15 +146,17 @@ remaining selection window is inspected. Full methodology and integrity evidence
 
 ## Remaining limitations
 
-1. **State is not fully restart-safe.** Intraday PnL/account history, macro context/history and
-   some deduplication windows reset on restart.
-2. **External live EVEDEX is unqualified.** The journal/recovery path and a read-only qualifier
-   exist, but real JWT/EIP-712 auth, reconciliation, protective-order states, rate limits and
-   ambiguous network outcomes still need controlled authenticated canary testing. No real order
-   was placed. Application-managed trailing is not a verified native server-side facility.
-3. **Market-data/execution venue split needs an explicit production decision.** Quant currently
-   consumes Binance data while execution targets EVEDEX; symbol, basis, liquidity and latency
-   assumptions need longer live observation. A short read-only comparison is not sufficient.
+1. **Real EVEDEX DEV behavior is unqualified.** The SDK/SIWE path, journal and recovery logic are
+   implemented, but real auth refresh, reconciliation, TP/SL states, rate-limit semantics and
+   ambiguous network outcomes have not passed the controlled DEV sequence. No canary result is
+   recorded and no real-funds order is permitted.
+2. **The 24-hour venue gate is pending.** Scheduled poll accounting is durable and missing polls
+   lower availability, but the required real interval has not elapsed. Binance/EVEDEX basis,
+   spread, executable depth, slippage, book age and timestamp skew therefore remain unqualified.
+3. **The canary and seven-day soak are pending.** Each of BTC, ETH, SOL, BNB and XRP still needs a
+   protected DEV round trip, while the complete set must cover limit/cancel, stop, target,
+   timeout and restart recovery. The subsequent seven-day data/reconnect/auth/recovery soak has
+   not started.
 4. **External LLM/feed qualification has started but is not a soak.** One bounded X request
    authenticated, read one User and ten Posts for `$0.060000`, and observed rate headers; those
    Posts were older than the 30-minute freshness gate. One structured call passed on each model
@@ -149,20 +166,26 @@ remaining selection window is inspected. Full methodology and integrity evidence
    durable provider-wide spend ledger with pre-call reservation, and X uses its own durable
    monthly ledger. Continuous paid testing still needs an approved cadence, quality protocol and
    stop conditions within those enforced limits.
-5. **Operations need external qualification.** Local Docker secrets prevent values from
-   appearing in container environment metadata, monitoring and alerts are live, and reconnect
-   plus backup/restore drills pass. Production still needs a managed KMS/Vault backend,
-   encrypted off-host backup scheduling, a long soak, host hardening and a staged recovery drill.
-6. **Backtests are not venue qualification.** The frozen candidate loses money in the untouched
+5. **Operations still need elapsed and off-host evidence.** Local PAPER secrets, monitoring,
+   reconnect and backup/restore tooling do not prove long-duration recovery. Production still
+   requires managed KMS/Vault signing, encrypted off-host backup scheduling, host hardening and
+   an independently reviewed recovery drill.
+6. **Backtests are not venue qualification or alpha.** The frozen candidate loses money in the untouched
    July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
-   evidence. The gate therefore denies real APIs. The deterministic fill model also needs
-   calibration against real EVEDEX behavior before results can inform live risk limits.
+   evidence. Every existing sleeve is `REJECTED`; the deterministic fill model also needs real
+   EVEDEX TCA calibration before results can inform any future PAPER risk limits.
 7. **Model migration still needs live shadow evaluation.** The four API routes now pass one exact
    structured-output probe, but that does not prove that Luna/Terra/Flash preserve decision
    quality, latency tails and token profiles on production distributions.
+8. **Advanced position management is outside v1.** Break-even stop moves, trailing, multi-TP and
+   protective-order updates are intentionally absent; v1 supports exactly one SL, one TP and one
+   timeout.
 
 ## Readiness rule
 
-Do not enable live trading merely because GitHub or the local runner is green. Live eligibility
-requires a passing offline strategy promotion gate plus the live exchange/provider, long-soak,
-managed-secrets and canary gaps above to be closed and independently reviewed.
+Do not interpret `TECHNICAL_PAPER_READY=true` as permission to publish a canary, run a rejected
+strategy or enable LIVE. The permitted order is: 24 hours read-only, one manually armed bounded
+DEV canary session, completion of the five-symbol lifecycle matrix, then a seven-day soak.
+`PAPER_QUALIFIED` remains false until that evidence is reviewed. Automatic PAPER additionally
+requires a new strategy revision to pass the offline promotion gate. LIVE requires a later,
+separate managed-secret and real-funds review; it cannot be enabled by a legacy boolean.

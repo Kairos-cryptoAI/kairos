@@ -1,166 +1,196 @@
 # Kairos Architecture
 
-Kairos consists of six independently deployable runtime layers plus shared LLM, persistence,
-backtest and deployment packages. Services exchange versioned messages from `kairos-core` over
-Redis Streams. DeepSeek-V4-Flash-0731 handles high-volume text extraction; the GPT-5.6 family
-uses Luna for routine tactical analysis, Terra for signal conflicts, and Sol for strategic
-capital allocation.
+Kairos separates strategy generation, model review, deterministic risk and venue execution.
+The strict Strategy Parity/PAPER path uses immutable, versioned `kairos-core` contracts over
+Redis Streams and durable PostgreSQL inbox/outbox transactions. The older tactical route remains
+available only as an explicitly selected synthetic `DRY_RUN`; it is not an alternate entrance to
+PAPER or LIVE.
 
 ## Data and control flow
 
 ```mermaid
-flowchart LR
-    Q["Quant Scouts"] -- "MarketSnapshot" --> R["Router"]
-    Q -- "MarketSnapshot" --> A["Aggregator"]
-    Q -- "MarketSnapshot" --> M["Macro"]
-    T["Text Scouts"] -- "SentimentSignal" --> R
-    T -- "SentimentSignal" --> A
-    R -- "RouterDecision" --> A
-    A -- "TacticalCommand" --> K["Risk Manager"]
-    M -- "StrategicAllocation" --> K
-    K -- "ValidatedOrder" --> E["Execution"]
-    E -- "AccountSnapshot" --> K
-    E -- "AccountSnapshot" --> M
-    E -- "ExecutionReport" --> B["durable outbox event<br/>no domain consumer wired"]
-    T -. "LLMHealthEvent" .-> K
-    A -. "LLMHealthEvent" .-> K
-    M -. "LLMHealthEvent" .-> K
-    K -. "SystemMode" .-> R
-    K -. "SystemMode" .-> A
-    K -. "SystemMode" .-> M
-    K -. "SystemMode" .-> E
+flowchart TB
+    B["ClosedBarEventV1<br/>Binance UM · complete 1m bar"] --> S["Strategy Engine<br/>pure shared generator"]
+    S --> I["StrategyIntentV1<br/>immutable candidate and ExitPlanV1"]
+    I --> R["Router<br/>NORMAL or CONFLICT review tier"]
+    R --> A["CandidateReviewV1<br/>ALLOW / VETO / DEFER · priority"]
+    A --> K["Risk Manager<br/>deterministic admission and sizing"]
+    K --> D["RiskTradeDecisionV1<br/>NEXT_BAR_MARKET"]
+    D --> E["Execution FSM<br/>journal and recovery barrier"]
+    E --> N["Node 22 sidecar<br/>official EVEDEX SDK 1.2.11"]
+    N --> X["EVEDEX DEV<br/>fills · SL · TP · timeout"]
+
+    T["Text Scouts<br/>typed news and social evidence"] -.-> R
+    M["Macro allocation"] -.-> K
+    V["VenueQualityV1<br/>basis · spread · depth · age"] -.-> K
+    C["AccountSnapshotV2<br/>fresh and reconciled"] -.-> K
 ```
 
-| producer | topic / contract | implemented consumers |
+The central solid path is the only mutation authority in PAPER. Dashed inputs are bounded
+context or gates; none can change the intent's side, stop, target or timeout. Account feedback,
+system control and operational metrics are documented separately below so the primary decision
+path stays readable.
+
+| producer | topic / contract | consumer / purpose |
 | --- | --- | --- |
-| Quant Scouts | `kairos.market.snapshot` / `MarketSnapshot` | Router, Aggregator, Macro |
-| Text Scouts | `kairos.sentiment.signal` / `SentimentSignal` | Router, Aggregator |
-| Router | `kairos.router.decision` / `RouterDecision` | Aggregator |
-| Aggregator | `kairos.aggregator.command` / `TacticalCommand` | Risk |
-| Macro | `kairos.macro.allocation` / `StrategicAllocation` | Risk |
-| Risk | `kairos.risk.validated_order` / `ValidatedOrder` | Execution |
-| Execution | `kairos.execution.report` / `ExecutionReport` | durably published; no domain consumer is wired yet |
-| Execution | `kairos.account.snapshot` / `AccountSnapshot` | Risk, Macro |
-| Text, Aggregator, Macro | `kairos.llm.health` / `LLMHealthEvent` | Risk |
-| Risk circuit breaker | `kairos.system.control` / `SystemControl` | Router, Aggregator, Macro, Execution |
+| Quant Scouts | `kairos.market.closed_bar.v1` / `ClosedBarEventV1` | Strategy Engine candidate input |
+| Strategy Engine | `kairos.strategy.intent.v1` / `StrategyIntentV1` | Router |
+| Router | `kairos.strategy.route.v1` / `CandidateRouteV1` | Aggregator review |
+| Aggregator | `kairos.aggregator.review.v1` / `CandidateReviewV1` | Risk |
+| Quant venue poller | `kairos.venue.quality.v1` / `VenueQualityV1` | Risk and durable TCA |
+| Risk | `kairos.risk.trade_decision.v1` / `RiskTradeDecisionV1` | PAPER Execution |
+| Execution | `kairos.execution.trade_event.v1` / `TradeExecutionEventV1` | durable lifecycle audit |
+| Execution | `kairos.account.snapshot.v2` / `AccountSnapshotV2` | Risk, Macro and readiness metrics |
 
-The account feedback is direct from Execution to both Risk and Macro (Risk does not forward it).
-It closes two important loops: Risk refuses orders without
-a recent reconciled account snapshot, and Macro includes portfolio state in strategic context.
-An explicit reconciliation failure revokes previously trusted account state. Message delivery
-and publication are durable; some analytical histories and bounded caches still reset with
-their process.
+## 1 — Closed market data and venue observations
 
-## Layer 1 — Scouts
+Quant Scouts publishes only final Binance USD-M one-minute bars. `ClosedBarEventV1` contains the
+complete OHLCV payload, quote volume, taker-buy volumes, source venue and a canonical SHA-256.
+REST backfill repairs recoverable gaps. A missing, reordered or conflicting bar blocks strategy
+generation for that symbol instead of silently manufacturing a continuous series.
 
-**Quant Scouts** use exchange WebSocket/REST inputs and pure math. Indicators are calculated
-only from closed one-minute klines. Open interest is refreshed periodically, liquidation
-`forceOrder` events are aggregated, and reconnect/backoff plus staleness rules prevent an open
-socket from being mistaken for fresh data.
+The same service continuously compares Binance reference prices with executable EVEDEX DEV books
+for BTC, ETH, SOL, BNB and XRP. Each scheduled poll writes an attempt and one terminal outcome;
+`VenueQualityV1` preserves basis, spread, side-specific slippage, depth, timestamps, age and
+latency. Missing polls count against 24-hour availability rather than disappearing from the
+denominator.
 
-**Text Scouts** ingest GDELT/RSS and selected public accounts through the official X API,
-deterministically filter the evidence, and run batched sentiment analysis using the current
-`deepseek-v4-flash` alias (DeepSeek-V4-Flash-0731) in explicit non-thinking mode. X account
-handles are resolved once to immutable User IDs; User-ID and Post cursors plus per-request
-budget reservations are durable in PostgreSQL. A failed Flash call falls back to a local
-keyword classifier with reduced confidence and publishes model health to Risk. The requested
-alias and provider-resolved model metadata are kept separate so an alias rollout is observable.
-All paid LLM callers reserve conservative request envelopes in shared provider-wide PostgreSQL
-ledgers before contacting DeepSeek or OpenAI. Failed, cancelled and ambiguous calls retain their
-reservation; a missing durable backend fails closed rather than allowing unaccounted spend.
+Text Scouts is an independent evidence path. It ingests GDELT/RSS and official X accounts,
+durably tracks cursors and reserves spend before paid calls. DeepSeek Flash extracts compact
+typed evidence; provider failure falls back to a local low-confidence classifier. Text never
+creates a side or an order.
 
-## Layer 2 — Router
+## 2 — One strategy implementation for research and runtime
 
-The Router is a deterministic FSM with hysteresis. Its existing wire-level lane names are
-`ROUTE_PRO` for the normal lane and `ROUTE_GPT` for the conflict lane; model selection no longer
-depends on those historical provider-oriented names. It escalates after four consecutive
-quant/text conflicts and returns after ten calm ticks.
-Redis messages are acknowledged only after required processing/publishing succeeds.
+`kairos-strategy-engine` owns pure generators. Their only inputs are complete closed bars and an
+explicit immutable configuration; they cannot read wall-clock time, randomness, secrets, an LLM
+or an exchange. `kairos-backtest` imports these same generators rather than keeping research-only
+copies.
 
-System-mode policy is risk-preserving. `LOCAL_QUANT_MODE` suppresses routing that could lead to
-new exposure; it must not turn degradation into a ban on downstream close/reduce-only actions.
+An intent fixes the strategy/revision, side, eligibility, expiry, reference price and one
+`ExitPlanV1`: one stop, one target and one timeout. Its deterministic identity includes canonical
+code, configuration, input-window and feature fingerprints. Frozen parity fixtures require the
+same ordered intent bytes and IDs from Windows replay and Linux runtime.
 
-## Layer 3 — Aggregator
+All current sleeves are `REJECTED`. The PAPER strategy allow-list is empty and the runtime refuses
+to enable a rejected sleeve. The only pre-alpha candidate is a one-shot, manually armed
+`technical-canary@1`; it proves plumbing, not profitability.
 
-The normal workload calls GPT-5.6 Luna with `medium` reasoning effort. A conflict workload calls
-GPT-5.6 Terra with `high` reasoning effort. Both paths use strict output schemas, validate
-reference prices and publish replay-safe
-tactical commands. In degraded/conflict states, deterministic policy can emit
-`WAIT_CONFIRMATION` or reduce risk rather than opening exposure.
+## 3 — Candidate review, not candidate invention
 
-## Layer 4 — Macro Strategist
+The Router carries the complete intent unchanged and deterministically selects `NORMAL` or
+`CONFLICT` from candidate-specific text evidence. The Aggregator's strict schema contains only
+review decision, priority and reason codes:
 
-GPT-5.6 Sol with `xhigh` effort produces strategic allocations from actual market and account
-snapshots rather than an empty hard-coded context. Shock detection uses incoming market data;
-system-control broadcasts select defensive behavior. Outputs are strict-schema validated and
-published with stable replay identities. Context and replay caches remain in-memory.
+- normal review: GPT-5.6 Luna, `medium`;
+- conflict review: GPT-5.6 Terra, `high`;
+- allowed outputs: `ALLOW`, `VETO` or `DEFER`.
 
-## Layer 5 — Risk Manager and circuit breaker
+The model cannot change side, stop, target, timeout, entry window or provenance. `DEFER`, malformed
+output, provider error or deadline miss terminates the current intent without a second paid call;
+a later closed bar may create a new intent. Priority only orders otherwise eligible competing
+candidates and never changes quantity.
 
-Risk deterministically applies account freshness, reconciliation, strategy allocation,
-leverage, drawdown, notional and sizing rules. It is the authoritative publisher of
-`SystemMode`; it does not consume its own control broadcast.
+Macro Strategist uses GPT-5.6 Sol at `xhigh` to produce portfolio allocation and shock context.
+Risk treats that output as a cap, not an instruction to alter a candidate. Text extraction uses
+DeepSeek V4 Flash 0731 in non-thinking mode. All paid calls reserve their worst-case envelope in
+the shared durable budget ledger before network I/O; technical canaries start none of these paid
+services.
 
-The LLM circuit breaker receives health events from Text, Aggregator and Macro. Repeated model
-5xx/timeouts trigger model degradation; connection/rate-limit events also drive an aggregate
-OpenAI provider breaker. Healthy validated responses reset the corresponding model and provider
-breaker. Bad model output is rejected by the caller but does not prove provider unavailability.
+## 4 — Deterministic risk and EVEDEX gate
 
-| condition | mode | intended effect |
-| --- | --- | --- |
-| healthy | `NORMAL` | normal routing and risk policy |
-| DeepSeek-V4-Flash unavailable | `TEXT_LOCAL_FILTER` | Text uses deterministic low-confidence fallback |
-| GPT-5.6 Luna unavailable | `LOCAL_QUANT_MODE` | normal tactical hot path is detached; only protective risk reduction remains |
-| GPT-5.6 Terra or Sol unavailable | `CONFLICT_SAFE` | conflict and macro paths become defensive |
-| OpenAI provider or two or more model breakers unavailable | `LOCAL_QUANT_MODE` | block new exposure; permit protective close/reduce-only execution |
+PAPER Risk accepts only an unchanged `ALLOW` review, a fresh `VenueQualityV1`, a fresh reconciled
+`AccountSnapshotV2`, a compatible Macro allocation and the exact EVEDEX DEV mapping:
 
-## Layer 6 — Execution Engine
+| Binance signal | EVEDEX DEV instrument |
+| --- | --- |
+| `BTCUSDT` | `BTCUSD:DEV` |
+| `ETHUSDT` | `ETHUSD:DEV` |
+| `SOLUSDT` | `SOLUSD:DEV` |
+| `BNBUSDT` | `BNBUSD:DEV` |
+| `XRPUSDT` | `XRPUSD:DEV` |
 
-Execution alone holds venue credentials. It consumes validated orders and system control,
-reconciles positions/orders, submits through EVEDEX or CCXT adapters, and publishes execution
-reports plus account snapshots at startup, periodically and after relevant actions.
+The entry policy is fixed as `NEXT_BAR_MARKET`: a decision formed from a closed bar becomes
+eligible only on the next one-minute boundary and expires if the bounded entry window is missed.
+Sizing uses executable EVEDEX top-of-book and loss at the immutable stop:
 
-EVEDEX orders are authenticated with EIP-712. Fixed exchange-hosted stop loss / take profit
-orders are supported. Trailing behavior is application-managed by updating protective orders;
-the project must not describe it as a verified native server-side trailing-stop facility.
-Execution writes a durable `PREPARED` effect before every venue mutation and records confirmation
-or reconciliation afterward. Startup recovery takes a database advisory lock, blocks new risk,
-and reconciles unresolved effects. EVEDEX TP/SL recovery uses authoritative parent-order linkage
-to avoid recreating an already-existing protective order. Venues without an authoritative
-lookup remain fail-closed rather than guessing. External live EVEDEX behavior is still
-unqualified.
+```text
+risk_budget = min(0.25% * equity, 1% * equity - reconciled_open_risk - reserved_risk)
+loss_per_unit = abs(worst_entry - stop) + round_trip_fees_per_unit + slippage_per_unit
+quantity = risk_budget / loss_per_unit
+```
 
-## Model gateway
+Leverage, notional, measured depth/liquidity, portfolio and Macro caps can only reduce that
+quantity. LLM priority, confidence and signal strength cannot increase it. PAPER permits no more
+than one active idea per symbol and one globally active technical canary.
 
-| component | configured model/API | role |
-| --- | --- | --- |
-| Text Scouts | `deepseek-v4-flash` (V4-Flash-0731), Chat Completions, non-thinking | routine text sentiment |
-| Aggregator normal | GPT-5.6 Luna, OpenAI Responses, `medium` | routine tactical analysis |
-| Aggregator conflict | GPT-5.6 Terra, OpenAI Responses, `high` | signal conflict |
-| Macro Strategist | GPT-5.6 Sol, OpenAI Responses, `xhigh` | allocation and shock response |
+## 5 — Protected PAPER lifecycle
 
-OpenAI output is parsed directly into Pydantic models through the Responses API. DeepSeek JSON
-is locally validated against the same strict schema. No LLM package imports the message bus;
-callers publish health through an optional gateway hook. The gateway routes by explicit workload
-role; `ReasoningEffort` remains part of domain output/audit contracts rather than serving as a
-global model identifier.
+Execution consumes only `RiskTradeDecisionV1` in PAPER. It persists the trade and every external
+effect before mutation, uses deterministic client order IDs and serializes all exit races under a
+database trade lock.
 
-## Delivery, replay and persistence boundary
+```mermaid
+stateDiagram-v2
+    [*] --> RECEIVED
+    RECEIVED --> ENTRY_PENDING
+    ENTRY_PENDING --> PROTECTING: first non-zero fill
+    PROTECTING --> ACTIVE: STOP reconciled, then TARGET reconciled
+    ACTIVE --> EXITING_STOP
+    ACTIVE --> EXITING_TARGET
+    ACTIVE --> EXITING_TIMEOUT
+    EXITING_STOP --> FLAT
+    EXITING_TARGET --> FLAT
+    EXITING_TIMEOUT --> FLAT
+    ENTRY_PENDING --> CANCELLED: entry expiry without fill
+    PROTECTING --> EXITING_EMERGENCY: protection failure
+    EXITING_EMERGENCY --> FLAT
+```
 
-Redis Streams provide at-least-once transport. Every runtime consumer claims a persistent inbox
-row, executes domain writes and required outbox inserts in one database transaction, and only
-then acknowledges the stream message. A separate dispatcher publishes committed outbox rows and
-records bounded retries/dead letters. Deterministic message identities make repeated delivery
-converge on the same durable record.
+The timeout starts at the first non-zero fill. A partial fill is protected immediately and its
+unfilled entry remainder is cancelled at expiry. Execution creates and reconciles the stop before
+the target. A stop failure triggers emergency close; a target failure closes while the verified
+stop remains active. Authoritative reconciliation decides TP/SL/timeout races and prevents a
+second close.
 
-This closes the prior ACK/publish crash window for service-to-service messages. It does not turn
-arbitrary external exchange APIs into exactly-once systems; that boundary is handled separately
-by the execution-effect journal and venue reconciliation described above. A metrics exporter
-reports inbox/outbox backlog and unresolved execution effects without exposing payloads.
+Python owns the durable FSM, journal and recovery barrier. An internal Node 22 child owns SIWE,
+serialized auth refresh, signing, REST and WebSocket through official
+`@evedex/exchange-bot-sdk` 1.2.11. It exposes no host port and never retries a mutation on its
+own. On restart, new entries remain blocked until journal effects, orders, positions and TP/SL
+have been reconciled. Break-even moves, trailing, multi-TP and any protective-order update are
+outside this plan version.
 
-`kairos-backtest` provides deterministic historical replay and fill modelling. It is not a
-full live-stack test and cannot qualify exchange authentication, venue semantics, provider
-latency, or operational recovery.
+## 6 — Persistence, operations and recovery
+
+Redis Streams are at-least-once transport. Every consumer claims a persistent inbox row, commits
+domain facts and outbox messages in one PostgreSQL transaction, and only then ACKs Redis. An
+outbox dispatcher retries independently; deterministic identities reject same-ID/different-byte
+replays.
+
+The execution journal handles the non-transactional venue boundary: `PREPARED` is committed
+before the call, then confirmed or authoritatively reconciled. Trade FSM transitions, public
+`TradeExecutionEventV1` facts and outbox rows commit atomically. Durable storage also covers bars,
+intents, reviews, risk decisions, fills, venue quality/TCA, account snapshots and day-start/peak
+equity.
+
+The isolated Compose project is exactly `kairos-paper`, with separate Redis, TimescaleDB, volumes
+and secret names. PAPER accepts only EVEDEX DEV URLs/chain/instruments and a dedicated account;
+application containers cannot mount arbitrary host paths. Monitoring exposes gaps, venue
+availability, inbox/outbox leases, unprotected exposure, auth age, mutation reserve,
+reconciliation drift, execution shortfall and API spend. Backup/restore verifies critical row
+counts and public event sequence in a separate drill database.
+
+## Legacy DRY_RUN boundary
+
+The older `MarketSnapshot -> RouterDecision -> TacticalCommand -> ValidatedOrder ->
+ExecutionReport` route remains unchanged for synthetic `DRY_RUN` compatibility. It does not use
+the strict PAPER lifecycle and is never accepted by PAPER. The retired
+`KAIROS_DRY_RUN=false` switch is a startup error, not an alias for PAPER or LIVE. `LIVE` is also a
+startup error in the current release.
+
+`kairos-backtest` provides deterministic historical replay and fill modelling. It is not a full
+live-stack test and cannot qualify authentication, venue semantics, latency or operational
+recovery.
 
 ## Offline strategy validation and promotion boundary
 
@@ -197,10 +227,13 @@ they are not live-stack or venue qualification.
 
 ## Verification boundary
 
-Every Python repository uses a locked `uv` environment and Linux Python 3.11/3.14 plus Windows
-CI. The meta runner repeats lock, lint, format, typing, security, unit and build checks locally
-without Docker. The local Docker stack now validates durable persistence, authenticated Redis,
-file-scoped secrets, loopback monitoring, explicit reconnect soak, and isolated backup/restore.
-Production readiness still requires authenticated provider/live-exchange tests, canary
-execution, managed secret storage, encrypted off-host backups and a substantially longer soak.
-A passing strategy promotion gate is an additional prerequisite for enabling real trading APIs.
+`TECHNICAL_PAPER_READY=true` is limited to the exact pinned revision set passing its code,
+contract, parity, fault/race, Windows, Docker integration and GitHub CI gates. It does not mean
+that any elapsed or external qualification has passed.
+
+`PAPER_QUALIFIED=false`: authenticated EVEDEX DEV reconciliation and venue semantics, the
+24-hour read-only gate, the manually armed five-symbol protected canary set, and the seven-day
+soak remain pending. `ALPHA_READY=false` and `REJECT_ALL` remain independent because no strategy
+has passed the offline gate. `LIVE_READY=false`; production endpoints, credentials and mutation
+authority remain blocked. The exact evidence boundary and reviewed SHAs are in
+[READINESS.md](READINESS.md).

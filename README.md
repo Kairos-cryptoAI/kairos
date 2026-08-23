@@ -1,82 +1,46 @@
 # Kairos — AI Futures Trader
 
-Kairos is a pre-production, LLM-assisted futures-trading system with deterministic risk
-guards. Models receive compact typed context, never raw streams, and cannot call an exchange.
-Every order must be approved by the Risk Manager and submitted by the Execution Engine.
+Kairos is a pre-production, LLM-assisted futures-trading system with deterministic strategy,
+risk and execution boundaries. Models receive compact typed context, never raw streams, cannot
+change a strategy's side or exit plan, and cannot call an exchange. Every PAPER mutation must
+come from an immutable strategy intent, pass deterministic risk and EVEDEX DEV venue gates, and
+be submitted by the crash-recoverable Execution Engine.
 
-### Decision and execution path
-
-```mermaid
-flowchart LR
-    subgraph Evidence["1 · Evidence and context"]
-        direction TB
-        Q["Quant Scouts<br/>closed bars · OI · liquidations"]
-        T["Text Scouts<br/>GDELT · RSS · official X<br/>DeepSeek V4 Flash 0731"]
-        M["Macro Strategist<br/>GPT-5.6 Sol · xhigh"]
-    end
-
-    subgraph Decisions["2 · Decisions"]
-        direction TB
-        R["Router<br/>deterministic FSM"]
-        A["Aggregator<br/>GPT-5.6 Luna · normal<br/>GPT-5.6 Terra · conflict"]
-        K{{"Risk Manager<br/>deterministic approval"}}
-    end
-
-    subgraph Exchange["3 · Exchange boundary"]
-        E["Execution Engine<br/>EVEDEX / CCXT"]
-    end
-
-    Q --> R
-    T --> R
-    R --> A
-    A --> K
-    M --> K
-    K -->|approved command| E
-```
-
-Models enrich or interpret evidence, but only deterministic components can approve and submit
-an order. A command rejected by the Risk Manager never reaches the exchange adapter.
-
-### Feedback, safety and durability
+### Strategy Parity → EVEDEX DEV PAPER
 
 ```mermaid
 flowchart TB
-    subgraph Feedback["Account feedback"]
-        direction LR
-        E1["Execution Engine"] --> S[("Account snapshot")]
-        S --> K1["Risk Manager"]
-        S --> M1["Macro Strategist"]
-    end
+    B["Closed Binance UM 1m bars"] --> S["Strategy Engine<br/>pure shared generators"]
+    S --> I["StrategyIntentV1<br/>side · fixed SL/TP · timeout · expiry"]
+    I --> R["Router<br/>candidate-specific NORMAL / CONFLICT"]
+    R --> A["Aggregator review<br/>ALLOW / VETO / DEFER · priority"]
+    A --> K["Risk Manager<br/>deterministic admission and sizing"]
+    K --> D["RiskTradeDecisionV1<br/>NEXT_BAR_MARKET · loss-at-stop sizing"]
+    D --> E["Execution FSM + durable journal"]
+    E --> G["Official EVEDEX SDK sidecar<br/>DEV only"]
+    G --> O["Fills · SL · TP · timeout · reconciliation"]
 
-    subgraph Safety["Fail-safe control"]
-        direction LR
-        K2["Risk Manager"] --> C[["System mode"]]
-        C -.-> R2["Router"]
-        C -.-> A2["Aggregator"]
-        C -.-> M2["Macro Strategist"]
-        C -.-> E2["Execution Engine"]
-    end
-
-    subgraph Durability["Durable reporting"]
-        direction LR
-        E3["Execution Engine"] --> X["Execution report"]
-        X --> O[("Durable outbox")]
-        O --> N["Domain consumer<br/>not wired yet"]
-    end
-
-    M1 ~~~ K2
-    E2 ~~~ E3
+    T["Text Scouts<br/>GDELT · RSS · official X"] -. "review evidence" .-> R
+    M["Macro allocation"] -. "portfolio limit" .-> K
+    V["EVEDEX DEV book<br/>basis · spread · depth · age"] -. "venue gate" .-> K
+    C["Reconciled AccountSnapshotV2"] -. "account authority" .-> K
 ```
 
-Solid arrows carry state or reports. Dashed arrows are fail-safe mode broadcasts. Account
-snapshots close the reconciliation loop; execution reports are durable even though their
-downstream domain consumer is still pending. Repeated service names refer to the same running
-components; each row isolates one relationship to keep the diagram readable.
+The Strategy Engine is the one source of candidate logic for both offline replay and runtime.
+The Aggregator may review an intent, but cannot mutate it; `VETO`, `DEFER`, a timeout or an error
+ends that intent. Risk alone calculates quantity from worst-case loss at the fixed stop and
+checks Macro allocation, the reconciled account, one-position-per-symbol policy and fresh venue
+quality. Execution alone owns exchange effects and recovery.
+
+The legacy `TacticalCommand -> ValidatedOrder` route is retained only for explicit synthetic
+`DRY_RUN`. PAPER never consumes it, `KAIROS_DRY_RUN=false` is a startup error, and LIVE is
+disabled.
 
 ## The one rule
 
 **The LLM never trades directly and never works with a raw stream of numbers.** It analyzes
-validated, compressed context. Deterministic code owns sizing, limits, degradation modes,
+validated, compressed context. Candidate review is limited to `ALLOW`, `VETO`, `DEFER` and
+priority. Deterministic code owns candidate parameters, sizing, limits, degradation modes,
 exchange authentication, reconciliation, and execution.
 
 ## Repositories
@@ -85,28 +49,29 @@ exchange authentication, reconciliation, and execution.
 | --- | --- |
 | [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | typed contracts, Redis Streams bus, config and logging |
 | [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI Responses / DeepSeek gateway, strict output validation, cost and health events |
-| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | closed-bar market indicators, open interest and liquidation aggregation |
+| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | complete closed Binance bars, gap recovery, indicators and EVEDEX quality polling |
+| [kairos-strategy-engine](https://github.com/Kairos-cryptoAI/kairos-strategy-engine) | pure strategy generators shared byte-for-byte by research and runtime |
 | [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | text ingestion, local filtering, sentiment and local fallback |
-| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | deterministic routing FSM and hysteresis |
-| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | tactical decisions with strict schemas |
+| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | candidate-specific deterministic NORMAL/CONFLICT routing plus legacy DRY_RUN FSM |
+| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | immutable `ALLOW/VETO/DEFER` candidate review plus legacy DRY_RUN tactical decisions |
 | [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
-| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | account-aware risk checks, sizing and system circuit breaker |
-| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX/CCXT adapters, reconciliation, durable effect journal and account snapshots |
-| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale migrations, runtime inbox/outbox, execution journal and metrics |
-| [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic historical replay and fill modelling |
-| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned deployment manifest, containers and monitoring configuration |
+| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | loss-at-stop sizing and deterministic account, portfolio and venue admission |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX DEV SDK sidecar, protected PAPER lifecycle, reconciliation and effect journal |
+| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale inbox/outbox, facts, lifecycle, TCA, budgets, equity and readiness metrics |
+| [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic replay using the exact Strategy Engine generators and fill modelling |
+| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned DRY_RUN and isolated `kairos-paper` Compose projects, monitoring and recovery tools |
 | [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
 
 ## Windows-first local verification
 
 The meta-repository runner discovers `uv`, reads [`config/repositories.json`](config/repositories.json),
-and verifies every Python repository without Docker or live credentials. It does not read
+and verifies every repository in that manifest without Docker or live credentials. It does not read
 `.env` files, change Git state, or clean dirty worktrees.
 
 ```powershell
 Set-Location D:\Kairos\kairos
 
-# Full 3.11 + 3.14 matrix for all Python repositories.
+# Full 3.11 + 3.14 matrix for repositories listed in the manifest.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1
 
 # Faster focused iteration.
@@ -168,31 +133,35 @@ See the [regime-retest screen report](https://github.com/Kairos-cryptoAI/kairos-
 
 ## Current delivery state
 
-As of 2026-08-18, the modernization and durable-runtime work is merged into `main` across all thirteen
-repositories. The Python 3.11/3.14, Windows, integration and deployment image-build matrices
-are green. Cross-repository Git dependencies use full commits that are retained in `main`
-history and recorded in `uv.lock`; future dependency updates must still repin consumers and
-deployment inputs in dependency order.
+As of 2026-08-23, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
+closed-bar handling, shared pure generators, immutable review, deterministic loss-at-stop risk,
+runtime EVEDEX quality measurements, a protected trade FSM, durable effect/lifecycle facts,
+an official SDK sidecar and an isolated `kairos-paper` deployment. Cross-repository dependencies
+and deployment sources are pinned to full commits.
 
-All runtime services now use the transactional inbox/outbox path before Redis ACK; Execution
-journals venue mutations before submission and reconciles unresolved effects before accepting
-new risk. The Docker operations stack uses file-scoped secrets, durable-state metrics and
-alerts, and has passed local Redis reconnect plus backup/restore drills.
+The readiness flags deliberately describe different claims:
 
-Text Scouts now uses the official X API rather than Bright Data. It resolves each configured
-handle once, durably caches the immutable User ID, then polls User Posts with durable Post
-cursors and transactional monthly spend reservations. The Bearer Token is file-mounted and
-was accepted by X. A single funded probe read one User and ten Posts for `$0.060000`; all Posts
-were older than the 30-minute freshness gate, so feed qualification remains incomplete. One
-bounded structured-output call also passed on each configured DeepSeek/OpenAI model route for
-about `$0.00237938` modeled cost. No order was made.
+| flag | value | exact meaning |
+| --- | --- | --- |
+| `TECHNICAL_PAPER_READY` | `true` | code and integration readiness for the exact reviewed revision set after its Windows, Docker and GitHub CI gates |
+| `PAPER_QUALIFIED` | `false` | real DEV auth, 24-hour observation, five-symbol canary evidence and seven-day soak are not complete |
+| `ALPHA_READY` | `false` | every current strategy sleeve remains rejected; automatic strategy PAPER is disabled |
+| `LIVE_READY` | `false` | LIVE startup and production credentials/endpoints remain blocked |
 
-This is still **not production-ready**. Authenticated EVEDEX semantics, long-duration
-Binance/EVEDEX basis and liquidity, paid LLM/feed availability tails, quotas and quality,
-an approved paid shadow schedule, external secret-manager deployment, and a substantially longer
-soak/canary remain unqualified. Provider-wide LLM and X spend ceilings are now enforced through
-durable pre-call reservations. Strategy promotion also
-remains denied independently. See [project status](docs/STATUS.md) for the full readiness boundary.
+`TECHNICAL_PAPER_READY=true` is not an exchange-performance or profitability claim. The current
+maximum permitted operation is read-only EVEDEX DEV observation. A technical canary may be armed
+manually only after the 24-hour gate passes, and it does not promote alpha. See the exact revision
+matrix and qualification ladder in [PAPER readiness](docs/READINESS.md).
 
-See [architecture](docs/ARCHITECTURE.md), the [ADRs](docs/adr/) and
-[budget assumptions](docs/BUDGET.md). MIT licensed.
+Historical bounded provider probes remain unchanged: X authenticated once and returned one User
+plus ten Posts for `$0.060000`, but every Post was older than the 30-minute freshness gate; one
+structured-output probe passed each configured DeepSeek/OpenAI route for about `$0.00237938`
+modeled cost. Those samples are not a latency, quota, availability or quality soak, and no order
+was made. Technical EVEDEX canaries start no paid LLM/feed services.
+
+This is still **not production-ready**. `REJECT_ALL` remains authoritative until a new strategy
+revision passes the offline promotion gate. Authenticated EVEDEX semantics, elapsed operational
+gates, paid shadow qualification and a future managed KMS/Vault boundary remain outstanding.
+
+See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
+[ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.

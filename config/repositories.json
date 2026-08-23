@@ -23,6 +23,12 @@
       "pytestArgs": ["-q", "--tb=short"]
     },
     {
+      "name": "kairos-strategy-engine",
+      "path": "kairos-strategy-engine",
+      "source": "kairos_strategy",
+      "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
       "name": "kairos-text-scouts",
       "path": "kairos-text-scouts",
       "source": "kairos_text",
