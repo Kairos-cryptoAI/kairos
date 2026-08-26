@@ -36,7 +36,7 @@ production signing material and real funds regardless of any other marker.
   serialization, mutation journal and restart recovery barrier;
 - official `@evedex/exchange-bot-sdk` 1.2.11 sidecar under Node 22, with no listener and no
   autonomous mutation retry;
-- isolated `kairos-paper` Redis/TimescaleDB/secrets/volumes, fail-closed Compose validation,
+- isolated `kairos-paper-gate` Redis/TimescaleDB/secrets/volumes, fail-closed Compose validation,
   monitoring, backup/restore and recovery tooling;
 - source-revision cache binding and an embedded source identity in every Python/sidecar image,
   so runtime code cannot silently lag behind its OCI revision label;
@@ -67,18 +67,24 @@ OpenAI, DeepSeek or X. Passing all four gates can set `PAPER_QUALIFIED=true`, bu
 - A new parallel `kairos-paper-gate` project was initialized with separate Redis, TimescaleDB,
   Grafana and Prometheus volumes. The previous PAPER database and its immutable bar-conflict
   evidence were not deleted or rewritten.
-- The exact pinned Quant image restored 1,000 authoritative producer bars across all five
-  symbols with no blocked symbol. After startup catch-up, durable outbox backlog was zero,
-  dead letters were zero, inbox failures were zero and current closed-bar coverage had all five
-  symbols with no detected gap.
+- At the 19:41 UTC evidence snapshot, the exact pinned Quant image had durably recorded 1,549
+  consecutive closed bars across all five symbols. Per-symbol minute counts matched their exact
+  observed time spans with zero gaps and zero duplicate timestamps. Outbox lag was only the
+  in-flight producer row; dead letters and inbox failures were zero.
 - A container-only live collector probe independently obtained stable REST-finalized bars,
   fresh funding and fresh Binance depth for BTC, ETH, SOL, BNB and XRP.
 - EVEDEX DEV reported all five instruments as `trading=all`. At the same observation, BTC and ETH
   exposed executable two-sided books; SOL, BNB and XRP exposed empty books. Runtime now records
   this as `EvedexBookUnavailableError` rather than an opaque parser failure.
-- The official preflight evaluator had no metrics transport errors, but correctly failed closed
-  on incomplete elapsed coverage, missing authenticated execution/account health and venue
-  availability below 99%. No execution container was started and no mutation was attempted.
+- Across 216 BTC and 216 ETH quality samples, entry-gate availability was 99.54%. BTC p95
+  absolute basis/spread/slippage was 1.886/1.225/0.612 bps; ETH was 2.667/2.034/1.017 bps.
+  Book age stayed below one second in these samples. Three required symbols still had no quality
+  sample because their DEV books were empty, so the five-symbol 24-hour gate remains blocked.
+- The acceptance evaluator now targets the explicitly selected Compose project. Against
+  `kairos-paper-gate` it reported zero trades, fills, duplicate client IDs, unresolved effects
+  and failed lifecycles, while correctly failing closed because execution recovery/account facts
+  and all canary coverage are absent. No execution container was started and no mutation was
+  attempted.
 - A quiesced backup and restore drill passed against the clean project: 12 schema migrations and
   18 critical tables were validated in an isolated restore database. Application services then
   recovered their persisted bar/risk state without an integrity block.
@@ -100,6 +106,15 @@ OpenAI `$12`, DeepSeek `$1`, X `$2`. Safety requires 100% schema-valid review ou
 before entry deadline and no budget overrun. Its economic value is later measured as the same
 strategy with and without the review overlay; it is not inferred from model intelligence.
 
+The 2026-08-26 frozen evidence set passed the current exact conflict review (`VETO`, Terra),
+bear-shock macro allocation (`BEAR` within reserve/leverage limits, Sol), normal/injection Luna
+cases and the versioned five-asset DeepSeek news cases. The original SOL outage-recovery fixture
+remains preserved as a conservative false-negative; v2 replaces it with an unambiguous official
+approval case rather than rewriting the old report. The durable shared ledger currently records
+OpenAI `$0.025494` committed plus `$0.154624` conservatively reserved, and DeepSeek `$0.001171`
+committed. This establishes bounded schema/safety behavior only, not provider availability tails
+or economic value.
+
 ## LIVE boundary
 
 `TradingMode.LIVE` is a startup error in this release. `KAIROS_DRY_RUN=false` is also a startup
@@ -118,12 +133,12 @@ authority.
 | `kairos-strategy-engine` | `01f3a9dd58e28fd588c3929a0cdf88ee791c7d88` |
 | `kairos-backtest` | `7a932aa0c54d17ccba55bc211d8beb5cdb4bc78c` |
 | `kairos-quant-scouts` | `bbfede21860e2ef7c20e3250c1422a6660b4dcc5` |
-| `kairos-text-scouts` | `2f62bc781ccc9085b4075f5f10fb1f1762f0d18e` |
+| `kairos-text-scouts` | `c0ab42c414d9e87936ef10179914e3f35a537466` |
 | `kairos-router` | `a8aea4e9a56d6ed9ee8189c56498cab009c16f39` |
-| `kairos-aggregator` | `ce3f7cd3073326bada0f800cf41b275716b8d929` |
-| `kairos-macro-strategist` | `bb5a1b2b364094b920340511bc920bfc7ccfc94e` |
+| `kairos-aggregator` | `46add20f68e4c9a20fbff05fe362e8bc3fc0e35c` |
+| `kairos-macro-strategist` | `2a5bee94048d3764a0288ad96a7b8286855fb46f` |
 | `kairos-risk-manager` | `77ec49f8c744cb5174c625a82eab0dac4de90f55` |
 | `kairos-execution-engine` | `325d518b3b67b4501b54f04bcdddf9f7d0ae20a3` |
-| `kairos-deploy` | `c1d53b9d0d163bac003fc29ebd4119bfadfd8b08` |
+| `kairos-deploy` | `f4c3b18f123914f2976e7fcd253cf5334538b5f4` |
 
 The meta-repository's own revision is the commit containing this file.

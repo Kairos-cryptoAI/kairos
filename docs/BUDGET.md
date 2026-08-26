@@ -37,17 +37,19 @@ they are not a one-day test allowance.
 Therefore the old scenario exceeds the funded envelope by `$17.204` and must not be run at
 its nominal call volumes. OpenAI routing therefore uses adaptive admission: routine Luna calls
 are preferred, Terra is conflict-only, and Sol remains a scheduled strategic escalation.
-Text Scouts, Aggregator and Macro now reserve spend before each call in shared, durable
-provider-wide PostgreSQL ledgers capped at `$4.50` for DeepSeek and `$45.00` for OpenAI. A failed
-or ambiguous call retains its reservation, and no paid call is allowed without the durable
-backend. Continuous paid soak remains disabled until its cadence and quality protocol are
-explicitly approved; the missing control is no longer budget enforcement.
+Text Scouts, Aggregator and Macro reserve spend before each call in a shared, durable
+provider-wide PostgreSQL ledger. The current development/shadow qualification ceilings are the
+stricter `$1` for DeepSeek and `$12` for OpenAI; X is separately capped at `$2` for this stage.
+The larger `$4.50`/`$45` figures remain only future target runtime allocations and are not granted
+to the current shadow services. A failed or ambiguous call retains its reservation, and no paid
+call is allowed without the durable backend.
 
-The first bounded qualification used an estimated `$0.00001778` of DeepSeek and `$0.00236160`
-of OpenAI. The single funded X probe reserved and committed `$0.060000`. Thus Kairos recorded
-`$0.06237938` of development usage; provider consoles remain authoritative for billed balances.
-Qualification tools must use one sample, route selection and their explicit preflight cost cap
-unless a larger experiment has been separately budgeted.
+After the frozen corpus runs on 2026-08-26, the shared ledger records `$0.001171` of committed
+DeepSeek cost and `$0.025494` of committed OpenAI cost. It also retains `$0.154624` of OpenAI
+reservations from failed or ambiguous attempts, deliberately reducing remaining local authority
+even when provider billing may ultimately be lower. The single funded X probe committed
+`$0.060000`. Provider consoles remain authoritative for billed balances; qualification tools
+must keep their explicit per-run preflight cap and targeted replay behavior.
 
 ## Feed assumptions
 

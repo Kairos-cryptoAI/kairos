@@ -30,10 +30,10 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | `kairos-llm` | DeepSeek Flash and GPT-5.6 Luna/Terra/Sol routing, strict schemas and durable cost hooks | shadow corpus quality, latency, quota and availability qualification |
 | `kairos-quant-scouts` | delayed double-REST-finalized Binance 1m bars, provisional WS isolation, gap recovery, funding fallback, indicators and scheduled EVEDEX quality facts | complete 24-hour observation after EVEDEX restores two-sided liquidity across the required universe |
 | `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures | every current sleeve is `REJECTED`; a new revision must pass offline promotion |
-| `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, local filter and DeepSeek fallback | paid shadow freshness, source quality, latency and quota qualification |
+| `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, five-asset local filter, DeepSeek fallback and frozen news corpus | elapsed freshness, source quality, latency-tail and quota qualification |
 | `kairos-router` | immutable candidate-specific NORMAL/CONFLICT route plus isolated legacy FSM | paid review path remains shadow-only while alpha is rejected |
-| `kairos-aggregator` | strict `ALLOW/VETO/DEFER` review with immutable intent and no automatic paid retry | frozen-corpus safety/quality and latency qualification |
-| `kairos-macro-strategist` | account-aware allocation/shock context and durable publish/ACK | shadow quality and durable long-horizon analytical histories |
+| `kairos-aggregator` | strict `ALLOW/VETO/DEFER` review, immutable intent, adverse-conflict guard and frozen candidate corpus | production-distribution A/B value and latency-tail qualification |
+| `kairos-macro-strategist` | account-aware allocation/shock context, provider-compatible strict schema, frozen macro corpus and durable publish/ACK | durable long-horizon histories and scheduled latency-tail qualification |
 | `kairos-risk-manager` | PAPER-only DEV admission, 0.25%/1% loss caps, reservations and manual canary authority | real reconciled-account and venue inputs during controlled DEV qualification |
 | `kairos-execution-engine` | official SDK 1.2.11 sidecar, SIWE/auth, protected FSM, atomic public facts and crash recovery | authenticated DEV semantics and protected canary evidence; LIVE disabled |
 | `kairos-persistence` | inbox/outbox, bars, decisions, lifecycle/effects, TCA, equity, budget and readiness metrics | retention sizing and encrypted off-host backup policy |
@@ -162,15 +162,15 @@ remaining selection window is inspected. Full methodology and integrity evidence
    protected DEV round trip, while the complete set must cover limit/cancel, stop, target,
    timeout and restart recovery. The subsequent seven-day data/reconnect/auth/recovery soak has
    not started.
-4. **External LLM/feed qualification has started but is not a soak.** One bounded X request
-   authenticated, read one User and ten Posts for `$0.060000`, and observed rate headers; those
-   Posts were older than the 30-minute freshness gate. One structured call passed on each model
-   route: DeepSeek Flash, GPT-5.6 Luna, Terra and Sol. The modeled LLM cost was `$0.00237938`.
-   Provider `/models` endpoints emitted no quota headers, and one sample cannot establish monthly
-   availability, latency tails, quotas or decision quality. Every paid LLM caller now shares a
-   durable provider-wide spend ledger with pre-call reservation, and X uses its own durable
-   monthly ledger. Continuous paid testing still needs an approved cadence, quality protocol and
-   stop conditions within those enforced limits.
+4. **External LLM/feed corpus qualification passed, but is not a soak.** Frozen safety cases now
+   cover all five assets, stale/future data, prompt injection, deterministic rejects, normal and
+   conflicting reviews, and macro stress. The exact DeepSeek, Luna, Terra and Sol cases pass;
+   the preserved v1 SOL recovery false-negative was replaced only in versioned v2 by an
+   unambiguous approval fixture. The durable ledger records `$0.025494` OpenAI and `$0.001171`
+   DeepSeek committed, plus `$0.154624` of conservative OpenAI reservations from failed or
+   ambiguous attempts. The separate X probe cost `$0.060000` but returned only stale Posts.
+   These bounded samples do not establish monthly availability, latency tails, quota behavior or
+   economic value; continuous paid testing remains disabled outside the enforced ceilings.
 5. **Operations still need elapsed and off-host evidence.** A clean local backup/restore drill
    passed 12 migrations and 18 critical tables, and the read-only services recovered their
    persisted state. This does not prove long-duration or off-host recovery. Production still
@@ -180,9 +180,10 @@ remaining selection window is inspected. Full methodology and integrity evidence
    July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
    evidence. Every existing sleeve is `REJECTED`; the deterministic fill model also needs real
    EVEDEX TCA calibration before results can inform any future PAPER risk limits.
-7. **Model migration still needs live shadow evaluation.** The four API routes now pass one exact
-   structured-output probe, but that does not prove that Luna/Terra/Flash preserve decision
-   quality, latency tails and token profiles on production distributions.
+7. **Model migration still needs production-distribution A/B evaluation.** The four API routes
+   pass the current strict corpora and preserve fail-closed authority, but this does not prove
+   that the overlay improves strategy economics or preserves latency tails and token profiles on
+   live distributions.
 8. **Advanced position management is outside v1.** Break-even stop moves, trailing, multi-TP and
    protective-order updates are intentionally absent; v1 supports exactly one SL, one TP and one
    timeout.

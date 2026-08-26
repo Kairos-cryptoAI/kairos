@@ -153,17 +153,20 @@ maximum permitted operation is read-only EVEDEX DEV observation. A technical can
 manually only after the 24-hour gate passes, and it does not promote alpha. See the exact revision
 matrix and qualification ladder in [PAPER readiness](docs/READINESS.md).
 
-Historical bounded provider probes remain unchanged: X authenticated once and returned one User
-plus ten Posts for `$0.060000`, but every Post was older than the 30-minute freshness gate; one
-structured-output probe passed each configured DeepSeek/OpenAI route for about `$0.00237938`
-modeled cost. Those samples are not a latency, quota, availability or quality soak, and no order
-was made. Technical EVEDEX canaries start no paid LLM/feed services.
+Bounded shadow qualification now includes frozen candidate-review, macro-state and five-asset
+news corpora. The current exact cases pass on DeepSeek Flash, Luna, Terra and Sol, including
+prompt-injection and deterministic-rejection checks; the durable ledger records `$0.025494` of
+committed OpenAI cost and `$0.001171` of committed DeepSeek cost. Failed or ambiguous OpenAI
+attempts conservatively retain `$0.154624` of reservations. X authenticated once and returned
+one User plus ten stale Posts for `$0.060000`. These samples are not a latency, quota or
+availability soak, and no order was made. Technical EVEDEX canaries start no paid LLM/feed
+services.
 
 This is still **not production-ready**. `REJECT_ALL` remains authoritative until a new strategy
 revision passes the offline promotion gate. The clean read-only stack has no Binance gaps or
 durable backlog and passed backup/restore, but EVEDEX DEV currently has executable books only for
 BTC/ETH (SOL/BNB/XRP are empty) and the dedicated DEV credentials are absent. Authenticated venue
-semantics, elapsed operational gates, paid shadow qualification and a future managed KMS/Vault
+semantics, elapsed operational gates, provider soak qualification and a future managed KMS/Vault
 boundary remain outstanding.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
