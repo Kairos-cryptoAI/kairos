@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-23_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-26_
 
 ## Summary
 
@@ -28,7 +28,7 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | --- | --- | --- |
 | `kairos-core` | strict `ClosedBarEventV1`, intent/review/venue/risk/execution/account contracts; explicit DRY_RUN/PAPER/LIVE modes | any future contract revision requires a new version, never silent field reuse |
 | `kairos-llm` | DeepSeek Flash and GPT-5.6 Luna/Terra/Sol routing, strict schemas and durable cost hooks | shadow corpus quality, latency, quota and availability qualification |
-| `kairos-quant-scouts` | complete closed Binance 1m bars, REST gap recovery, indicators and scheduled EVEDEX quality facts | real 24-hour no-gap/availability/basis/liquidity observation |
+| `kairos-quant-scouts` | delayed double-REST-finalized Binance 1m bars, provisional WS isolation, gap recovery, funding fallback, indicators and scheduled EVEDEX quality facts | complete 24-hour observation after EVEDEX restores two-sided liquidity across the required universe |
 | `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures | every current sleeve is `REJECTED`; a new revision must pass offline promotion |
 | `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, local filter and DeepSeek fallback | paid shadow freshness, source quality, latency and quota qualification |
 | `kairos-router` | immutable candidate-specific NORMAL/CONFLICT route plus isolated legacy FSM | paid review path remains shadow-only while alpha is rejected |
@@ -38,7 +38,7 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | `kairos-execution-engine` | official SDK 1.2.11 sidecar, SIWE/auth, protected FSM, atomic public facts and crash recovery | authenticated DEV semantics and protected canary evidence; LIVE disabled |
 | `kairos-persistence` | inbox/outbox, bars, decisions, lifecycle/effects, TCA, equity, budget and readiness metrics | retention sizing and encrypted off-host backup policy |
 | `kairos-backtest` | imports exact Strategy Engine generators; causal replay and unchanged fail-closed reports | profitable new revision, clean data, historical funding and real-venue TCA calibration |
-| `kairos-deploy` | pinned isolated `kairos-paper`, deny-by-default secrets/mounts/egress, monitoring and recovery gates | complete 24-hour/canary/7-day evidence; future managed KMS/Vault for LIVE |
+| `kairos-deploy` | pinned isolated PAPER, source-identity-bound images, deny-by-default secrets/mounts/egress, monitoring and a passing clean backup/restore drill | dedicated EVEDEX DEV credentials, complete 24-hour/canary/7-day evidence; future managed KMS/Vault for LIVE |
 | `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
 Test counts are intentionally not frozen in this document. The meaningful gate is that each
@@ -146,13 +146,18 @@ remaining selection window is inspected. Full methodology and integrity evidence
 
 ## Remaining limitations
 
-1. **Real EVEDEX DEV behavior is unqualified.** The SDK/SIWE path, journal and recovery logic are
-   implemented, but real auth refresh, reconciliation, TP/SL states, rate-limit semantics and
-   ambiguous network outcomes have not passed the controlled DEV sequence. No canary result is
-   recorded and no real-funds order is permitted.
-2. **The 24-hour venue gate is pending.** Scheduled poll accounting is durable and missing polls
-   lower availability, but the required real interval has not elapsed. Binance/EVEDEX basis,
-   spread, executable depth, slippage, book age and timestamp skew therefore remain unqualified.
+1. **Real EVEDEX DEV behavior is blocked before auth.** The SDK/SIWE path, journal and recovery
+   logic are implemented and the exact image contains SDK 1.2.11, but the dedicated DEV API key,
+   signing key and confirmed remote account identity have not been supplied. Auth refresh,
+   reconciliation, TP/SL states, rate-limit semantics and ambiguous network outcomes therefore
+   have not passed the controlled DEV sequence. No canary result is recorded and no real-funds
+   order is permitted.
+2. **The 24-hour venue gate is externally blocked.** On 2026-08-26 EVEDEX DEV listed all five
+   required contracts as `trading=all`, but SOL, BNB and XRP returned zero bids and zero asks;
+   only BTC and ETH had executable books. Scheduled poll accounting records these failures, so
+   the required 99% five-symbol availability cannot pass until the venue supplies liquidity.
+   Binance stable-bar, funding and depth probes passed for all five symbols, but the full elapsed
+   basis/spread/depth/slippage qualification remains incomplete.
 3. **The canary and seven-day soak are pending.** Each of BTC, ETH, SOL, BNB and XRP still needs a
    protected DEV round trip, while the complete set must cover limit/cancel, stop, target,
    timeout and restart recovery. The subsequent seven-day data/reconnect/auth/recovery soak has
@@ -166,8 +171,9 @@ remaining selection window is inspected. Full methodology and integrity evidence
    durable provider-wide spend ledger with pre-call reservation, and X uses its own durable
    monthly ledger. Continuous paid testing still needs an approved cadence, quality protocol and
    stop conditions within those enforced limits.
-5. **Operations still need elapsed and off-host evidence.** Local PAPER secrets, monitoring,
-   reconnect and backup/restore tooling do not prove long-duration recovery. Production still
+5. **Operations still need elapsed and off-host evidence.** A clean local backup/restore drill
+   passed 12 migrations and 18 critical tables, and the read-only services recovered their
+   persisted state. This does not prove long-duration or off-host recovery. Production still
    requires managed KMS/Vault signing, encrypted off-host backup scheduling, host hardening and
    an independently reviewed recovery drill.
 6. **Backtests are not venue qualification or alpha.** The frozen candidate loses money in the untouched

@@ -1,6 +1,6 @@
 # EVEDEX DEV PAPER readiness
 
-_Evidence boundary: 2026-08-23. This document records capability and permission separately._
+_Evidence boundary: 2026-08-26. This document records capability and permission separately._
 
 ## Current markers
 
@@ -27,7 +27,8 @@ production signing material and real funds regardless of any other marker.
 - strict `extra=forbid`, immutable V1 contracts for closed bars, strategy intent/review, venue
   quality, risk decision, lifecycle event and reconciled account state;
 - byte-for-byte Strategy Engine parity between frozen backtest and runtime fixtures;
-- gap/reorder/conflicting-bar rejection and REST recovery behavior;
+- provisional WebSocket close isolation, delayed double-REST finality, gap recovery and
+  permanent rejection of any mutation after authoritative publication;
 - candidate review limited to `ALLOW`, `VETO`, `DEFER` and priority, with no intent mutation;
 - loss-at-stop sizing with 0.25% per-trade and 1% aggregate open-risk ceilings;
 - EVEDEX DEV profile/account/symbol/basis/liquidity gates and `NEXT_BAR_MARKET` expiry;
@@ -37,6 +38,8 @@ production signing material and real funds regardless of any other marker.
   autonomous mutation retry;
 - isolated `kairos-paper` Redis/TimescaleDB/secrets/volumes, fail-closed Compose validation,
   monitoring, backup/restore and recovery tooling;
+- source-revision cache binding and an embedded source identity in every Python/sidecar image,
+  so runtime code cannot silently lag behind its OCI revision label;
 - fault injection, race tests, local Timescale integration, Node tests/audit, image builds and
   green CI for the pinned revisions.
 
@@ -49,8 +52,8 @@ These gates are ordered. A later gate cannot compensate for a failed or missing 
 
 | gate | acceptance evidence | state |
 | --- | --- | --- |
-| 1. EVEDEX DEV read-only | real SIWE/auth and reconciliation; no unresolved Binance gaps; availability ≥99%; p95 absolute basis, spread and slippage ≤25 bps; book age ≤5 s; timestamp skew ≤2 s over a complete 24-hour window | `PENDING` |
-| 2. Manual technical canary | 1x, exact venue minimum quantity, one global active canary; each BTC/ETH/SOL/BNB/XRP completes a protected round trip; the set covers limit/cancel, stop, target, timeout and restart recovery | `PENDING` |
+| 1. EVEDEX DEV read-only | real SIWE/auth and reconciliation; no unresolved Binance gaps; availability ≥99%; p95 absolute basis, spread and slippage ≤25 bps; book age ≤5 s; timestamp skew ≤2 s over a complete 24-hour window | `BLOCKED` — dedicated DEV credentials are absent; BTC/ETH have books, while listed SOL/BNB/XRP currently return zero bids and asks |
+| 2. Manual technical canary | 1x, exact venue minimum quantity, one global active canary; each BTC/ETH/SOL/BNB/XRP completes a protected round trip; the set covers limit/cancel, stop, target, timeout and restart recovery | `BLOCKED_BY_GATE_1` |
 | 3. PAPER soak | seven elapsed days of data/reconnect/auth/recovery with no duplicate order, unknown lifecycle state, unresolved mutation or unprotected exposure | `PENDING` |
 | 4. PAPER qualification review | reviewed TCA, shortfall, venue semantics, recovery evidence and documented limitations | `PENDING` |
 
@@ -58,6 +61,31 @@ Until Gate 1 passes, the maximum permitted state is read-only EVEDEX DEV observa
 one explicitly armed, bounded session; it does not start an automatic strategy and does not call
 OpenAI, DeepSeek or X. Passing all four gates can set `PAPER_QUALIFIED=true`, but cannot change
 `ALPHA_READY` or `LIVE_READY` by implication.
+
+## 2026-08-26 operational evidence
+
+- A new parallel `kairos-paper-gate` project was initialized with separate Redis, TimescaleDB,
+  Grafana and Prometheus volumes. The previous PAPER database and its immutable bar-conflict
+  evidence were not deleted or rewritten.
+- The exact pinned Quant image restored 1,000 authoritative producer bars across all five
+  symbols with no blocked symbol. After startup catch-up, durable outbox backlog was zero,
+  dead letters were zero, inbox failures were zero and current closed-bar coverage had all five
+  symbols with no detected gap.
+- A container-only live collector probe independently obtained stable REST-finalized bars,
+  fresh funding and fresh Binance depth for BTC, ETH, SOL, BNB and XRP.
+- EVEDEX DEV reported all five instruments as `trading=all`. At the same observation, BTC and ETH
+  exposed executable two-sided books; SOL, BNB and XRP exposed empty books. Runtime now records
+  this as `EvedexBookUnavailableError` rather than an opaque parser failure.
+- The official preflight evaluator had no metrics transport errors, but correctly failed closed
+  on incomplete elapsed coverage, missing authenticated execution/account health and venue
+  availability below 99%. No execution container was started and no mutation was attempted.
+- A quiesced backup and restore drill passed against the clean project: 12 schema migrations and
+  18 critical tables were validated in an isolated restore database. Application services then
+  recovered their persisted bar/risk state without an integrity block.
+- The built execution image contains official `@evedex/exchange-bot-sdk` 1.2.11 and embeds the
+  same execution-engine SHA as its OCI label. It remains stopped because the labelled local
+  secret source does not contain the required dedicated `evedex_dev_api_key` and
+  `evedex_dev_private_key`.
 
 ## Separate alpha and provider gates
 
@@ -84,18 +112,18 @@ authority.
 
 | repository | commit |
 | --- | --- |
-| `kairos-core` | `a4f427cdd44184fac62a842320133ac5a3e11fbe` |
-| `kairos-llm` | `0777bbbcc541e2ac95d2fe965c1c2201845de17c` |
-| `kairos-persistence` | `e36a3c01aa8aa3847bfbc8fa42eb4f98794d28a5` |
-| `kairos-strategy-engine` | `c1bfd51e6efb7942a583196751b89e4c22a4a5e6` |
-| `kairos-backtest` | `4ccc27f04b82787b8815b6df28128f4d88d978ab` |
-| `kairos-quant-scouts` | `d71d34db569e9441842f1ef4d6c9cfd8628aaea0` |
-| `kairos-text-scouts` | `2d53cd555f6dcf6456161a694a16023a59f75e19` |
-| `kairos-router` | `25a33e37902c00c6bcd65bd7774a819893b67523` |
-| `kairos-aggregator` | `75cb3cfc4b0ddde4805b3e5b460a842c638314c3` |
-| `kairos-macro-strategist` | `65c81efd6010f237a22430a87b816dbf3891e21c` |
-| `kairos-risk-manager` | `d311872438c35b0eed76fba1eec799ac5999a107` |
-| `kairos-execution-engine` | `f73d8e1b0669de464edb8c99cfc32766ed7c7894` |
-| `kairos-deploy` | `16474ede64bbe213303295978da116cc8ad788f2` |
+| `kairos-core` | `91cd95c8e5bd4393ed04606df08c205583092df7` |
+| `kairos-llm` | `18ff6388b3106f6167af2a60fa132344e0fcf380` |
+| `kairos-persistence` | `d9d330c19713d681e2f29cbc8249578cdf8e95e3` |
+| `kairos-strategy-engine` | `01f3a9dd58e28fd588c3929a0cdf88ee791c7d88` |
+| `kairos-backtest` | `7a932aa0c54d17ccba55bc211d8beb5cdb4bc78c` |
+| `kairos-quant-scouts` | `bbfede21860e2ef7c20e3250c1422a6660b4dcc5` |
+| `kairos-text-scouts` | `2f62bc781ccc9085b4075f5f10fb1f1762f0d18e` |
+| `kairos-router` | `a8aea4e9a56d6ed9ee8189c56498cab009c16f39` |
+| `kairos-aggregator` | `ce3f7cd3073326bada0f800cf41b275716b8d929` |
+| `kairos-macro-strategist` | `bb5a1b2b364094b920340511bc920bfc7ccfc94e` |
+| `kairos-risk-manager` | `77ec49f8c744cb5174c625a82eab0dac4de90f55` |
+| `kairos-execution-engine` | `325d518b3b67b4501b54f04bcdddf9f7d0ae20a3` |
+| `kairos-deploy` | `c1d53b9d0d163bac003fc29ebd4119bfadfd8b08` |
 
 The meta-repository's own revision is the commit containing this file.

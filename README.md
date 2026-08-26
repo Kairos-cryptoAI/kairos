@@ -133,7 +133,7 @@ See the [regime-retest screen report](https://github.com/Kairos-cryptoAI/kairos-
 
 ## Current delivery state
 
-As of 2026-08-23, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
+As of 2026-08-26, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
 closed-bar handling, shared pure generators, immutable review, deterministic loss-at-stop risk,
 runtime EVEDEX quality measurements, a protected trade FSM, durable effect/lifecycle facts,
 an official SDK sidecar and an isolated `kairos-paper` deployment. Cross-repository dependencies
@@ -160,8 +160,11 @@ modeled cost. Those samples are not a latency, quota, availability or quality so
 was made. Technical EVEDEX canaries start no paid LLM/feed services.
 
 This is still **not production-ready**. `REJECT_ALL` remains authoritative until a new strategy
-revision passes the offline promotion gate. Authenticated EVEDEX semantics, elapsed operational
-gates, paid shadow qualification and a future managed KMS/Vault boundary remain outstanding.
+revision passes the offline promotion gate. The clean read-only stack has no Binance gaps or
+durable backlog and passed backup/restore, but EVEDEX DEV currently has executable books only for
+BTC/ETH (SOL/BNB/XRP are empty) and the dedicated DEV credentials are absent. Authenticated venue
+semantics, elapsed operational gates, paid shadow qualification and a future managed KMS/Vault
+boundary remain outstanding.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
 [ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.
