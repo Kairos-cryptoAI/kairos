@@ -95,7 +95,7 @@ authority.
 | `kairos-aggregator` | `75cb3cfc4b0ddde4805b3e5b460a842c638314c3` |
 | `kairos-macro-strategist` | `65c81efd6010f237a22430a87b816dbf3891e21c` |
 | `kairos-risk-manager` | `d311872438c35b0eed76fba1eec799ac5999a107` |
-| `kairos-execution-engine` | `de168290a9331accaf4c3aa2b62407b5adf7c614` |
-| `kairos-deploy` | `e6223f169baa2284ca3809c9c21de4d7792d5885` |
+| `kairos-execution-engine` | `f73d8e1b0669de464edb8c99cfc32766ed7c7894` |
+| `kairos-deploy` | `16474ede64bbe213303295978da116cc8ad788f2` |
 
 The meta-repository's own revision is the commit containing this file.
