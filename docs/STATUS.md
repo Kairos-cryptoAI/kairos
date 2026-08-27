@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-26_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-27_
 
 ## Summary
 
@@ -16,7 +16,7 @@ claims:
 | --- | --- | --- |
 | `TECHNICAL_PAPER_READY` | `true` | exact pinned code/integration revision set after local Windows, Docker and GitHub CI gates |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
-| `ALPHA_READY` | `false` | no strategy revision has passed offline promotion; `REJECT_ALL` remains active |
+| `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
 
 The first marker is not evidence of exchange correctness, profitability, a completed canary or
@@ -29,7 +29,7 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | `kairos-core` | strict `ClosedBarEventV1`, intent/review/venue/risk/execution/account contracts; explicit DRY_RUN/PAPER/LIVE modes | any future contract revision requires a new version, never silent field reuse |
 | `kairos-llm` | DeepSeek Flash and GPT-5.6 Luna/Terra/Sol routing, strict schemas and durable cost hooks | shadow corpus quality, latency, quota and availability qualification |
 | `kairos-quant-scouts` | delayed double-REST-finalized Binance 1m bars, provisional WS isolation, gap recovery, funding fallback, indicators and scheduled EVEDEX quality facts | complete 24-hour observation after EVEDEX restores two-sided liquidity across the required universe |
-| `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures | every current sleeve is `REJECTED`; a new revision must pass offline promotion |
+| `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures; exact trial-15 candidate is `FORWARD_FROZEN` | forward candidate must remain unchanged through 365 days and 500 trades; PAPER allow-list remains empty |
 | `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, five-asset local filter, DeepSeek fallback and frozen news corpus | elapsed freshness, source quality, latency-tail and quota qualification |
 | `kairos-router` | immutable candidate-specific NORMAL/CONFLICT route plus isolated legacy FSM | paid review path remains shadow-only while alpha is rejected |
 | `kairos-aggregator` | strict `ALLOW/VETO/DEFER` review, immutable intent, adverse-conflict guard and frozen candidate corpus | production-distribution A/B value and latency-tail qualification |
@@ -37,8 +37,8 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | `kairos-risk-manager` | PAPER-only DEV admission, 0.25%/1% loss caps, reservations and manual canary authority | real reconciled-account and venue inputs during controlled DEV qualification |
 | `kairos-execution-engine` | official SDK 1.2.11 sidecar, SIWE/auth, protected FSM, atomic public facts and crash recovery | authenticated DEV semantics and protected canary evidence; LIVE disabled |
 | `kairos-persistence` | inbox/outbox, bars, decisions, lifecycle/effects, TCA, equity, budget and readiness metrics | retention sizing and encrypted off-host backup policy |
-| `kairos-backtest` | imports exact Strategy Engine generators; causal replay and unchanged fail-closed reports | profitable new revision, clean data, historical funding and real-venue TCA calibration |
-| `kairos-deploy` | pinned isolated PAPER, source-identity-bound images, deny-by-default secrets/mounts/egress, monitoring and a passing clean backup/restore drill | dedicated EVEDEX DEV credentials, complete 24-hour/canary/7-day evidence; future managed KMS/Vault for LIVE |
+| `kairos-backtest` | imports exact Strategy Engine generators; causal replay; immutable reports; durable read-only forward ledger with verified backup/recovery | accumulate independent data to both 365 days and 500 closed trades, then run the one sealed gate; real-venue TCA calibration remains separate |
+| `kairos-deploy` | pins the safeguarded strategy runtime in isolated PAPER/base images, keeps its allow-list empty, and passes Compose/Docker validation | dedicated EVEDEX DEV credentials, complete 24-hour/canary/7-day evidence; future managed KMS/Vault for LIVE |
 | `kairos` | cross-repo manifest, Windows-first runner and current architecture docs | keep manifest/ADRs synchronized with `main` and pinned dependency revisions |
 
 Test counts are intentionally not frozen in this document. The meaningful gate is that each
@@ -144,6 +144,27 @@ while preserving cost-aware admission, and its cumulative lineage must be frozen
 remaining selection window is inspected. Full methodology and integrity evidence are in the
 [regime-retest report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-retest-screen/REPORT.md).
 
+### Trial 15 and the forward boundary
+
+Trial 15 preserved the daily `right_tail_trend_v1` lifecycle (2 ATR stop, 4R target and 72-hour
+timeout) and admitted its side only when the last complete 4-hour close agreed with SMA200. The
+single preregistered reused-data attempt passed every absolute and base-improvement gate. Its
+robustness/stress result was `+0.9812%`, profit factor `1.1071`, drawdown `1.6233%` and 339 trades;
+the exact base produced `+0.4968%`, profit factor `1.0382`, drawdown `1.7652%` and 489 trades.
+
+This supports `FORWARD_FROZEN`, not alpha. The synthesis reused already observed components and
+archives; BTC and SOL were still negative under robustness stress, and only three symbols had
+positive expectancy. The immutable plan SHA-256 is
+`38fe7512b4e4c318e5bc8dd6baa66b48eedd63112a4a447eaaf36c1175f623e8`. Blind observation begins
+no earlier than 2026-09-01 and must reach both 365 complete days and 500 simulated closed trades
+before one sealed decision.
+
+The local append-only observer contains 64,800 officially checksum-verified feature-warmup bars
+through 2026-08-01, zero gaps/conflicts/quarantines and zero intents. Its evidence SHA-256 is
+`d4fcfa3d3c838e11a62fcffa2b6bf067b0d641c682d6aad7a564c0a1372af232`; an online backup and
+restore-to-new-path drill reproduced that evidence and left the primary unchanged. It exposes no
+PnL before the gate is eligible and has no exchange, LLM, X or order-publish path.
+
 ## Remaining limitations
 
 1. **Real EVEDEX DEV behavior is blocked before auth.** The SDK/SIWE path, journal and recovery
@@ -176,10 +197,11 @@ remaining selection window is inspected. Full methodology and integrity evidence
    persisted state. This does not prove long-duration or off-host recovery. Production still
    requires managed KMS/Vault signing, encrypted off-host backup scheduling, host hardening and
    an independently reviewed recovery drill.
-6. **Backtests are not venue qualification or alpha.** The frozen candidate loses money in the untouched
-   July holdout, trails its benchmark, has too few OOS trades, and lacks historical funding
-   evidence. Every existing sleeve is `REJECTED`; the deterministic fill model also needs real
-   EVEDEX TCA calibration before results can inform any future PAPER risk limits.
+6. **Backtests are not venue qualification or alpha.** The original promotion candidate loses
+   money in the untouched July holdout. Trial 15 improved stress survival on reused data but has
+   no independent forward performance yet, and its weakest breadth passed only at the exact
+   three-symbol floor. The deterministic fill model also needs real EVEDEX TCA calibration before
+   results can inform any future PAPER risk limits.
 7. **Model migration still needs production-distribution A/B evaluation.** The four API routes
    pass the current strict corpora and preserve fail-closed authority, but this does not prove
    that the overlay improves strategy economics or preserves latency tails and token profiles on
@@ -190,9 +212,10 @@ remaining selection window is inspected. Full methodology and integrity evidence
 
 ## Readiness rule
 
-Do not interpret `TECHNICAL_PAPER_READY=true` as permission to publish a canary, run a rejected
-strategy or enable LIVE. The permitted order is: 24 hours read-only, one manually armed bounded
+Do not interpret `TECHNICAL_PAPER_READY=true` as permission to publish a canary, run a rejected or
+forward-frozen strategy, or enable LIVE. The permitted order is: 24 hours read-only, one manually armed bounded
 DEV canary session, completion of the five-symbol lifecycle matrix, then a seven-day soak.
 `PAPER_QUALIFIED` remains false until that evidence is reviewed. Automatic PAPER additionally
-requires a new strategy revision to pass the offline promotion gate. LIVE requires a later,
+requires the unchanged forward candidate to pass its independent 365-day/500-trade sealed
+promotion gate and a separate approval. LIVE requires a later,
 separate managed-secret and real-funds review; it cannot be enabled by a legacy boolean.

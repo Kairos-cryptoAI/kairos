@@ -72,9 +72,10 @@ An intent fixes the strategy/revision, side, eligibility, expiry, reference pric
 code, configuration, input-window and feature fingerprints. Frozen parity fixtures require the
 same ordered intent bytes and IDs from Windows replay and Linux runtime.
 
-All current sleeves are `REJECTED`. The PAPER strategy allow-list is empty and the runtime refuses
-to enable a rejected sleeve. The only pre-alpha candidate is a one-shot, manually armed
-`technical-canary@1`; it proves plumbing, not profitability.
+All previous sleeves retain their recorded `REJECTED` results. One exact revision,
+`regime_aligned_right_tail_v1`, is `FORWARD_FROZEN`; the PAPER strategy allow-list is still empty
+and runtime refuses to enable either rejected sleeves or the merely forward-frozen candidate. The separate
+one-shot `technical-canary@1` is manually armed and proves plumbing, not profitability.
 
 ## 3 — Candidate review, not candidate invention
 
@@ -225,6 +226,31 @@ underperformance, unavailable historical funding, non-positive sensitivity resul
 upstream archive anomaly/gaps/incomplete coverage. These results are offline research evidence;
 they are not live-stack or venue qualification.
 
+### Current immutable forward candidate
+
+Trial 15 keeps the daily right-tail direction, 2 ATR stop, 4R target and 72-hour timeout, then
+requires the latest complete 4-hour close to agree with SMA200. It passed a single preregistered
+reused-data comparison, so its only permission is read-only future observation. It is not alpha
+and cannot flow into Router, Risk or Execution.
+
+```mermaid
+flowchart LR
+    A["Official checksum-verified 1m archives"] --> W["Feature-only warmup"]
+    W --> L["Append-only forward ledger<br/>per-symbol SHA-256 chain"]
+    L --> B["Blind start ≥ 2026-09-01"]
+    B --> G["Both gates<br/>365 complete days + 500 closed trades"]
+    G --> E["One sealed evaluation"]
+    E -->|"pass"| Q["Separate alpha/PAPER review"]
+    E -->|"fail"| X["REJECTED"]
+```
+
+The executable plan hash is
+`38fe7512b4e4c318e5bc8dd6baa66b48eedd63112a4a447eaaf36c1175f623e8`. The observer normalizes
+strict closed bars to the frozen field profile, permanently blocks gaps/reorders/conflicts,
+withholds performance before eligibility and owns no exchange, LLM, feed or order route. Backup
+uses SQLite's online backup API and recovery restores only to a new path before comparing sealed
+evidence fingerprints.
+
 ## Verification boundary
 
 `TECHNICAL_PAPER_READY=true` is limited to the exact pinned revision set passing its code,
@@ -233,7 +259,8 @@ that any elapsed or external qualification has passed.
 
 `PAPER_QUALIFIED=false`: authenticated EVEDEX DEV reconciliation and venue semantics, the
 24-hour read-only gate, the manually armed five-symbol protected canary set, and the seven-day
-soak remain pending. `ALPHA_READY=false` and `REJECT_ALL` remain independent because no strategy
-has passed the offline gate. `LIVE_READY=false`; production endpoints, credentials and mutation
+soak remain pending. `ALPHA_READY=false` and runtime `REJECT_ALL` remain independent because the
+only surviving candidate is merely `FORWARD_FROZEN` and has not passed its future-data gate.
+`LIVE_READY=false`; production endpoints, credentials and mutation
 authority remain blocked. The exact evidence boundary and reviewed SHAs are in
 [READINESS.md](READINESS.md).

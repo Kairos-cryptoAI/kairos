@@ -1,6 +1,6 @@
 # EVEDEX DEV PAPER readiness
 
-_Evidence boundary: 2026-08-26. This document records capability and permission separately._
+_Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
 ## Current markers
 
@@ -18,8 +18,9 @@ not assert that EVEDEX credentials work, that an order was placed, that the venu
 thresholds, that a strategy is profitable, or that PAPER/LIVE is authorized.
 
 `PAPER_QUALIFIED=false` is the operational truth until real EVEDEX DEV evidence completes the
-ordered qualification ladder. `ALPHA_READY=false` is independent: all existing strategy sleeves
-remain rejected by the unchanged offline evidence. `LIVE_READY=false` blocks EVEDEX PROD,
+ordered qualification ladder. `ALPHA_READY=false` is independent: all previous sleeves remain
+rejected, while one exact candidate is only `FORWARD_FROZEN` pending genuinely future evidence.
+`LIVE_READY=false` blocks EVEDEX PROD,
 production signing material and real funds regardless of any other marker.
 
 ## What technical readiness covers
@@ -42,6 +43,8 @@ production signing material and real funds regardless of any other marker.
   so runtime code cannot silently lag behind its OCI revision label;
 - fault injection, race tests, local Timescale integration, Node tests/audit, image builds and
   green CI for the pinned revisions.
+- a read-only forward observer with strict closed-bar normalization, per-symbol SHA-256 chains,
+  immutable campaign identity, exclusive online backup and restore-to-new-path recovery drill.
 
 Any change to a pinned revision invalidates this technical marker until its dependency pins,
 lockfiles, local gates and CI are revalidated.
@@ -95,10 +98,22 @@ OpenAI, DeepSeek or X. Passing all four gates can set `PAPER_QUALIFIED=true`, bu
 
 ## Separate alpha and provider gates
 
-Automatic PAPER remains disabled because the Strategy Engine allow-list is empty and all five
-existing sleeves are `REJECTED`. A future strategy must be a new frozen revision and pass the
-offline promotion gate before `ALPHA_READY` can change. The historical reports and their
-`REJECT_ALL` decisions are not recalculated or reinterpreted by this technical milestone.
+Automatic PAPER remains disabled because the Strategy Engine allow-list is empty. All previous
+sleeves retain their recorded `REJECTED` results. Trial 15's exact
+`regime_aligned_right_tail_v1` revision is `FORWARD_FROZEN`, not alpha: it passed one
+preregistered reused-data comparison but was synthesized after its components and evaluation
+archives were observed. It must remain byte/config/universe-identical and pass a single sealed
+evaluation after both 365 complete future days and 500 simulated closed trades before it can be
+considered for a separate PAPER approval.
+
+The executable forward plan SHA-256 is
+`38fe7512b4e4c318e5bc8dd6baa66b48eedd63112a4a447eaaf36c1175f623e8`; blind collection starts
+no earlier than `2026-09-01T00:00:00Z`. The local append-only ledger currently contains only the
+feature warmup through `2026-08-01T00:00:00Z`: 12,960 bars for each of BTC, ETH, SOL, BNB and XRP,
+zero gaps/conflicts/quarantines and zero intents. A real backup/restore drill preserved evidence
+SHA-256 `d4fcfa3d3c838e11a62fcffa2b6bf067b0d641c682d6aad7a564c0a1372af232` and left the primary
+unchanged. No performance is exposed before the sealed gate becomes eligible. The historical
+reports and their individual `REJECT_ALL` decisions are not recalculated or reinterpreted.
 
 LLM/feed qualification is shadow-only and separately capped by the shared durable budget ledger:
 OpenAI `$12`, DeepSeek `$1`, X `$2`. Safety requires 100% schema-valid review output, zero
@@ -130,8 +145,8 @@ authority.
 | `kairos-core` | `91cd95c8e5bd4393ed04606df08c205583092df7` |
 | `kairos-llm` | `18ff6388b3106f6167af2a60fa132344e0fcf380` |
 | `kairos-persistence` | `d9d330c19713d681e2f29cbc8249578cdf8e95e3` |
-| `kairos-strategy-engine` | `01f3a9dd58e28fd588c3929a0cdf88ee791c7d88` |
-| `kairos-backtest` | `7a932aa0c54d17ccba55bc211d8beb5cdb4bc78c` |
+| `kairos-strategy-engine` | `fb7d406c6e1a3060f481b91668ff3bc23a1b4b0d` |
+| `kairos-backtest` | `7bcc363833deb79188c39e81b156194df49d582b` |
 | `kairos-quant-scouts` | `bbfede21860e2ef7c20e3250c1422a6660b4dcc5` |
 | `kairos-text-scouts` | `c0ab42c414d9e87936ef10179914e3f35a537466` |
 | `kairos-router` | `a8aea4e9a56d6ed9ee8189c56498cab009c16f39` |
@@ -139,6 +154,6 @@ authority.
 | `kairos-macro-strategist` | `2a5bee94048d3764a0288ad96a7b8286855fb46f` |
 | `kairos-risk-manager` | `77ec49f8c744cb5174c625a82eab0dac4de90f55` |
 | `kairos-execution-engine` | `325d518b3b67b4501b54f04bcdddf9f7d0ae20a3` |
-| `kairos-deploy` | `f4c3b18f123914f2976e7fcd253cf5334538b5f4` |
+| `kairos-deploy` | `3094152cef9e3e867031182a480adba0bd606145` |
 
 The meta-repository's own revision is the commit containing this file.

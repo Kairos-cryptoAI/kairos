@@ -131,9 +131,32 @@ operation, live trading and real API use remain disabled. Trials 7-9 are consume
 be rerun or retuned against this interval. This does not alter the frozen promotion evidence.
 See the [regime-retest screen report](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-retest-screen/REPORT.md).
 
+### Current forward-frozen candidate
+
+Trial 15 combined the unchanged daily `right_tail_trend_v1` lifecycle (2 ATR stop, 4R target,
+72-hour timeout) with one causal regime rule: long candidates require the last complete 4-hour
+close above SMA200, and shorts require it below. The single preregistered reused-data attempt
+passed all absolute and base-improvement gates. In the robustness/stress cell it returned
+`+0.9812%` across 339 trades with profit factor `1.1071` and maximum drawdown `1.6233%`, versus
+the exact base's `+0.4968%`, profit factor `1.0382` and drawdown `1.7652%`.
+
+That result changes the exact candidate to `FORWARD_FROZEN`, not `ALPHA_READY`. The components
+and archives were already observed during synthesis, BTC and SOL remained negative under
+robustness stress, and only three of five symbols had positive expectancy. The rule therefore
+cannot enter PAPER or LIVE and may not be retuned against the same data.
+
+Its immutable [forward plan](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-aligned-forward/plan.json)
+has SHA-256 `38fe7512b4e4c318e5bc8dd6baa66b48eedd63112a4a447eaaf36c1175f623e8`.
+Blind observation begins no earlier than `2026-09-01` and requires both 365 complete future days
+and 500 simulated closed trades before one sealed evaluation. The local read-only ledger already
+contains 64,800 checksum-verified feature-warmup bars with zero gaps, conflicts or intents; its
+backup/recovery drill preserved evidence SHA-256
+`d4fcfa3d3c838e11a62fcffa2b6bf067b0d641c682d6aad7a564c0a1372af232` without changing the
+primary database. No forward PnL is available or disclosed yet.
+
 ## Current delivery state
 
-As of 2026-08-26, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
+As of 2026-08-27, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
 closed-bar handling, shared pure generators, immutable review, deterministic loss-at-stop risk,
 runtime EVEDEX quality measurements, a protected trade FSM, durable effect/lifecycle facts,
 an official SDK sidecar and an isolated `kairos-paper` deployment. Cross-repository dependencies
@@ -145,7 +168,7 @@ The readiness flags deliberately describe different claims:
 | --- | --- | --- |
 | `TECHNICAL_PAPER_READY` | `true` | code and integration readiness for the exact reviewed revision set after its Windows, Docker and GitHub CI gates |
 | `PAPER_QUALIFIED` | `false` | real DEV auth, 24-hour observation, five-symbol canary evidence and seven-day soak are not complete |
-| `ALPHA_READY` | `false` | every current strategy sleeve remains rejected; automatic strategy PAPER is disabled |
+| `ALPHA_READY` | `false` | one exact candidate is `FORWARD_FROZEN`, but it has not passed its future-data gate; automatic strategy PAPER is disabled |
 | `LIVE_READY` | `false` | LIVE startup and production credentials/endpoints remain blocked |
 
 `TECHNICAL_PAPER_READY=true` is not an exchange-performance or profitability claim. The current
@@ -162,8 +185,8 @@ one User plus ten stale Posts for `$0.060000`. These samples are not a latency, 
 availability soak, and no order was made. Technical EVEDEX canaries start no paid LLM/feed
 services.
 
-This is still **not production-ready**. `REJECT_ALL` remains authoritative until a new strategy
-revision passes the offline promotion gate. The clean read-only stack has no Binance gaps or
+This is still **not production-ready**. The runtime mutation policy remains `REJECT_ALL` while
+the exact forward-frozen candidate accumulates independent evidence. The clean read-only stack has no Binance gaps or
 durable backlog and passed backup/restore, but EVEDEX DEV currently has executable books only for
 BTC/ETH (SOL/BNB/XRP are empty) and the dedicated DEV credentials are absent. Authenticated venue
 semantics, elapsed operational gates, provider soak qualification and a future managed KMS/Vault
