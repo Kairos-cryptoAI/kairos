@@ -320,3 +320,29 @@ boundary, uniqueness/continuity and outbox drain, then restart only the stopped
 read-only services with the pinned images and verify fresh gap-free operation.
 If it fails, preserve partial committed progress and diagnose before resuming.
 No paid API, trade, signing key, alpha permission or LIVE state changed.
+
+## Runtime repair follow-up: preserved progress after timeout
+
+The first repair stopped with `TimeoutError` after its last successful page at
+`2026-09-08T08:51:34Z`. It committed 11,343 BTC bars; the safe terminal log does
+not identify which awaited operation timed out, so a network cause is not
+claimed. The old PID/container exited. Read-only SQL confirmed unique,
+continuous histories for all five symbols; BTC's exclusive boundary is
+`1788522960000`, and the other four remain at `1787842380000`.
+Two fresh GETs of the next 200-row BTC page both passed strict parsing and
+matched. No page, source rule or timeout was changed.
+
+Before resuming, a new PostgreSQL backup and isolated recovery drill passed
+(12 migrations, 18 critical tables, audit/outbox each 104,983):
+
+- `D:\Kairos\kairos-deploy\backups\kairos-paper-gate-20260908T090117Z.dump`
+- 33,798,518 bytes; SHA-256
+  `b7e80eda328fef958b47ba405c47e2fd8566ef7078eb1c7c296ba49006537709`.
+
+One bounded resume started at `2026-09-08T09:02:39Z`, parent PID `33752`.
+Its logs are `D:\Kairos\runtime\long-gap-recovery-20260908T090239Z.out.log`
+and the sibling `.err.log`. It retains the same fixed end boundary
+`1788855600000` and 150,000-bar ceiling; already committed bars are anchors,
+not replayed writes. All trading/strategy consumers remain stopped. Completion
+and fresh tail catch-up still require verification. Forward sync is not due
+yet; quarter-hour remains stopped on its existing source-integrity blocker.
