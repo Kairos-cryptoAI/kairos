@@ -188,3 +188,32 @@ The retry resumes batch 66 with **one worker**, reducing concurrent transfers;
 this is a mitigation, not proof that concurrency caused the network timeout.
 No frozen Python source, feature fingerprint, download validation or strategy
 was changed. Failure still stops the run; retries are not unbounded or automatic.
+
+## Follow-up: bounded archive preparation
+
+Serial collection also encountered an archive response-read timeout, stopping
+at `2026-09-08T06:06:51Z` after **68/335** committed batches. Reducing workers
+alone therefore did not resolve the transport problem. All processes from that
+run exited; the next heartbeat deeply verified the 68-batch chain:
+`4afbda0548f76b12e047d1c223cb13a4876af2d5dec4cb205af67e51bc068ff4`.
+
+New consistent backup before another resume:
+
+- `D:\Kairos\runtime\backups\quarter-hour-before-staged-resume-20260908T062821601885Z.sqlite3`
+- SHA-256: `46dec3823a4b781f7512f073d2bdf8873c4c18be87871743ed41e9fa6d833b61`
+
+Backtest `f4db378` adds optional operational `-PrepareArchives`. This stages only
+the next uncommitted monthly group using the official loader and full SHA/CRC
+checks, then invokes the unchanged collector with a bounded batch count. Only
+transport errors receive up to three attempts with 10/20-second backoff. A
+checksum/CRC failure, missing archive or exhausted retry budget stops the run.
+No accepted batch is replayed and the wrapper never writes the research ledger.
+The original verifier/collector remains responsible for research fingerprints,
+immutable data, exact gap exclusions and the sole ledger append path.
+
+Ten local hermetic tests cover bounded retries, fatal integrity/404 failures,
+successful retry/CRC scanning, read-only prefix selection, absent ledgers and
+blocking collection after failed preparation or incorrect progress. Windows
+PowerShell supervisor checks also passed. The new supervised run resumes at
+batch 69 with `-Workers 1 -PrepareArchives`; V2 remains unexecuted until all
+335 batches and the final deep check pass. Frozen research source is unchanged.
