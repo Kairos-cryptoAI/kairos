@@ -263,3 +263,60 @@ not `NOT_RUN_PARENT_COMPONENT_REJECTED`. Resolution needs a validated official
 source correction or an explicitly approved new research plan. No strategy
 performance was opened; forward evidence and all trading permissions remain
 unchanged. Other independent restoration work may continue.
+
+## Runtime long-gap recovery: code delivered, data repair running
+
+Independent of the blocked quarter-hour research, quant commit `68e917b`
+implements an explicit offline repair path for outages beyond the live REST
+window. Deployment commit `f2cd504` pins that exact source in both base/PAPER
+manifests and images, with a wrapper restricted to `kairos-paper-gate`.
+Frozen research code, plans and dependency locks were not changed.
+
+- Quant Windows local gate: 171 tests, lint, formatting, mypy and Bandit pass.
+  Quant CI passed Windows 3.11 and Linux 3.11/3.14.
+- Deploy: 59 validator tests plus offline PowerShell preflight checks pass;
+  remote lockfile validation and the full deploy CI/image builds are green.
+- Docker integration used only isolated database
+  `kairos_gap_drill_202609080001`. Lost ACK after a durable commit, restart,
+  duplicate publishing and competing producer acquisition were exercised.
+  Result: exactly 10 audit rows, 10 outbox rows, zero duplicate rows, and the
+  second producer was rejected by the PostgreSQL lease. No real market/order
+  fixture was inserted into the primary database during this test.
+- The live quant producer and repair job now share the exclusive database
+  producer lease. The Docker wrapper additionally rejects any active quant,
+  strategy, risk, execution or canary consumer and mismatched source images.
+- Repair checks a complete persisted history prefix and compares two identical
+  full REST pages, including overlap with the persisted anchor. New bars use
+  the existing canonical `ClosedBarEventV1` IDs and atomic audit/outbox publish.
+  Restart resumes from committed history; no cursor/Redis entry is erased.
+
+Before applying repair, quant, Strategy Engine and Risk Manager were stopped.
+Redis, TimescaleDB, exporter, Prometheus and Grafana remain running. Execution
+and canary were never started. This planned data-repair outage is **not** a
+qualifying 24-hour observation interval.
+
+Fresh primary PostgreSQL backup and successful isolated restore drill:
+
+- `D:\Kairos\kairos-deploy\backups\kairos-paper-gate-20260908T082154Z.dump`
+- 30,246,065 bytes; SHA-256
+  `5c4e436ca1a78ddcaac5b716ac8250f1232a9b2821d37e0f4be995864793f187`.
+- 12 migrations, 18 critical tables and manifest checkpoints verified.
+
+The real repair job started at `2026-09-08T08:24:01Z`, parent PID `28380`,
+container `kairos-gap-recovery-36d35a9d94774ca1b1980b7e69ccf1e7`.
+It reported **84,435 bars required** across the five symbols, with an explicit
+150,000-bar ceiling and exclusive end `2026-09-08T08:20:00Z`.
+The immutable end boundary is `1788855600000` milliseconds.
+
+Logs (progress, retrieval times and terminal state; no PnL):
+
+- `D:\Kairos\runtime\long-gap-recovery-20260908T082401Z.out.log`
+- `D:\Kairos\runtime\long-gap-recovery-20260908T082401Z.err.log`
+
+At this receipt the job is **running**, not yet accepted as repaired. Do not
+start another recovery or restart consumers until its process/container and
+terminal logs have been reconciled. On success, verify the all-symbol durable
+boundary, uniqueness/continuity and outbox drain, then restart only the stopped
+read-only services with the pinned images and verify fresh gap-free operation.
+If it fails, preserve partial committed progress and diagnose before resuming.
+No paid API, trade, signing key, alpha permission or LIVE state changed.
