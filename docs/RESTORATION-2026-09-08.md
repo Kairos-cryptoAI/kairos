@@ -1,0 +1,137 @@
+# Restoration and DEV qualification — 2026-09-08
+
+This is a dated operational receipt, not a replacement for frozen research or
+the historical revision-specific technical gates in [READINESS.md](READINESS.md).
+`PAPER_QUALIFIED=false`, `ALPHA_READY=false`, `LIVE_READY=false` and
+`STRATEGY_POLICY=REJECT_ALL` remain unchanged. No paid API or venue mutation was
+used during this recovery.
+
+## Environment and source delivery
+
+- All 14 repositories were checked on clean `main` against live GitHub refs
+  before recovery. No branch, reset, global ownership-check bypass or lockfile
+  refresh was used.
+- Restored `uv 0.12.3` and CPython `3.11.15`; recreated the backtest environment
+  from its existing lockfile. The previous environment is preserved under
+  `D:\Kairos\runtime\environment-backups\kairos-backtest-20260908`.
+- The user's restored GPG key signed a detached test and subsequent commits.
+  The missing older private key was not substituted with unsigned commits.
+- Docker Desktop runs again after preserving and replacing stale local socket
+  directories left by the Windows migration. No factory reset or volume removal.
+- Scoped, receipt-backed ACL/ownership recovery restored access to
+  `D:\Kairos\runtime\paper-gate\secrets`. Existing secret values were not replaced.
+- The actual Compose environment is `D:\Kairos\runtime\paper-gate\.env.paper`;
+  every operation below explicitly uses project `kairos-paper-gate`.
+
+Delivered independently signed changes:
+
+- backtest `7796b38`: freeze a calendar-sensitive test's validation clock;
+- backtest `dc59bca`: exclusive-process research supervisor, persistent phase
+  status/logs, resume sequencing and Windows process tests;
+- backtest `3623df3`: factual September forward coverage/recovery receipt;
+- deploy `0b47147`: narrowly scoped secret-access restoration helper.
+
+Backtest CI passed all three Windows/Linux jobs, including 557 Python tests and
+Windows supervisor checks. A fresh local forward-only run passed 33 tests.
+Deploy's 59 local unit tests and GitHub CI passed. Source-profile remote
+validation and quiet Compose validation passed. These results are not a new
+all-repository or authenticated execution qualification.
+
+## Quarter-hour V2: resumed, not complete
+
+The existing feature ledger was backed up to
+`D:\Kairos\runtime\backups\quarter-hour-v4-pre-recovery-20260908.sqlite3`.
+Deep verification accepted the original 51-batch chain:
+`038f12ef8a7cfba60521e70aa621442bbe34160bc9eeeb4b79dc45a3ababffc5`.
+
+The invalid ETH November 2021 ZIP and its original checksum were preserved in
+`D:\Kairos\runtime\quarantine\eth-aggtrades-2021-11-20260908`.
+The quarantined ZIP's actual SHA-256 is
+`1f09919890ee7860602eef6e09c605cf7b4b93440afc303fecd7ece24fbf8087`;
+its preserved official sidecar still specifies the replacement hash below.
+The replacement official archive passed SHA-256 and ZIP CRC; its SHA-256 is
+`a08d66be819d18961e2cc1676fba3c7fdb9bc09f73a67b4d0e864414103ece99`.
+No accepted batch, source fingerprint, feature or exclusion rule was edited.
+
+Recovery resumed at batch 52 with four workers and had reached **60/335** at
+`2026-09-08T04:29:49Z`. Its supervisor remains active; quiet logs between large
+monthly batches are not completion or failure. The authoritative status is
+`D:\Kairos\runtime\research-recovery\quarterhour.status.json`.
+After collection, the supervisor requires deep verification before the one V2
+run and refuses an existing result. The conditional timing overlay remains
+pending the parent result. No result or component acceptance is claimed here.
+
+## Forward: restored retrospectively, still blind
+
+Official daily archives for August 27 through September 6 inclusive were
+retrieved **on September 8**, not during continuous online observation.
+The all-five-symbol sync appended 79,200 bars and reached the exclusive
+September 7 UTC boundary: 66,240 bars per symbol, 331,200 total.
+
+Full integrity verification, performance-blind eligibility, unique pre/post
+backups and restore-to-new-path recovery all passed. The primary ledger did not
+change during the recovery drill. Six complete blind-period days are covered;
+the duration gate is false and the sealed trade-count gate was not evaluated.
+No PnL was opened. Full hashes and paths are retained in the backtest
+`reports/regime-aligned-forward/WARMUP.md` September receipt.
+
+The existing heartbeat has resumed, temporarily checking recovery every
+30 minutes while limiting routine forward sync to the daily schedule. It must
+not start a duplicate collector or notify repeatedly about unchanged state.
+
+## Docker persistence and read-only observations
+
+- PostgreSQL backup: `kairos-paper-gate-20260908T042435Z.dump`, 28,453,007 bytes.
+- Backup SHA-256:
+  `1f6e4ecc14923e7718819ff9e25ae49cdc35a96cfb4bd8d287b0e61bda11e7ee`.
+- Backup and row-count manifest: `D:\Kairos\kairos-deploy\backups`.
+- Real isolated restore drill passed: 12 migrations, 18 critical tables and
+  all recorded row-count/sequence checkpoints. Execution orders, account and
+  position snapshots in this pre-restart backup were empty; this is not proof
+  of recovering a real protected DEV position.
+- Redis, TimescaleDB, exporter, Prometheus and Grafana are healthy. Quant,
+  Risk and Strategy Engine restarted; Strategy Engine reports an empty enabled
+  strategy list. Execution Engine and canary controller were not started.
+- Strategy Engine's stale image was rebuilt and recreated at the existing
+  pinned SHA `fb7d406c6e1a3060f481b91668ff3bc23a1b4b0d`.
+
+The new GET-only public EVEDEX check at `2026-09-08T04:30:51Z` failed the
+five-asset gate. BTC and ETH had two-sided books; SOL, BNB and XRP lacked a best
+bid/ask. BNB reported `trading=all` but `visibility=none`. These are current
+observations, not reused August evidence or a 24-hour percentile measurement.
+Raw non-secret report:
+`D:\Kairos\runtime\research-recovery\evedex-public-20260908.json`.
+
+Official repository DEV URLs/chain were rechecked against
+[EVEDEX params.ts](https://github.com/evedex-official/exchange-bot-sdk/blob/master/src/params.ts).
+The existing sidecar already documents and applies the fixed DEV `16182`
+override because published SDK 1.2.11 embeds the older chain; no profile change
+or permissive fallback was introduced.
+
+## Explicit blockers and next gates
+
+1. **Missing credentials:** restored PAPER secret directory contains only the
+   five infrastructure secrets. `evedex_dev_api_key` and
+   `evedex_dev_private_key` are absent; expected remote account remains
+   `NOT_CONFIGURED_READ_ONLY`. The old Desktop `API.txt` path does not exist.
+   Request the current local file path and dedicated DEV account, not keys in
+   chat. Never fabricate or replace credentials.
+2. **Venue liquidity:** all five required assets must have valid books before
+   canary. Do not silently reduce the universe to BTC/ETH.
+3. **Long runtime gap:** restored Binance producer state is behind current REST
+   data and correctly reports `gap_waiting_for_backfill`. The current REST
+   collector requests only its latest bounded window, so an outage longer than
+   that window cannot heal through repeated tail polling. A resumable,
+   contiguous long-gap recovery path with lossless durable delivery still needs
+   implementation and tests; do not erase old bars/cursors or mark the gap fixed.
+4. **Real-time ladder:** no accepted fresh 24-hour authenticated window, no
+   armed 10-attempt/2-hour canary and no subsequent seven-day soak yet. These
+   durations cannot be replaced by the local checks above. Bounded canary-runner
+   completeness and its failure tests must be reviewed before arming.
+5. **Research:** finish 335 batches and the one gated V2 evaluation. Trial 15
+   remains frozen until both 365 days and 500 closed simulated trades qualify.
+6. **Providers:** separate outstanding shadow requirements remain; existing
+   cumulative reservations and OpenAI $12 / DeepSeek $1 / X $2 ceilings apply.
+
+Code-delivery progress, research acceptance, DEV qualification and long-term
+forward observation therefore remain distinct, incomplete milestones.

@@ -1,6 +1,14 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-08-27_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-08_
+
+## September recovery update
+
+See [the dated restoration receipt](RESTORATION-2026-09-08.md) for restored
+Python/Docker/GPG, resumed quarter-hour collection, retrospectively replenished
+forward coverage, current DEV book failures and the newly observed long-runtime-
+gap recovery limitation. The historical technical marker below is revision-
+specific; it is not a claim that today's runtime or DEV qualification is ready.
 
 ## Summary
 
