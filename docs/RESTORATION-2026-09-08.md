@@ -217,3 +217,49 @@ blocking collection after failed preparation or incorrect progress. Windows
 PowerShell supervisor checks also passed. The new supervised run resumes at
 batch 69 with `-Workers 1 -PrepareArchives`; V2 remains unexecuted until all
 335 batches and the final deep check pass. Frozen research source is unchanged.
+
+## Current research stop: inconsistent official XRP source
+
+**Quarter-hour is stopped at 79/335, not running.** At
+`2026-09-08T07:01:44Z` the supervisor recorded a fatal integrity error for
+uncommitted XRPUSDT April 2022 (batch 80). This is not another retryable timeout:
+
+```text
+monthly aggregate-ID gap is not reproduced by official daily archives:
+XRPUSDT 2022-04 270785088->271148868
+```
+
+The `07:31Z` heartbeat did not restart collection. Deep verification passed all
+79 accepted batches, chain
+`7a7f4b5ec9c8f8769bd8afbb2411b50b0c7ba4a4c1e2dbb83ef9b065eadb1fed`.
+All prior worker/supervisor processes exited. A new consistent backup is saved:
+
+- `D:\Kairos\runtime\backups\quarter-hour-source-conflict-20260908T073231361608Z.sqlite3`
+- SHA-256: `198dbc25910b712eea31e32d61bfe456bd7e73c0238b70b6a6331b0ff985dcf1`
+
+An independent read-only scan of the cached ZIPs found the missing interval in
+the official daily files. SHA-256 matched each preserved official sidecar and
+full ZIP CRC passed for every file listed below:
+
+| XRP archive | SHA-256 | Rows within inclusive IDs 270785088–271148868 |
+| --- | --- | ---: |
+| monthly 2022-04 | `746f952babe9a5dee6af026a5757593276d379d038d9778e17a059cdae441804` | 1 |
+| daily 2022-04-01 | `762603ffc5411506d1734bfe79c7cca5e73f935b3a006a89cc23a681686a08b2` | 194,211 |
+| daily 2022-04-02 | `7c689c68c229d53857c3a53d9c1fb067373f7156be06629dad447780f365b526` | 169,568 |
+| daily 2022-04-03 | `f9d77555755aee5f1b24e553782e4ec4c61fba9ce8afc929d800d7922c603594` | 1 |
+
+April 1 contains IDs `270785089..270979299`; April 2 contains
+`270979300..271148867`: together 363,779 records absent from the monthly file.
+The monthly file instead reaches ID `271148868` at timestamp `1648944000135`,
+which matches the first matching April 3 daily record. The fresh official
+monthly `.CHECKSUM`, retrieved at `2026-09-08T07:33:36Z`, still specifies the
+same monthly SHA above. Download corruption is therefore not the diagnosis.
+All source ZIPs/sidecars and the failed run logs are retained unchanged.
+
+Per the approved plan, **do not replace monthly data with daily data, skip batch
+80, loosen gap rules or rerun the collector against the unchanged source**.
+V2 has not run; the timing overlay remains pending incomplete parent evidence,
+not `NOT_RUN_PARENT_COMPONENT_REJECTED`. Resolution needs a validated official
+source correction or an explicitly approved new research plan. No strategy
+performance was opened; forward evidence and all trading permissions remain
+unchanged. Other independent restoration work may continue.
