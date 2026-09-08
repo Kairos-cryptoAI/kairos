@@ -135,3 +135,35 @@ or permissive fallback was introduced.
 
 Code-delivery progress, research acceptance, DEV qualification and long-term
 forward observation therefore remain distinct, incomplete milestones.
+
+## Follow-up: archive read timeout and safe resume
+
+At `2026-09-08T04:38:23Z`, the first recovery supervisor recorded `FAILED`
+during collection after **63/335** committed batches. The preserved traceback
+shows `TimeoutError: The read operation timed out` in the official archive
+downloader's response read, not a checksum mismatch. V2 evaluation did not run.
+The downloader removes its incomplete temporary file rather than promoting it
+to the cache; accepted ledger batches remain intact.
+
+The `2026-09-08T05:16Z` heartbeat confirmed the old supervisor and child had
+exited, then deeply verified all 63 accepted batches. Their chain is
+`424ddf11729fdab95dc092a5baa4c5a62e50ba2ef90a3e38c5adba0147dbbdf5`.
+A new consistent SQLite backup was created before resuming:
+
+- `D:\Kairos\runtime\backups\quarter-hour-before-timeout-resume-20260908T051807327781Z.sqlite3`
+- SHA-256: `a5246ef9366b61dde6a65946cd6a24bea7e99df709e84b10bc55633dd56e240f`
+
+The same exclusive-process supervisor restarted at `2026-09-08T05:18:41Z`
+with four workers, resuming at uncommitted batch 64. No source, timeout policy,
+checksum validation, frozen plan or accepted batch was changed. Original failure
+logs remain under
+`D:\Kairos\runtime\research-recovery\20260908T041744Z-5972`.
+The shared status file now identifies the new run; no second collector was
+started while the old one was alive.
+
+The user also supplied the new local credential-file path,
+`C:\Users\loval\Desktop\keys.txt`. A values-hidden check found provider labels
+and a generically labelled EVEDEX credential, but no explicitly DEV-scoped
+signing key/account. DEV scope confirmation and the missing dedicated
+credentials are still required; the file was not changed or imported into the
+trading runtime. The completed forward recovery was not repeated.
