@@ -167,3 +167,24 @@ and a generically labelled EVEDEX credential, but no explicitly DEV-scoped
 signing key/account. DEV scope confirmation and the missing dedicated
 credentials are still required; the file was not changed or imported into the
 trading runtime. The completed forward recovery was not repeated.
+
+## Follow-up: serial recovery after a second transport timeout
+
+The next run committed batches 64 and 65, then failed at
+`2026-09-08T05:25:55Z` on another archive response-read timeout. There was no
+new checksum mismatch and no V2 result. The next heartbeat verified that run's
+processes had exited and deeply checked all **65/335** committed batches:
+`4c04b5389cd38c56eb96f6c0b7cf37f84cc76b1e9b32a06c69e29d1e971c911d`.
+
+Before the next resume, a consistent new backup was retained:
+
+- `D:\Kairos\runtime\backups\quarter-hour-before-serial-resume-20260908T055140004690Z.sqlite3`
+- SHA-256: `05da4bab4c822937ba1a2aec441f0eb371b14d430bb5cde7df3e7b99a28a4609`
+
+Backtest commit `d810ce0` adds an operational `-Workers` option (1–4, default 4)
+and records it in supervisor status. PowerShell 5.1 tests validate the default,
+serial mode, rejected bounds, child exit propagation and exclusive locking.
+The retry resumes batch 66 with **one worker**, reducing concurrent transfers;
+this is a mitigation, not proof that concurrency caused the network timeout.
+No frozen Python source, feature fingerprint, download validation or strategy
+was changed. Failure still stops the run; retries are not unbounded or automatic.
