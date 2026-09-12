@@ -2,6 +2,12 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
+**Current-release caveat (2026-09-12):** the technical marker below belongs to
+the historical pinned revision set. The unfinished release is not yet fully
+revalidated. See [current implementation evidence](RECOVERY-2026-09-12.md),
+including separate forward/runtime recovery, remaining canary and provider work,
+and the distinction between simulated paper and actual EVEDEX qualification.
+
 ## Current markers
 
 ```text

@@ -1,6 +1,18 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-08_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-12_
+
+## Current implementation update
+
+See [September 12 recovery and delivery](RECOVERY-2026-09-12.md). Forward
+coverage/recovery reaches the September 12 exclusive UTC boundary; runtime
+PostgreSQL catch-up is separate and stopped at 13:52 UTC with an UNKNOWN durable
+publish outcome under investigation. Risk-refusal handling, cumulative budget
+guards and Macro causal restoration are published and tested. Canary integration
+and full-stack delivery remain in progress. The historical technical
+marker below does not qualify this unfinished release. EVEDEX qualification,
+alpha and LIVE remain false. An alternative market-data paper simulator is
+permitted but has not yet been delivered.
 
 ## September recovery update
 
