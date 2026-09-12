@@ -6,13 +6,15 @@ _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 
 
 See [September 12 recovery and delivery](RECOVERY-2026-09-12.md). Forward
 coverage/recovery reaches the September 12 exclusive UTC boundary; runtime
-PostgreSQL catch-up is separate and stopped at 13:52 UTC with an UNKNOWN durable
-publish outcome under investigation. Risk-refusal handling, cumulative budget
-guards and Macro causal restoration are published and tested. Canary integration
-and full-stack delivery remain in progress. The historical technical
-marker below does not qualify this unfinished release. EVEDEX qualification,
-alpha and LIVE remain false. An alternative market-data paper simulator is
-permitted but has not yet been delivered.
+PostgreSQL catch-up is separate. Its bounded continuation stopped at 14:34:59 UTC
+with a second publish timeout; no automatic retry is authorized. Both uncertain
+bars are now proven committed exactly once, but delivery/catch-up is incomplete. Bounded canary
+admission, cumulative budget guards and Macro causal restoration are published
+and tested; runtime dependency pins are now coherent. A real Redis/PostgreSQL
+Risk-to-Execution test is still being added, so full-stack validation remains
+incomplete. The historical technical marker below does not qualify this release.
+EVEDEX qualification, alpha and LIVE remain false. The alternative simulator has
+a tested fill-model kernel, not yet a durable paper-trading runtime.
 
 ## September recovery update
 
