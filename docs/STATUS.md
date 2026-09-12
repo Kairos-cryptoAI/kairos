@@ -10,9 +10,13 @@ PostgreSQL catch-up is separate. Its bounded continuation stopped at 14:34:59 UT
 with a second publish timeout; no automatic retry is authorized. Both uncertain
 bars are now proven committed exactly once, but delivery/catch-up is incomplete. Bounded canary
 admission, cumulative budget guards and Macro causal restoration are published
-and tested; runtime dependency pins are now coherent. A real Redis/PostgreSQL
-Risk-to-Execution test is still being added, so full-stack validation remains
-incomplete. The historical technical marker below does not qualify this release.
+and tested; runtime dependency pins are now coherent. The actual Redis/PostgreSQL
+Risk-to-Execution composition [passed its isolated CI gate](RELEASE-GATE-2026-09-12.md)
+with a synthetic venue. This does not cover the full Strategy/Router/LLM path or
+real venue semantics. Docker is stopped: verified backups are ready, but the
+approved SSD relocation still awaits the official settings step and post-move
+checks. Runtime catch-up is not resumed. The historical technical marker below
+does not qualify this release.
 EVEDEX qualification, alpha and LIVE remain false. The alternative simulator has
 a tested fill-model kernel, not yet a durable paper-trading runtime.
 

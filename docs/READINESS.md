@@ -56,9 +56,11 @@ Any change to a pinned revision invalidates this technical marker until its depe
 lockfiles, local gates and CI are revalidated.
 
 For the September 12 source release, `CURRENT_RELEASE_TECHNICAL_STATUS=NOT_REVALIDATED`:
-component tests and image-build CI are green, but an actual Redis/PostgreSQL
-Risk-to-Execution composition gate and runtime recovery remain incomplete. The
-fill-model simulator is a separate unit-tested component, not qualified paper.
+component tests and image-build CI are green. The actual Redis/PostgreSQL
+Risk-to-Execution composition has now [passed with a synthetic venue](RELEASE-GATE-2026-09-12.md).
+Runtime catch-up, post-SSD local validation, the wider Strategy/Router/LLM path
+and real EVEDEX qualification remain incomplete. The fill-model simulator is a
+separate unit-tested component, not qualified paper.
 
 ## Operational qualification ladder
 
