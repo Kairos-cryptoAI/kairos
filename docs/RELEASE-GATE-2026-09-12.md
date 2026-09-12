@@ -84,6 +84,44 @@ All five artifact captures completed. Retained local evidence:
   and per-capture status accompany the dump. The dump is diagnostic preservation,
   **not** an additional successful restore drill.
 
+## Local post-SSD execution — 16:33–16:34 UTC
+
+After the verified official Docker-data relocation, the same unchanged harness
+ran once against a new local `kairos-release-gate-20260912` namespace. Preflight
+found no prior project containers, network, volumes or gate image. The captured
+deploy HEAD was `bd99d6612bce2e2520082889c4d4677da17f5d0b`; its Quant-only pin
+update does not change the four installed gate dependencies above. All eleven
+harness file hashes matched before and after the build/run.
+
+Result: **83 tests, zero skips, 3.14 seconds, exit 0**. The real Risk/Redis/PG/
+Execution composition observed nine ACK boundaries, nine lifecycle facts, one
+entry call and unchanged inbox state after exact duplicate delivery. The same
+synthetic-venue and application-restart limitations apply; this is not a real
+DEV session or a storage crash test.
+
+Evidence directory:
+`D:\Kairos\runtime\release-gate-local-20260912T163350Z-9a6cb34a`.
+
+- `result.json`: SHA-256
+  `2f183b2b751594d6dddfff8f60961b728e95cf6cf68766e8955dba895b9bc13e`;
+- gate image:
+  `sha256:cafde369d8b80b8ec071bf7dfce6bb8a773d2caadd295c56f2df65838e738a90`;
+- binary PostgreSQL diagnostic dump: 213,705 bytes, SHA-256
+  `40eb6322a21fe0013b5a7b536f51c791a88207bcc50c3dcbe44d8925905c289f`.
+
+Logs, resource/source identities and the dump were captured **before** cleanly
+stopping the three newly created containers. The twenty pre-existing containers
+remained unchanged/stopped; no project volumes were created. The new image,
+internal network and stopped containers are retained. PostgreSQL tmpfs contents
+are ephemeral and were lost on stop; their diagnostic dump is retained, not
+restore-qualified. `pg_dump` emitted its Timescale circular-constraint warning,
+which is preserved and was not silently treated as a restore success.
+
+A preceding helper attempt failed during read-only preflight before any build,
+container creation or pipeline execution. Its separate diagnostic directory is
+retained. Fixing that helper's PowerShell output handling did not rerun the
+pipeline: the successful run above was its only actual local execution.
+
 ## What this does not establish
 
 The test does not exercise the full closed-bar → Strategy → Router → LLM review
@@ -93,5 +131,6 @@ establish profitable alpha; or implement the durable SIM trading runtime.
 Provider/API budgets, frozen strategies, sealed evaluation gates and the current
 `REJECT_ALL` policy are unchanged. `PAPER_QUALIFIED`, `ALPHA_READY` and
 `LIVE_READY` remain **false**. Current-release technical readiness remains
-unproven until the remaining scoped gates, including local post-move checks and
-runtime recovery, are complete.
+unproven until the remaining scoped gates, including runtime recovery and the
+wider pipeline, are complete. The local post-SSD gate is now completed within
+the limited composition boundary described above.

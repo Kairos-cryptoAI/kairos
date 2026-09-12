@@ -57,9 +57,11 @@ lockfiles, local gates and CI are revalidated.
 
 For the September 12 source release, `CURRENT_RELEASE_TECHNICAL_STATUS=NOT_REVALIDATED`:
 component tests and image-build CI are green. The actual Redis/PostgreSQL
-Risk-to-Execution composition has now [passed with a synthetic venue](RELEASE-GATE-2026-09-12.md).
+Risk-to-Execution composition has now [passed with a synthetic venue](RELEASE-GATE-2026-09-12.md)
+both in hosted CI and on the local relocated Docker engine (83 tests each).
 SSD relocation and post-move storage/database checkpoint checks are complete.
-Runtime catch-up, the post-SSD local release gate, the wider Strategy/Router/LLM path
+The split Binance transport and installed Quant image also passed their scoped
+checks. Runtime catch-up, the wider Strategy/Router/LLM path
 and real EVEDEX qualification remain incomplete. The fill-model simulator is a
 separate unit-tested component, not qualified paper.
 

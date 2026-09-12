@@ -11,13 +11,17 @@ with a second publish timeout; no automatic retry is authorized. Both uncertain
 bars are now proven committed exactly once, but delivery/catch-up is incomplete. Bounded canary
 admission, cumulative budget guards and Macro causal restoration are published
 and tested; runtime dependency pins are now coherent. The actual Redis/PostgreSQL
-Risk-to-Execution composition [passed its isolated CI gate](RELEASE-GATE-2026-09-12.md)
+Risk-to-Execution composition [passed its isolated CI and local Docker gates](RELEASE-GATE-2026-09-12.md)
 with a synthetic venue. This does not cover the full Strategy/Router/LLM path or
 real venue semantics. The approved Docker SSD relocation is complete; all-engine
 inventory and both databases' post-move checkpoints passed. Docker is available,
 with all containers stopped. The dated recovery report records a Windows/WSL
 settings-reader discrepancy; the actual Docker/WSL path is on C:.
-Runtime catch-up is not resumed. The historical technical marker below
+Binance public/market routing and disconnect freshness are fixed and verified
+on Windows, Linux CI and the installed Docker image. Runtime catch-up is not
+resumed: bounded clean-stop and schema-verify-only/no-dispatch recovery startup
+are needed before touching the preserved twelve-migration primary database.
+The historical technical marker below
 does not qualify this release.
 EVEDEX qualification, alpha and LIVE remain false. The alternative simulator has
 a tested fill-model kernel, not yet a durable paper-trading runtime.
