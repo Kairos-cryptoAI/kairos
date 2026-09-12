@@ -13,9 +13,11 @@ admission, cumulative budget guards and Macro causal restoration are published
 and tested; runtime dependency pins are now coherent. The actual Redis/PostgreSQL
 Risk-to-Execution composition [passed its isolated CI gate](RELEASE-GATE-2026-09-12.md)
 with a synthetic venue. This does not cover the full Strategy/Router/LLM path or
-real venue semantics. Docker is stopped: verified backups are ready, but the
-approved SSD relocation still awaits the official settings step and post-move
-checks. Runtime catch-up is not resumed. The historical technical marker below
+real venue semantics. The approved Docker SSD relocation is complete; all-engine
+inventory and both databases' post-move checkpoints passed. Docker is available,
+with all containers stopped. The dated recovery report records a Windows/WSL
+settings-reader discrepancy; the actual Docker/WSL path is on C:.
+Runtime catch-up is not resumed. The historical technical marker below
 does not qualify this release.
 EVEDEX qualification, alpha and LIVE remain false. The alternative simulator has
 a tested fill-model kernel, not yet a durable paper-trading runtime.
