@@ -21,7 +21,10 @@ function Invoke-ReleaseGit {
         [Parameter(Mandatory = $true)][string[]]$Arguments
     )
 
-    $result = & git -C $RepositoryPath @Arguments 2>&1
+    # Git can emit benign warnings for ignored, inaccessible cache directories.  The
+    # release decision is based on its exit status and stdout, so do not let an
+    # external-program stderr record become a PowerShell terminating error.
+    $result = & git -C $RepositoryPath @Arguments 2>$null
     if ($LASTEXITCODE -ne 0) {
         throw "git -C $RepositoryPath $($Arguments -join ' ') failed: $($result -join [Environment]::NewLine)"
     }
@@ -81,7 +84,7 @@ foreach ($entry in $entries) {
 
     $branch = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("branch", "--show-current")
     if ($branch -ne "main") { throw "$($entry.name) is not on main (found '$branch')" }
-    $dirty = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("status", "--porcelain=v1")
+    $dirty = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("status", "--porcelain=v1", "--untracked-files=no")
     if (-not [string]::IsNullOrWhiteSpace($dirty)) { throw "$($entry.name) has uncommitted changes" }
 
     $head = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("rev-parse", "HEAD")
