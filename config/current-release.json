@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "releaseName": "current-main-source-identity",
-  "generatedAtUtc": "2026-09-19T15:30:00Z",
+  "generatedAtUtc": "2026-09-19T15:42:00Z",
   "purpose": "Reproducible source identity for the current Kairos engineering release gate. This is not a trading, alpha, PAPER, or LIVE approval.",
   "repositories": [
     { "name": "kairos", "directory": "kairos", "revision": "SELF" },
     { "name": "kairos-aggregator", "directory": "kairos-aggregator", "revision": "cef492848ae0687f2f720bc0723953e0e0e1cc97" },
     { "name": "kairos-backtest", "directory": "kairos-backtest", "revision": "bd80b9314ece31f3d23c2c708b7b780dfe717e81" },
     { "name": "kairos-core", "directory": "kairos-core", "revision": "91cd95c8e5bd4393ed04606df08c205583092df7" },
-    { "name": "kairos-deploy", "directory": "kairos-deploy", "revision": "a6a687a2cdd3731865b9fc07cb03ef46d648778a" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "revision": "87accc3f454fac5bd5871ad164d7f8cc7196ac81" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "revision": "73122e825b333281d4fd4acce1c57f90c4cc511c" },
     { "name": "kairos-llm", "directory": "kairos-llm", "revision": "d824343d67f001ae0cce51bf8af9427529f7b76c" },
     { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "revision": "3f6a344b7c5e7254c0aed6caa326bdcc9cdb8d5b" },
