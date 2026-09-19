@@ -194,3 +194,7 @@ boundary remain outstanding.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
 [ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.
+
+The exact multi-repository source set for the current engineering gate is recorded in the
+[current release identity](docs/CURRENT_RELEASE.md). It is intentionally separate from the
+historical technical-readiness claim and does not change any trading permission.

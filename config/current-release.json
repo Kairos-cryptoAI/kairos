@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "releaseName": "current-main-source-identity",
+  "generatedAtUtc": "2026-09-19T15:30:00Z",
+  "purpose": "Reproducible source identity for the current Kairos engineering release gate. This is not a trading, alpha, PAPER, or LIVE approval.",
+  "repositories": [
+    { "name": "kairos", "directory": "kairos", "revision": "SELF" },
+    { "name": "kairos-aggregator", "directory": "kairos-aggregator", "revision": "cef492848ae0687f2f720bc0723953e0e0e1cc97" },
+    { "name": "kairos-backtest", "directory": "kairos-backtest", "revision": "bd80b9314ece31f3d23c2c708b7b780dfe717e81" },
+    { "name": "kairos-core", "directory": "kairos-core", "revision": "91cd95c8e5bd4393ed04606df08c205583092df7" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "revision": "a6a687a2cdd3731865b9fc07cb03ef46d648778a" },
+    { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "revision": "73122e825b333281d4fd4acce1c57f90c4cc511c" },
+    { "name": "kairos-llm", "directory": "kairos-llm", "revision": "d824343d67f001ae0cce51bf8af9427529f7b76c" },
+    { "name": "kairos-macro", "directory": "kairos-macro", "revision": "3f6a344b7c5e7254c0aed6caa326bdcc9cdb8d5b" },
+    { "name": "kairos-persistence", "directory": "kairos-persistence", "revision": "526c30feddcaf4b7147449e6e513fec61c43d75f" },
+    { "name": "kairos-quant", "directory": "kairos-quant", "revision": "fc34bfcfed5d99d0cd75926037ac9b4369243c20" },
+    { "name": "kairos-risk", "directory": "kairos-risk", "revision": "a10649ce2e6b802214ff48436c93fd2322f140bf" },
+    { "name": "kairos-router", "directory": "kairos-router", "revision": "053e90b6adaf0f7db5374f76934bc33095be0b0e" },
+    { "name": "kairos-strategy-engine", "directory": "kairos-strategy-engine", "revision": "6a16440747dee357b40a18434634449f05b7b824" },
+    { "name": "kairos-text-scouts", "directory": "kairos-text-scouts", "revision": "7db4b3841ba0981e7dd589e17ef39ee689ad976e" }
+  ],
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  },
+  "constraints": [
+    "SELF deliberately resolves the meta repository at verification time: embedding its own eventual Git object ID would be mathematically self-referential.",
+    "The manifest validates source identity only. It never arms an exchange, a simulator, a strategy, PAPER, or LIVE.",
+    "A clean main checkout and an origin/main match are required for every listed repository."
+  ]
+}

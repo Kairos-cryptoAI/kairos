@@ -7,6 +7,8 @@ $ErrorActionPreference = "Stop"
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $runnerPath = Join-Path $repoRoot "scripts\Test-Kairos.ps1"
 $manifestPath = Join-Path $repoRoot "config\repositories.json"
+$currentReleasePath = Join-Path $repoRoot "config\current-release.json"
+$currentReleaseVerifierPath = Join-Path $repoRoot "scripts\Test-CurrentRelease.ps1"
 
 $tokens = $null
 $parseErrors = $null
@@ -17,6 +19,17 @@ $parseErrors = $null
 ) | Out-Null
 if ($parseErrors.Count -gt 0) {
     throw "PowerShell runner parse errors: $($parseErrors -join '; ')"
+}
+
+$releaseTokens = $null
+$releaseParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $currentReleaseVerifierPath,
+    [ref]$releaseTokens,
+    [ref]$releaseParseErrors
+) | Out-Null
+if ($releaseParseErrors.Count -gt 0) {
+    throw "Current-release verifier parse errors: $($releaseParseErrors -join '; ')"
 }
 
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
@@ -42,6 +55,31 @@ foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--chec
     if (-not $runnerText.Contains($requiredFragment)) {
         throw "Runner is missing required command fragment: $requiredFragment"
     }
+}
+
+$currentRelease = Get-Content -LiteralPath $currentReleasePath -Raw | ConvertFrom-Json
+if ($currentRelease.schemaVersion -ne 1) { throw "Unexpected current-release manifest schema" }
+if (@($currentRelease.repositories).Count -ne 14) { throw "Expected 14 current-release repositories" }
+$expectedReleaseNames = @(
+    "kairos", "kairos-aggregator", "kairos-backtest", "kairos-core", "kairos-deploy",
+    "kairos-execution-engine", "kairos-llm", "kairos-macro", "kairos-persistence",
+    "kairos-quant", "kairos-risk", "kairos-router", "kairos-strategy-engine", "kairos-text-scouts"
+)
+if ((Compare-Object -ReferenceObject ($expectedReleaseNames | Sort-Object) -DifferenceObject ($currentRelease.repositories.name | Sort-Object))) {
+    throw "Current-release repository set is incomplete or unexpected"
+}
+foreach ($entry in $currentRelease.repositories) {
+    if ([string]::IsNullOrWhiteSpace($entry.directory) -or [string]::IsNullOrWhiteSpace($entry.revision)) {
+        throw "Current-release entry is incomplete: $($entry.name)"
+    }
+    if ($entry.revision -ne "SELF" -and $entry.revision -notmatch '^[0-9a-f]{40}$') {
+        throw "Current-release revision is invalid: $($entry.name)"
+    }
+}
+if ($currentRelease.readiness.technicalPaperReady -or $currentRelease.readiness.paperQualified -or
+    $currentRelease.readiness.alphaReady -or $currentRelease.readiness.liveReady -or
+    $currentRelease.readiness.strategyPolicy -ne "REJECT_ALL") {
+    throw "Current-release manifest must not grant trading readiness"
 }
 if (-not $runnerText.Contains('@("mypy", "--python-version", $version, $entry.source)')) {
     throw "Runner must type-check against the selected Python matrix version"
