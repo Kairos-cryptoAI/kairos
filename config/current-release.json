@@ -11,10 +11,10 @@
     { "name": "kairos-deploy", "directory": "kairos-deploy", "revision": "a6a687a2cdd3731865b9fc07cb03ef46d648778a" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "revision": "73122e825b333281d4fd4acce1c57f90c4cc511c" },
     { "name": "kairos-llm", "directory": "kairos-llm", "revision": "d824343d67f001ae0cce51bf8af9427529f7b76c" },
-    { "name": "kairos-macro", "directory": "kairos-macro", "revision": "3f6a344b7c5e7254c0aed6caa326bdcc9cdb8d5b" },
+    { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "revision": "3f6a344b7c5e7254c0aed6caa326bdcc9cdb8d5b" },
     { "name": "kairos-persistence", "directory": "kairos-persistence", "revision": "526c30feddcaf4b7147449e6e513fec61c43d75f" },
-    { "name": "kairos-quant", "directory": "kairos-quant", "revision": "fc34bfcfed5d99d0cd75926037ac9b4369243c20" },
-    { "name": "kairos-risk", "directory": "kairos-risk", "revision": "a10649ce2e6b802214ff48436c93fd2322f140bf" },
+    { "name": "kairos-quant-scouts", "directory": "kairos-quant-scouts", "revision": "fc34bfcfed5d99d0cd75926037ac9b4369243c20" },
+    { "name": "kairos-risk-manager", "directory": "kairos-risk-manager", "revision": "a10649ce2e6b802214ff48436c93fd2322f140bf" },
     { "name": "kairos-router", "directory": "kairos-router", "revision": "053e90b6adaf0f7db5374f76934bc33095be0b0e" },
     { "name": "kairos-strategy-engine", "directory": "kairos-strategy-engine", "revision": "6a16440747dee357b40a18434634449f05b7b824" },
     { "name": "kairos-text-scouts", "directory": "kairos-text-scouts", "revision": "7db4b3841ba0981e7dd589e17ef39ee689ad976e" }

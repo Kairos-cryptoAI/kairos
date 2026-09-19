@@ -62,8 +62,8 @@ if ($currentRelease.schemaVersion -ne 1) { throw "Unexpected current-release man
 if (@($currentRelease.repositories).Count -ne 14) { throw "Expected 14 current-release repositories" }
 $expectedReleaseNames = @(
     "kairos", "kairos-aggregator", "kairos-backtest", "kairos-core", "kairos-deploy",
-    "kairos-execution-engine", "kairos-llm", "kairos-macro", "kairos-persistence",
-    "kairos-quant", "kairos-risk", "kairos-router", "kairos-strategy-engine", "kairos-text-scouts"
+    "kairos-execution-engine", "kairos-llm", "kairos-macro-strategist", "kairos-persistence",
+    "kairos-quant-scouts", "kairos-risk-manager", "kairos-router", "kairos-strategy-engine", "kairos-text-scouts"
 )
 if ((Compare-Object -ReferenceObject ($expectedReleaseNames | Sort-Object) -DifferenceObject ($currentRelease.repositories.name | Sort-Object))) {
     throw "Current-release repository set is incomplete or unexpected"

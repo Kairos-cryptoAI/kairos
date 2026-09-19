@@ -50,8 +50,8 @@ if ($manifest.readiness.technicalPaperReady -or $manifest.readiness.paperQualifi
 
 $expectedNames = @(
     "kairos", "kairos-aggregator", "kairos-backtest", "kairos-core", "kairos-deploy",
-    "kairos-execution-engine", "kairos-llm", "kairos-macro", "kairos-persistence",
-    "kairos-quant", "kairos-risk", "kairos-router", "kairos-strategy-engine", "kairos-text-scouts"
+    "kairos-execution-engine", "kairos-llm", "kairos-macro-strategist", "kairos-persistence",
+    "kairos-quant-scouts", "kairos-risk-manager", "kairos-router", "kairos-strategy-engine", "kairos-text-scouts"
 )
 $entries = @($manifest.repositories)
 if ($entries.Count -ne $expectedNames.Count) { throw "Expected $($expectedNames.Count) release repositories" }
