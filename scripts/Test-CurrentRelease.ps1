@@ -41,7 +41,17 @@ if (-not (Test-Path -LiteralPath $workspaceFullPath -PathType Container)) {
 }
 
 $manifest = Get-Content -LiteralPath $manifestFullPath -Raw | ConvertFrom-Json
-if ($manifest.schemaVersion -ne 1) { throw "Unsupported current-release manifest schema" }
+if ($manifest.schemaVersion -ne 2 -or $manifest.kind -ne "CURRENT_SOURCE_IDENTITY") {
+    throw "Unsupported current-release manifest schema"
+}
+if ([string]::IsNullOrWhiteSpace($manifest.releaseId) -or $manifest.releaseId -notmatch '^engineering-main-\d{8}T\d{6}Z$') {
+    throw "Current-release manifest requires a stable engineering release identifier"
+}
+if ($manifest.scope.classification -ne "ENGINEERING_ONLY" -or
+    $manifest.scope.tradingAuthority -ne "NONE" -or
+    $manifest.scope.simulatorAuthority -ne "NONE") {
+    throw "The source-identity manifest must not grant runtime authority"
+}
 if ($manifest.readiness.technicalPaperReady -or $manifest.readiness.paperQualified -or
     $manifest.readiness.alphaReady -or $manifest.readiness.liveReady -or
     $manifest.readiness.strategyPolicy -ne "REJECT_ALL") {
@@ -61,7 +71,9 @@ if ((Compare-Object -ReferenceObject ($expectedNames | Sort-Object) -DifferenceO
 }
 
 foreach ($entry in $entries) {
-    if ([string]::IsNullOrWhiteSpace($entry.directory) -or [string]::IsNullOrWhiteSpace($entry.revision)) {
+    if ([string]::IsNullOrWhiteSpace($entry.directory) -or
+        [string]::IsNullOrWhiteSpace($entry.origin) -or
+        [string]::IsNullOrWhiteSpace($entry.revision)) {
         throw "Incomplete source identity for $($entry.name)"
     }
     if ($entry.directory -match '[\\/]' -or $entry.directory -eq '.' -or $entry.directory -eq '..') {
@@ -72,6 +84,9 @@ foreach ($entry in $entries) {
     }
     if ($entry.revision -eq "SELF" -and $entry.name -ne "kairos") {
         throw "Only the meta repository may use SELF"
+    }
+    if ($entry.origin -ne "https://github.com/Kairos-cryptoAI/$($entry.name).git") {
+        throw "Unexpected canonical source origin for $($entry.name)"
     }
 
     $repositoryPath = Join-Path $workspaceFullPath $entry.directory

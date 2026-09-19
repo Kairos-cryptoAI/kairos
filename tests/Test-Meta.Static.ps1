@@ -58,7 +58,18 @@ foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--chec
 }
 
 $currentRelease = Get-Content -LiteralPath $currentReleasePath -Raw | ConvertFrom-Json
-if ($currentRelease.schemaVersion -ne 1) { throw "Unexpected current-release manifest schema" }
+if ($currentRelease.schemaVersion -ne 2 -or $currentRelease.kind -ne "CURRENT_SOURCE_IDENTITY") {
+    throw "Unexpected current-release manifest schema"
+}
+if ([string]::IsNullOrWhiteSpace($currentRelease.releaseId) -or
+    $currentRelease.releaseId -notmatch '^engineering-main-\d{8}T\d{6}Z$') {
+    throw "Current-release manifest requires an engineering release identifier"
+}
+if ($currentRelease.scope.classification -ne "ENGINEERING_ONLY" -or
+    $currentRelease.scope.tradingAuthority -ne "NONE" -or
+    $currentRelease.scope.simulatorAuthority -ne "NONE") {
+    throw "Current-release manifest must not grant runtime authority"
+}
 if (@($currentRelease.repositories).Count -ne 14) { throw "Expected 14 current-release repositories" }
 $expectedReleaseNames = @(
     "kairos", "kairos-aggregator", "kairos-backtest", "kairos-core", "kairos-deploy",
@@ -69,11 +80,16 @@ if ((Compare-Object -ReferenceObject ($expectedReleaseNames | Sort-Object) -Diff
     throw "Current-release repository set is incomplete or unexpected"
 }
 foreach ($entry in $currentRelease.repositories) {
-    if ([string]::IsNullOrWhiteSpace($entry.directory) -or [string]::IsNullOrWhiteSpace($entry.revision)) {
+    if ([string]::IsNullOrWhiteSpace($entry.directory) -or
+        [string]::IsNullOrWhiteSpace($entry.origin) -or
+        [string]::IsNullOrWhiteSpace($entry.revision)) {
         throw "Current-release entry is incomplete: $($entry.name)"
     }
     if ($entry.revision -ne "SELF" -and $entry.revision -notmatch '^[0-9a-f]{40}$') {
         throw "Current-release revision is invalid: $($entry.name)"
+    }
+    if ($entry.origin -ne "https://github.com/Kairos-cryptoAI/$($entry.name).git") {
+        throw "Current-release source origin is invalid: $($entry.name)"
     }
 }
 if ($currentRelease.readiness.technicalPaperReady -or $currentRelease.readiness.paperQualified -or

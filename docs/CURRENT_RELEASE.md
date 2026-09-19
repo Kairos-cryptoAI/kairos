@@ -1,9 +1,13 @@
-# Current release source identity
+# Current source identity
 
-`config/current-release.json` records the exact 14-repository source set used by the
-current engineering release gate. It is deliberately a source-identity document, not an
-approval to trade: every readiness flag remains false and the strategy policy remains
-`REJECT_ALL`.
+`config/current-release.json` records the exact 14-repository source set for current
+engineering work. It has no runtime authority: its classification is `ENGINEERING_ONLY`,
+all readiness flags remain false, and the strategy policy remains `REJECT_ALL`.
+
+The document distinguishes source identity from evidence. A historical deployment lock,
+historical release gate, simulator result, or previous green CI run does not automatically
+apply to the source identity recorded here. Evidence can support a claim only when its full
+source set matches this manifest, and it still cannot authorize PAPER or LIVE by itself.
 
 The `kairos` entry uses `SELF`. A Git object cannot contain its own eventual object ID,
 so the verifier resolves that one entry to the clean `main` commit being checked. Every

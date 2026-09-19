@@ -186,11 +186,12 @@ availability soak, and no order was made. Technical EVEDEX canaries start no pai
 services.
 
 This is still **not production-ready**. The runtime mutation policy remains `REJECT_ALL` while
-the exact forward-frozen candidate accumulates independent evidence. The clean read-only stack has no Binance gaps or
-durable backlog and passed backup/restore, but EVEDEX DEV currently has executable books only for
-BTC/ETH (SOL/BNB/XRP are empty) and the dedicated DEV credentials are absent. Authenticated venue
-semantics, elapsed operational gates, provider soak qualification and a future managed KMS/Vault
-boundary remain outstanding.
+the exact forward-frozen candidate accumulates independent evidence. Long-gap recovery restored
+the Binance bars and passed a backup/restore check, but a durable historical outbox backlog remains
+intentionally undispatched pending bounded reconciliation; no application consumer is running.
+EVEDEX DEV currently has executable books only for BTC/ETH (SOL/BNB/XRP are empty) and the dedicated
+DEV credentials are absent. Authenticated venue semantics, elapsed operational gates, provider soak
+qualification and a future managed KMS/Vault boundary remain outstanding.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
 [ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.
