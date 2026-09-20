@@ -31,6 +31,25 @@ function Invoke-ReleaseGit {
     return ($result | Out-String).Trim()
 }
 
+function Find-TrackedCredentialPatternPaths {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepositoryPath,
+        [Parameter(Mandatory = $true)][string]$Pattern
+    )
+
+    # `git grep -l` deliberately returns paths, never matching text. This makes
+    # the current-release receipt safe to retain even if it detects an accidental
+    # committed credential. Exit code 1 is Git's documented "no matches" result.
+    $paths = & git -C $RepositoryPath grep -I -l -E -- $Pattern 2>$null
+    if ($LASTEXITCODE -eq 1) {
+        return @()
+    }
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to perform tracked-credential pattern check in $RepositoryPath"
+    }
+    return @($paths | ForEach-Object { $_.ToString().Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+}
+
 $manifestFullPath = [System.IO.Path]::GetFullPath($ManifestPath)
 $workspaceFullPath = [System.IO.Path]::GetFullPath($WorkspaceRoot)
 if (-not (Test-Path -LiteralPath $manifestFullPath -PathType Leaf)) {
@@ -111,6 +130,27 @@ foreach ($entry in $entries) {
     if ($head -ne $originMain) { throw "$($entry.name) HEAD does not match origin/main" }
     if ($entry.revision -ne "SELF" -and $head -ne $entry.revision) {
         throw "$($entry.name) HEAD does not match the current-release manifest"
+    }
+}
+
+# Source identity is not sufficient to certify an engineering release if a
+# credential has been committed into any tracked source file. Keep this small,
+# conservative, and path-only: this verifier must never print matching values.
+$credentialPatterns = [ordered]@{
+    "openai-style-secret" = "sk-[A-Za-z0-9_-]{20,}"
+    "github-classic-token" = "ghp_[A-Za-z0-9]{30,}"
+    "github-fine-grained-token" = "github_pat_[A-Za-z0-9_]{30,}"
+    "slack-token" = "xox[baprs]-[A-Za-z0-9-]{20,}"
+    "private-key-pem" = "-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    "bearer-token" = "Bearer[[:space:]]+[A-Za-z0-9._~-]{20,}"
+}
+foreach ($entry in $entries) {
+    $repositoryPath = Join-Path $workspaceFullPath $entry.directory
+    foreach ($patternId in $credentialPatterns.Keys) {
+        $matchingPaths = Find-TrackedCredentialPatternPaths -RepositoryPath $repositoryPath -Pattern $credentialPatterns[$patternId]
+        foreach ($matchingPath in $matchingPaths) {
+            throw "Tracked credential-like pattern '$patternId' detected in $($entry.name)/$matchingPath; source identity cannot be certified"
+        }
     }
 }
 

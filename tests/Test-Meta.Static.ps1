@@ -111,6 +111,14 @@ foreach ($requiredFragment in @("current-release-gate.sources.lock.json", "sim-f
         throw "Current-release verifier is missing required source-projection check: $requiredFragment"
     }
 }
+foreach ($requiredFragment in @("Find-TrackedCredentialPatternPaths", "openai-style-secret", "private-key-pem", 'git -C $RepositoryPath grep -I -l -E')) {
+    if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
+        throw "Current-release verifier is missing required tracked-credential check: $requiredFragment"
+    }
+}
+if (-not $currentReleaseVerifierText.Contains("never print matching values")) {
+    throw "Current-release credential check must remain path-only"
+}
 
 $markdownFiles = @(
     Get-Item -LiteralPath (Join-Path $repoRoot "README.md"), (Join-Path $repoRoot "CONTRIBUTING.md"), (Join-Path $repoRoot "SPEC.md")
