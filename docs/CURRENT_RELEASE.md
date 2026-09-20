@@ -13,6 +13,10 @@ The `kairos` entry uses `SELF`. A Git object cannot contain its own eventual obj
 so the verifier resolves that one entry to the clean `main` commit being checked. Every
 other repository is pinned to a full 40-character commit ID.
 
+`kairos-backtest` is included so that the engineering snapshot records the frozen
+research checkout, but it is not a runtime dependency of the current integration gates.
+Those gates deliberately leave its evaluator lock, plan, and evidence untouched.
+
 Run the local gate from this repository when all source checkouts are siblings under
 `D:\Kairos`:
 
