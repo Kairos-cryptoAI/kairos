@@ -33,3 +33,7 @@ source tree for a small set of high-confidence credential shapes. A match report
 the repository, path, and pattern class; it never prints a matching value. It makes no
 network calls, reads no secrets, starts no Docker services, and cannot arm EVEDEX,
 PAPER, LIVE, or a simulator.
+
+The same local gate rejects any external GitHub Action or reusable workflow reference
+that is not pinned to a full 40-character Git SHA. Container actions must use a
+SHA-256 digest; local actions remain within the reviewed source tree.

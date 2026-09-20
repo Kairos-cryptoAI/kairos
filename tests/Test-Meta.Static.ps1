@@ -131,6 +131,11 @@ foreach ($requiredFragment in @("Find-TrackedCredentialPatternPaths", "openai-st
 if (-not $currentReleaseVerifierText.Contains("never print matching values")) {
     throw "Current-release credential check must remain path-only"
 }
+foreach ($requiredFragment in @("Find-UnpinnedGitHubActions", "isGitSha", "isDockerDigest", "Unpinned GitHub Action reference")) {
+    if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
+        throw "Current-release verifier is missing required action-pin check: $requiredFragment"
+    }
+}
 
 $githubSecurityVerifierText = Get-Content -LiteralPath $githubSecurityVerifierPath -Raw
 foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "security_and_analysis", "--paginate", "GitHub read-only API request")) {

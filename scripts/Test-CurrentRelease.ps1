@@ -50,6 +50,40 @@ function Find-TrackedCredentialPatternPaths {
     return @($paths | ForEach-Object { $_.ToString().Trim() } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
 }
 
+function Find-UnpinnedGitHubActions {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepositoryPath
+    )
+
+    $workflowPaths = @(
+        (Invoke-ReleaseGit -RepositoryPath $RepositoryPath -Arguments @("ls-files", "--", ".github/workflows")) -split "`r?`n" |
+            Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    )
+    $findings = [System.Collections.Generic.List[object]]::new()
+    foreach ($relativePath in $workflowPaths) {
+        if ($relativePath -notmatch '\.ya?ml$') { continue }
+        $fullPath = Join-Path $RepositoryPath $relativePath
+        $lineNumber = 0
+        foreach ($line in Get-Content -LiteralPath $fullPath) {
+            $lineNumber++
+            $match = [regex]::Match($line, '^\s*uses:\s*(?<reference>\S+)')
+            if (-not $match.Success) { continue }
+            $reference = $match.Groups["reference"].Value
+            $isLocal = $reference.StartsWith("./", [System.StringComparison]::Ordinal)
+            $isGitSha = $reference -match '^[^@\s]+@[0-9a-f]{40}$'
+            $isDockerDigest = $reference -match '^docker://[^@\s]+@sha256:[0-9a-f]{64}$'
+            if (-not ($isLocal -or $isGitSha -or $isDockerDigest)) {
+                $findings.Add([pscustomobject]@{
+                    Path = $relativePath
+                    Line = $lineNumber
+                    Reference = $reference
+                })
+            }
+        }
+    }
+    return @($findings)
+}
+
 $manifestFullPath = [System.IO.Path]::GetFullPath($ManifestPath)
 $workspaceFullPath = [System.IO.Path]::GetFullPath($WorkspaceRoot)
 if (-not (Test-Path -LiteralPath $manifestFullPath -PathType Leaf)) {
@@ -130,6 +164,17 @@ foreach ($entry in $entries) {
     if ($head -ne $originMain) { throw "$($entry.name) HEAD does not match origin/main" }
     if ($entry.revision -ne "SELF" -and $head -ne $entry.revision) {
         throw "$($entry.name) HEAD does not match the current-release manifest"
+    }
+}
+
+# Workflow actions execute with repository credentials. Every external action or
+# reusable workflow must therefore be bound to an immutable Git SHA (or, for a
+# container action, a content digest). Local actions are reviewed with their
+# containing source tree and are allowed by the same source-identity boundary.
+foreach ($entry in $entries) {
+    $repositoryPath = Join-Path $workspaceFullPath $entry.directory
+    foreach ($finding in Find-UnpinnedGitHubActions -RepositoryPath $repositoryPath) {
+        throw "Unpinned GitHub Action reference in $($entry.name)/$($finding.Path):$($finding.Line) ($($finding.Reference))"
     }
 }
 
