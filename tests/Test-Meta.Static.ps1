@@ -148,7 +148,7 @@ foreach ($requiredFragment in @("Resolve-ReleaseGpgProgram", "Assert-ReleaseComm
 }
 
 $githubSecurityVerifierText = Get-Content -LiteralPath $githubSecurityVerifierPath -Raw
-foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "Get-OpenSecretScanningAlertCount", "hide_secret=true", "security_and_analysis", "--paginate", "GitHub read-only API request")) {
+foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "Get-OpenSecretScanningAlertCount", "Get-MainBranchProtection", "required_signatures", "hide_secret=true", "security_and_analysis", "--paginate", "GitHub read-only API request")) {
     if (-not $githubSecurityVerifierText.Contains($requiredFragment)) {
         throw "GitHub source-security verifier is missing required check: $requiredFragment"
     }

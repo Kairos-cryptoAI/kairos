@@ -88,6 +88,41 @@ function Get-OpenSecretScanningAlertCount {
     return Get-PaginatedObjectCount -Description "$Repository redacted Secret Scanning alerts" -Endpoint "repos/$Repository/secret-scanning/alerts?state=open&hide_secret=true&per_page=100"
 }
 
+function Get-MainBranchProtection {
+    param(
+        [Parameter(Mandatory = $true)][string]$Repository
+    )
+
+    $protectionPayload = Invoke-GitHubReadOnlyApi -Description "$Repository main branch protection" -Arguments @(
+        "-H", "Accept: application/vnd.github+json",
+        "-H", "X-GitHub-Api-Version: 2026-03-10",
+        "repos/$Repository/branches/main/protection"
+    )
+    $signaturePayload = Invoke-GitHubReadOnlyApi -Description "$Repository main required signatures" -Arguments @(
+        "-H", "Accept: application/vnd.github+json",
+        "-H", "X-GitHub-Api-Version: 2026-03-10",
+        "repos/$Repository/branches/main/protection/required_signatures"
+    )
+    try {
+        $protection = $protectionPayload | ConvertFrom-Json
+        $signatures = $signaturePayload | ConvertFrom-Json
+    }
+    catch {
+        throw "GitHub returned invalid main branch protection data for $Repository"
+    }
+    $reviewProtection = $protection.PSObject.Properties["required_pull_request_reviews"]
+    $statusCheckProtection = $protection.PSObject.Properties["required_status_checks"]
+    $hasRequiredReviews = $null -ne $reviewProtection -and $null -ne $reviewProtection.Value
+    $hasRequiredChecks = $null -ne $statusCheckProtection -and $null -ne $statusCheckProtection.Value
+    return [pscustomobject]@{
+        EnforceAdmins = $protection.enforce_admins.enabled
+        NoForcePush = -not $protection.allow_force_pushes.enabled
+        NoDeletion = -not $protection.allow_deletions.enabled
+        RequiredSignatures = $signatures.enabled
+        DirectMainDelivery = -not ($hasRequiredReviews -or $hasRequiredChecks)
+    }
+}
+
 $failures = [System.Collections.Generic.List[string]]::new()
 $rows = foreach ($entry in $entries | Sort-Object name) {
     if ([string]::IsNullOrWhiteSpace($entry.origin) -or $entry.origin -notmatch '^https://github\.com/(?<owner>[^/]+)/(?<repository>[^/]+)\.git$') {
@@ -112,12 +147,18 @@ $rows = foreach ($entry in $entries | Sort-Object name) {
     $dependabotUpdates = $analysis.dependabot_security_updates.status
     $openAlerts = Get-OpenDependabotAlertCount -Repository $repository
     $openSecretAlerts = Get-OpenSecretScanningAlertCount -Repository $repository
+    $branchProtection = Get-MainBranchProtection -Repository $repository
 
     if ($secretScanning -ne "enabled") { $failures.Add("${repository}: Secret Scanning is not enabled") }
     if ($pushProtection -ne "enabled") { $failures.Add("${repository}: Secret Scanning Push Protection is not enabled") }
     if ($dependabotUpdates -ne "enabled") { $failures.Add("${repository}: Dependabot security updates are not enabled") }
     if ($openAlerts -ne 0) { $failures.Add("${repository}: $openAlerts open Dependabot alert(s)") }
     if ($openSecretAlerts -ne 0) { $failures.Add("${repository}: $openSecretAlerts open redacted Secret Scanning alert(s)") }
+    if (-not $branchProtection.EnforceAdmins) { $failures.Add("${repository}: main branch protection does not apply to administrators") }
+    if (-not $branchProtection.NoForcePush) { $failures.Add("${repository}: main branch permits force pushes") }
+    if (-not $branchProtection.NoDeletion) { $failures.Add("${repository}: main branch permits deletion") }
+    if (-not $branchProtection.RequiredSignatures) { $failures.Add("${repository}: main branch does not require verified signatures") }
+    if (-not $branchProtection.DirectMainDelivery) { $failures.Add("${repository}: main branch protection does not match direct signed delivery policy") }
 
     [pscustomobject]@{
         Repository = $repository
@@ -126,6 +167,9 @@ $rows = foreach ($entry in $entries | Sort-Object name) {
         DependabotSecurityUpdates = $dependabotUpdates
         OpenDependabotAlerts = $openAlerts
         OpenRedactedSecretScanningAlerts = $openSecretAlerts
+        MainSignatureProtection = $branchProtection.RequiredSignatures
+        MainNoForcePush = $branchProtection.NoForcePush
+        MainNoDeletion = $branchProtection.NoDeletion
     }
 }
 

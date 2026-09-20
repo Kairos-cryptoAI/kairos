@@ -27,6 +27,13 @@ with GitHub's `hide_secret=true` redaction option. It returned zero open alerts
 for every repository in scope; no literal secret material was retrieved or
 reported.
 
+At `2026-09-20T19:02:17Z`, an immediate readback confirmed that all 14 `main`
+branches have the same compatible protection profile: protection applies to
+administrators, force pushes and branch deletion are disabled, and GitHub
+requires verified commit signatures.
+The profile deliberately has no required pull request review or required status
+check, so it preserves the approved direct, signed delivery to `main`.
+
 No secret alerts or credential values were enumerated while producing this
 receipt. The local current-release verifier additionally rejects a release if a
 small high-confidence credential pattern appears in any tracked source file;
@@ -47,10 +54,9 @@ secret files, or contact a trading or model provider.
 
 This is source-code protection, not a trading authorization or a replacement
 for an independent security audit. It does not assert that there are no historic
-secrets, no vulnerabilities, or no runtime configuration issues. It does not
-modify branch protection because the approved delivery model commits directly to
-`main`; requiring pull requests or status checks would be a separate workflow
-decision.
+secrets, no vulnerabilities, or no runtime configuration issues. The limited
+branch protection profile preserves direct signed commits to `main`; requiring
+pull requests or status checks remains a separate workflow decision.
 
 It does not change any readiness flag. The following remain true:
 
