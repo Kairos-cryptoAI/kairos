@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-12_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-20_
 
 ## Current implementation update
 
@@ -12,8 +12,10 @@ bars are now proven committed exactly once, but delivery/catch-up is incomplete.
 admission, cumulative budget guards and Macro causal restoration are published
 and tested; runtime dependency pins are now coherent. The actual Redis/PostgreSQL
 Risk-to-Execution composition [passed its isolated CI and local Docker gates](RELEASE-GATE-2026-09-12.md)
-with a synthetic venue. This does not cover the full Strategy/Router/LLM path or
-real venue semantics. The approved Docker SSD relocation is complete; all-engine
+with a synthetic venue. The missing sealed closed-bar → Strategy → Router → review
+→ SIM-risk → durable simulator path now also [passes in isolated local Docker](SIM-FULL-PATH-GATE-2026-09-20.md).
+Its review is a zero-cost deterministic test double, not an LLM/provider call, and
+it does not cover real venue semantics. The approved Docker SSD relocation is complete; all-engine
 inventory and both databases' post-move checkpoints passed. Docker is available,
 with all containers stopped. The dated recovery report records a Windows/WSL
 settings-reader discrepancy; the actual Docker/WSL path is on C:.
@@ -23,8 +25,9 @@ resumed: bounded clean-stop and schema-verify-only/no-dispatch recovery startup
 are needed before touching the preserved twelve-migration primary database.
 The historical technical marker below
 does not qualify this release.
-EVEDEX qualification, alpha and LIVE remain false. The alternative simulator has
-a tested fill-model kernel, not yet a durable paper-trading runtime.
+EVEDEX qualification, alpha and LIVE remain false. The alternative simulator now
+has a durable, isolated full-path proof; it remains separate from PAPER and real
+venue qualification.
 
 ## September recovery update
 

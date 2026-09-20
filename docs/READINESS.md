@@ -61,9 +61,12 @@ Risk-to-Execution composition has now [passed with a synthetic venue](RELEASE-GA
 both in hosted CI and on the local relocated Docker engine (83 tests each).
 SSD relocation and post-move storage/database checkpoint checks are complete.
 The split Binance transport and installed Quant image also passed their scoped
-checks. Runtime catch-up, the wider Strategy/Router/LLM path
-and real EVEDEX qualification remain incomplete. The fill-model simulator is a
-separate unit-tested component, not qualified paper.
+checks. A sealed full-path simulator proof now covers closed bars through
+Strategy, Router, a local deterministic review double, SIM-risk and durable
+simulator execution; its exact scope is recorded in
+[the September 20 simulator receipt](SIM-FULL-PATH-GATE-2026-09-20.md).
+Runtime catch-up and real EVEDEX qualification remain incomplete. The simulator
+is deliberately separate from PAPER and cannot qualify a strategy or venue.
 
 ## Operational qualification ladder
 
