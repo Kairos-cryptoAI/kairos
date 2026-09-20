@@ -9,6 +9,7 @@ $runnerPath = Join-Path $repoRoot "scripts\Test-Kairos.ps1"
 $manifestPath = Join-Path $repoRoot "config\repositories.json"
 $currentReleasePath = Join-Path $repoRoot "config\current-release.json"
 $currentReleaseVerifierPath = Join-Path $repoRoot "scripts\Test-CurrentRelease.ps1"
+$githubSecurityVerifierPath = Join-Path $repoRoot "scripts\Test-GitHubSourceSecurity.ps1"
 
 $tokens = $null
 $parseErrors = $null
@@ -30,6 +31,17 @@ $releaseParseErrors = $null
 ) | Out-Null
 if ($releaseParseErrors.Count -gt 0) {
     throw "Current-release verifier parse errors: $($releaseParseErrors -join '; ')"
+}
+
+$githubSecurityTokens = $null
+$githubSecurityParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $githubSecurityVerifierPath,
+    [ref]$githubSecurityTokens,
+    [ref]$githubSecurityParseErrors
+) | Out-Null
+if ($githubSecurityParseErrors.Count -gt 0) {
+    throw "GitHub source-security verifier parse errors: $($githubSecurityParseErrors -join '; ')"
 }
 
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
@@ -118,6 +130,18 @@ foreach ($requiredFragment in @("Find-TrackedCredentialPatternPaths", "openai-st
 }
 if (-not $currentReleaseVerifierText.Contains("never print matching values")) {
     throw "Current-release credential check must remain path-only"
+}
+
+$githubSecurityVerifierText = Get-Content -LiteralPath $githubSecurityVerifierPath -Raw
+foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "security_and_analysis", "--paginate", "GitHub read-only API request")) {
+    if (-not $githubSecurityVerifierText.Contains($requiredFragment)) {
+        throw "GitHub source-security verifier is missing required check: $requiredFragment"
+    }
+}
+foreach ($forbiddenFragment in @("--method PATCH", "--method POST", "--method PUT", "--method DELETE", "secret-scanning/alerts")) {
+    if ($githubSecurityVerifierText.Contains($forbiddenFragment)) {
+        throw "GitHub source-security verifier contains a forbidden mutation or secret-alert route: $forbiddenFragment"
+    }
 }
 
 $markdownFiles = @(

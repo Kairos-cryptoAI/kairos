@@ -27,6 +27,16 @@ receipt. The local current-release verifier additionally rejects a release if a
 small high-confidence credential pattern appears in any tracked source file;
 its diagnostics include only the repository, path, and pattern class.
 
+Repeat the online, read-only settings and Dependabot-alert check with:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-GitHubSourceSecurity.ps1
+```
+
+The command reads repository metadata and the open Dependabot alert count only.
+It does not change GitHub settings, list secret-scanning alerts, read local secret
+files, or contact a trading or model provider.
+
 ## Deliberate limits
 
 This is source-code protection, not a trading authorization or a replacement
