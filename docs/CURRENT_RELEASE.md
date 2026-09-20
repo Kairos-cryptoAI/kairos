@@ -25,5 +25,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-CurrentRe
 ```
 
 The gate requires all listed repositories to be clean, on `main`, and exactly equal to
-their local `origin/main`. It makes no network calls, reads no secrets, starts no Docker
+their local `origin/main`. It also verifies that the two `kairos-deploy` deterministic
+gate locks are exact projections of the eight runtime repository revisions in this
+manifest; historical gate evidence therefore cannot silently carry forward across a
+dependency change. It makes no network calls, reads no secrets, starts no Docker
 services, and cannot arm EVEDEX, PAPER, LIVE, or a simulator.

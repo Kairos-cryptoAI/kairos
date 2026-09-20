@@ -51,6 +51,7 @@ if ($LASTEXITCODE -ne 0) { throw "Runner manifest validation failed" }
 if ($LASTEXITCODE -ne 0) { throw "Runner default manifest path failed" }
 
 $runnerText = Get-Content -LiteralPath $runnerPath -Raw
+$currentReleaseVerifierText = Get-Content -LiteralPath $currentReleaseVerifierPath -Raw
 foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--check", "mypy", "bandit", "pytest", "build", "--no-sources", "Out-Host", "--no-sync")) {
     if (-not $runnerText.Contains($requiredFragment)) {
         throw "Runner is missing required command fragment: $requiredFragment"
@@ -103,6 +104,11 @@ if (-not $runnerText.Contains('@("mypy", "--python-version", $version, $entry.so
 foreach ($forbiddenFragment in @("reset --hard", "checkout --", "clean -", "Get-Content .env", "docker compose")) {
     if ($runnerText.Contains($forbiddenFragment)) {
         throw "Runner contains forbidden mutation or secret access: $forbiddenFragment"
+    }
+}
+foreach ($requiredFragment in @("current-release-gate.sources.lock.json", "sim-full-path.sources.lock.json", "runtimeGateNames")) {
+    if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
+        throw "Current-release verifier is missing required source-projection check: $requiredFragment"
     }
 }
 
