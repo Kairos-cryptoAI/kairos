@@ -11,7 +11,9 @@ source set matches this manifest, and it still cannot authorize PAPER or LIVE by
 
 The `kairos` entry uses `SELF`. A Git object cannot contain its own eventual object ID,
 so the verifier resolves that one entry to the clean `main` commit being checked. Every
-other repository is pinned to a full 40-character commit ID.
+other repository is pinned to a full 40-character commit ID. The manifest also records
+the one trusted GPG fingerprint for this release. The local verifier requires every
+listed `HEAD`, including `SELF`, to have a good signature from that exact key.
 
 `kairos-backtest` is included so that the engineering snapshot records the frozen
 research checkout, but it is not a runtime dependency of the current integration gates.

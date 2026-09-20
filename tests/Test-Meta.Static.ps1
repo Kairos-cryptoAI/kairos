@@ -110,6 +110,11 @@ if ($currentRelease.readiness.technicalPaperReady -or $currentRelease.readiness.
     $currentRelease.readiness.strategyPolicy -ne "REJECT_ALL") {
     throw "Current-release manifest must not grant trading readiness"
 }
+if ($null -eq $currentRelease.signing -or $currentRelease.signing.required -ne $true -or
+    [string]::IsNullOrWhiteSpace($currentRelease.signing.trustedFingerprint) -or
+    $currentRelease.signing.trustedFingerprint -notmatch '^[0-9A-F]{40}$') {
+    throw "Current-release manifest must require an exact trusted GPG signing fingerprint"
+}
 if (-not $runnerText.Contains('@("mypy", "--python-version", $version, $entry.source)')) {
     throw "Runner must type-check against the selected Python matrix version"
 }
@@ -134,6 +139,11 @@ if (-not $currentReleaseVerifierText.Contains("never print matching values")) {
 foreach ($requiredFragment in @("Find-UnpinnedGitHubActions", "isGitSha", "isDockerDigest", "Unpinned GitHub Action reference")) {
     if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
         throw "Current-release verifier is missing required action-pin check: $requiredFragment"
+    }
+}
+foreach ($requiredFragment in @("Resolve-ReleaseGpgProgram", "Assert-ReleaseCommitSignature", "trustedFingerprint", "verify-commit HEAD")) {
+    if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
+        throw "Current-release verifier is missing required signature check: $requiredFragment"
     }
 }
 

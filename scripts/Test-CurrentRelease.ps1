@@ -84,6 +84,48 @@ function Find-UnpinnedGitHubActions {
     return @($findings)
 }
 
+function Resolve-ReleaseGpgProgram {
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    if (-not [string]::IsNullOrWhiteSpace($env:KAIROS_GPG_PROGRAM)) {
+        $candidates.Add($env:KAIROS_GPG_PROGRAM)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:ProgramFiles)) {
+        $candidates.Add((Join-Path $env:ProgramFiles "Git\usr\bin\gpg.exe"))
+    }
+    foreach ($candidate in $candidates) {
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+            return [System.IO.Path]::GetFullPath($candidate)
+        }
+    }
+    $command = Get-Command gpg -ErrorAction SilentlyContinue
+    if ($null -ne $command -and -not [string]::IsNullOrWhiteSpace($command.Source)) {
+        return $command.Source
+    }
+    throw "A GPG executable is required to verify current-release commit signatures"
+}
+
+function Assert-ReleaseCommitSignature {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepositoryPath,
+        [Parameter(Mandatory = $true)][string]$RepositoryName,
+        [Parameter(Mandatory = $true)][string]$GpgProgram,
+        [Parameter(Mandatory = $true)][string]$ExpectedFingerprint
+    )
+
+    $null = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" verify-commit HEAD 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "$RepositoryName HEAD does not have a verifiable trusted GPG signature"
+    }
+    $signatureMetadata = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" log -1 --format='%G?::%GF' 2>$null
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($signatureMetadata)) {
+        throw "$RepositoryName HEAD signature metadata could not be read"
+    }
+    $parts = @($signatureMetadata.Trim() -split '::', 2)
+    if ($parts.Count -ne 2 -or $parts[0] -ne "G" -or $parts[1].ToUpperInvariant() -ne $ExpectedFingerprint.ToUpperInvariant()) {
+        throw "$RepositoryName HEAD is not signed by the required current-release key"
+    }
+}
+
 $manifestFullPath = [System.IO.Path]::GetFullPath($ManifestPath)
 $workspaceFullPath = [System.IO.Path]::GetFullPath($WorkspaceRoot)
 if (-not (Test-Path -LiteralPath $manifestFullPath -PathType Leaf)) {
@@ -110,6 +152,13 @@ if ($manifest.readiness.technicalPaperReady -or $manifest.readiness.paperQualifi
     $manifest.readiness.strategyPolicy -ne "REJECT_ALL") {
     throw "The source-identity manifest must not grant trading readiness"
 }
+$signing = $manifest.signing
+if ($null -eq $signing -or $signing.required -ne $true -or
+    [string]::IsNullOrWhiteSpace($signing.trustedFingerprint) -or
+    $signing.trustedFingerprint -notmatch '^[0-9A-F]{40}$') {
+    throw "Current-release manifest requires an exact trusted GPG signing fingerprint"
+}
+$gpgProgram = Resolve-ReleaseGpgProgram
 
 $expectedNames = @(
     "kairos", "kairos-aggregator", "kairos-backtest", "kairos-core", "kairos-deploy",
@@ -165,6 +214,7 @@ foreach ($entry in $entries) {
     if ($entry.revision -ne "SELF" -and $head -ne $entry.revision) {
         throw "$($entry.name) HEAD does not match the current-release manifest"
     }
+    Assert-ReleaseCommitSignature -RepositoryPath $repositoryPath -RepositoryName $entry.name -GpgProgram $gpgProgram -ExpectedFingerprint $signing.trustedFingerprint
 }
 
 # Workflow actions execute with repository credentials. Every external action or
