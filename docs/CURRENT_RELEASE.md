@@ -28,5 +28,8 @@ The gate requires all listed repositories to be clean, on `main`, and exactly eq
 their local `origin/main`. It also verifies that the two `kairos-deploy` deterministic
 gate locks are exact projections of the eight runtime repository revisions in this
 manifest; historical gate evidence therefore cannot silently carry forward across a
-dependency change. It makes no network calls, reads no secrets, starts no Docker
-services, and cannot arm EVEDEX, PAPER, LIVE, or a simulator.
+dependency change. Before certifying the source identity, it also checks each tracked
+source tree for a small set of high-confidence credential shapes. A match reports only
+the repository, path, and pattern class; it never prints a matching value. It makes no
+network calls, reads no secrets, starts no Docker services, and cannot arm EVEDEX,
+PAPER, LIVE, or a simulator.
