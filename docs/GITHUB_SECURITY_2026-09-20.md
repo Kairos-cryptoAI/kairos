@@ -17,6 +17,11 @@ The verified scope is `kairos`, `kairos-core`, `kairos-strategy-engine`,
 `kairos-macro-strategist`, `kairos-quant-scouts`, `kairos-persistence`,
 `kairos-deploy`, and `kairos-llm`.
 
+At `2026-09-20T18:19:37Z`, a separate read-only query of the open Dependabot
+alerts endpoint returned zero open alerts for every repository in that scope.
+This is an observation at that timestamp, not a guarantee about future alert
+state.
+
 No secret alerts or credential values were enumerated while producing this
 receipt. The local current-release verifier additionally rejects a release if a
 small high-confidence credential pattern appears in any tracked source file;
