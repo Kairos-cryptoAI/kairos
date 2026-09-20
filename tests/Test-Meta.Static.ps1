@@ -148,12 +148,12 @@ foreach ($requiredFragment in @("Resolve-ReleaseGpgProgram", "Assert-ReleaseComm
 }
 
 $githubSecurityVerifierText = Get-Content -LiteralPath $githubSecurityVerifierPath -Raw
-foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "security_and_analysis", "--paginate", "GitHub read-only API request")) {
+foreach ($requiredFragment in @("Get-OpenDependabotAlertCount", "Get-OpenSecretScanningAlertCount", "hide_secret=true", "security_and_analysis", "--paginate", "GitHub read-only API request")) {
     if (-not $githubSecurityVerifierText.Contains($requiredFragment)) {
         throw "GitHub source-security verifier is missing required check: $requiredFragment"
     }
 }
-foreach ($forbiddenFragment in @("--method PATCH", "--method POST", "--method PUT", "--method DELETE", "secret-scanning/alerts")) {
+foreach ($forbiddenFragment in @("--method PATCH", "--method POST", "--method PUT", "--method DELETE", "hide_secret=false")) {
     if ($githubSecurityVerifierText.Contains($forbiddenFragment)) {
         throw "GitHub source-security verifier contains a forbidden mutation or secret-alert route: $forbiddenFragment"
     }

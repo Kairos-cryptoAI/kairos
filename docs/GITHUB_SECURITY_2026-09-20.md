@@ -22,6 +22,11 @@ alerts endpoint returned zero open alerts for every repository in that scope.
 This is an observation at that timestamp, not a guarantee about future alert
 state.
 
+At `2026-09-20T18:47:56Z`, the open Secret Scanning alert endpoint was queried
+with GitHub's `hide_secret=true` redaction option. It returned zero open alerts
+for every repository in scope; no literal secret material was retrieved or
+reported.
+
 No secret alerts or credential values were enumerated while producing this
 receipt. The local current-release verifier additionally rejects a release if a
 small high-confidence credential pattern appears in any tracked source file;
@@ -33,9 +38,10 @@ Repeat the online, read-only settings and Dependabot-alert check with:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-GitHubSourceSecurity.ps1
 ```
 
-The command reads repository metadata and the open Dependabot alert count only.
-It does not change GitHub settings, list secret-scanning alerts, read local secret
-files, or contact a trading or model provider.
+The command reads repository metadata, the open Dependabot alert count, and the
+open Secret Scanning alert count with GitHub's `hide_secret=true` redaction flag.
+It does not change GitHub settings, retrieve literal secret values, read local
+secret files, or contact a trading or model provider.
 
 ## Deliberate limits
 

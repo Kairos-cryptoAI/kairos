@@ -40,18 +40,19 @@ function Invoke-GitHubReadOnlyApi {
     return $result
 }
 
-function Get-OpenDependabotAlertCount {
+function Get-PaginatedObjectCount {
     param(
-        [Parameter(Mandatory = $true)][string]$Repository
+        [Parameter(Mandatory = $true)][string]$Endpoint,
+        [Parameter(Mandatory = $true)][string]$Description
     )
 
     # --slurp collects every page into one JSON document. We count the parsed
-    # objects locally and intentionally never emit advisory payloads.
-    $payload = Invoke-GitHubReadOnlyApi -Description "$Repository Dependabot alerts" -Arguments @(
+    # objects locally and intentionally never emit alert payloads.
+    $payload = Invoke-GitHubReadOnlyApi -Description $Description -Arguments @(
         "--paginate", "--slurp",
         "-H", "Accept: application/vnd.github+json",
         "-H", "X-GitHub-Api-Version: 2026-03-10",
-        "repos/$Repository/dependabot/alerts?state=open&per_page=100"
+        $Endpoint
     )
     try {
         $pages = $payload | ConvertFrom-Json -NoEnumerate
@@ -65,8 +66,26 @@ function Get-OpenDependabotAlertCount {
         return $total
     }
     catch {
-        throw "GitHub returned an invalid Dependabot alert response for $Repository"
+        throw "GitHub returned an invalid paginated alert response for $Description"
     }
+}
+
+function Get-OpenDependabotAlertCount {
+    param(
+        [Parameter(Mandatory = $true)][string]$Repository
+    )
+
+    return Get-PaginatedObjectCount -Description "$Repository Dependabot alerts" -Endpoint "repos/$Repository/dependabot/alerts?state=open&per_page=100"
+}
+
+function Get-OpenSecretScanningAlertCount {
+    param(
+        [Parameter(Mandatory = $true)][string]$Repository
+    )
+
+    # GitHub's explicit redaction flag prevents literal secret material from
+    # entering this process; the verifier stores and emits only the count.
+    return Get-PaginatedObjectCount -Description "$Repository redacted Secret Scanning alerts" -Endpoint "repos/$Repository/secret-scanning/alerts?state=open&hide_secret=true&per_page=100"
 }
 
 $failures = [System.Collections.Generic.List[string]]::new()
@@ -92,11 +111,13 @@ $rows = foreach ($entry in $entries | Sort-Object name) {
     $pushProtection = $analysis.secret_scanning_push_protection.status
     $dependabotUpdates = $analysis.dependabot_security_updates.status
     $openAlerts = Get-OpenDependabotAlertCount -Repository $repository
+    $openSecretAlerts = Get-OpenSecretScanningAlertCount -Repository $repository
 
     if ($secretScanning -ne "enabled") { $failures.Add("${repository}: Secret Scanning is not enabled") }
     if ($pushProtection -ne "enabled") { $failures.Add("${repository}: Secret Scanning Push Protection is not enabled") }
     if ($dependabotUpdates -ne "enabled") { $failures.Add("${repository}: Dependabot security updates are not enabled") }
     if ($openAlerts -ne 0) { $failures.Add("${repository}: $openAlerts open Dependabot alert(s)") }
+    if ($openSecretAlerts -ne 0) { $failures.Add("${repository}: $openSecretAlerts open redacted Secret Scanning alert(s)") }
 
     [pscustomobject]@{
         Repository = $repository
@@ -104,10 +125,11 @@ $rows = foreach ($entry in $entries | Sort-Object name) {
         PushProtection = $pushProtection
         DependabotSecurityUpdates = $dependabotUpdates
         OpenDependabotAlerts = $openAlerts
+        OpenRedactedSecretScanningAlerts = $openSecretAlerts
     }
 }
 
-$rows | Format-Table -AutoSize
+($rows | Format-Table -AutoSize | Out-String -Width 240).TrimEnd() | Write-Host
 if ($failures.Count -gt 0) {
     throw "GitHub source-security gate failed:`n$($failures -join [Environment]::NewLine)"
 }
