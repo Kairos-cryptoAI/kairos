@@ -112,17 +112,28 @@ function Assert-ReleaseCommitSignature {
         [Parameter(Mandatory = $true)][string]$ExpectedFingerprint
     )
 
-    $null = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" verify-commit HEAD 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        throw "$RepositoryName HEAD does not have a verifiable trusted GPG signature"
+    # GPG writes normal verification diagnostics to stderr.  PowerShell 7 can
+    # promote those diagnostics to terminating NativeCommandError records when
+    # ErrorActionPreference is Stop, even when stderr is redirected.  The
+    # signature decision below is based solely on git's exit code and metadata.
+    $previousNativeErrorPreference = $PSNativeCommandUseErrorActionPreference
+    try {
+        $PSNativeCommandUseErrorActionPreference = $false
+        $null = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" verify-commit HEAD 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            throw "$RepositoryName HEAD does not have a verifiable trusted GPG signature"
+        }
+        $signatureMetadata = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" log -1 --format='%G?::%GF' 2>$null
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($signatureMetadata)) {
+            throw "$RepositoryName HEAD signature metadata could not be read"
+        }
+        $parts = @($signatureMetadata.Trim() -split '::', 2)
+        if ($parts.Count -ne 2 -or $parts[0] -ne "G" -or $parts[1].ToUpperInvariant() -ne $ExpectedFingerprint.ToUpperInvariant()) {
+            throw "$RepositoryName HEAD is not signed by the required current-release key"
+        }
     }
-    $signatureMetadata = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" log -1 --format='%G?::%GF' 2>$null
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($signatureMetadata)) {
-        throw "$RepositoryName HEAD signature metadata could not be read"
-    }
-    $parts = @($signatureMetadata.Trim() -split '::', 2)
-    if ($parts.Count -ne 2 -or $parts[0] -ne "G" -or $parts[1].ToUpperInvariant() -ne $ExpectedFingerprint.ToUpperInvariant()) {
-        throw "$RepositoryName HEAD is not signed by the required current-release key"
+    finally {
+        $PSNativeCommandUseErrorActionPreference = $previousNativeErrorPreference
     }
 }
 
