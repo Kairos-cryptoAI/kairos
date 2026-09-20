@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "kind": "CURRENT_SOURCE_IDENTITY",
-  "releaseId": "engineering-main-20260920T162630Z",
-  "generatedAtUtc": "2026-09-20T16:26:30Z",
+  "releaseId": "engineering-main-20260920T170821Z",
+  "generatedAtUtc": "2026-09-20T17:08:21Z",
   "purpose": "Reproducible source identity for the current Kairos engineering work. This is not a trading, alpha, simulator, PAPER, or LIVE approval.",
   "scope": {
     "classification": "ENGINEERING_ONLY",
@@ -11,19 +11,19 @@
   },
   "repositories": [
     { "name": "kairos", "directory": "kairos", "origin": "https://github.com/Kairos-cryptoAI/kairos.git", "revision": "SELF" },
-    { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "cb7b0261d164439ab1182d99e9c91c5a4b93b1ea" },
+    { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "6d79fe7c5f972acd23fc35a949940a69ae22aa7f" },
     { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "fdb9e83231724dbd7cb7fa460d52c7e7da147ead" },
     { "name": "kairos-core", "directory": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "4832a407bb94eb82abee84fe5c8a1de828c37833" },
-    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "f5f7f69e0057a4d442741dbdb465db88cc0e4815" },
-    { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "0df4ef150d3194321a72c255b3b9365af1fa2995" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "1cbfa5b3bd7f679b1f0a1bff637041b81dbb8f56" },
+    { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "87c2569abae052ba8a0773cbf23ae0ed6a0cccf0" },
     { "name": "kairos-llm", "directory": "kairos-llm", "origin": "https://github.com/Kairos-cryptoAI/kairos-llm.git", "revision": "5dff1e7597cb9c124312dcd42247afe649005eb5" },
-    { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "origin": "https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git", "revision": "69fdecd30eacbbbd860ebf5fb6200144b382ec57" },
+    { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "origin": "https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git", "revision": "d6a952f41bf0848d8bf55ed789718ea912c4cf5f" },
     { "name": "kairos-persistence", "directory": "kairos-persistence", "origin": "https://github.com/Kairos-cryptoAI/kairos-persistence.git", "revision": "73339c88e67a2e0ee146a3d403cf4b7b4e075f27" },
-    { "name": "kairos-quant-scouts", "directory": "kairos-quant-scouts", "origin": "https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git", "revision": "4ab622b01d2c30da8f168571d8315b39913f9ecb" },
-    { "name": "kairos-risk-manager", "directory": "kairos-risk-manager", "origin": "https://github.com/Kairos-cryptoAI/kairos-risk-manager.git", "revision": "319a5f993047b5492e15040a8a6bd4c000ea113d" },
-    { "name": "kairos-router", "directory": "kairos-router", "origin": "https://github.com/Kairos-cryptoAI/kairos-router.git", "revision": "c634355c1725ea41d4cbd9130795697ec71c94a5" },
-    { "name": "kairos-strategy-engine", "directory": "kairos-strategy-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git", "revision": "765e5ed2599daa64dcb718de228441044e24d821" },
-    { "name": "kairos-text-scouts", "directory": "kairos-text-scouts", "origin": "https://github.com/Kairos-cryptoAI/kairos-text-scouts.git", "revision": "e608aafe98655d99842d6a2c861bf2524b39c7b1" }
+    { "name": "kairos-quant-scouts", "directory": "kairos-quant-scouts", "origin": "https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git", "revision": "c00b0169dd5840436eec41a0d22ce7b7497c7e8e" },
+    { "name": "kairos-risk-manager", "directory": "kairos-risk-manager", "origin": "https://github.com/Kairos-cryptoAI/kairos-risk-manager.git", "revision": "55579ed5f2ef726fda3374c2b83118cef0ae5371" },
+    { "name": "kairos-router", "directory": "kairos-router", "origin": "https://github.com/Kairos-cryptoAI/kairos-router.git", "revision": "012e057266d90933acbbf79e9a55cdcd6ec2396f" },
+    { "name": "kairos-strategy-engine", "directory": "kairos-strategy-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git", "revision": "b7d6d2ab1259480a8c1b18748180eee8c23e029b" },
+    { "name": "kairos-text-scouts", "directory": "kairos-text-scouts", "origin": "https://github.com/Kairos-cryptoAI/kairos-text-scouts.git", "revision": "0bc244bf2325af265d99e8dd3821e2edd3564eca" }
   ],
   "readiness": {
     "technicalPaperReady": false,
