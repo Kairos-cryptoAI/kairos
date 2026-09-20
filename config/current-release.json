@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "kind": "CURRENT_SOURCE_IDENTITY",
-  "releaseId": "engineering-main-20260920T113541Z",
-  "generatedAtUtc": "2026-09-20T11:35:41Z",
+  "releaseId": "engineering-main-20260920T115545Z",
+  "generatedAtUtc": "2026-09-20T11:55:45Z",
   "purpose": "Reproducible source identity for the current Kairos engineering work. This is not a trading, alpha, simulator, PAPER, or LIVE approval.",
   "scope": {
     "classification": "ENGINEERING_ONLY",
@@ -12,7 +12,7 @@
   "repositories": [
     { "name": "kairos", "directory": "kairos", "origin": "https://github.com/Kairos-cryptoAI/kairos.git", "revision": "SELF" },
     { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "cb7b0261d164439ab1182d99e9c91c5a4b93b1ea" },
-    { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "9275078e5d90014148a8da2f96fddbf3b2daeb3c" },
+    { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "fdb9e83231724dbd7cb7fa460d52c7e7da147ead" },
     { "name": "kairos-core", "directory": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "4832a407bb94eb82abee84fe5c8a1de828c37833" },
     { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "28a894e6216bc64a3d85aff1f7a65c25eec3140b" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "0df4ef150d3194321a72c255b3b9365af1fa2995" },
