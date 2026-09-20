@@ -1,0 +1,45 @@
+# GitHub source-security baseline — 2026-09-20
+
+## Scope and result
+
+At `2026-09-20T18:16:36Z`, the GitHub repository settings for every source in
+the current 14-repository Kairos release set were changed and then independently
+read back through the GitHub REST API. The following built-in protections are
+now `enabled` for each repository:
+
+- GitHub Secret Scanning;
+- Secret Scanning Push Protection;
+- Dependabot security updates.
+
+The verified scope is `kairos`, `kairos-core`, `kairos-strategy-engine`,
+`kairos-backtest`, `kairos-router`, `kairos-aggregator`,
+`kairos-risk-manager`, `kairos-execution-engine`, `kairos-text-scouts`,
+`kairos-macro-strategist`, `kairos-quant-scouts`, `kairos-persistence`,
+`kairos-deploy`, and `kairos-llm`.
+
+No secret alerts or credential values were enumerated while producing this
+receipt. The local current-release verifier additionally rejects a release if a
+small high-confidence credential pattern appears in any tracked source file;
+its diagnostics include only the repository, path, and pattern class.
+
+## Deliberate limits
+
+This is source-code protection, not a trading authorization or a replacement
+for an independent security audit. It does not assert that there are no historic
+secrets, no vulnerabilities, or no runtime configuration issues. It does not
+modify branch protection because the approved delivery model commits directly to
+`main`; requiring pull requests or status checks would be a separate workflow
+decision.
+
+It does not change any readiness flag. The following remain true:
+
+```text
+PAPER_QUALIFIED=false
+ALPHA_READY=false
+LIVE_READY=false
+STRATEGY_POLICY=REJECT_ALL
+```
+
+The managed deep-scan worker was unavailable on this host because it requires a
+managed filesystem permission profile. That environmental limitation must be
+resolved before an independent deep audit can be cited as complete.
