@@ -114,17 +114,27 @@ function Assert-ReleaseCommitSignature {
 
     # GPG writes normal verification diagnostics to stderr.  PowerShell 7 can
     # promote those diagnostics to terminating NativeCommandError records when
-    # ErrorActionPreference is Stop, even when stderr is redirected.  The
-    # signature decision below is based solely on git's exit code and metadata.
-    $previousNativeErrorPreference = $PSNativeCommandUseErrorActionPreference
+    # its native-command preference is enabled.  Windows PowerShell 5.1 does not
+    # define that preference variable, so discover it instead of referencing it
+    # under StrictMode.  The signature decision below is based only on Git's exit
+    # code and signature metadata.
+    $nativeErrorPreference = Get-Variable -Name "PSNativeCommandUseErrorActionPreference" -ErrorAction SilentlyContinue
+    $hasNativeErrorPreference = $null -ne $nativeErrorPreference
+    if ($hasNativeErrorPreference) {
+        $previousNativeErrorPreference = $nativeErrorPreference.Value
+    }
     try {
-        $PSNativeCommandUseErrorActionPreference = $false
+        if ($hasNativeErrorPreference) {
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $false -Scope Local
+        }
         $null = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" verify-commit HEAD 2>$null
-        if ($LASTEXITCODE -ne 0) {
+        $verifyExitCode = $LASTEXITCODE
+        if ($verifyExitCode -ne 0) {
             throw "$RepositoryName HEAD does not have a verifiable trusted GPG signature"
         }
         $signatureMetadata = & git -C $RepositoryPath -c "gpg.program=$GpgProgram" log -1 --format='%G?::%GF' 2>$null
-        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($signatureMetadata)) {
+        $metadataExitCode = $LASTEXITCODE
+        if ($metadataExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($signatureMetadata)) {
             throw "$RepositoryName HEAD signature metadata could not be read"
         }
         $parts = @($signatureMetadata.Trim() -split '::', 2)
@@ -133,7 +143,9 @@ function Assert-ReleaseCommitSignature {
         }
     }
     finally {
-        $PSNativeCommandUseErrorActionPreference = $previousNativeErrorPreference
+        if ($hasNativeErrorPreference) {
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $previousNativeErrorPreference -Scope Local
+        }
     }
 }
 

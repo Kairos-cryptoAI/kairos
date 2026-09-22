@@ -141,7 +141,7 @@ foreach ($requiredFragment in @("Find-UnpinnedGitHubActions", "isGitSha", "isDoc
         throw "Current-release verifier is missing required action-pin check: $requiredFragment"
     }
 }
-foreach ($requiredFragment in @("Resolve-ReleaseGpgProgram", "Assert-ReleaseCommitSignature", "trustedFingerprint", "verify-commit HEAD")) {
+foreach ($requiredFragment in @("Resolve-ReleaseGpgProgram", "Assert-ReleaseCommitSignature", "trustedFingerprint", 'Get-Variable -Name "PSNativeCommandUseErrorActionPreference"', "verify-commit HEAD")) {
     if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
         throw "Current-release verifier is missing required signature check: $requiredFragment"
     }

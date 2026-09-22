@@ -49,7 +49,7 @@ claims:
 
 | marker | value | scope |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `true` | exact pinned code/integration revision set after local Windows, Docker and GitHub CI gates |
+| `TECHNICAL_PAPER_READY` | `false` | the current 14-repository source identity has not yet passed its complete matching Windows, Docker and GitHub CI release gates |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
 | `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
