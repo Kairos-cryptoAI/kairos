@@ -112,18 +112,19 @@ function Assert-ReleaseCommitSignature {
         [Parameter(Mandatory = $true)][string]$ExpectedFingerprint
     )
 
-    # GPG writes normal verification diagnostics to stderr.  PowerShell 7 can
-    # promote those diagnostics to terminating NativeCommandError records when
-    # its native-command preference is enabled.  Windows PowerShell 5.1 does not
-    # define that preference variable, so discover it instead of referencing it
-    # under StrictMode.  The signature decision below is based only on Git's exit
-    # code and signature metadata.
+    # GPG writes normal verification diagnostics to stderr.  With
+    # ErrorActionPreference=Stop, Windows PowerShell can turn that native stderr
+    # into a terminating NativeCommandError even when stderr is redirected.
+    # Keep native diagnostics non-terminating only for these two calls; the
+    # signature decision below is based on Git's exit code and metadata.
+    $previousErrorActionPreference = $ErrorActionPreference
     $nativeErrorPreference = Get-Variable -Name "PSNativeCommandUseErrorActionPreference" -ErrorAction SilentlyContinue
     $hasNativeErrorPreference = $null -ne $nativeErrorPreference
     if ($hasNativeErrorPreference) {
         $previousNativeErrorPreference = $nativeErrorPreference.Value
     }
     try {
+        $ErrorActionPreference = "Continue"
         if ($hasNativeErrorPreference) {
             Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $false -Scope Local
         }
@@ -143,6 +144,7 @@ function Assert-ReleaseCommitSignature {
         }
     }
     finally {
+        $ErrorActionPreference = $previousErrorActionPreference
         if ($hasNativeErrorPreference) {
             Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $previousNativeErrorPreference -Scope Local
         }
