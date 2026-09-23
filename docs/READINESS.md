@@ -55,8 +55,9 @@ production signing material and real funds regardless of any other marker.
 Any change to a pinned revision invalidates this technical marker until its dependency pins,
 lockfiles, local gates and CI are revalidated.
 
-For the September 12 source release, `CURRENT_RELEASE_TECHNICAL_STATUS=NOT_REVALIDATED`:
-component tests and image-build CI are green. The actual Redis/PostgreSQL
+At the September 12 checkpoint, `CURRENT_RELEASE_TECHNICAL_STATUS=NOT_REVALIDATED`:
+component tests and image-build CI were green, but the exact release source set had not yet been
+revalidated. The actual Redis/PostgreSQL
 Risk-to-Execution composition has now [passed with a synthetic venue](RELEASE-GATE-2026-09-12.md)
 both in hosted CI and on the local relocated Docker engine (83 tests each).
 SSD relocation and post-move storage/database checkpoint checks are complete.
@@ -67,6 +68,37 @@ simulator execution; its exact scope is recorded in
 [the September 20 simulator receipt](SIM-FULL-PATH-GATE-2026-09-20.md).
 Runtime catch-up and real EVEDEX qualification remain incomplete. The simulator
 is deliberately separate from PAPER and cannot qualify a strategy or venue.
+
+## Current source release — 2026-09-23
+
+`TECHNICAL_PAPER_READY=true` for source identity
+`engineering-main-20260922T235905Z` (meta-repository commit
+`3119a6f0a6c301f5e9d689099f9031cdd7ec91b7`, deploy commit
+`7c8d9486a6cbb140896b781df889843a7507e8ac`). This is an engineering result only.
+The [source manifest](../config/current-release.json) and
+[deploy source projections](https://github.com/Kairos-cryptoAI/kairos-deploy/commit/7c8d9486a6cbb140896b781df889843a7507e8ac)
+identify the exact pinned set.
+
+Evidence for this exact set:
+
+- `Test-CurrentRelease.ps1` verified all 14 repositories clean on `main`, equal to
+  `origin/main`, and signed by the trusted GPG key.
+- Windows quality, test and build checks passed for the eight downstream runtime
+  consumers (64 checks); the changed Core, Persistence, LLM and Deploy revisions
+  also passed their local quality/build/test gates.
+- GitHub CI passed for each repository's exact manifest SHA.
+- The [current-source REJECT_ALL integration gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35799982089),
+  [full-path isolated simulator gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35799982010),
+  [deployment CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35799982091),
+  and [meta-repository release validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/35800029646)
+  all completed successfully on this source set.
+
+The identity manifest intentionally continues to report its readiness fields as
+false because it proves source identity but never grants runtime authority.
+Operational statuses remain `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
+`LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`. No EVEDEX request,
+PAPER container startup, canary, paid-provider call, or LIVE action was performed
+by these gates.
 
 ## Operational qualification ladder
 

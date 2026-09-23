@@ -49,7 +49,7 @@ claims:
 
 | marker | value | scope |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `false` | the current 14-repository source identity has not yet passed its complete matching Windows, Docker and GitHub CI release gates |
+| `TECHNICAL_PAPER_READY` | `true` | exact current 14-repository source identity passed its matching Windows, Docker integration and GitHub CI gates; see [the dated receipt](READINESS.md#current-source-release--2026-09-23) |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
 | `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
@@ -254,3 +254,7 @@ DEV canary session, completion of the five-symbol lifecycle matrix, then a seven
 requires the unchanged forward candidate to pass its independent 365-day/500-trade sealed
 promotion gate and a separate approval. LIVE requires a later,
 separate managed-secret and real-funds review; it cannot be enabled by a legacy boolean.
+
+The source-identity manifest intentionally keeps its `readiness.*` fields false: it certifies
+revision identity and GPG signatures, not operational authority. The technical marker above is the
+separate factual result recorded in [the 2026-09-23 release receipt](READINESS.md#current-source-release--2026-09-23).

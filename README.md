@@ -166,16 +166,17 @@ The readiness flags deliberately describe different claims:
 
 | flag | value | exact meaning |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `false` | the current 14-repository source identity has not yet passed its complete matching Windows, Docker and GitHub CI release gates |
+| `TECHNICAL_PAPER_READY` | `true` | the exact current 14-repository source identity passed its matching Windows, Docker integration and GitHub CI gates; see the [dated receipt](docs/READINESS.md#current-source-release--2026-09-23) |
 | `PAPER_QUALIFIED` | `false` | real DEV auth, 24-hour observation, five-symbol canary evidence and seven-day soak are not complete |
 | `ALPHA_READY` | `false` | one exact candidate is `FORWARD_FROZEN`, but it has not passed its future-data gate; automatic strategy PAPER is disabled |
 | `LIVE_READY` | `false` | LIVE startup and production credentials/endpoints remain blocked |
 
-`TECHNICAL_PAPER_READY=true` is not an exchange-performance or profitability claim. The historical
-marker applied only to its exact reviewed revision set; the current source identity remains
-unqualified until its complete matching release gates pass. No venue mutation is authorized by this
-marker. A technical canary may be armed manually only after the 24-hour gate passes, and it does not
-promote alpha. See the exact revision matrix and qualification ladder in [PAPER readiness](docs/READINESS.md).
+`TECHNICAL_PAPER_READY=true` records only the engineering gates for the exact current source
+identity; it is not an exchange-performance or profitability claim. The identity manifest at
+`config/current-release.json` deliberately keeps its readiness fields false and grants no runtime
+authority. No venue mutation is authorized by this marker. EVEDEX DEV qualification, strategy
+alpha, PAPER and LIVE remain separate blocked gates. See the [current receipt and qualification
+ladder](docs/READINESS.md).
 
 Bounded shadow qualification now includes frozen candidate-review, macro-state and five-asset
 news corpora. The current exact cases pass on DeepSeek Flash, Luna, Terra and Sol, including
