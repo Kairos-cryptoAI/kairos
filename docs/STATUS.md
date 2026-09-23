@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-20_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-23_
 
 ## Current implementation update
 
@@ -21,8 +21,11 @@ with all containers stopped. The dated recovery report records a Windows/WSL
 settings-reader discrepancy; the actual Docker/WSL path is on C:.
 Binance public/market routing and disconnect freshness are fixed and verified
 on Windows, Linux CI and the installed Docker image. Runtime catch-up is not
-resumed: bounded clean-stop and schema-verify-only/no-dispatch recovery startup
-are needed before touching the preserved twelve-migration primary database.
+resumed. The exact-source no-migration/no-dispatch writer and bounded clean-stop
+path now pass 129 focused Windows tests; see the [September 23 recovery-code
+receipt](RECOVERY-2026-09-23.md). Operational use still requires a fresh backup,
+the immutable runner image and a clone-only recovery receipt before any primary
+database decision.
 The historical technical marker below
 does not qualify this release.
 EVEDEX qualification, alpha and LIVE remain false. The alternative simulator now
