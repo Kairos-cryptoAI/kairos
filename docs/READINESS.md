@@ -69,20 +69,18 @@ simulator execution; its exact scope is recorded in
 Runtime catch-up and real EVEDEX qualification remain incomplete. The simulator
 is deliberately separate from PAPER and cannot qualify a strategy or venue.
 
-## Current source release — 2026-09-23
+## Previously revalidated source identity — 2026-09-22
 
-`TECHNICAL_PAPER_READY=true` for source identity
-`engineering-main-20260922T235905Z` (meta-repository commit
+The historical source identity `engineering-main-20260922T235905Z` (meta commit
 `3119a6f0a6c301f5e9d689099f9031cdd7ec91b7`, deploy commit
-`7c8d9486a6cbb140896b781df889843a7507e8ac`). This is an engineering result only.
-The [source manifest](../config/current-release.json) and
-[deploy source projections](https://github.com/Kairos-cryptoAI/kairos-deploy/commit/7c8d9486a6cbb140896b781df889843a7507e8ac)
-identify the exact pinned set.
+`7c8d9486a6cbb140896b781df889843a7507e8ac`) passed its declared engineering
+gates and had `TECHNICAL_PAPER_READY=true`. That result belongs only to that exact
+identity; it does not transfer to later source revisions.
 
-Evidence for this exact set:
+Evidence for the historical identity:
 
-- `Test-CurrentRelease.ps1` verified all 14 repositories clean on `main`, equal to
-  `origin/main`, and signed by the trusted GPG key.
+- `Test-CurrentRelease.ps1` verified all 14 repositories clean on `main`, equal
+  to `origin/main`, and signed by the trusted GPG key.
 - Windows quality, test and build checks passed for the eight downstream runtime
   consumers (64 checks); the changed Core, Persistence, LLM and Deploy revisions
   also passed their local quality/build/test gates.
@@ -91,14 +89,28 @@ Evidence for this exact set:
   [full-path isolated simulator gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35799982010),
   [deployment CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35799982091),
   and [meta-repository release validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/35800029646)
-  all completed successfully on this source set.
+  completed successfully on that source set.
 
-The identity manifest intentionally continues to report its readiness fields as
-false because it proves source identity but never grants runtime authority.
-Operational statuses remain `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
-`LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`. No EVEDEX request,
-PAPER container startup, canary, paid-provider call, or LIVE action was performed
-by these gates.
+## Current source identity — 2026-09-23
+
+The [current manifest](../config/current-release.json) identifies
+`engineering-main-20260923T012410Z` (the meta-repository revision is resolved
+through the manifest's `SELF` entry; deploy commit
+`b07a008149162227d71ce4c4d8ae6e8f602d0da9`). `Test-CurrentRelease.ps1` verified
+all 14 repositories clean on `main`, equal to `origin/main`, and signed by the
+trusted GPG key. The exact [Cockpit CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35805997061)
+and [meta-repository validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/35806229201)
+passed.
+
+This identity adds a responsive, read-only Cockpit frontend and a strict
+versioned snapshot client. It remains a local UI, bound to `127.0.0.1`; no
+snapshot producer or authenticated private-network/mobile gateway is connected.
+The API is disabled by default and the screen truthfully shows “source not
+connected.” The new source identity has not inherited the previous technical
+marker, so current `TECHNICAL_PAPER_READY=false`. The manifest also continues to
+report `PAPER_QUALIFIED=false`, `ALPHA_READY=false`, `LIVE_READY=false`, and
+`STRATEGY_POLICY=REJECT_ALL`. No EVEDEX request, PAPER startup, canary,
+paid-provider call, or LIVE action was performed for this UI work.
 
 ## Operational qualification ladder
 
