@@ -22,6 +22,28 @@ qualification, trading authorization, or research performance result.
   immutable-image runtime recovery gate remains blocked. No primary database,
   outbox lease, cursor, or frozen research ledger was touched.
 
+## Shadow database backup and restore drill
+
+Before any migration or adoption, the same stopped-by-default shadow database
+was briefly started for a fresh full `pg_dump -Fc`. The archive is preserved at
+`D:\Kairos\runtime\shadow-campaign-preflight-20260928T090355Z\kairos-shadow-pre013.dump`
+(81,783 bytes; SHA-256
+`d535ed181300755a77f473df06fb520cd9f45651c8c89ebc9585e3d06fdfa798`).
+It was restored with `pg_restore --exit-on-error` into a distinct no-network,
+tmpfs-only TimescaleDB container using the exact local source image digest.
+`timescaledb_pre_restore()` and `timescaledb_post_restore()` both succeeded, as
+did the restore. Source and restored clone each had database `kairos`, twelve
+migrations, twenty reservations, and no campaign table. Ordered migration and
+reservation-row digests matched (`3e809eb8f326ea469537e868a38bde0b` and
+`7b792dcbe403289d58fb53029b56e3d6`). The disposable clone and the source
+container were stopped; only the exact tmpfs clone container and the temporary
+dump inside the source container were removed. The protected archive remains.
+
+This proves a local shadow-data restore, not off-host encrypted backup,
+provider billing reconciliation, migration 013, campaign adoption, or PAPER/LIVE
+readiness. The restore sequence follows the [TimescaleDB logical backup
+guide](https://docs.timescale.com/self-hosted/latest/backup-and-restore/logical-backup/).
+
 ## Qualification code gate
 
 `kairos-llm` revision `b6e1d9952fd5f97ad205204ca2ccf27f1b1f56b4`
@@ -55,10 +77,11 @@ The sole paid-shadow database has not adopted the fixed
 reconciliation at
 `D:\Kairos\runtime\expense-reconciliation-20260912T135500Z\report.md`
 identified off-ledger calls and unresolved account/X history; it explicitly
-forbids treating the remaining caps as a fresh allowance. Before any paid
-shadow probe: reconcile any outside spend and uncertain calls, protect a fresh backup of
-the authoritative shadow DB, apply its reviewed migration/adoption workflow,
-and verify the campaign totals. Never register a separate database or erase
+forbids treating the remaining caps as a fresh allowance. The fresh local
+backup and restore drill above complete only that prerequisite. Before any paid
+shadow probe: finish conservative historical spend reconciliation, apply the
+reviewed migration/adoption workflow to the authoritative shadow DB, and
+verify the campaign totals. Never register a separate database or erase
 old reservations to make room. Failed calls may retain a reservation even if
 their report has no measured cost, so each run needs post-run campaign usage
 reconciliation.
