@@ -91,11 +91,10 @@ Evidence for the historical identity:
   and [meta-repository release validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/35800029646)
   completed successfully on that source set.
 
-## Current source identity — 2026-09-23
+## Previous source identity — 2026-09-23
 
-The [current manifest](../config/current-release.json) identifies
-`engineering-main-20260923T012410Z` (the meta-repository revision is resolved
-through the manifest's `SELF` entry; deploy commit
+The source identity at that time was `engineering-main-20260923T012410Z`
+(the meta-repository revision was resolved through the manifest's `SELF` entry; deploy commit
 `b07a008149162227d71ce4c4d8ae6e8f602d0da9`). `Test-CurrentRelease.ps1` verified
 all 14 repositories clean on `main`, equal to `origin/main`, and signed by the
 trusted GPG key. The exact [Cockpit CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/35805997061)
@@ -105,12 +104,30 @@ passed.
 This identity adds a responsive, read-only Cockpit frontend and a strict
 versioned snapshot client. It remains a local UI, bound to `127.0.0.1`; no
 snapshot producer or authenticated private-network/mobile gateway is connected.
-The API is disabled by default and the screen truthfully shows “source not
-connected.” The new source identity has not inherited the previous technical
-marker, so current `TECHNICAL_PAPER_READY=false`. The manifest also continues to
-report `PAPER_QUALIFIED=false`, `ALPHA_READY=false`, `LIVE_READY=false`, and
+connected.” That source identity had not inherited the previous technical
+marker, so `TECHNICAL_PAPER_READY=false` at that checkpoint. Its manifest also
+reported `PAPER_QUALIFIED=false`, `ALPHA_READY=false`, `LIVE_READY=false`, and
 `STRATEGY_POLICY=REJECT_ALL`. No EVEDEX request, PAPER startup, canary,
 paid-provider call, or LIVE action was performed for this UI work.
+
+## Current source identity — 2026-09-28
+
+The [current manifest](../config/current-release.json) records the signed
+14-repository engineering source set after the workload-model migration. Text
+Scouts now requests `deepseek-flash`, normal Aggregator requests `gpt-6-luna`,
+and conflict Aggregator and Macro request `gpt-6-sol` with distinct `high` and
+`xhigh` efforts. Risk Manager's model-health mapping and the exact deployment
+source locks were updated with those routes. The changed five Python components
+passed the Windows 3.11/3.14 matrix (75 checks, zero failures), and their
+current exact-SHA component CI passed. See the
+[model-migration receipt](MODEL-MIGRATION-2026-09-28.md) for the bounded evidence.
+
+The August 26 frozen provider corpus used the prior model routes; it does not
+qualify these new ones. No paid provider probe, EVEDEX request, PAPER startup,
+or LIVE action was made for this migration. The manifest retains
+`TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
+`LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`. A green source or synthetic
+integration gate cannot turn those into trading authorization.
 
 ## Operational qualification ladder
 
@@ -118,7 +135,7 @@ These gates are ordered. A later gate cannot compensate for a failed or missing 
 
 | gate | acceptance evidence | state |
 | --- | --- | --- |
-| 1. EVEDEX DEV read-only | real SIWE/auth and reconciliation; no unresolved Binance gaps; availability ≥99%; p95 absolute basis, spread and slippage ≤25 bps; book age ≤5 s; timestamp skew ≤2 s over a complete 24-hour window | `BLOCKED` — dedicated DEV credentials are absent; BTC/ETH have books, while listed SOL/BNB/XRP currently return zero bids and asks |
+| 1. EVEDEX DEV read-only | real SIWE/auth and reconciliation; no unresolved Binance gaps; availability ≥99%; p95 absolute basis, spread and slippage ≤25 bps; book age ≤5 s; timestamp skew ≤2 s over a complete 24-hour window | `BLOCKED` — dedicated DEV identity/account pairing and a current complete five-symbol, 24-hour receipt are not verified; an older snapshot had empty SOL/BNB/XRP books |
 | 2. Manual technical canary | 1x, exact venue minimum quantity, one global active canary; each BTC/ETH/SOL/BNB/XRP completes a protected round trip; the set covers limit/cancel, stop, target, timeout and restart recovery | `BLOCKED_BY_GATE_1` |
 | 3. PAPER soak | seven elapsed days of data/reconnect/auth/recovery with no duplicate order, unknown lifecycle state, unresolved mutation or unprotected exposure | `PENDING` |
 | 4. PAPER qualification review | reviewed TCA, shortfall, venue semantics, recovery evidence and documented limitations | `PENDING` |

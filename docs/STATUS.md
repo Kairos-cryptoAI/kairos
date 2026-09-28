@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-23_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-28_
 
 ## Current implementation update
 
@@ -52,7 +52,7 @@ claims:
 
 | marker | value | scope |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `true` | exact current 14-repository source identity passed its matching Windows, Docker integration and GitHub CI gates; see [the dated receipt](READINESS.md#current-source-release--2026-09-23) |
+| `TECHNICAL_PAPER_READY` | `false` | the current 14-repository source identity includes a model-route migration; historical technical evidence does not transfer to it |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
 | `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
@@ -65,7 +65,7 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | repository | implemented state | remaining boundary |
 | --- | --- | --- |
 | `kairos-core` | strict `ClosedBarEventV1`, intent/review/venue/risk/execution/account contracts; explicit DRY_RUN/PAPER/LIVE modes | any future contract revision requires a new version, never silent field reuse |
-| `kairos-llm` | DeepSeek Flash and GPT-5.6 Luna/Terra/Sol routing, strict schemas and durable cost hooks | shadow corpus quality, latency, quota and availability qualification |
+| `kairos-llm` | DeepSeek Flash and GPT-6 Luna/Sol workload routing, strict schemas and conservative cache-write-aware durable cost hooks | new-route shadow corpus quality, latency, quota and availability qualification |
 | `kairos-quant-scouts` | delayed double-REST-finalized Binance 1m bars, provisional WS isolation, gap recovery, funding fallback, indicators and scheduled EVEDEX quality facts | complete 24-hour observation after EVEDEX restores two-sided liquidity across the required universe |
 | `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures; exact trial-15 candidate is `FORWARD_FROZEN` | forward candidate must remain unchanged through 365 days and 500 trades; PAPER allow-list remains empty |
 | `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, five-asset local filter, DeepSeek fallback and frozen news corpus | elapsed freshness, source quality, latency-tail and quota qualification |
@@ -240,10 +240,12 @@ PnL before the gate is eligible and has no exchange, LLM, X or order-publish pat
    no independent forward performance yet, and its weakest breadth passed only at the exact
    three-symbol floor. The deterministic fill model also needs real EVEDEX TCA calibration before
    results can inform any future PAPER risk limits.
-7. **Model migration still needs production-distribution A/B evaluation.** The four API routes
-   pass the current strict corpora and preserve fail-closed authority, but this does not prove
-   that the overlay improves strategy economics or preserves latency tails and token profiles on
-   live distributions.
+7. **Model migration still needs new-route qualification and A/B evaluation.** The previous
+   routes passed their historical strict corpora. The current DeepSeek Flash and GPT-6 Luna/Sol
+   routes have offline contract, budget and fail-closed checks, but no accepted paid shadow
+   qualification or evidence that the overlay improves strategy economics or preserves latency
+   tails and token profiles on live distributions. See the
+   [September 28 migration receipt](MODEL-MIGRATION-2026-09-28.md).
 8. **Advanced position management is outside v1.** Break-even stop moves, trailing, multi-TP and
    protective-order updates are intentionally absent; v1 supports exactly one SL, one TP and one
    timeout.
@@ -259,5 +261,6 @@ promotion gate and a separate approval. LIVE requires a later,
 separate managed-secret and real-funds review; it cannot be enabled by a legacy boolean.
 
 The source-identity manifest intentionally keeps its `readiness.*` fields false: it certifies
-revision identity and GPG signatures, not operational authority. The technical marker above is the
-separate factual result recorded in [the 2026-09-23 release receipt](READINESS.md#current-source-release--2026-09-23).
+revision identity and GPG signatures, not operational authority. The older
+`TECHNICAL_PAPER_READY=true` result belongs only to its exact historical
+revision set; see [READINESS.md](READINESS.md#previously-revalidated-source-identity--2026-09-22).
