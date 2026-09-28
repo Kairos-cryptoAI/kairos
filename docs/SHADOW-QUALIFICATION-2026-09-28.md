@@ -59,7 +59,10 @@ backend change within one run fails; changes between runs still require
 explicit review. The CLI now requires an explicit database target, verifies
 the exact migration profile and registered shared campaign before loading keys
 or sending requests. A database name alone does not identify the correct
-Docker project, so operator target verification remains mandatory.
+Docker project, so operator target verification remains mandatory. The current
+release pins the later `kairos-llm` revision
+`54ef1176720a1e078c947d8217468b3c66f07382`, which retains these checks
+and repins the corrected Core/Persistence lineage.
 
 Both Windows Python 3.11 and 3.14 passed 97 LLM tests, Ruff and mypy. Bandit
 and package build also passed. Hosted [CI](https://github.com/Kairos-cryptoAI/kairos-llm/actions/runs/36398979083)

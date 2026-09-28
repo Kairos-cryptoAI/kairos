@@ -152,8 +152,12 @@ engineering tests, not venue, alpha, provider-quality, or LIVE evidence.
 The exact deploy SHA also passed hosted [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407717942),
 [current-source gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407718089),
 [SIM full-path gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407718188),
-CodeQL, and dependency-graph validation. Meta-repository CI must still be
-checked on the signed manifest commit. The manifest retains
+CodeQL, and dependency-graph validation. Meta-repository
+[validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/36408037780)
+passed on the signed manifest-bearing commit; the subsequent Windows
+PowerShell source-security fix also passed
+[validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/36408757723).
+The manifest retains
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`.
 
