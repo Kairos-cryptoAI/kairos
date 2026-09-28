@@ -119,7 +119,8 @@ and conflict Aggregator and Macro request `gpt-6-sol` with distinct `high` and
 `xhigh` efforts. Risk Manager's model-health mapping and the exact deployment
 source locks were updated with those routes. The changed five Python components
 passed the Windows 3.11/3.14 matrix (75 checks, zero failures), and their
-current exact-SHA component CI passed. See the
+current exact-SHA component CI passed. The `r3` source and isolated SIM gates
+also passed locally and in hosted CI on the pinned deployment revision. See the
 [model-migration receipt](MODEL-MIGRATION-2026-09-28.md) for the bounded evidence.
 
 The August 26 frozen provider corpus used the prior model routes; it does not

@@ -52,7 +52,7 @@ claims:
 
 | marker | value | scope |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `false` | the current 14-repository source identity includes a model-route migration; historical technical evidence does not transfer to it |
+| `TECHNICAL_PAPER_READY` | `false` | the current signed source, Windows, synthetic Docker and CI checks passed, but real-provider qualification for the new model routes has not |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
 | `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |

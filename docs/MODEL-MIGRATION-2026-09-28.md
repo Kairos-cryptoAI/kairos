@@ -25,7 +25,7 @@ corpora, strategy plans, research ledgers and runtime data were not changed.
 | `kairos-aggregator` | `fa96ef3cdc3201f1f6437e79d0dc1388e97c23fa` | [CI](https://github.com/Kairos-cryptoAI/kairos-aggregator/actions/runs/36386217913) |
 | `kairos-macro-strategist` | `79a41d971b93637e6fdd153ebaa0f1c7b8cd9073` | [CI](https://github.com/Kairos-cryptoAI/kairos-macro-strategist/actions/runs/36386217892) |
 | `kairos-risk-manager` | `eb6ad85a8238ef6b38ff152b10d5790eef94d576` | [CI](https://github.com/Kairos-cryptoAI/kairos-risk-manager/actions/runs/36385935992) |
-| `kairos-deploy` | `1637b50a4c58d7f2a4de25ccc9e4bb065eced99e` | deployment gates tracked separately |
+| `kairos-deploy` | `1637b50a4c58d7f2a4de25ccc9e4bb065eced99e` | [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36387999136) |
 
 The Windows-first local matrix for the five changed Python packages passed
 all 75 declared checks across Python 3.11 and 3.14: locked dependencies,
@@ -33,7 +33,15 @@ lint, format, mypy, Bandit, unit tests and package builds. Unit totals per
 version were 90 LLM, 90 Text Scouts, 50 Aggregator, 79 Macro (plus one
 conditional skip), and 224 Risk Manager. Pytest emitted only cache-write
 permission warnings. Deployment source projections, Compose rendering and
-143 static unit checks passed before the signed deploy commit.
+143 static unit checks passed before the signed deploy commit. The exact `r3`
+current-source integration gate passed 7/7 locally and in
+[GitHub CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36387999085).
+The isolated full-path SIM gate passed 22/22 locally and in
+[GitHub CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36387999101).
+Its disposable PostgreSQL used tmpfs, with no host volumes or published ports;
+only the two disposable `r3` project containers and networks were removed after
+verification. The root current-release verifier then confirmed 14 clean,
+signed, `origin/main`-matching repositories with exact gate projections.
 
 The updated price table uses published peak DeepSeek rates and current OpenAI
 rates: [DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/),
