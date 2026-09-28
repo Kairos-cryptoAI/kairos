@@ -38,6 +38,8 @@ reservation-row digests matched (`3e809eb8f326ea469537e868a38bde0b` and
 `7b792dcbe403289d58fb53029b56e3d6`). The disposable clone and the source
 container were stopped; only the exact tmpfs clone container and the temporary
 dump inside the source container were removed. The protected archive remains.
+The new archive directory permits access only to the current Windows owner,
+Administrators, and SYSTEM; it is still a local, unencrypted copy.
 
 This proves a local shadow-data restore, not off-host encrypted backup,
 provider billing reconciliation, migration 013, campaign adoption, or PAPER/LIVE
@@ -93,6 +95,18 @@ the observed database schema or authorize skipping backup, adoption receipts,
 or the cumulative budget guard. X's historical timeout remains a separate
 unresolved provider budget; it is not charged against the LLM campaign by
 inventing a zero-cost result.
+
+A read-only workflow audit found no shadow-specific migration controller. The
+test migration smoke command checks the SQL database name/profile but not the
+Docker project identity; the existing deploy preflights are clone-only and
+PAPER-specific. Running a generic migration or Compose application startup
+against the authoritative shadow DB is therefore not approved. A dedicated
+target-guarded procedure must first rehearse the complete runtime migration
+suffix on the verified restored clone, preserve all twenty reservation rows,
+then verify exact source identity and zero paid producers before a separately
+reviewed shadow migration. OpenAI/DeepSeek off-ledger amounts of 1,984/134
+micro-USD are candidates for conservative receipt holds, not provider invoices
+or already-registered campaign spend; X remains unresolved.
 
 Until then, the new model routes are engineering-verified only. No paid model,
 EVEDEX, canary, PAPER, or LIVE request was made for this receipt. Readiness
