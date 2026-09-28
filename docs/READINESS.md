@@ -110,7 +110,7 @@ reported `PAPER_QUALIFIED=false`, `ALPHA_READY=false`, `LIVE_READY=false`, and
 `STRATEGY_POLICY=REJECT_ALL`. No EVEDEX request, PAPER startup, canary,
 paid-provider call, or LIVE action was performed for this UI work.
 
-## Current source identity — 2026-09-28
+## Previous model-migration source identity — 2026-09-28
 
 The [current manifest](../config/current-release.json) records the signed
 14-repository engineering source set after the workload-model migration. Text
@@ -129,6 +129,33 @@ or LIVE action was made for this migration. The manifest retains
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`. A green source or synthetic
 integration gate cannot turn those into trading authorization.
+
+## Current engineering source identity — 2026-09-28
+
+The [current manifest](../config/current-release.json) records the later
+`engineering-main-20260928T100711Z` source set. Core and Persistence now
+define a SIM-only, three-arm matched observation schedule. The baseline
+lineage must match across the strategy-only, LLM review, and LLM-proposal
+arms; a forward-only SIM migration checks existing rows before upgrading the
+database guard. No historical Trial 15 or quarter-hour evidence was rewritten.
+The [LLM shadow receipt](SHADOW-QUALIFICATION-2026-09-28.md) records stricter
+response/endpoint/quota validation and a local shadow-database backup/restore
+drill. It also records why no paid model qualification or campaign adoption has
+yet been performed.
+
+All downstream dependency pins and deploy source locks were projected onto
+the same corrected Core/Persistence and LLM revisions. Component CI passed on
+the exact pinned revisions. Local deployment
+validation passed 143 unit tests, the isolated current-source `REJECT_ALL`
+gate (7/7), and the isolated full-path SIM gate (22/22). These are deterministic
+engineering tests, not venue, alpha, provider-quality, or LIVE evidence.
+The exact deploy SHA also passed hosted [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407717942),
+[current-source gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407718089),
+[SIM full-path gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/36407718188),
+CodeQL, and dependency-graph validation. Meta-repository CI must still be
+checked on the signed manifest commit. The manifest retains
+`TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
+`LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`.
 
 ## Operational qualification ladder
 

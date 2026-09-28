@@ -108,6 +108,17 @@ reviewed shadow migration. OpenAI/DeepSeek off-ledger amounts of 1,984/134
 micro-USD are candidates for conservative receipt holds, not provider invoices
 or already-registered campaign spend; X remains unresolved.
 
+Two `DRAFT_NOT_ADOPTED` receipts were created in the protected local backup
+directory for those OpenAI and DeepSeek amounts. They were parsed and checked
+offline by the campaign-adoption validator against the same-account owner
+attestation and the unchanged `$12`/`$1` caps. Their SHA-256 digests are
+`28c397cc49218f1903d8b63fbec5aba2a5528c35d5b9a477da0ea2173307360a`
+and `1d1211578f8075420d638e5c180096036ccf40bf4ea844839b0417a5242de289`,
+respectively. No adoption command, database registration, campaign reset,
+paid call, or X receipt was attempted. These local estimates still require
+review against the full historical reservation ledger before they can become
+authoritative campaign holds.
+
 Until then, the new model routes are engineering-verified only. No paid model,
 EVEDEX, canary, PAPER, or LIVE request was made for this receipt. Readiness
 remains `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`,
