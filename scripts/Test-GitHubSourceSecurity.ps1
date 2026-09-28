@@ -55,7 +55,9 @@ function Get-PaginatedObjectCount {
         $Endpoint
     )
     try {
-        $pages = $payload | ConvertFrom-Json -NoEnumerate
+        # -InputObject preserves the outer slurped array on both Windows
+        # PowerShell 5.1 and PowerShell 7; -NoEnumerate is unavailable in 5.1.
+        $pages = ConvertFrom-Json -InputObject $payload
         if ($pages -isnot [System.Array]) {
             throw "Dependabot pagination response was not an array"
         }
