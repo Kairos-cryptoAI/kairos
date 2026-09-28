@@ -43,6 +43,12 @@ validated, compressed context. Candidate review is limited to `ALLOW`, `VETO`, `
 priority. Deterministic code owns candidate parameters, sizing, limits, degradation modes,
 exchange authentication, reconciliation, and execution.
 
+An independent LLM market hypothesis can be recorded when the strategy emits
+no intent or disagrees on direction, but it remains SIM-only research evidence;
+it cannot reverse an intent or place a trade. The [adaptive decision research
+note](docs/ADAPTIVE-DECISION-RESEARCH-2026-09-28.md) describes the paired ledger
+and the missing evaluation gates.
+
 ## Repositories
 
 | repository | role |
