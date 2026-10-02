@@ -1,6 +1,26 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-09-28_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-02_
+
+## Current bounded engineering delivery — 2026-10-02
+
+See [the dated delivery and evidence boundaries](ENGINEERING-DELIVERY-2026-10-02.md).
+Independent SIM evidence resolution and crash-safe opt-in LLM proposal
+coordination are implemented. Four OpenAI mechanics probes and 16 preregistered
+synthetic policy probes passed within the existing cumulative budget; they are
+not economic alpha or production availability qualification. A fresh shadow
+restore matched all 35 public tables and sequences; a separately signed PAPER
+read-only primary/clone proof matched all 27 legacy tables without primary
+mutations. The native Windows gate
+passed 96/96 checks; isolated local Docker gates passed 7 and 23 tests.
+Dependency pins/projections are aligned and the optional CCXT/urllib3 security
+alerts are fixed. PAPER primary/outbox recovery remains a separately guarded
+decision, not a consequence of shadow restore. Production operator admission,
+encrypted off-host backup and notification delivery remain unfinished. UI/UX
+is deferred. All four readiness flags stay false, policy stays `REJECT_ALL`.
+
+The sections below preserve earlier dated evidence; their process inventories,
+coverage counts and mixed-provider observations are not current assertions.
 
 ## Current implementation update
 

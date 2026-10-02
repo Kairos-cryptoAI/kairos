@@ -2,6 +2,17 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
+## Current boundary — 2026-10-02
+
+The [October 2 delivery](ENGINEERING-DELIVERY-2026-10-02.md) records the new
+source set, independent SIM evidence/coordinator, bounded real OpenAI mechanics
+and synthetic policy probes, full shadow restore, Windows/Docker checks and
+remaining primary/operations gaps. These results do not qualify economic alpha,
+real EVEDEX, runtime uptime or LIVE. `TECHNICAL_PAPER_READY`, `PAPER_QUALIFIED`,
+`ALPHA_READY` and `LIVE_READY` remain false; `STRATEGY_POLICY=REJECT_ALL`.
+Historical markers and budgets below belong to their stated dates, not to the
+current manifest. UI/UX remains deferred.
+
 **Current-release caveat (2026-09-12):** the technical marker below belongs to
 the historical pinned revision set. The unfinished release is not yet fully
 revalidated. See [current implementation evidence](RECOVERY-2026-09-12.md),

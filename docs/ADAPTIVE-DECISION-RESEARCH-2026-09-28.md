@@ -1,5 +1,13 @@
 # Adaptive strategy/LLM disagreement research
 
+**October 2 supplement:** independent source/evaluation receipt resolution and
+an opt-in durable model-attempt coordinator now exist. See the
+[dated implementation and remaining qualification boundaries](ENGINEERING-DELIVERY-2026-10-02.md).
+The original description below is preserved as the September 28 evidence
+boundary; its missing-ledger claims do not describe the new opt-in path.
+Production wiring, matched economic A/B and a new blind campaign are still not
+qualified by this engineering change.
+
 This engineering slice records what each decision path knew at one preassigned
 market snapshot. It does **not** decide which path was right or authorize a
 trade. The scope is isolated SIM research; Trial 15 and quarter-hour evidence
