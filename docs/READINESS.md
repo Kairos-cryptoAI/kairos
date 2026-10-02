@@ -2,7 +2,18 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-02
+## Current boundary — 2026-10-03
+
+The [October 3 operations continuation](OPERATIONS-ENGINEERING-2026-10-03.md)
+adds tested durable PAPER operator fencing, unwired offline production/signing
+boundaries, guarded native Telegram preparation and offline Restic preparation.
+The partial atomic recovery rehearsal is **not accepted** as complete runtime
+recovery. Telegram actual delivery and off-host backup remain unqualified.
+No primary controlled-profile migration, consumer restart, provider/canary/LIVE
+permission follows. All four readiness fields remain false and policy remains
+`REJECT_ALL`. Frozen strategy/evaluator and Trial 15/V4/V5 evidence are unchanged.
+
+## Previous boundary — 2026-10-02
 
 The [October 2 delivery](ENGINEERING-DELIVERY-2026-10-02.md) records the new
 source set, independent SIM evidence/coordinator, bounded real OpenAI mechanics
@@ -123,10 +134,10 @@ paid-provider call, or LIVE action was performed for this UI work.
 
 ## Previous model-migration source identity — 2026-09-28
 
-The [current manifest](../config/current-release.json) records the signed
-14-repository engineering source set after the workload-model migration. Text
-Scouts now requests `deepseek-flash`, normal Aggregator requests `gpt-6-luna`,
-and conflict Aggregator and Macro request `gpt-6-sol` with distinct `high` and
+The [September 28 model-migration receipt](MODEL-MIGRATION-2026-09-28.md) records
+that historical signed 14-repository engineering source set. At that checkpoint,
+Text Scouts requested `deepseek-flash`, normal Aggregator requested `gpt-6-luna`,
+and conflict Aggregator and Macro requested `gpt-6-sol` with distinct `high` and
 `xhigh` efforts. Risk Manager's model-health mapping and the exact deployment
 source locks were updated with those routes. The changed five Python components
 passed the Windows 3.11/3.14 matrix (75 checks, zero failures), and their
@@ -136,16 +147,16 @@ also passed locally and in hosted CI on the pinned deployment revision. See the
 
 The August 26 frozen provider corpus used the prior model routes; it does not
 qualify these new ones. No paid provider probe, EVEDEX request, PAPER startup,
-or LIVE action was made for this migration. The manifest retains
+or LIVE action was made for this migration. That historical manifest retained
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, and `STRATEGY_POLICY=REJECT_ALL`. A green source or synthetic
 integration gate cannot turn those into trading authorization.
 
-## Current engineering source identity — 2026-09-28
+## Previous engineering source identity — 2026-09-28
 
-The [current manifest](../config/current-release.json) records the later
-`engineering-main-20260928T100711Z` source set. Core and Persistence now
-define a SIM-only, three-arm matched observation schedule. The baseline
+The [September 28 shadow receipt](SHADOW-QUALIFICATION-2026-09-28.md) records the
+later historical `engineering-main-20260928T100711Z` source set. Core and Persistence
+defined a SIM-only, three-arm matched observation schedule. The baseline
 lineage must match across the strategy-only, LLM review, and LLM-proposal
 arms; a forward-only SIM migration checks existing rows before upgrading the
 database guard. No historical Trial 15 or quarter-hour evidence was rewritten.

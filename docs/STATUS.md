@@ -1,8 +1,23 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-02_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-03_
 
-## Current bounded engineering delivery — 2026-10-02
+## Current guarded operations engineering — 2026-10-03
+
+See [the operations continuation and exact evidence boundaries](OPERATIONS-ENGINEERING-2026-10-03.md).
+Durable account-wide PAPER operator fencing is implemented and tested in an
+isolated PostgreSQL fixture; the primary has not adopted its controlled profile.
+Offline production-evidence and managed-signing contracts are implemented, not
+wired into LIVE authority. Telegram preparation uses the corrected test group
+`-100447580288`, with the final group unchanged at `-5155583216`; actual delivery
+is blocked by `CHAT_NOT_FOUND`, not claimed from native configuration tests.
+Restic preparation is local/offline only, without an off-host destination.
+The bounded atomic recovery rehearsal accepted rollback checkpoints 013–015
+but timed out before complete proof. Primary/consumers remain stopped/guarded.
+Frozen research evidence and cumulative provider reservations are unchanged.
+All four readiness flags remain false; `STRATEGY_POLICY=REJECT_ALL`.
+
+## Previous bounded engineering checkpoint — 2026-10-02
 
 See [the dated delivery and evidence boundaries](ENGINEERING-DELIVERY-2026-10-02.md).
 Independent SIM evidence resolution and crash-safe opt-in LLM proposal
