@@ -4,6 +4,13 @@ _Evidence boundary: 2026-08-27. This document records capability and permission 
 
 ## Current boundary — 2026-10-03
 
+The [research/transport continuation](RESEARCH-TRANSPORT-ENGINEERING-2026-10-03.md)
+records new signed sources, 323 deployment unit tests per Windows Python,
+synthetic cursor/COPY equivalence and acknowledged rollback, and green native
+7/28-case Docker gates on the same final Deploy revision as hosted CI.
+These engineering proofs do not accept full primary runtime recovery, qualify
+real venue/provider availability or economic alpha, or arm PAPER/LIVE.
+
 The [October 3 operations continuation](OPERATIONS-ENGINEERING-2026-10-03.md)
 adds tested durable PAPER operator fencing, unwired offline production/signing
 boundaries, guarded native Telegram preparation and offline Restic preparation.

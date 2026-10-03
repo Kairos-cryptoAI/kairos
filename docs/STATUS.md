@@ -4,6 +4,15 @@ _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 
 
 ## Current guarded operations engineering — 2026-10-03
 
+The [research replay and transport continuation](RESEARCH-TRANSPORT-ENGINEERING-2026-10-03.md)
+publishes the canonical LLM arm-digest fix and its three dependency consumers,
+source-qualified replay, durable SIM exits and bounded binary COPY transport.
+Affected Windows checks pass; native Docker gates pass 7 and 28 cases, and the
+same final Deploy SHA has green CI/CodeQL/integration workflows. Tiny COPY
+golden/rollback proof is synthetic only: full primary runtime recovery remains
+unaccepted. The current manifest records this new signed source set without
+changing any readiness flag or frozen research lineage. UI/UX remains deferred.
+
 See [the operations continuation and exact evidence boundaries](OPERATIONS-ENGINEERING-2026-10-03.md).
 Durable account-wide PAPER operator fencing is implemented and tested in an
 isolated PostgreSQL fixture; the primary has not adopted its controlled profile.
