@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "SCOPED_CAUSAL_CAMPAIGN_SOURCE_IDENTITY",
+  "sourceSetId": "causal-hookup-20261003T160654Z",
+  "generatedAtUtc": "2026-10-03T16:06:54Z",
+  "scope": "ENGINEERING_ONLY_CAUSAL_LAYER_HOOKUP",
+  "signing": {
+    "required": true,
+    "trustedFingerprint": "40AF365C6682B73D056A6A274DBFF6B65BE9F827"
+  },
+  "repositories": [
+    { "name": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "56df50787eff83c898aa2aeefb426c6ee8482820" },
+    { "name": "kairos-persistence", "origin": "https://github.com/Kairos-cryptoAI/kairos-persistence.git", "revision": "695fcc22515bc73d7ac92e6c593ec8f08ceb9605" },
+    { "name": "kairos-strategy-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git", "revision": "4b06f78750aacc838a16c96cc6038faf5ba3599b" },
+    { "name": "kairos-router", "origin": "https://github.com/Kairos-cryptoAI/kairos-router.git", "revision": "6025cd1ce7e818181e51be000198db477b0395d4" },
+    { "name": "kairos-llm", "origin": "https://github.com/Kairos-cryptoAI/kairos-llm.git", "revision": "e4781813105a5a43096e6c6b6c07808a4d1748d1" }
+  ],
+  "ci": {
+    "persistence": "https://github.com/Kairos-cryptoAI/kairos-persistence/actions/runs/37133909687",
+    "strategy": "https://github.com/Kairos-cryptoAI/kairos-strategy-engine/actions/runs/37134512694",
+    "router": "https://github.com/Kairos-cryptoAI/kairos-router/actions/runs/37135086487",
+    "llm": "https://github.com/Kairos-cryptoAI/kairos-llm/actions/runs/37135523483",
+    "causalNativeJob": "https://github.com/Kairos-cryptoAI/kairos-llm/actions/runs/37135523483/job/111239162854",
+    "legacyNativeJob": "https://github.com/Kairos-cryptoAI/kairos-llm/actions/runs/37135523483/job/111239162825"
+  },
+  "acceptance": {
+    "causalEngineeringHookup": "ACCEPTED",
+    "newNativeTargetPassed": 1,
+    "newNativeTargetSkipped": 0,
+    "fullRelease": "NOT_ACCEPTED",
+    "continuousProductionInputs": "NOT_QUALIFIED",
+    "paidProviderQualification": "NOT_QUALIFIED",
+    "economicCampaign": "NOT_COMPLETE"
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  },
+  "constraints": [
+    "This is a five-package scoped identity, not a replacement or approval of the fourteen-repository current release.",
+    "No campaign, baseline candidate, evaluator, route or economic gate is frozen or enrolled by this manifest.",
+    "Native OHLC history, provider and underlying budget I/O are explicitly engineering fixtures. Actual strategy, Router, PostgreSQL capture and causal pairing algorithms are exercised.",
+    "No real feeds, paid models, EVEDEX, PAPER, LIVE, primary migrations or trading services were started by this hookup.",
+    "The old release manifest and deployment locks remain historical; their green gates do not apply to this source set.",
+    "Trial 15 and V4/V5 plans, evidence ledgers and evaluator identities remain unchanged."
+  ]
+}
