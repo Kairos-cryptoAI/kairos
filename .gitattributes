@@ -1,0 +1,4 @@
+# Detached signatures bind exact receipt bytes, including newlines.
+# Do not let Windows autocrlf alter an immutable receipt after checkout.
+docs/receipts/*.json -text
+docs/receipts/*.json.asc -text
