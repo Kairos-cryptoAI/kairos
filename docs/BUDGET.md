@@ -1,9 +1,32 @@
 # Budget
 
-Kairos routes each workload to a cost/quality tier. Text extraction uses DeepSeek-V4-Flash-0731,
-routine tactical work uses GPT-5.6 Luna, conflict resolution uses GPT-5.6 Terra, and strategic
-allocation uses GPT-5.6 Sol. The calculator in `kairos-llm` uses the list prices adopted on
-2026-08-13 and no cache discount for its base scenario.
+## Current authority
+
+Default routing is OpenAI-only: Text `gpt-6-luna/low`, normal review
+`gpt-6-luna/medium`, conflict `gpt-6.1-sol/high`, allocation
+`gpt-6.1-sol/xhigh`. The implementation registry in `kairos-llm/models.py` is
+authoritative; [ADR 10](adr/0010-openai-only-current-routing.md) records this
+supersession. These defaults are not a benchmark win or a current price quote.
+
+The existing shared qualification campaign retains cumulative ceilings of
+OpenAI **$12**, DeepSeek **$1**, and X **$2**, including committed spend and
+uncertain reservations. Default OpenAI-only routing does not erase past
+DeepSeek costs, reservations or audit records. A new strategy, namespace,
+month, source revision or model route cannot reset those balances.
+
+No larger runtime budget has been granted. Calls require the admitted durable
+budget authority and their bounded preflight; insufficient budget or ambiguous
+outcomes fail closed. Current remaining authority must come from that ledger,
+not subtraction from the old numbers below. Models are called on scheduled
+observations/candidates/material events, not automatically for every bar.
+
+## Historical planning scenario — 2026-08-13/18
+
+Everything below is a retained historical estimate or dated observation,
+**not current routing, price, balance, feed entitlement or spending authority**.
+The old calculator used August list prices and no cache discount. Re-check
+official prices and actual tokens before a prospective budget decision; do not
+use the $72.204 scenario to fund the current routes.
 
 ## Model assumptions
 

@@ -71,6 +71,24 @@ foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--chec
 }
 
 $currentRelease = Get-Content -LiteralPath $currentReleasePath -Raw | ConvertFrom-Json
+$readmeText = Get-Content -LiteralPath (Join-Path $repoRoot "README.md") -Raw
+$readinessNames = @{
+    technicalPaperReady = "TECHNICAL_PAPER_READY"
+    paperQualified = "PAPER_QUALIFIED"
+    alphaReady = "ALPHA_READY"
+    liveReady = "LIVE_READY"
+}
+foreach ($readinessProperty in $readinessNames.Keys) {
+    $readinessLabel = $readinessNames[$readinessProperty]
+    $readinessValue = ([bool]$currentRelease.readiness.$readinessProperty).ToString().ToLowerInvariant()
+    $readinessRow = '| `' + $readinessLabel + '` | `' + $readinessValue + '` |'
+    if (-not $readmeText.Contains($readinessRow)) {
+        throw "README current readiness differs from manifest: $readinessLabel"
+    }
+}
+if (-not $readmeText.Contains("docs/CURRENT_CONCEPT.md")) {
+    throw "README must link the authoritative current concept"
+}
 if ($currentRelease.schemaVersion -ne 2 -or $currentRelease.kind -ne "CURRENT_SOURCE_IDENTITY") {
     throw "Unexpected current-release manifest schema"
 }

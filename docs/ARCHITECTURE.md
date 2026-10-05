@@ -6,6 +6,12 @@ Redis Streams and durable PostgreSQL inbox/outbox transactions. The older tactic
 available only as an explicitly selected synthetic `DRY_RUN`; it is not an alternate entrance to
 PAPER or LIVE.
 
+This file describes component responsibilities. The authoritative current
+target, capability boundaries and critical path are in
+[CURRENT_CONCEPT.md](CURRENT_CONCEPT.md); source readiness is taken only from
+[the current manifest](../config/current-release.json). The candidate path below
+is not a claim that the technical-canary Compose profile launches every component.
+
 ## Data and control flow
 
 ```mermaid
@@ -13,7 +19,8 @@ flowchart TB
     B["ClosedBarEventV1<br/>Binance UM · complete 1m bar"] --> S["Strategy Engine<br/>pure shared generator"]
     S --> I["StrategyIntentV1<br/>immutable candidate and ExitPlanV1"]
     I --> R["Router<br/>NORMAL or CONFLICT review tier"]
-    R --> A["CandidateReviewV1<br/>ALLOW / VETO / DEFER · priority"]
+    R --> Q["DecisionContextV1<br/>exact intent · causal source receipts"]
+    Q --> A["CandidateReviewV1<br/>ALLOW / VETO / DEFER · priority"]
     A --> K["Risk Manager<br/>deterministic admission and sizing"]
     K --> D["RiskTradeDecisionV1<br/>NEXT_BAR_MARKET"]
     D --> E["Execution FSM<br/>journal and recovery barrier"]
@@ -21,7 +28,11 @@ flowchart TB
     N --> X["EVEDEX DEV<br/>fills · SL · TP · timeout"]
 
     T["Text Scouts<br/>typed news and social evidence"] -.-> R
+    T -.-> Q
+    B -. "declared intent tail" .-> Q
+    P["Compact MarketSnapshot"] -.-> Q
     M["Macro allocation"] -.-> K
+    M -. "explicit availability" .-> Q
     V["VenueQualityV1<br/>basis · spread · depth · age"] -.-> K
     C["AccountSnapshotV2<br/>fresh and reconciled"] -.-> K
 ```
@@ -35,12 +46,16 @@ path stays readable.
 | --- | --- | --- |
 | Quant Scouts | `kairos.market.closed_bar.v1` / `ClosedBarEventV1` | Strategy Engine candidate input |
 | Strategy Engine | `kairos.strategy.intent.v1` / `StrategyIntentV1` | Router |
+| Strategy Engine | `kairos.strategy.evaluation.v1` / `StrategyEvaluationV1` | non-trading causal observation, including no-intent/unavailable |
 | Router | `kairos.strategy.route.v1` / `CandidateRouteV1` | Aggregator review |
+| Aggregator | `kairos.aggregator.decision_context.v1` / `DecisionContextV1` | immutable review-input audit; never trading authority |
 | Aggregator | `kairos.aggregator.review.v1` / `CandidateReviewV1` | Risk |
 | Quant venue poller | `kairos.venue.quality.v1` / `VenueQualityV1` | Risk and durable TCA |
 | Risk | `kairos.risk.trade_decision.v1` / `RiskTradeDecisionV1` | PAPER Execution |
 | Execution | `kairos.execution.trade_event.v1` / `TradeExecutionEventV1` | durable lifecycle audit |
 | Execution | `kairos.account.snapshot.v2` / `AccountSnapshotV2` | Risk, Macro and readiness metrics |
+| Selected deterministic detector (not yet supplied) | `kairos.market.regime_observation.v1` / `RegimeObservationV1` | opt-in Macro/Risk intent-bound regime context |
+| Macro | `kairos.macro.regime_bound_allocation.v1` / `RegimeBoundAllocationV1` | opt-in Risk only; exact policy, intent and account binding |
 
 ## 1 — Closed market data and venue observations
 
@@ -56,7 +71,7 @@ latency. Missing polls count against 24-hour availability rather than disappeari
 denominator.
 
 Text Scouts is an independent evidence path. It ingests GDELT/RSS and official X accounts,
-durably tracks cursors and reserves spend before paid calls. DeepSeek Flash extracts compact
+durably tracks cursors and reserves spend before paid calls. The OpenAI-only default extracts compact
 typed evidence; provider failure falls back to a local low-confidence classifier. Text never
 creates a side or an order.
 
@@ -72,6 +87,13 @@ An intent fixes the strategy/revision, side, eligibility, expiry, reference pric
 code, configuration, input-window and feature fingerprints. Frozen parity fixtures require the
 same ordered intent bytes and IDs from Windows replay and Linux runtime.
 
+The runtime adapter also records explicit evaluation outcomes. `NO_INTENT` means
+a complete supported evaluation produced no candidate; warmup, disabled,
+not-scheduled, unsupported/unavailable and error are separate states. It records
+receipt then intents before acknowledging input and reuses the prepared bytes on
+retry. These receipts do not attest a full-window archive or admit any strategy.
+Frozen pure generators and historical research identities remain unchanged.
+
 All previous sleeves retain their recorded `REJECTED` results. One exact revision,
 `regime_aligned_right_tail_v1`, is `FORWARD_FROZEN`; the PAPER strategy allow-list is still empty
 and runtime refuses to enable either rejected sleeves or the merely forward-frozen candidate. The separate
@@ -83,20 +105,40 @@ The Router carries the complete intent unchanged and deterministically selects `
 `CONFLICT` from candidate-specific text evidence. The Aggregator's strict schema contains only
 review decision, priority and reason codes:
 
-- normal review: GPT-5.6 Luna, `medium`;
-- conflict review: GPT-5.6 Terra, `high`;
+- normal review: `gpt-6-luna`, `medium`;
+- conflict review: `gpt-6.1-sol`, `high`;
 - allowed outputs: `ALLOW`, `VETO` or `DEFER`.
+
+The normal service first publishes immutable `DecisionContextV1`: exact route and
+intent identity, compact market payload, the intent-declared bar tail and explicit
+text/macro source slots. Trusted local ingest times are distinct from source event
+and context capture times. Late, stale, conflicting or wrong-symbol evidence cannot
+become available through a later capture. Missing required evidence returns
+`DEFER` without calling a model. The context-free review method is named legacy
+engineering compatibility and is not the service fallback. The store is bounded
+and in-process, not a durable point-in-time source archive.
 
 The model cannot change side, stop, target, timeout, entry window or provenance. `DEFER`, malformed
 output, provider error or deadline miss terminates the current intent without a second paid call;
 a later closed bar may create a new intent. Priority only orders otherwise eligible competing
 candidates and never changes quantity.
 
-Macro Strategist uses GPT-5.6 Sol at `xhigh` to produce portfolio allocation and shock context.
-Risk treats that output as a cap, not an instruction to alter a candidate. Text extraction uses
-DeepSeek V4 Flash 0731 in non-thinking mode. All paid calls reserve their worst-case envelope in
+Macro Strategist uses `gpt-6.1-sol` at `xhigh` to produce portfolio allocation and shock context.
+It is not a qualified external macro-release/onchain feed; those inputs are explicitly
+unavailable. Risk treats capital allocation as a cap, not an instruction to alter a candidate.
+Text extraction defaults to `gpt-6-luna` at `low`. These are implementation defaults, not
+proof of superior quality or current provider prices. All paid calls reserve their worst-case envelope in
 the shared durable budget ledger before network I/O; technical canaries start none of these paid
 services.
+
+The legacy capital allocation also enforces a blanket `CHOP` entry veto. It does
+not implement a prospective range-trading policy. New adaptive regime semantics
+are implemented as an opt-in versioned policy and bound allocation, disabled by
+default. They require exact strategy/code/config, deterministic detector and
+source-set identity, explicit BULL/RANGE/BEAR/CRASH direction capabilities and a
+current intent/account-bound capital basis. `UNCERTAIN` has no entry capability.
+The selected detector producer and policy qualification remain future work; an
+empty allow-list or a model confidence value can never create trading authority.
 
 ## 4 — Deterministic risk and EVEDEX gate
 
@@ -124,6 +166,10 @@ quantity = risk_budget / loss_per_unit
 Leverage, notional, measured depth/liquidity, portfolio and Macro caps can only reduce that
 quantity. LLM priority, confidence and signal strength cannot increase it. PAPER permits no more
 than one active idea per symbol and one globally active technical canary.
+
+Ordinary PAPER Execution still admits the bounded technical canary only. An
+opt-in Macro/Risk decision is not non-canary Execution authority; adaptive
+execution admission requires its own review after strategy/venue qualification.
 
 ## 5 — Protected PAPER lifecycle
 
@@ -253,14 +299,17 @@ evidence fingerprints.
 
 ## Verification boundary
 
-`TECHNICAL_PAPER_READY=true` is limited to the exact pinned revision set passing its code,
-contract, parity, fault/race, Windows, Docker integration and GitHub CI gates. It does not mean
-that any elapsed or external qualification has passed.
+The current manifest has `TECHNICAL_PAPER_READY=false`. A future true value would
+require the exact pinned revision set to pass its matching code, contract, parity,
+fault/race, Windows, Docker integration and GitHub CI gates. Even then it would not
+mean that any elapsed or external qualification had passed. Historical true
+values in dated receipts are not current-source approval.
 
 `PAPER_QUALIFIED=false`: authenticated EVEDEX DEV reconciliation and venue semantics, the
 24-hour read-only gate, the manually armed five-symbol protected canary set, and the seven-day
 soak remain pending. `ALPHA_READY=false` and runtime `REJECT_ALL` remain independent because the
-only surviving candidate is merely `FORWARD_FROZEN` and has not passed its future-data gate.
+Trial 15 is merely `FORWARD_FROZEN` and the separate adaptive candidate/evaluator
+has not yet been selected and frozen.
 `LIVE_READY=false`; production endpoints, credentials and mutation
 authority remain blocked. The exact evidence boundary and reviewed SHAs are in
 [READINESS.md](READINESS.md).

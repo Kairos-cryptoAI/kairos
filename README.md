@@ -6,6 +6,11 @@ change a strategy's side or exit plan, and cannot call an exchange. Every PAPER 
 come from an immutable strategy intent, pass deterministic risk and EVEDEX DEV venue gates, and
 be submitted by the crash-recoverable Execution Engine.
 
+Current scope and implementation priorities are defined in
+[CURRENT_CONCEPT.md](docs/CURRENT_CONCEPT.md). The diagram below describes the
+candidate contract path, not an accepted continuously running adaptive deployment.
+The existing PAPER Compose profile is a bounded technical DEV-canary profile.
+
 ### Strategy Parity → EVEDEX DEV PAPER
 
 ```mermaid
@@ -13,7 +18,8 @@ flowchart TB
     B["Closed Binance UM 1m bars"] --> S["Strategy Engine<br/>pure shared generators"]
     S --> I["StrategyIntentV1<br/>side · fixed SL/TP · timeout · expiry"]
     I --> R["Router<br/>candidate-specific NORMAL / CONFLICT"]
-    R --> A["Aggregator review<br/>ALLOW / VETO / DEFER · priority"]
+    R --> Q["Causal DecisionContextV1<br/>exact intent · source availability"]
+    Q --> A["Aggregator review<br/>ALLOW / VETO / DEFER · priority"]
     A --> K["Risk Manager<br/>deterministic admission and sizing"]
     K --> D["RiskTradeDecisionV1<br/>NEXT_BAR_MARKET · loss-at-stop sizing"]
     D --> E["Execution FSM + durable journal"]
@@ -21,7 +27,11 @@ flowchart TB
     G --> O["Fills · SL · TP · timeout · reconciliation"]
 
     T["Text Scouts<br/>GDELT · RSS · official X"] -. "review evidence" .-> R
+    T -.-> Q
+    B -. "declared intent tail" .-> Q
+    P["Compact MarketSnapshot"] -.-> Q
     M["Macro allocation"] -. "portfolio limit" .-> K
+    M -. "explicit availability" .-> Q
     V["EVEDEX DEV book<br/>basis · spread · depth · age"] -. "venue gate" .-> K
     C["Reconciled AccountSnapshotV2"] -. "account authority" .-> K
 ```
@@ -31,6 +41,12 @@ The Aggregator may review an intent, but cannot mutate it; `VETO`, `DEFER`, a ti
 ends that intent. Risk alone calculates quantity from worst-case loss at the fixed stop and
 checks Macro allocation, the reconciled account, one-position-per-symbol policy and fresh venue
 quality. Execution alone owns exchange effects and recovery.
+
+Runtime strategy evaluations now distinguish a valid no-trade decision from
+warmup, disabled or unavailable/error outcomes. Candidate review requires
+immutable source-bound context; missing required evidence defers before a paid
+call. The optional regime/capital policy binds strategy, detector, intent and
+account identity without changing legacy defaults or admitting a strategy.
 
 The legacy `TacticalCommand -> ValidatedOrder` route is retained only for explicit synthetic
 `DRY_RUN`. PAPER never consumes it, `KAIROS_DRY_RUN=false` is a startup error, and LIVE is
@@ -162,44 +178,43 @@ primary database. No forward PnL is available or disclosed yet.
 
 ## Current delivery state
 
-As of 2026-08-27, the strict Strategy Parity/PAPER code path is implemented on `main`: complete
-closed-bar handling, shared pure generators, immutable review, deterministic loss-at-stop risk,
-runtime EVEDEX quality measurements, a protected trade FSM, durable effect/lifecycle facts,
-an official SDK sidecar and an isolated `kairos-paper` deployment. Cross-repository dependencies
-and deployment sources are pinned to full commits.
-
-The readiness flags deliberately describe different claims:
+The authoritative current source identity and readiness values are in
+[`config/current-release.json`](config/current-release.json). Historical receipts
+apply only to their exact source revisions; a previous green gate does not qualify
+later code or a new model route. Source pins identify code, not running services.
 
 | flag | value | exact meaning |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `true` | the exact current 14-repository source identity passed its matching Windows, Docker integration and GitHub CI gates; see the [dated receipt](docs/READINESS.md#current-source-release--2026-09-23) |
-| `PAPER_QUALIFIED` | `false` | real DEV auth, 24-hour observation, five-symbol canary evidence and seven-day soak are not complete |
-| `ALPHA_READY` | `false` | one exact candidate is `FORWARD_FROZEN`, but it has not passed its future-data gate; automatic strategy PAPER is disabled |
-| `LIVE_READY` | `false` | LIVE startup and production credentials/endpoints remain blocked |
+| `TECHNICAL_PAPER_READY` | `false` | the current engineering source set has no accepted complete matching release gate |
+| `PAPER_QUALIFIED` | `false` | the complete real DEV observation, canary and soak evidence has not been accepted |
+| `ALPHA_READY` | `false` | the new adaptive candidate/evaluator is not selected and frozen; no independent alpha pass exists |
+| `LIVE_READY` | `false` | PROD wiring and production qualification remain blocked |
 
-`TECHNICAL_PAPER_READY=true` records only the engineering gates for the exact current source
-identity; it is not an exchange-performance or profitability claim. The identity manifest at
-`config/current-release.json` deliberately keeps its readiness fields false and grants no runtime
-authority. No venue mutation is authorized by this marker. EVEDEX DEV qualification, strategy
-alpha, PAPER and LIVE remain separate blocked gates. See the [current receipt and qualification
-ladder](docs/READINESS.md).
+The strategy policy is `REJECT_ALL`. Trial 15 is a separate forward-frozen
+baseline, not the selected adaptive LIVE candidate. Its observations and all
+V4/V5 research evidence are preserved; none can transfer days or approval to a
+new campaign.
 
-Bounded shadow qualification now includes frozen candidate-review, macro-state and five-asset
-news corpora. The current exact cases pass on DeepSeek Flash, Luna, Terra and Sol, including
-prompt-injection and deterministic-rejection checks; the durable ledger records `$0.025494` of
-committed OpenAI cost and `$0.001171` of committed DeepSeek cost. Failed or ambiguous OpenAI
-attempts conservatively retain `$0.154624` of reservations. X authenticated once and returned
-one User plus ten stale Posts for `$0.060000`. These samples are not a latency, quota or
-availability soak, and no order was made. Technical EVEDEX canaries start no paid LLM/feed
-services.
+Reusable components include causal closed-bar processing, shared pure
+generators, strict review, loss-at-stop sizing, a protected execution lifecycle,
+durable journals and two distinct simulation layers. This does not establish
+one connected adaptive PAPER runtime. The technical PAPER profile excludes
+paid model/feed services and admits only a manually armed technical canary;
+the source-only opt-in Macro/Risk branch now exists, but a selected deterministic
+publisher, non-canary Execution admission and accepted full deployment remain
+separate work.
 
-This is still **not production-ready**. The runtime mutation policy remains `REJECT_ALL` while
-the exact forward-frozen candidate accumulates independent evidence. Long-gap recovery restored
-the Binance bars and passed a backup/restore check, but a durable historical outbox backlog remains
-intentionally undispatched pending bounded reconciliation; no application consumer is running.
-EVEDEX DEV currently has executable books only for BTC/ETH (SOL/BNB/XRP are empty) and the dedicated
-DEV credentials are absent. Authenticated venue semantics, elapsed operational gates, provider soak
-qualification and a future managed KMS/Vault boundary remain outstanding.
+The OpenAI-only defaults and their qualification boundary are in
+[ADR 10](docs/adr/0010-openai-only-current-routing.md). Older corpus results and
+spending observations are historical evidence, not qualification of the current
+model routes or permission to reset the shared budget. See [BUDGET.md](docs/BUDGET.md).
+
+The latest [runtime recovery receipt](docs/RECOVERY-2026-10-05.md) accepts an
+isolated archive diagnostic, not primary recovery, outbox dispatch or consumer
+restart. Actual DEV credentials, books and account pairing must be established
+by current preflight evidence; the old August venue snapshot is not a current
+availability or credential claim. Production security, backup/restore, alerts
+and elapsed qualification remain independent requirements.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
 [ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.
