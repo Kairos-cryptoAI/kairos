@@ -1,0 +1,31 @@
+{
+  "allowed_next_input": "Source-bound point-in-time observed receipts; quiet slots also need proposal coverage",
+  "arms": {
+    "proposals": {
+      "cost_usd": null,
+      "economic_results": null,
+      "paired_to_baseline": false,
+      "reason": "Absent point-in-time news, observed provider responses, completion clocks and costs; historical pretrained-model event knowledge is not causal historical evidence",
+      "status": "NOT_CALLED"
+    },
+    "review": {
+      "cost_usd": null,
+      "economic_results": null,
+      "paired_to_baseline": false,
+      "reason": "Absent point-in-time news, observed provider responses, completion clocks and costs; historical pretrained-model event knowledge is not causal historical evidence",
+      "status": "NOT_CALLED"
+    },
+    "strategy_only": {
+      "status": "CONDITIONAL_CANDLE_DEVELOPMENT_ONLY"
+    }
+  },
+  "baseline_candidates": 6,
+  "blind_campaign_enrolled": false,
+  "existing_campaign_evaluator_changed": false,
+  "matched_ab_executed": false,
+  "quiet_slots_included": 4314,
+  "scheduled_slots": 4320,
+  "schema": "kairos.development.matched-preparation.v1",
+  "tape_sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef",
+  "unavailable_or_nondecision_slots": 0
+}

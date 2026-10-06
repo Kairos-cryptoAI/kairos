@@ -1,0 +1,51 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "sources": {
+    "adaptive_identity": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "dependency_projection": "EXPLICIT_DEVELOPMENT_OVERRIDES_NOT_FROZEN_CAMPAIGN_ENVIRONMENT",
+    "installed_dependencies": {
+      "kairos-backtest": {
+        "revision": "da1237854066fde381542e43c106d0de727448be",
+        "version": "0.1.0"
+      },
+      "kairos-core": {
+        "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+        "version": "0.3.0"
+      },
+      "kairos-persistence": {
+        "revision": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+        "version": "0.1.0"
+      },
+      "kairos-quant-scouts": {
+        "revision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+        "version": "0.1.0"
+      },
+      "kairos-strategy-engine": {
+        "revision": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+        "version": "0.2.12"
+      }
+    },
+    "plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+    "replay_modules_sha256": {
+      "__init__.py": "219b779856cfe5d816a818cbf6ee4c6f73685b7208de533d6ec4f9ea2f152909",
+      "engine.py": "cf25940d8117155c7b06aaf97533b464679a77b10f613f99420b3ae00d0db85f",
+      "inputs.py": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+      "matched.py": "6d3838b584ef20f49d23a7cbfe4e4e9b2fe6e1c62d1606e7172c03354b5124ec",
+      "runner.py": "a986321af7d641e85d46a7d51143acd532c9da03022d9d293afbea2c4f16a2e4"
+    },
+    "reused_backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    },
+    "uv_lock_sha256": "853537cbcd261b9712681d4cdd91e08fb9f942f2524e40da3b92005cb54dd583"
+  },
+  "started_utc": "2026-10-06T04:47:35.077712+00:00",
+  "state": "RUNNING"
+}

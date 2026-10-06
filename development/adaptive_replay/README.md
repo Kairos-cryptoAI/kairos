@@ -97,19 +97,26 @@ does not run the existing sealed matched A/B campaign or qualify any model route
 Use uv 0.12.3 with Python 3.11/3.14. Install outside protected runtime environments:
 
 ```powershell
-$env:UV_PROJECT_ENVIRONMENT = 'D:\Kairos\runtime\adaptive-development-20261006\py311'
+$env:UV_PROJECT_ENVIRONMENT = 'D:\Kairos\runtime\adaptive-development-20261006\py311-current'
 uv sync --locked --no-editable --python 3.11
 uv run --no-sync ruff check .
 uv run --no-sync ruff format --check .
-uv run --no-sync python -m pytest -q
 ```
 
-From a separate runtime working directory, invoke the installed module with
+From a separate runtime working directory, test the installed wheel without
+importing the package from the source directory:
+
+```powershell
+& 'D:\Kairos\runtime\adaptive-development-20261006\py311-current\Scripts\python.exe' -m pytest `
+  --import-mode=importlib 'D:\Kairos\kairos\development\adaptive_replay\tests' -q
+```
+
+From that separate working directory, invoke the installed module with
 absolute plan/cache/output paths. `--output` must be **new**; there is no resume,
 overwrite or deletion of previous evidence:
 
 ```powershell
-& 'D:\Kairos\runtime\adaptive-development-20261006\py311\Scripts\python.exe' -m adaptive_replay.runner `
+& 'D:\Kairos\runtime\adaptive-development-20261006\py311-current\Scripts\python.exe' -m adaptive_replay.runner `
   --plan 'D:\Kairos\kairos\development\adaptive_replay\plan.json' `
   --bar-cache 'D:\Kairos\kairos-backtest\data\historical' `
   --factor-cache 'D:\Kairos\kairos-backtest\data\historical-factors' `

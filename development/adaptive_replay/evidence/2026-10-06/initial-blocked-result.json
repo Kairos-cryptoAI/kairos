@@ -1,0 +1,106 @@
+{
+  "blind_campaign_days_added": 0,
+  "blind_results_read": false,
+  "compound_return_across_windows": null,
+  "economic_authority": "CONDITIONAL_CANDLE_APPROXIMATION_NOT_ALPHA_OR_VENUE_QUALIFICATION",
+  "elapsed_seconds": 3.3430000000007567,
+  "finished_utc": "2026-10-06T04:38:21.683489+00:00",
+  "llm_matched_ab_executed": false,
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "schema": "kairos.adaptive.development-result.v1",
+  "sources": {
+    "adaptive_identity": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "dependency_projection": "EXPLICIT_DEVELOPMENT_OVERRIDES_NOT_FROZEN_CAMPAIGN_ENVIRONMENT",
+    "installed_dependencies": {
+      "kairos-backtest": {
+        "revision": "da1237854066fde381542e43c106d0de727448be",
+        "version": "0.1.0"
+      },
+      "kairos-core": {
+        "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+        "version": "0.3.0"
+      },
+      "kairos-persistence": {
+        "revision": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+        "version": "0.1.0"
+      },
+      "kairos-quant-scouts": {
+        "revision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+        "version": "0.1.0"
+      },
+      "kairos-strategy-engine": {
+        "revision": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+        "version": "0.2.12"
+      }
+    },
+    "plan_sha256": "56eeef38d6cbcce735d503fa0666b387d972eb97fa5cfb901afcb65ed2412813",
+    "replay_modules_sha256": {
+      "__init__.py": "219b779856cfe5d816a818cbf6ee4c6f73685b7208de533d6ec4f9ea2f152909",
+      "engine.py": "e1b09fd47af8821fa178531735e7a62ca72411f9d1e8d8dae0b90301a9000397",
+      "inputs.py": "4ac61113270f5e8f13a3a3a0bb554f15fd7483f631b8b5d7861e2392a62aab88",
+      "matched.py": "6d3838b584ef20f49d23a7cbfe4e4e9b2fe6e1c62d1606e7172c03354b5124ec",
+      "runner.py": "a986321af7d641e85d46a7d51143acd532c9da03022d9d293afbea2c4f16a2e4"
+    },
+    "reused_backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    },
+    "uv_lock_sha256": "853537cbcd261b9712681d4cdd91e08fb9f942f2524e40da3b92005cb54dd583"
+  },
+  "state": "COMPLETED_WITH_BLOCKED_INPUTS",
+  "windows": [
+    {
+      "economic_results": null,
+      "reason": "unexpected funding settlement stamp set for BTCUSDT: extra=[1635984000006, 1636012800004, 1636041600004] missing=[1635984000000, 1636012800000, 1636041600000]",
+      "state": "BLOCKED_INPUT_INTEGRITY",
+      "window": {
+        "end_exclusive": "2021-11-10",
+        "id": "late_2021",
+        "start": "2021-11-07"
+      }
+    },
+    {
+      "economic_results": null,
+      "reason": "unexpected funding settlement stamp set for BTCUSDT: extra=[1643760000004, 1643817600002, 1643846400002] missing=[1643760000000, 1643817600000, 1643846400000]",
+      "state": "BLOCKED_INPUT_INTEGRITY",
+      "window": {
+        "end_exclusive": "2022-02-08",
+        "id": "early_2022",
+        "start": "2022-02-05"
+      }
+    },
+    {
+      "economic_results": null,
+      "reason": "unexpected funding settlement stamp set for BTCUSDT: extra=[1651795200005, 1651824000001, 1651852800010] missing=[1651795200000, 1651824000000, 1651852800000]",
+      "state": "BLOCKED_INPUT_INTEGRITY",
+      "window": {
+        "end_exclusive": "2022-05-12",
+        "id": "may_2022",
+        "start": "2022-05-09"
+      }
+    },
+    {
+      "economic_results": null,
+      "reason": "unexpected funding settlement stamp set for BTCUSDT: extra=[1654819200009, 1654876800006, 1654905600018] missing=[1654819200000, 1654876800000, 1654905600000]",
+      "state": "BLOCKED_INPUT_INTEGRITY",
+      "window": {
+        "end_exclusive": "2022-06-16",
+        "id": "june_2022",
+        "start": "2022-06-13"
+      }
+    }
+  ]
+}

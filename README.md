@@ -58,6 +58,8 @@ The isolated [bounded development replay](development/adaptive_replay/README.md)
 keeps the selected strategy and all frozen evidence unchanged. It distinguishes
 strict minute-quote timing from conditional candle-price economics and leaves
 unobserved historical LLM arms null; it is not an accepted matched A/B campaign.
+The [development receipt](docs/ADAPTIVE-DEVELOPMENT-2026-10-06.md) records the
+fixed protocol, retained failures, checks and economic limitations.
 
 The legacy `TacticalCommand -> ValidatedOrder` route is retained only for explicit synthetic
 `DRY_RUN`. PAPER never consumes it, `KAIROS_DRY_RUN=false` is a startup error, and LIVE is
@@ -198,7 +200,7 @@ later code or a new model route. Source pins identify code, not running services
 | --- | --- | --- |
 | `TECHNICAL_PAPER_READY` | `false` | the current engineering source set has no accepted complete matching release gate |
 | `PAPER_QUALIFIED` | `false` | the complete real DEV observation, canary and soak evidence has not been accepted |
-| `ALPHA_READY` | `false` | the new adaptive candidate/evaluator is not selected and frozen; no independent alpha pass exists |
+| `ALPHA_READY` | `false` | a concrete adaptive development candidate is selected; its complete campaign/evaluator is not accepted and frozen, and no independent alpha pass exists |
 | `LIVE_READY` | `false` | PROD wiring and production qualification remain blocked |
 
 The strategy policy is `REJECT_ALL`. Trial 15 is a separate forward-frozen
