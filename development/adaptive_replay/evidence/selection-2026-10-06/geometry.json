@@ -1,0 +1,561 @@
+{
+  "adaptive_identity": {
+    "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+    "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+    "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+    "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+  },
+  "analysis_source_sha256": "1a4c0afb152fb9d2689519a5f97fc9a531ebf2d534fa36d4230918a27aa5dd4d",
+  "authority": "REFERENCE_GEOMETRY_ONLY_NOT_EXPECTANCY_OR_ACTUAL_FILL",
+  "blind_campaign_days_added": 0,
+  "blind_results_read": false,
+  "comparison_result_sha256": "895b7aee5d8741cd0869cf2fad5eaa9a311f85edabe5ff4a8b800c4c9435a56c",
+  "cost_risk_source_sha256": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+  "maximum_cost_stop_fraction": 0.5,
+  "native_baseline_identities": {
+    "range_mean_reversion_v1": {
+      "config": {
+        "atr_period": 14,
+        "band_atr_multiple": 1.25,
+        "intent_valid_bars": 1,
+        "max_hold_bars": 12,
+        "maximum_abs_hourly_slope": 0.00025,
+        "maximum_regime_efficiency": 0.3,
+        "minimum_gross_reward_to_risk": null,
+        "regime_lookback_hours": 12,
+        "stop_atr_multiple": 1.0,
+        "target_atr_extension": 0.0,
+        "vwap_lookback_bars": 24
+      },
+      "fingerprint": "703ca9f4fa5c2dbc124b12232ee56a71eaedbf961be509f0c3cd7d55628ba5a5",
+      "installed_source_tree_sha256": "3262a4a9ec33ef99df3046497a51b0e9565af495d7554c4058e7cd52a6dd22c0",
+      "registry_status": "rejected",
+      "revision": "1"
+    },
+    "trend_breakout_v1": {
+      "config": {
+        "atr_period": 14,
+        "donchian_lookback": 20,
+        "intent_valid_bars": 1,
+        "max_hold_bars": 24,
+        "minimum_abs_hourly_slope": 0.00025,
+        "minimum_breakout_atr": 0.0,
+        "minimum_directional_taker_share": null,
+        "minimum_regime_efficiency": 0.3,
+        "minimum_volume_surprise": null,
+        "regime_lookback_hours": 12,
+        "stop_atr_multiple": 1.25,
+        "target_atr_multiple": 2.0,
+        "trailing_activation_atr_multiple": 1.0,
+        "trailing_distance_atr_multiple": 1.0,
+        "volume_lookback": 20
+      },
+      "fingerprint": "d1ce5f5306e0efab4e5b9f44fd1d691fb5a4ba7d0305b752a8a7100a3da09865",
+      "installed_source_tree_sha256": "0334f227fa1fa35111505a9bdd5e00a378f4477a0979b2142d3e4ebda4198f31",
+      "registry_status": "rejected",
+      "revision": "1"
+    }
+  },
+  "new_price_or_pnl_replay": false,
+  "paid_calls": 0,
+  "pipeline_latency_ms_assumed": 100,
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "risk_limits": {
+    "maximum_leverage": 1.0,
+    "maximum_notional_fraction": 0.25,
+    "maximum_stop_distance_bps": 300.0,
+    "minimum_net_reward_to_risk": 1.25,
+    "minimum_stop_distance_bps": 10.0,
+    "risk_fraction": 0.0025
+  },
+  "schema": "kairos.strategy.selection-geometry-audit.v1",
+  "strategy_selected_for_live": null,
+  "windows": [
+    {
+      "arms": {
+        "adaptive_pullback_range_v1": {
+          "candidate_counts_each_utc_day": {
+            "2021-11-07": 0,
+            "2021-11-08": 0,
+            "2021-11-09": 0
+          },
+          "candidate_patterns": {},
+          "gross_reward_to_risk_max": null,
+          "gross_reward_to_risk_min": null,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 0,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": null,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {}
+            },
+            "stress": {
+              "net_reward_to_risk_max": null,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {}
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": 4320,
+          "source_unavailable_slots": 0,
+          "tape_sha256": "024c44fb3828009ec9d60ec6a3a78b6cf17e4e6e1588a67e577d8228732e7cb4"
+        },
+        "range_mean_reversion_v1": {
+          "candidate_counts_each_utc_day": {
+            "2021-11-07": 4,
+            "2021-11-08": 9,
+            "2021-11-09": 14
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 27
+          },
+          "gross_reward_to_risk_max": 1.249941272245329,
+          "gross_reward_to_risk_min": 0.1373143722954585,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 27,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 0.5267704571687013,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 26,
+                "reward_risk_too_low": 1
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.2906687068112453,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 27
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "56cc0f378158a4c128f8a9ff786664aea1c91e2ea5f7012a6fb2b8000ebf32a6"
+        },
+        "trend_breakout_v1": {
+          "candidate_counts_each_utc_day": {
+            "2021-11-07": 81,
+            "2021-11-08": 44,
+            "2021-11-09": 19
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 144
+          },
+          "gross_reward_to_risk_max": 1.6000000000000842,
+          "gross_reward_to_risk_min": 1.5999999999998777,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 144,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.0278630918500022,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 96,
+                "reward_risk_too_low": 48
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.7743867714720281,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 142,
+                "reward_risk_too_low": 2
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "9eaec880e63531e6c827d6a22671c2c9fe3aec14d33f970fc0d84e75a8f48b67"
+        }
+      },
+      "window": {
+        "end_exclusive": "2021-11-10",
+        "id": "late_2021",
+        "start": "2021-11-07"
+      }
+    },
+    {
+      "arms": {
+        "adaptive_pullback_range_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-02-05": 0,
+            "2022-02-06": 0,
+            "2022-02-07": 0
+          },
+          "candidate_patterns": {},
+          "gross_reward_to_risk_max": null,
+          "gross_reward_to_risk_min": null,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 0,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": null,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {}
+            },
+            "stress": {
+              "net_reward_to_risk_max": null,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {}
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": 4320,
+          "source_unavailable_slots": 0,
+          "tape_sha256": "138367852f18e83748e7ace928dd55a576eebfb13a31fa581f908dca04341c56"
+        },
+        "range_mean_reversion_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-02-05": 12,
+            "2022-02-06": 72,
+            "2022-02-07": 6
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 90
+          },
+          "gross_reward_to_risk_max": 1.2443166587493883,
+          "gross_reward_to_risk_min": 0.005461650754879928,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 90,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 0.6224831523690098,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 75,
+                "reward_below_cost_hurdle": 1,
+                "reward_risk_too_low": 14
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.37643908919890406,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 89,
+                "reward_risk_too_low": 1
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "3d5d7e0e6a10e0bf967aea6ec02a16862b11c577f6bbbf989b696236f18e97b2"
+        },
+        "trend_breakout_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-02-05": 66,
+            "2022-02-06": 2,
+            "2022-02-07": 49
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 117
+          },
+          "gross_reward_to_risk_max": 1.6000000000000438,
+          "gross_reward_to_risk_min": 1.5999999999999281,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 117,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.1675290218245182,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 33,
+                "reward_risk_too_low": 84
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.9556574834161471,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 90,
+                "reward_risk_too_low": 27
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "7c4375d38d2b62960bf578251cb752fc6a98a09cd3433e73e8374d186d92eb83"
+        }
+      },
+      "window": {
+        "end_exclusive": "2022-02-08",
+        "id": "early_2022",
+        "start": "2022-02-05"
+      }
+    },
+    {
+      "arms": {
+        "adaptive_pullback_range_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-05-09": 5,
+            "2022-05-10": 0,
+            "2022-05-11": 1
+          },
+          "candidate_patterns": {
+            "CRASH_SUPPORT_RETEST": 1,
+            "TREND_PULLBACK_RECLAIM": 5
+          },
+          "gross_reward_to_risk_max": 2.0,
+          "gross_reward_to_risk_min": 2.0,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 6,
+          "raw_candidates": 6,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.7464725863409647,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 6,
+              "reference_reasons": {
+                "accepted": 6
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 1.6036109388607183,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 5,
+              "reference_reasons": {
+                "accepted": 5,
+                "reward_risk_too_low": 1
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": 4320,
+          "source_unavailable_slots": 0,
+          "tape_sha256": "d51ed8220e73ceaa3322edcb25d33cc2160444c54724504c0ee6a01274b9e89f"
+        },
+        "range_mean_reversion_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-05-09": 8,
+            "2022-05-10": 4,
+            "2022-05-11": 3
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 15
+          },
+          "gross_reward_to_risk_max": 1.2183381174388672,
+          "gross_reward_to_risk_min": 0.2077744081565176,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 15,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 0.7300412755704808,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 8,
+                "reward_below_cost_hurdle": 1,
+                "reward_risk_too_low": 6
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.5559876592989701,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 12,
+                "reward_below_cost_hurdle": 1,
+                "reward_risk_too_low": 2
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "59fcd3315fe81c8798d14fbf3471cd5728e931beb3b9d32bb5b73dac837753fa"
+        },
+        "trend_breakout_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-05-09": 79,
+            "2022-05-10": 31,
+            "2022-05-11": 30
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 140
+          },
+          "gross_reward_to_risk_max": 1.6000000000000818,
+          "gross_reward_to_risk_min": 1.5999999999999666,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 140,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.4714776336107342,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 34,
+              "reference_reasons": {
+                "accepted": 34,
+                "insufficient_cost_headroom": 2,
+                "reward_risk_too_low": 98,
+                "stop_too_wide": 6
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 1.394634153702256,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 10,
+              "reference_reasons": {
+                "accepted": 10,
+                "insufficient_cost_headroom": 27,
+                "reward_risk_too_low": 97,
+                "stop_too_wide": 6
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "bfb0d5a490c752d8a60417092dd51db61b87650765f58c1a1ddf79ada0a43643"
+        }
+      },
+      "window": {
+        "end_exclusive": "2022-05-12",
+        "id": "may_2022",
+        "start": "2022-05-09"
+      }
+    },
+    {
+      "arms": {
+        "adaptive_pullback_range_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-06-13": 4,
+            "2022-06-14": 2,
+            "2022-06-15": 0
+          },
+          "candidate_patterns": {
+            "CRASH_SUPPORT_RETEST": 1,
+            "TREND_PULLBACK_RECLAIM": 5
+          },
+          "gross_reward_to_risk_max": 2.0,
+          "gross_reward_to_risk_min": 2.0,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 6,
+          "raw_candidates": 6,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.7746971055699066,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 6,
+              "reference_reasons": {
+                "accepted": 6
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 1.64568809208828,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 6,
+              "reference_reasons": {
+                "accepted": 6
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": 4320,
+          "source_unavailable_slots": 0,
+          "tape_sha256": "c98869e881a7edeb81e7b9886a89b335e0baf451f5765e447c1796e810b3ca5f"
+        },
+        "range_mean_reversion_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-06-13": 2,
+            "2022-06-14": 5,
+            "2022-06-15": 1
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 8
+          },
+          "gross_reward_to_risk_max": 1.216833377442776,
+          "gross_reward_to_risk_min": 0.43948519234102923,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 8,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 0.7082624599323795,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "reward_risk_too_low": 8
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 0.48864146831992894,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 4,
+                "reward_risk_too_low": 4
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "0bdac2610c4d117b89f3b22ed2b04883c7e379832ffcdff33eba31952abde7e0"
+        },
+        "trend_breakout_v1": {
+          "candidate_counts_each_utc_day": {
+            "2022-06-13": 100,
+            "2022-06-14": 28,
+            "2022-06-15": 54
+          },
+          "candidate_patterns": {
+            "NOT_EXPOSED_BY_NATIVE_CANDIDATE": 182
+          },
+          "gross_reward_to_risk_max": 1.6000000000000176,
+          "gross_reward_to_risk_min": 1.599999999999977,
+          "no_strict_minute_quote_at_assumed_100ms_completion": 0,
+          "raw_candidates": 182,
+          "reference_scenarios": {
+            "base": {
+              "net_reward_to_risk_max": 1.3730714627547924,
+              "planning_round_trip_bps": 20.0,
+              "reference_feasible_candidates": 68,
+              "reference_reasons": {
+                "accepted": 68,
+                "reward_risk_too_low": 114
+              }
+            },
+            "stress": {
+              "net_reward_to_risk_max": 1.2458226581702405,
+              "planning_round_trip_bps": 33.0,
+              "reference_feasible_candidates": 0,
+              "reference_reasons": {
+                "insufficient_cost_headroom": 7,
+                "reward_risk_too_low": 175
+              }
+            }
+          },
+          "scheduled_slots": 4320,
+          "source_ready_slots": null,
+          "source_unavailable_slots": null,
+          "tape_sha256": "d3127832cd18c762292bf5ab5a9d8156436f80f5b28e614ecea2e1f78f5994fd"
+        }
+      },
+      "window": {
+        "end_exclusive": "2022-06-16",
+        "id": "june_2022",
+        "start": "2022-06-13"
+      }
+    }
+  ]
+}

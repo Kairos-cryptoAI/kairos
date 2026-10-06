@@ -2,6 +2,21 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-06_
 
+## Current strategy-only selection — 2026-10-06
+
+The latest user direction pauses further system integration. The
+[family-selection receipt](STRATEGY-SELECTION-2026-10-06.md) keeps three research
+lines: aligned right-tail and its exact base as a slow historical reference,
+intraday breakout as an active negative control, and the unchanged event-driven
+adaptive challenger. No qualified winner or new strategy is selected.
+The cheap read-only audit rechecks 51,840 already published native arm slots,
+without a new generator/price/PnL replay. At reference prices, default range
+cannot clear the common net reward/risk hurdle; breakout is highly cost-limited,
+and adaptive's twelve strict entries remain unobservable within native TTL.
+These are geometry/observability findings, not trading outcomes or alpha.
+Earlier native transport/accounting work and frozen lineages remain intact.
+All readiness flags remain false and policy stays `REJECT_ALL`.
+
 ## Current native observation transport — 2026-10-06
 
 The [bounded native-window export/import](NATIVE-OBSERVATION-IMPORT-2026-10-06.md)

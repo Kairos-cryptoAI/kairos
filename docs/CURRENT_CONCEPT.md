@@ -4,6 +4,19 @@ Updated: 2026-10-06 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
+## Active work: strategy selection only
+
+The user's latest direction pauses further system integration while strategy
+families are selected. Existing news/Macro/Router/review/economic transport
+engineering is preserved, not removed or extended here. The previous adaptive
+implementation is a provisional research challenger, not a proven selected
+champion. Keep a small shortlist of aligned right-tail with its exact base as a
+slow historical reference, default intraday breakout as an active negative
+control, and the existing event-driven adaptive challenger. The
+[selection receipt](STRATEGY-SELECTION-2026-10-06.md) records the evidence,
+reference-geometry incompatibilities, excluded paths and next bounded research
+question. No family is enrolled or allowed to trade by this selection work.
+
 ## Objective and decision path
 
 Kairos seeks independently demonstrated net trading value under fixed risk
@@ -61,7 +74,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
-| Adaptive strategy | one selected `adaptive_pullback_range_v1` generator and exact finite regime/entry/exit policy, isolated RESEARCH only; not economically qualified or campaign-frozen | point-in-time development economics, matched evaluator and own eligible freeze; do not select a parameter grid |
+| Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened family selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | finish bounded family selection and observed-fill development evidence before one own eligible identity/evaluator freeze; no parameter grid or system integration now |
 | Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |
 | Candidate review | runtime consumes source-bound context; required missing/late inputs defer before a provider call | exact new-contract/provider qualification; old context-free corpus is not qualifying evidence |
@@ -89,8 +102,10 @@ allocation creates authority without the existing independent risk gates.
 
 ## Keep in the critical path
 
-- One selected adaptive hypothesis, one executable policy/evaluator and one
-  reproducible source set. Preserve failed/no-fill/no-action observations.
+- A bounded strategy-family selection, then one selected adaptive hypothesis,
+  one executable policy/evaluator and one reproducible source set. Preserve
+  failed/no-fill/no-action observations; do not mistake the previous engineering
+  selection for an economically qualified champion.
 - Compare strategy-only, strategy-review and independent LLM proposals on the
   same causally available inputs, accounting for actual arm delays and all
   execution/provider costs. A direction prediction is not an executable trade.
@@ -138,6 +153,7 @@ budget. No primary mutation or consumer start follows from this document.
 - Offline complete-system accounting mechanics, not measured LLM profitability: [four-path receipt](FULL-SYSTEM-EVALUATION-2026-10-06.md).
 - Native-window transport and its still-unqualified economics bridge: [import receipt](NATIVE-OBSERVATION-IMPORT-2026-10-06.md).
 - Selected new strategy, checks and qualification boundary: [adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md).
+- Reopened strategy-only family selection and read-only reference audit: [selection receipt](STRATEGY-SELECTION-2026-10-06.md).
 
 Implementation changes in a new engineering source set do not enroll a
 candidate, adopt a budget, qualify a model, disclose blind PnL, change the frozen
