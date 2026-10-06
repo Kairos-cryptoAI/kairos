@@ -108,8 +108,16 @@ On the final signed Deploy revision `2c08f62f0f1f3a1c7862b0728b6f34f1c088ea6a`:
 - [Full-path SIM](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37412379926)
   passed the disposable database/controller replay and recovery proof. Its
   explicitly legacy review fixture is engineering-only, not adaptive economics.
+- [Deploy main CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37412379978)
+  passed Windows/Linux Python 3.11/3.14 validators, exact remote dependency
+  closure, config security checks and all pinned service/PAPER image builds.
+  CodeQL and the current fixture dependency graph also passed. A separate
+  Dependabot updater for historical `tests/release_gate` failed; it remains
+  outside this strategy change and is not reported as a passing workflow.
 
 The above are engineering evidence only; no prior r5/r6 success is inherited.
+The final manifest passed `Test-CurrentRelease.ps1` across all 14 tracked-clean
+signed main repositories and their exact current-gate dependency projections.
 
 ## Integration and remaining gates
 
