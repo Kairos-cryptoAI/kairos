@@ -1,8 +1,22 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-03_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-06_
 
-## Current guarded operations engineering — 2026-10-03
+## Current bounded strategy comparison — 2026-10-06
+
+The [small native-strategy comparison](STRATEGY-COMPARISON-2026-10-06.md)
+reuses unchanged default breakout/range generators, a fixed union control and
+the unchanged adaptive candidate on four already seen three-day slices.
+All four arms pass scoped offline integrity and accounting checks; no qualified
+winner is selected. Breakout activity is cost/timing-sensitive, the union adds
+no benefit here, and adaptive's superiority remains unproved. Its strict
+minute-quote accounts cannot confirm entries inside its native lifetime.
+The June breakout/union accounts retain a visible mark-time risk ratio overrun,
+not a claim of continuous risk qualification. No strategy/source/fee optimization,
+blind gate, paid model/exchange call or PAPER/LIVE action follows.
+All four readiness flags remain false and policy remains `REJECT_ALL`.
+
+## Previous guarded operations engineering — 2026-10-03
 
 The [research replay and transport continuation](RESEARCH-TRANSPORT-ENGINEERING-2026-10-03.md)
 publishes the canonical LLM arm-digest fix and its three dependency consumers,

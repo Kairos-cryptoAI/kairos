@@ -13,6 +13,14 @@ four readiness flags remain false and policy remains `REJECT_ALL`. No primary
 runtime recovery, venue/production qualification or trading permission follows.
 Trial 15/V4/V5 and their frozen evaluators remain unchanged.
 
+The [native-strategy comparison](STRATEGY-COMPARISON-2026-10-06.md) adds a bounded,
+already seen historical diagnostic under shared costs and admission limits.
+It selects no qualified winner and does not promote readiness. Short-lived
+adaptive entries remain unconfirmed by strict minute quotes; conditional proxy
+economics are not real executions. June breakout/union mark-time reservation
+ratios exceed 1% after admission, so continuous risk compliance is not claimed.
+The comparison does not freeze/enroll a campaign or read blind performance.
+
 ## Previous boundary — 2026-10-03
 
 The [research/transport continuation](RESEARCH-TRANSPORT-ENGINEERING-2026-10-03.md)

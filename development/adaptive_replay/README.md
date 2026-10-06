@@ -163,3 +163,9 @@ network downloads are forbidden. Output includes checksum/normalized input hashe
 all causal slots, per-scenario ledgers, null absent arms, terminal exposure and
 cash reconciliation. A failed attempt is retained. Re-running is not a strategy
 search, a sealed evaluation or forward/blind credit.
+
+The completed small native comparison and its exact economic boundaries are in
+[the dated receipt](../../docs/STRATEGY-COMPARISON-2026-10-06.md). Published input,
+source, accounting and first-failure artifacts are byte-bound by
+[the evidence index](evidence/comparison-2026-10-06/checksums.json); CI validates
+them without replaying market history. No qualified winner is selected.

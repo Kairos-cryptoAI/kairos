@@ -1,0 +1,28 @@
+{
+  "candidates": 0,
+  "causal_detected_regimes": {
+    "BULL": 1393,
+    "CRASH": 228,
+    "RANGE": 72,
+    "UNCERTAIN": 2627
+  },
+  "decisions_in_exit_tail": 0,
+  "original_economic_results_reused": false,
+  "original_result_sha256": "f73c246d6a2fdd17538ed10911223b386e1a3da07d1e0a1365153d9f21f0ce0c",
+  "reasons": {
+    "CRASH_LEVEL_INVALIDATED": 33,
+    "CRASH_PROTECTION_ONLY": 108,
+    "CRASH_WAITING_FOR_CONTROLLED_RETEST": 87,
+    "INSUFFICIENT_PLANNING_COST_HEADROOM": 4,
+    "NO_COMPLETED_SETUP": 1460,
+    "REGIME_UNCERTAIN_OR_POST_SHOCK_COOLDOWN": 2627,
+    "STOP_OUTSIDE_STRUCTURAL_ATR_BOUNDS": 1
+  },
+  "scheduled_slots": 4320,
+  "source": "BYTE_BOUND_ORIGINAL_DECISION_TAPE_WITH_REVERIFIED_IDENTICAL_INPUT",
+  "statuses": {
+    "NO_INTENT": 4320
+  },
+  "tape_sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612",
+  "warmup_slots": 0
+}

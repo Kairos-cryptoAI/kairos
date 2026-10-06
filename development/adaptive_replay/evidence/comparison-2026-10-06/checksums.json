@@ -1,0 +1,315 @@
+{
+  "schema": "kairos.strategy.comparison-evidence-index.v1",
+  "completed_runtime_directory": "D:/Kairos/runtime/baseline-comparison-20261006/bounded-20261006-b",
+  "retained_failed_runtime_directory": "D:/Kairos/runtime/baseline-comparison-20261006/bounded-20261006-a",
+  "executed_meta_commit": "92aa48429d69a26ba5525b29580c6f1b8b5ddb9b",
+  "raw_decision_tapes_copied": false,
+  "copies_verified_byte_identical": true,
+  "files": [
+    {
+      "path": "before.json",
+      "sha256": "fa28387ddf52a22337fce50125596133a2773b189a34968e6a01f53e7d3d898c",
+      "bytes": 4826
+    },
+    {
+      "path": "early_2022/adaptive_pullback_range_v1/tape-receipt.json",
+      "sha256": "edbfda9d8c4ae775c20054160e30e93864c298f7489dc0b1b191c7f3840cf170",
+      "bytes": 336
+    },
+    {
+      "path": "early_2022/adaptive-tape-evidence.json",
+      "sha256": "4685f24c3665b3789d95cb6a75b823fca5d8f40f4b2f50d1a19a61510002b6a7",
+      "bytes": 829
+    },
+    {
+      "path": "early_2022/fixed_breakout_range_union_v1/strict_minute_open-base-ledger.json",
+      "sha256": "ef97ebd7878286c97fc09f6424dbd0e95ac1f0a6113233de34d6ab5d0fea7f77",
+      "bytes": 46189
+    },
+    {
+      "path": "early_2022/fixed_breakout_range_union_v1/tape-receipt.json",
+      "sha256": "015edf6ee0706794afc8d7c9ea3311e99681eac82e0cd65a708a3b6fcfdcd165",
+      "bytes": 358
+    },
+    {
+      "path": "early_2022/inputs.json",
+      "sha256": "f46f92dbbf35a55c1d20d4463f38a7deba18120de4d7b206e891c844e0ceb1b5",
+      "bytes": 5970
+    },
+    {
+      "path": "early_2022/native-baseline-evidence.json",
+      "sha256": "7fbc0c16590495a140dc403afc00348acc99da4f63d7e0e22007fd5296d59c9a",
+      "bytes": 5053
+    },
+    {
+      "path": "early_2022/range_mean_reversion_v1/tape-receipt.json",
+      "sha256": "70d8b99a805e34ad4e79bde20d67966971c7736aa65f493f39d65adbd8b87651",
+      "bytes": 357
+    },
+    {
+      "path": "early_2022/trend_breakout_v1/strict_minute_open-base-ledger.json",
+      "sha256": "c46d334971111c13d782e4df458c0776a360a4bd0c3f380737822b00f8c9ba3e",
+      "bytes": 30637
+    },
+    {
+      "path": "early_2022/trend_breakout_v1/tape-receipt.json",
+      "sha256": "fb2c5e64bdeb8468817e3d53b3c6e82084ce875bb315a7676f198c5eb98469d8",
+      "bytes": 358
+    },
+    {
+      "path": "early_2022/union-arbitration.json",
+      "sha256": "6b89fdc6d4e16e4f23843b4a79d090374fdaaa6eeee269b1ffd994c3b7cd72fe",
+      "bytes": 121
+    },
+    {
+      "path": "initial-before.json",
+      "sha256": "12dfefadc7748e61d0f8cba92604d23591e51c8dfd3290fb7dfe57ec2a896a71",
+      "bytes": 4826
+    },
+    {
+      "path": "initial-failure.json",
+      "sha256": "0ab94521fb157dca2ec49cc1f160a524ab778656ca681d7beb855e52873f2825",
+      "bytes": 100011
+    },
+    {
+      "path": "initial-sealed-comparison-plan.json",
+      "sha256": "4c159313b122062b9763ecc203f71e877cbb14f27a6b4d990e6a740b6007e77e",
+      "bytes": 2515
+    },
+    {
+      "path": "june_2022/adaptive_pullback_range_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "96bc8a8df93b55a6827f8c81c0cfde6f1b20875a3a18648b2437c9661bb2b65e",
+      "bytes": 6721
+    },
+    {
+      "path": "june_2022/adaptive_pullback_range_v1/intrabar_open_proxy-stress-ledger.json",
+      "sha256": "405a483103e9f7b23a75242f7b236e4ee58ddab625b487d928e20bf1ac0e1fc0",
+      "bytes": 4436
+    },
+    {
+      "path": "june_2022/adaptive_pullback_range_v1/tape-receipt.json",
+      "sha256": "f946b0a971c6ca45b0f88ad5eb5cd204a2d25eb1adca9393d808a3c89a41dad0",
+      "bytes": 336
+    },
+    {
+      "path": "june_2022/adaptive-tape-evidence.json",
+      "sha256": "1b195c9fdfd3cf78fa7aaf7db472c00d0ef3c764bfed8f5109530989ac6ec7dd",
+      "bytes": 884
+    },
+    {
+      "path": "june_2022/fixed_breakout_range_union_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "215968bb1b1af18e9b6f602d97cc2adba2dd0f167f84485724cc59b799739c64",
+      "bytes": 69634
+    },
+    {
+      "path": "june_2022/fixed_breakout_range_union_v1/strict_minute_open-base-ledger.json",
+      "sha256": "95fd7426490c9c45fa4b45886de73cef548ebf5f0fd681094250ee8b29a8216d",
+      "bytes": 119741
+    },
+    {
+      "path": "june_2022/fixed_breakout_range_union_v1/strict_minute_open-stress-ledger.json",
+      "sha256": "6f3ae846d0652024ecb4f9235a32020e52ab6a4c63b2d558e1d4c4e0a2a2a9eb",
+      "bytes": 79835
+    },
+    {
+      "path": "june_2022/fixed_breakout_range_union_v1/tape-receipt.json",
+      "sha256": "3ce6a4e07e6c7d2ef9b15f8594f33d10e9c665b06b7caa06715de3dfe7514116",
+      "bytes": 358
+    },
+    {
+      "path": "june_2022/inputs.json",
+      "sha256": "d6850eeb6ee41c7d1bdfa5edbf98b722c6d6233f5cc16a246dbc1303ea67e346",
+      "bytes": 5969
+    },
+    {
+      "path": "june_2022/native-baseline-evidence.json",
+      "sha256": "e8c2e4e262aa05a635a49da1c08261d010004f58599c0a229db31036efb23be3",
+      "bytes": 5045
+    },
+    {
+      "path": "june_2022/range_mean_reversion_v1/tape-receipt.json",
+      "sha256": "92c29bd023605e4d65cdb6198aa9964043b96d99b852aa5fdd1f9be37a5694b4",
+      "bytes": 356
+    },
+    {
+      "path": "june_2022/trend_breakout_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "59754ae62d31ff59de5f942023fab3ecda01575926700ef0aba560d3399b27ee",
+      "bytes": 68298
+    },
+    {
+      "path": "june_2022/trend_breakout_v1/strict_minute_open-base-ledger.json",
+      "sha256": "a222931bde257a633a30f8290b5ae0bb07515971b2596fc88fcc6e3944f33dd4",
+      "bytes": 118400
+    },
+    {
+      "path": "june_2022/trend_breakout_v1/strict_minute_open-stress-ledger.json",
+      "sha256": "9e1d7adad1a982e49c4341baa520af1bb7869ece84a8fe53d794fc270158f386",
+      "bytes": 78473
+    },
+    {
+      "path": "june_2022/trend_breakout_v1/tape-receipt.json",
+      "sha256": "d4a1e7b09e5650d2da6106f294a2f660d851f62910592cf42a45c0ee7f3f482c",
+      "bytes": 358
+    },
+    {
+      "path": "june_2022/union-arbitration.json",
+      "sha256": "8a0cd02e6eef33f65c5d64e729220b1fbeeccaf92318b4550ae7bf58a7dcba4d",
+      "bytes": 121
+    },
+    {
+      "path": "late_2021/adaptive_pullback_range_v1/tape-receipt.json",
+      "sha256": "f0f88540ddbe267267a3c2105225b7966ff99d62ee862b86ba321098a4bbc5ff",
+      "bytes": 336
+    },
+    {
+      "path": "late_2021/adaptive-tape-evidence.json",
+      "sha256": "545b15a47bc4ec5016457b4e0be847e0487910004f6ef044394481b7201fbb60",
+      "bytes": 873
+    },
+    {
+      "path": "late_2021/fixed_breakout_range_union_v1/strict_minute_open-base-ledger.json",
+      "sha256": "4d3e51d0aab0a0305918cb3fa6952b6aafad59b6262ff307045059b328e85a65",
+      "bytes": 30540
+    },
+    {
+      "path": "late_2021/fixed_breakout_range_union_v1/tape-receipt.json",
+      "sha256": "3ddac87e7cfe837384478c2a25b7940db7847c0d7c85b0c5303b5a2e662a126c",
+      "bytes": 358
+    },
+    {
+      "path": "late_2021/inputs.json",
+      "sha256": "b96a1fb2337475b003cd7c9fe70ba8fd1d0bb78329fe0487f30e2318fc17725a",
+      "bytes": 5969
+    },
+    {
+      "path": "late_2021/native-baseline-evidence.json",
+      "sha256": "4e92c6d5edf4ac9fd2c665e8aaf14ce2a74eeb590799f09056484d0c466eb200",
+      "bytes": 5049
+    },
+    {
+      "path": "late_2021/range_mean_reversion_v1/tape-receipt.json",
+      "sha256": "efb9c7e5aafe762890c7c04010f7d1fec73f5596c661073b704cbfb959252402",
+      "bytes": 357
+    },
+    {
+      "path": "late_2021/trend_breakout_v1/strict_minute_open-base-ledger.json",
+      "sha256": "ed802eb95a5cbb481cdda2de2db4a9bf3935e657063a73d3f9e47b4a2a2d989b",
+      "bytes": 25872
+    },
+    {
+      "path": "late_2021/trend_breakout_v1/tape-receipt.json",
+      "sha256": "776c656020cfcae84fcb1a8bc72bb42014f3f866c00f690331f848e0f43d1d85",
+      "bytes": 358
+    },
+    {
+      "path": "late_2021/union-arbitration.json",
+      "sha256": "e14354b0b6331f88d16b23200c9954685bbf34cd82fc57161d0be1e3f61ddba3",
+      "bytes": 121
+    },
+    {
+      "path": "may_2022/adaptive_pullback_range_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "c6a3367557f7ee0dae644442d3df573b7f921a420bacd4d40359a2f4e0ac9c65",
+      "bytes": 6721
+    },
+    {
+      "path": "may_2022/adaptive_pullback_range_v1/intrabar_open_proxy-stress-ledger.json",
+      "sha256": "b29c5ce76a72e9dbf76e39afe6729f04a72d706d421189867a5b0f2ef303a6d5",
+      "bytes": 5614
+    },
+    {
+      "path": "may_2022/adaptive_pullback_range_v1/tape-receipt.json",
+      "sha256": "97c38bda5c3ce81063b116b2f50703ad75352f5fb90be89a2451e1b7a0ba9dcd",
+      "bytes": 336
+    },
+    {
+      "path": "may_2022/adaptive-tape-evidence.json",
+      "sha256": "7d66e695e2099fe7f0d5cc5ce3782a37b898fbe5f7c03c8c1620369090429e24",
+      "bytes": 872
+    },
+    {
+      "path": "may_2022/fixed_breakout_range_union_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "a3736a7b38020b7c656a3f99e560223f31f0c80eda587a2c0abce46941e0044e",
+      "bytes": 56596
+    },
+    {
+      "path": "may_2022/fixed_breakout_range_union_v1/intrabar_open_proxy-stress-ledger.json",
+      "sha256": "6264ae48f54062520095973b3d72d956c066daae523f4792eca530a957a6490f",
+      "bytes": 32122
+    },
+    {
+      "path": "may_2022/fixed_breakout_range_union_v1/strict_minute_open-base-ledger.json",
+      "sha256": "583a08f336034b5c812cc88c147cbf809f88976055961923575780df78c50a20",
+      "bytes": 83963
+    },
+    {
+      "path": "may_2022/fixed_breakout_range_union_v1/strict_minute_open-stress-ledger.json",
+      "sha256": "53575e36f8fbf05971cecc6b86ec8d2b5286c38bd9dac168e0987e21939666c0",
+      "bytes": 52093
+    },
+    {
+      "path": "may_2022/fixed_breakout_range_union_v1/tape-receipt.json",
+      "sha256": "232b7022cb2710e823575f21a512e666a5475f833f5624c047e47db6c2f41eaa",
+      "bytes": 358
+    },
+    {
+      "path": "may_2022/inputs.json",
+      "sha256": "118f181f016ea3446c9ddb78ac89bebe976cb8ece1b4b4e321b4c0085959e3e4",
+      "bytes": 5968
+    },
+    {
+      "path": "may_2022/native-baseline-evidence.json",
+      "sha256": "1ee6a8bd00e4e1c5e92f2766ab2ae0f05f82ed097a519324655210aafffdb7b5",
+      "bytes": 5048
+    },
+    {
+      "path": "may_2022/range_mean_reversion_v1/strict_minute_open-base-ledger.json",
+      "sha256": "21c888d0a24db3f15e257e96df6be354031b5d579f779fed2c6d98807feedfb7",
+      "bytes": 3755
+    },
+    {
+      "path": "may_2022/range_mean_reversion_v1/tape-receipt.json",
+      "sha256": "a4825e93673553c9122ef76675c4305cbdf82a005dc4d662791dd65a0d94d67e",
+      "bytes": 357
+    },
+    {
+      "path": "may_2022/trend_breakout_v1/intrabar_open_proxy-base-ledger.json",
+      "sha256": "1f3fd1ee4c99d39df474608fa12d268ef69aebdc59498a1f447b7c9b9e05ba13",
+      "bytes": 54044
+    },
+    {
+      "path": "may_2022/trend_breakout_v1/intrabar_open_proxy-stress-ledger.json",
+      "sha256": "c91eac2ede5083f68a3733f88025344303f2fd526f61af0de11d1fce037a3c4a",
+      "bytes": 29535
+    },
+    {
+      "path": "may_2022/trend_breakout_v1/strict_minute_open-base-ledger.json",
+      "sha256": "4701c8c5b7c19aa1b7069fe6059466f5c1301d185908efb73ab22bec608ae6b4",
+      "bytes": 80242
+    },
+    {
+      "path": "may_2022/trend_breakout_v1/strict_minute_open-stress-ledger.json",
+      "sha256": "2133ac1a63e8aa43529f36c1769754c8af0eb5dcd5c4dc2f3f50204c429b15b0",
+      "bytes": 49504
+    },
+    {
+      "path": "may_2022/trend_breakout_v1/tape-receipt.json",
+      "sha256": "b9348b586054c6d578bec4248c3124c613899e515dd866c05288ad566c7c6a47",
+      "bytes": 358
+    },
+    {
+      "path": "may_2022/union-arbitration.json",
+      "sha256": "6e3c4a5e3dcbeb9415f32a1598e222e184bb03d1b2dfbdd78520f2903fec299e",
+      "bytes": 121
+    },
+    {
+      "path": "result.json",
+      "sha256": "895b7aee5d8741cd0869cf2fad5eaa9a311f85edabe5ff4a8b800c4c9435a56c",
+      "bytes": 212129
+    },
+    {
+      "path": "sealed-comparison-plan.json",
+      "sha256": "4c159313b122062b9763ecc203f71e877cbb14f27a6b4d990e6a740b6007e77e",
+      "bytes": 2515
+    }
+  ]
+}

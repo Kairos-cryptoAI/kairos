@@ -1,0 +1,1327 @@
+{
+  "events": [
+    {
+      "intent_id": "fab6de9c1601bd3999a0bf6427273c675666be7d7d4923580a6c10f693f94019",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d1fa2ac5681ff9d0481d26e7b5e8bb5fd153b967ea6b6339f6199b87b7e668a8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "48bd2cd565f08f417335b819513b29ce16ab20ff72ec2c95171b2e8943cccf8a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "cc1d629091ef995e2ca5736a062225d7d275c579cd45079d983e1398c5d09572",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.125576344793,
+      "price": 0.66329893,
+      "quantity": 3768.3332220756015,
+      "reserved_risk_usd": 19.01530582646566,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1644020460000
+    },
+    {
+      "active_stop_price": 0.6643635593662031,
+      "effective_after_ms": 1644020879999,
+      "intent_id": "cc1d629091ef995e2ca5736a062225d7d275c579cd45079d983e1398c5d09572",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1644020879999
+    },
+    {
+      "intent_id": "1caf4211afc92251d183d2f564f96ff91258044591be6f006cd0e833b2c1f736",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0b2c4407da9a3fd581c37b6fbd84a0c002a9005443f3a558a02ec043b51177a2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "95fd581a5d964e87f6ce20ee062917327987b7dc1c1405dad64059db793d1c6a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "63aca9101dd9a4196e1afb0afe15a4b86bb894890c5e5c8ee25447dfee857d13",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "be1af5446acb91c05a15253c46aa0b812191200577557d03224fa395d0778f0d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "45be962f7442e7a9335e5ffe1e6960fea7cef9ddcb1090d44bdf35fa04b50b94",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "68d2f021eef08f79c2f848e293c0120f86bcae341ef4b730f01049081860c700",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e3a9f01d5811c1725bb25a813dc3d7d291dd3cbf62a540ee5024f82467833e98",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1c08ecdaba93af216b7d09164a336303e3af5f56a943b4a195bd212915ba2215",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7370c4927e63be7870ca309fb46692d5668d87f14c78639cd8adbf4173e5d969",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "de151aeda22f385c6be6983d175bd44774662fc42df52d09a623502f5ea17fc7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4f9b62658ad66efd16bcba4ebe90d3117663dffea3c6dcbedcda7780820b6dfc",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a9d363dd4c9b183e0b00695bc6b832eb0e63222847ebd94b1a34d1f3e1839ee2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "454855095c74b41ab21bd30765673b7a5becc4ffbf1477a8058f4dc7d8414c52",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6c23bd4cfdbaccea65a66f1d4314e520b5c73c51c40fed26bf5bc672bb3479a5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "9be8aa407349616aef73abc852188de1ce664d63c554c2a223c1c797cc1a93af",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10024.394422944915,
+      "price": 113.714104,
+      "quantity": 22.03859079552901,
+      "reserved_risk_usd": 15.351936114986948,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1644033660000
+    },
+    {
+      "intent_id": "6595bda1460db8c7f51f2f5327a08702381d6c2b733994d210632de5e42c6f05",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "active_stop_price": 113.98595107465877,
+      "effective_after_ms": 1644033899999,
+      "intent_id": "9be8aa407349616aef73abc852188de1ce664d63c554c2a223c1c797cc1a93af",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1644033899999
+    },
+    {
+      "intent_id": "fd84e91cc67b5b3c194036d6a9b791b4745c344063abbba5fbd62554349c1218",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e554cfaf15b266cb7ba34a6a77f06377788832d506ec52348be27ed1906aa403",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d81b1462b20bef2a0191e8ca0433091bc7dcd56e3cd7d99f1dcbc0c00943f43d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2e2afceb679182ae1c0ff1a1a35e3b6e96874042e2b8830da321dc5823c1b3fc",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "994dbc25486d2969cdfece733cc796fef5a47cb3756248edf8fafe7e5dfbc510",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2625fbecfdb959e07e34d127158fc14cb51fc087e8e01e89d82ed03a2109cf90",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e16baa8147498597e9b6b56c5b522c7c65ea0c023c127e6d32106ab8ae0de72c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "93539bb41b7cbe6241e922c0c4709c3619b11717e33896e8c1b014e77270856c",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3cce478e8ed411cfad296d9678ae699dca6e4fa4bc3b53905969d03c893dec11",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "dcbf2cd015f51d659eed08fe78209cbe97b5943e5930e178ba43966443ee3bf8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "dcf5d58c5a9420075f984ce4e6999986e79e9a965ba1506206dff6672aeacbde",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "eacb2f87ef0976af716e97f490f9cb981cab240d88fe8f9d07ca7d8f9303e1a0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "322d2570db03779479e0a338724603384137daa8b49b2e5ac6bb08f1cc47a6b3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "10e684b77c46353139866abcc12863b72c6a07fee11f0232d6351a1c0e87f6a5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "84c88ffc966336d8b46f13aa1c8efe66dadbed5b0aafb1f60d8503411ff3d62a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "70cd85c77f6a60131475125c7a6c9fb2be2646fe4107f9faea3e49bc45c455b6",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10027.373518329308,
+      "price": 115.32458700000001,
+      "quantity": 21.73728469179193,
+      "reserved_risk_usd": 18.949898222355692,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1644035460000
+    },
+    {
+      "intent_id": "ea7ee54d476cbd517279f3c8138198029a573c7ae88bcc33d47a5f36a31e4827",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6deab8d025f107766fcc2724c2c2d36915ce0dcb0024878009ee45ab3a0c8d1d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8e9c9425c176f72c634daae21a8961b77806b749f8922cac080aa454c023f384",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b244fc3e5224ec5e30c15f5162d75539efcf2e0265226de7ccc7bb0ffab16b16",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4f888ea091bfd2cc84978b482a8124af51e2dbdfd0ebe0e6f27a2b1521132eb8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3a49be24b31a0ceeab17121e2dbd98076db25272d5597fcbb31f4faf565f4769",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4d2aa78f97183d855ce86571e6766fc14ddb3d9d7443cc1241f8a19369119f87",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6b1e5deadb02e06d5175564fc5946929c1a526916d29daa5bef4ac17c8541774",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a2ce2067e05c34811b20d1eec46e5466c53b805a7cae784b90166d190a00a26b",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f5975287881aef4f7f83081182961b68a0ae3d4243bc56557d857374cf0f6ea7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "89bf5dc208b1d457026fc51e2d60293cbc95ef66be14dcbe27a1aec397589edf",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6c0574087d416fda66e4023312371b2a2f8724da28a03ea8e8a0bb67d0d1ab12",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "de6673da85a2d1cb4c794c4c62b0a0f22d634f6eb3e651c7b160054f4f616e97",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "5f4141bf8c77a0fbdf8daf7c8de7381aec9d9d36d35fe5e1ac72281feb166836",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "430684798d1dc78a4111ffcea12ce58ee8c000657518659a81e7bf21834623a1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "96a8823c647051e85e1606d549932404151390ba573688bdde4544315b4df35f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f0ef615c8ff662239a8494505709027ca9e1067f515e1da5be2a24f9c1890ba5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7c462c7381d12767df1e9c1a1c19a435eee9f8abd811848b143db8c64b77b5c9",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3e9a9aeda8f113451d06d6b0ad2ddf6e32fba4a8e76f15d928c425ce2a079ba6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "115f6fa68f1469c095f06c934e973529b4942f5e702895a6ea09bf9b10f9cf52",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "76178da81ad3e6038b3a9ca2960fd64a301a53c9e5dfc5e5e286927eb8226f16",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f93e67971dc379776bde24829e0a726e45259539380eddf4dd2fea0057024997",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "fb8011a8a34c96e71bf412f7408a011a2de35724f6db1f6c88a510e986234e34",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b7f746edebad8392d6bad993fc962cf156512a80b84fa4621eeae8f2b00b9202",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "78332d0cec5d68278cd41b8c126e35a6049ab44d0506afc82900d798c70628e8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a12a43bc98cfbe08e4eb61feeb504d7c162fbf9b4fed7094ea134cf275fabfd6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "fdfc56f85370ff0f10369af9f058ab498c1a2342eedd801f5b6ce04832bb16e7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b7307a5468b60b7f36d371a18d208841badcb44535ddf7fe1ed441f061c001ac",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4e169e8c2bf0f11835ee6986a1a7ec44fca0e023eebccee01146abd21b9e9525",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a921b420fbe0ced4875b75dc8b977e05b16c049d3d8432029d4706d8103ddb41",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "c1b4ac610aadd9970e0287a86483e3981d7815fb3beb7b6e820c745a9c96f715",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10010.443170256165,
+      "price": 111.876427,
+      "quantity": 22.362709253543397,
+      "reserved_risk_usd": 23.492911009392305,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1644080760000
+    },
+    {
+      "intent_id": "ec67fa0b7fe4a63a5170deb1e00bdb74d1a6fbed3be2e6be16904add06b93580",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "11dc06e9323ff7ba52f74f38a680a5d88ea2f81bc515abf1fa18ce150449ea2d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "07ce4a7b827ad6db76d06405d9b336f8c2c46f547e04169088e1c44b8a279a53",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e28ef755227bdc9a885d1e1617b82cf2ea067f1f9761e95683fcef1923e64ab6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f9373b8b66630cb08391dc1222c1933910eec8b8128236b6e6150f7724f33f18",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ed2152caf006a144cb822804a85620ffe2ec4b22bd61b5dddf1ef4a64146de31",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "3298d323870604503ed56343613c2fcd4fc1a1a37a19e0b2f96bcf62abe054a1",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "19e11ac93e6ad6790fadd94af8ff8b955462f02ad15b393cdff9a13d92f3ad86",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "079fb036e8eca6f8a69be307dd0be840d8f18cd0e46e535af6a5d8fb0c8639e3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "20d03d38cca43534e466f713d1b3f570e95544b451532c80e0fc4854a12cdaf6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "817f58f4e59c32e53ec34ce7027f643b49409d9e5159d167861646a339e522c5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a750bec84d992a355d3d85d522f4688d37e486565763b6c85edeed4727d67542",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "65b7d7470466eaa2f481528fd9543ebde55fd13fdb90761b6ae57e60fec3178a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "115b6bb2dfcf5ee1acaa30d316c228d521c52bcb17899d81a8df977911908c4f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "30cec774bf1d84705986524d45b17263b9387a4c711dbcc13b2bbf9cdc896928",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "83c1cb5203dba54581717a5ae3c5af0bc1952f4541ef00c900caed7cdc19883f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "5ec1c631096ec34bcbf4cb2104158bcf5daeb670f5f2caa077b1667e11f82dcd",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "91289f59fb2c51ea20abd151692916b4a52bee36ac612165e02731c864942b9c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "982dbd79a10ea46a858bad655db03f98f45aab981077206582ce92cdced91420",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "8a88c3b0d5f1a57367980ca5bca53f95c240fe8e00f1af212fad050d532d12f5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f3579cee5e437f550e97afef5695dd310ace4f749ae03111717430aa5a053ca7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "9b6d55283415b5585cb4be36b2f80e74edaad7f572d619d921ee2e5dcdf20cec",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6764d8a63aa856b0a3710e19546a7b1d5f877b10cde43e39285f4420df48097d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "05760aca4717693268d1d6ad4d5930006d86b567497b22ae260b45705170b88c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "375f6b2add137bec7b2f2f1d425918f3da379f2590a747917dd90aa80d27c2a9",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e8182a498ab091c06f71f489fbba5baa5b26916cddfb2d7151631f81b22fc251",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b67b47b5bec9be54119230a746b7ebce2758a8461f20447b4c853b76d0832fd0",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "49123cf493e608f6e1d517514f287d4d56b2973fb3b5b12cbadcd9955ffbb467",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "5b3d5fe11ac21af031c0daf39dc3baa23aec910b0c1697b1bee280d451ee8ed5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f507f4f3bfb255cf05c723fc3a1a05787c0d53fb00fc1cdc67f8d76aeb7434da",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "929be90e59d9ccd96de7ed22a11995b9e85277796ec3758b098de04892ebfa26",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "cae65b714adaed62901bc3ad4c8eb7bbfbadc24f6d14331af85e24d66f431218",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a7584fe155f65ec1a59a7bef81339dfe397fb3ea7b51285566f12000dad69a6f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2c21a1e1bc81b4827bea09ae0cd17c9fee490eccb075cb61799e2599104ce0c8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3bbbf7d70e42f8ec646fe0d3a0f315fc81448476ba2e5a699d94c5edbb5a55b4",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b51d29f2a14466f13a400a81e84580f8f2ab82f7998eacbee5069f5d215dfdc9",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7876bbd2bdd15d93dc1f9685984fdf3be47a904aa64e8bdce83a4c82e160e9c3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6109f2ddada3eb63c587605f3a215f68702397392ff712193d643d636b573301",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d3696093339a33717ddbba022cece3ee9a14a712fc564d6be118b23c8ac51b5b",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ba711cb2fac32a6c83264796c8028dd4f24f817f942b4744650538375838ec65",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e6dc5b06c0996797b023f48db2c2092bb2770fdff0a8bc3a51c23b086bfa7e18",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "78a152bfd2635f8812821fa81fcfef4fd4721914f9d479673addf00968e1c7f2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "520cdd80f8fd8a289395c91227580a5e4eb5011b36b69398ae7e34060a0d9b5e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "db8bec4e1364ef8433340f661de191a5a4ba8cbe1096b8406c14ad5a67b18026",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "73ce4ffd2df6ce9f7b24904d77f17138171eb4a0ec03ffed96c800d30a424d2a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ef695bb72c4e9b6e6d3650f95f3d8443547a066eae3b21b430caf43d3c6de82a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "344e5ffa7c2deba8693348965dc476cf1447363242890ad2ed41aaeb31dea19d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "24a253288daa4a92b8c50d464da5f8fd8a1a8d118c26f427c1a670dff5df03dc",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6ca18f86f9b6c4cc4c502d5cf8df110eee40997d8a75f7744f410db46e7cfd47",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "322d52e51320c61c96c00e24525053ba62e7c5ec3bfabe99da6fbffbf6f04c03",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7b531ce4dce2bb045dcb153687d10d348df888e24c7669eb37c12f8f504fedf4",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b7007d868ff63cadf0228cea6edbbb6ba45a07e42576ef28f96f8ef9d5307725",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "24dcd24d268ed7550784cef3818b7c75e6b62c887ce646337eae2c40c973fdaa",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "822322dffd8e4b4348ddb310fefcdc54e4407f0bf0589271e5c3d2f77953eb5e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "825ef7b7122264f5b5ba830e963bc61a4bc14dafbb78cc3e357da2c704686f9f",
+      "kind": "REJECT",
+      "reason": "FILL_invalid_target_side"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "235193bf76b3f8fa2afdf5aeb7f9b8db45b40af2936ff67fbd56574d252d9416",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9988.978496272037,
+      "price": 2962.151088,
+      "quantity": 0.8427981478711084,
+      "reserved_risk_usd": 16.266846600930357,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1644159960000
+    },
+    {
+      "intent_id": "8250db775ad4af0755d8d705e6e639a771e487c3dfaf92c57009c7fbafe1cfd2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a9a372c90e96d85206e4caacc58ec3369444c8de395a0adab33c71381b1c18da",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ae5347a19489c95c127a42bf2467b3d8372a33f071c0ddb6d649a072d8e910a6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "9f074b9615620020a285ab2152be52a13ae915f5209a91d43a2777b37852c7e1",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7d2810e2b0ef31d99d98502b8ac734e05633061aae821deb7723780e79b1eb5a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e1a57997591b1cd95422625da7adc3edb6351a849b117ddfbc6e4d717562f371",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "47b3f958db6f0a6ed21e4decb395558d6e6bf105aaeb7c13e475736c3b01b11e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "def49295631ed2e7853f716569015828bb432487d4ef62f7deac2f37ce55b38d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "dc20aca83aad3921bcbc6bd9532fa59e88462b1b8e7f12d70d832f08b8730392",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "25b533514030de5a8fcd48848fddeea71b85f83bc2d9274ebcba7b9772b26fcf",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "54bc745df34a9282e21b3707a7682398d6f5feaba46c57d86561daa968f57f01",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "90406550b918b9424c7a3e7854e0cc3a41812ae1c156e7b93e86720473310d04",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6a0d4ea94085bc2c9f80031239dc7ddb3c8d45d76e5cceccad60c5ea0dfd7191",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ab7aa402da6d3d8dbee718e970d6fbb6201cb13e846a8245ab9078ef0cf8ca0c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b812039968b6c6fd86edc86270e45e19c3772ef4e4966dfeee6c067fe144ada5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d10450641b19d89eb6963e818db2a46c215d337c9846d726e46c66f69b80a5e3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "df8ebb69bdd0c965ec82e23f538d7b8435343392a1543f2747137dbba526e599",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "68b25e57da026fdf2db14fb4debe2744597200d0312954faee44cd6645bd7071",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "4be304e9960f8e547f48abc1b6398e3f0d1df4b66c0851ce8a6dc8b63382d677",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d9229f0dd3d02658e6c59716514f8e8a45b8cfbc042fdf1c7229f66ff0413215",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7480b5267e2aa1235b7f80c305db0ae3529e34dbc591befbddc030fe54cd7720",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "9f65ec6aee25a54435384f01edb1708f3184101a9cd62fb0d1b6606a4b095b3f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ff8a05a1d2aaa26eb12a090ed412db6c44a596c3f445bf9f79c70849df247d70",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b9acfae05f09df74d90db8e0b0c1e6bf676aec88271c847e57e8b0855fde114a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "9b697b1057843e5881fa4ee3dda5bd63a5f72d522fea98a5a128dee85164a034",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "56acc1336ebdc063a268ec3f587595e17dbd8fe324683ec209102d2a5482f391",
+      "kind": "REJECT",
+      "reason": "FILL_invalid_target_side"
+    },
+    {
+      "intent_id": "fe9ba8dadf857715e409a4e53877ba18ed41028513b71f884a33e23caa1f5ff2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "cc61b46cd642fe8cd61aef7a5a1b7d99cc1b9fb03073c9151120d8018c0bae43",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "1fa19dca1bc19db805da3052b5d56d6fa95646039ccfbab8a5ed52a7211cc118",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "303c7ae27c85c0224f5942c6205f3942912713eacb108b1a84c5ba80fddae042",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "0a36bd73abecf5c96d368d3032994817b666ac10ae35bf3899fe934825ed054f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ed2afb32223e1bfd151b92df638c41409dd3cd276094ce8a5e4ce5a1acf02cc7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "756a819ce95319cdef02847a2057333cde8b9408f62de6acc77f28320a8632e0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d32fb6671317c37b941b1dc416e8898f1514088b225fce20817c5aae45c38ab7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4f1b58a619fd805be567fcef3661b3f29e627b36c370892bbd490148e7b675c8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "9cd26a7ae12f56a8cd773e3e299f966f770f326589f0a00d8796bbd56d72721c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bfac7b868acf641e39233ea157a619b2f9bfb39160d414cc16165ec53b522a9b",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "b6d66710c21b6e19ca754c8becc5dd9e971c491b75deb7b709b5a4c494640e72",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9974.725131418965,
+      "price": 119.50584099999999,
+      "quantity": 20.86660586619144,
+      "reserved_risk_usd": 19.12625423649395,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1644207960000
+    },
+    {
+      "intent_id": "84f07566decf6d288bafe79a9a9b252cf58031c315db92dabbb4a48ab45a21a2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1b967e58cd05b678ec74d45bf029fa55b3c73163a37cca29d1459d746aeb15ec",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "49b76c6504376f5193a62288928b8faed34be2f9591c6a33647cf5c6106cdc10",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6769920619b3c24d967ce577c4e3b17c50dfd447d1b6e25b1d7546c10318bd3f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "9d33d3361c79d8b900a3910d3a7062952fae9d88c2376ef405344eaf83da6364",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9957.607970198438,
+      "price": 0.74532353,
+      "quantity": 3340.0287155158107,
+      "reserved_risk_usd": 20.45437755862183,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1644212760000
+    },
+    {
+      "intent_id": "d42bb347e2319795da3e54d1bedf081760e66f6a37c7c556de3550f9f94a2909",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b8f6d367db2f60c4699c980891b2bd97a51fc051555704c3209304a87ce77011",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "793ae80fa5246ac66201633ddf93300e74aaf162a4ae8219ff5ad93f50accf57",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "4e89c5670df2996b5098001fce0a6d39e11f4e291f40e33795d6e67ebc1d1308",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9939.160513377312,
+      "price": 0.76943076,
+      "quantity": 3229.387564833421,
+      "reserved_risk_usd": 18.459023564279917,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1644223260000
+    },
+    {
+      "intent_id": "71fa85bde3c365ca085f34d2882b8a998bcfd2692031b1e1344d30a0c498815e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a5f675384eb82ca9797529f55d0a1c489c884ea914c072d2275e8d9311ecf076",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "49567a1fdfc2f063e6df08b9295fe5494f329f7bd6635018b9f6cec48c9e2b0f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f2477e8f8d19e7dccf9386dff36ade2e83de0e302112512cc24ba540ddafea26",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f1a813fed23576714483d6abbe81eeb4aec50dbfb160626dd8195df8f58ed4e6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "11404dddb125cf11157681f269000608037b7dccb8496d7ab7ce74b2c6ee62b2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7906cc6465750591000dadd7a31df7e5abc42b9a7d5efd3acc6c019d31054e0c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "18427ca428699ece4eb87e4b142e6b53e618e795b29680a4adde76e53892643c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "db5e6228da22fed78baa56e05e64b53c3bef871aedc117c951898792c9c99cda",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "05ce956c5acec02eda788229077675d5be0ce88da4f82a7dad65cc2ef3ae595c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "8d0e84b55c928e633b4367b52f7f735e303c08671ce8929f7e94a154f6796e85",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0e581d19bcfcd2a7d89db1b18106fc6c2c3207bfcf4ecb96abe7e888274c118f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "0e0dba8f5f0aa239bd034ece2fb184c2d8e887801642e7ac39116b82c3476b9b",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6dbde9ca2ba3c6fe8571a78b267aed0473327b84058a25c9f7c5fb357aa6db39",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "77b9c8fdda24b32c13024caad2ca5df6d1f1c68e07f8bb642ebbf971957e9d1e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "57aa34bed4a8c3b3922a9885b60adee47118ad3ec8ae98186d6b3c1694296718",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "86e6cb3a6726bf430260fd07d55aaffe7034006a756da8ef0647b9da27385b08",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "778197ba97e997f37724c320ebdc43c860b6368c38cdc5d874102c5ed98c092c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "28ed6e2e5ff3c198c00c45b4ae841f7a898f08b4aa49f6670fc2812145af9b6b",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1344073f93d3bde2073f22f1e67c32bfb9f860c1e462d00d1ff82a21c8860879",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "68f4dfe9091915d8129546ffc55f5153b9aa425abe0ebbcb72ff7b5929f5012f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "fede20ca063cd2b68995123326f550879a82c30ee8afe1be1a408be720edb9f2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b947f85653b9f210aa9ba6084a332a2b7d178f0a4a574bc47758d75c959d32c8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "370b23604586b024bbc75f755909e30d08996eafc2629d9db426e6e10a3d7e54",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "df293b4043ac7a2b38988b7c93e1f0c3555c009c92ad3b7784f834d472c0f58d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "da6246965fd117e52892bd0f5445f118fdd97c07c6856d1938106350389fa1b9",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "74de0bc38dc6fd9bea440c231278bb5f1b99c267381c587f3ed3920b11320d7f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "bf3509a45233eaff6730ecf230a51e196c1e3a4e2bb559a248c6ba82e74ca928",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "685cbd0f234db28b9e0b050e87ce2898f7c99353d4b25e3e9e5a427746be9349",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6f05201635e7c3663c33abe70040015030f67a2de1cebeb70adde95b2937a692",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "d0ce9da6199697ee03eb64c8708d0492ba599aa525cae114e27da1a70920073a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4323607e40aadc5493dc26feaacc70c98c2ed4ce2b70926706923d14391265b2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "9bb79a83b1f928d11c2445bfe4779f142c0166337d5c7968c453948f3cbc6306",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9922.702858063967,
+      "price": 0.7927377499999999,
+      "quantity": 3129.251400625228,
+      "reserved_risk_usd": 15.523201694448444,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1644257160000
+    },
+    {
+      "intent_id": "34e6abed24b5b3a1a895333cfeae602883992505b2593cf134a4d6d3c21c1d61",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c58fae55ac42fefb7232bbba631438707111bfbc4fd47ba8b2c18856c12e789f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "276c5b7aa39ea36c26668976611c7560442e6684bb6a623b148b582e7ecb2786",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 1.1247891273387896,
+      "entry_ms": 1644020460000,
+      "entry_price": 0.66329893,
+      "exit_fee_usd": 1.137630413270158,
+      "exit_ms": 1644020939999,
+      "exit_price": 0.6708715594032137,
+      "gap": false,
+      "gross_pnl_usd": 28.53619095859707,
+      "holding_ms": 479999,
+      "intent_id": "cc1d629091ef995e2ca5736a062225d7d275c579cd45079d983e1398c5d09572",
+      "net_pnl_usd": 26.273771417988122,
+      "quantity": 3768.3332220756015,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 19.01530582646566,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.127744372581303,
+      "entry_ms": 1644033660000,
+      "entry_price": 113.714104,
+      "exit_fee_usd": 1.1301012473642744,
+      "exit_ms": 1644033959999,
+      "exit_price": 113.95175528933638,
+      "gap": false,
+      "gross_pnl_usd": 5.237499517714117,
+      "holding_ms": 299999,
+      "intent_id": "9be8aa407349616aef73abc852188de1ce664d63c554c2a223c1c797cc1a93af",
+      "net_pnl_usd": 2.9796538977685394,
+      "quantity": 22.03859079552901,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 15.351936114986948,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.128079520812047,
+      "entry_ms": 1644035460000,
+      "entry_price": 115.32458700000001,
+      "exit_fee_usd": 1.1214716831859153,
+      "exit_ms": 1644036479999,
+      "exit_price": 114.64906179886155,
+      "gap": false,
+      "gross_pnl_usd": -14.684083613626616,
+      "holding_ms": 1019999,
+      "intent_id": "70cd85c77f6a60131475125c7a6c9fb2be2646fe4107f9faea3e49bc45c455b6",
+      "net_pnl_usd": -16.93363481762458,
+      "quantity": 21.73728469179193,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 18.949898222355692,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1258370041968226,
+      "entry_ms": 1644080760000,
+      "entry_price": 111.876427,
+      "exit_fee_usd": 1.1344807752448047,
+      "exit_ms": 1644081779999,
+      "exit_price": 112.73537391420646,
+      "gap": false,
+      "gross_pnl_usd": -19.208380106627256,
+      "holding_ms": 1019999,
+      "intent_id": "c1b4ac610aadd9970e0287a86483e3981d7815fb3beb7b6e820c745a9c96f715",
+      "net_pnl_usd": -21.46869788606888,
+      "quantity": 22.362709253543397,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 23.492911009392305,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1234229528063548,
+      "entry_ms": 1644159960000,
+      "entry_price": 2962.151088,
+      "exit_fee_usd": 1.1288246074719626,
+      "exit_ms": 1644160079999,
+      "exit_price": 2976.3937356197234,
+      "gap": false,
+      "gross_pnl_usd": -12.003677034683696,
+      "holding_ms": 119999,
+      "intent_id": "235193bf76b3f8fa2afdf5aeb7f9b8db45b40af2936ff67fbd56574d252d9416",
+      "net_pnl_usd": -14.255924594962012,
+      "quantity": 0.8427981478711084,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 16.266846600930357,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1221565772846336,
+      "entry_ms": 1644207960000,
+      "entry_price": 119.50584099999999,
+      "exit_fee_usd": 1.1154593378099706,
+      "exit_ms": 1644209219999,
+      "exit_price": 118.79260788084413,
+      "gap": false,
+      "gross_pnl_usd": -14.882754388139668,
+      "holding_ms": 1259999,
+      "intent_id": "b6d66710c21b6e19ca754c8becc5dd9e971c491b75deb7b709b5a4c494640e72",
+      "net_pnl_usd": -17.12037030323427,
+      "quantity": 20.86660586619144,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 19.12625423649395,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1202308966473244,
+      "entry_ms": 1644212760000,
+      "entry_price": 0.74532353,
+      "exit_fee_usd": 1.1129329084726776,
+      "exit_ms": 1644212879999,
+      "exit_price": 0.7404679575242673,
+      "gap": false,
+      "gross_pnl_usd": -16.21775149921525,
+      "holding_ms": 119999,
+      "intent_id": "9d33d3361c79d8b900a3910d3a7062952fae9d88c2376ef405344eaf83da6364",
+      "net_pnl_usd": -18.450915304335254,
+      "quantity": 3340.0287155158107,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 20.45437755862183,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1181555577549478,
+      "entry_ms": 1644223260000,
+      "entry_price": 0.76943076,
+      "exit_fee_usd": 1.1117516826740519,
+      "exit_ms": 1644223679999,
+      "exit_price": 0.7650240936499869,
+      "gap": false,
+      "gross_pnl_usd": -14.230833513102112,
+      "holding_ms": 419999,
+      "intent_id": "4e89c5670df2996b5098001fce0a6d39e11f4e291f40e33795d6e67ebc1d1308",
+      "net_pnl_usd": -16.460740753531113,
+      "quantity": 3229.387564833421,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 18.459023564279917,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1163040715321961,
+      "entry_ms": 1644257160000,
+      "entry_price": 0.7927377499999999,
+      "exit_fee_usd": 1.1112177735410849,
+      "exit_ms": 1644257939999,
+      "exit_price": 0.7891257409353293,
+      "gap": false,
+      "gross_pnl_usd": -11.302884424691587,
+      "holding_ms": 779999,
+      "intent_id": "9bb79a83b1f928d11c2445bfe4779f142c0166337d5c7968c453948f3cbc6306",
+      "net_pnl_usd": -13.53040626976487,
+      "quantity": 3129.251400625228,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 15.523201694448444,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

@@ -1,0 +1,891 @@
+{
+  "events": [
+    {
+      "intent_id": "c6f3eb5ec0adf5e9274890d2741078e63bf22118c2797dfec14701a4ebb25842",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "05417028a7b481a4cc0746cb9edaa8c01783e5b75386c9f12cd7c93a041f9cce",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a7f4775028926309ef14a7abd5d968c31b7b411e63ff5980c4a262998e0728b5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "18ae491326eff9e6d2350734761fa97eb965bf0273cddda4b7709a59a22021ec",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e39e3171f08d17633cefb460c42d4b4e2c9ff07b23cf8bd548d34f302e67fe99",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "beb671936f20be6f642c84560c2a3a9bd34ce4986b5802e8897cd28d9c20bd0c",
+      "kind": "REJECT",
+      "reason": "FILL_invalid_target_side"
+    },
+    {
+      "intent_id": "6f412791dd564958a0a8a49fe811391bce326f0a85f496ad744ce8f6964be769",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "06c03cfbec8aa6a85d46d2eb6ac03e88b6d30e974ac12e559f2726b5ab4cb138",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "67de78ca07f6e85c394ac82d7e0ecb94e732be0bc96e47016ab9772361625ff8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ac84b1e076fa65b4e53abd87c6494732f67d279dafe9523d2e01ccdf756f571f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "c08b44ec5079f96e88a386964ab80e2b752844c4d115beead97be937fb935f6a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "9375e693b3eb4d1ea535de5bdf90d38c179a015407a0c54bdccc39eb5e1f509a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f0b869722d6fc6cb7715fcb5a8b8cf89e3c47c4e3e9c5f52b68d89ce034bdbc5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "91315f5411c8261f53b54bb223b101f2742a819cdf776a6c2ac1ea4346e967e6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a1845d6336e0421e03ddd9e99ebbe1a8f205acb6d4529cf7f63000ba6fbebab6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a45332e30d2bfdb489386bffb0e2d7b572cb79e4360815f6bcf0585abcef2776",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ba9d6ffee0cdee33dbb3ca6c28ea5ba1de80f8a5f80834a05e960258d4cc0e67",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "70ac2aa41f13c188543c9002fed566d91cdd02c28a648a75104303662dafb08d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d08192ab420b1ea70f25517167243a1558e4c1bd0f30a087e3918e5ed153bf7c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f3310b9bda728a993bcea5cbd47c6d6b98921a8acfd635c98ec924eb4e78173c",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4ef805f6dc9bf8f0df5079753c0658fc4c3e771a430c8a069e62c3d3a7ee3ab2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f3acc24fd1068e31a99b1de95af7f4748a74bce2861dbbcda1ec831e892069b6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "33657ff92dfd54303b011bae618658ae3d83cd5ef92e306bb2f066d0ccd06a19",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a93b3ff893a370e4724acced17c5555103c14c5935e5e1aa3d47f1195dbaec77",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "bd1c75f84a507fa926f88cc2e22f9aacb649cfe91132e063096e4e357e4c525e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "6769cf3e271f25b2dfab414bd09bf791348fc6b6b02ea377615b6d4019604ce6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f6d91c1ad8fcbc9011ac5c6769e0b2a00c8a30a52b27c8d820dc22f558211a17",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b7213773979453e6225d2e736f4a4d452400f46e5ee56529a74bfc841a403925",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b168a60ef5cbb4bf9bc258ff4c5aa877fd6445b801dceb61d2c389e292724c8c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6130713766dcd813b333912e445aed4036d492b1f21b3af554e87304ca49d2a4",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "376325d8266cd4c395fb11cc1b1fde830fd08202ef0468e01f813eff3913dcc7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d28b5636637936e16f5e6b5600f5388d6880fab2cd43ae294c0433c796e938ac",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f34b3474cbb25aaed466453b893f403e3d67531d18819452fb20691f8063fccd",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8bfc5dae8c4ac3a9f8272cf066bc9f83c785b0da8767f7eca4e10a71a487fceb",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bb57c53394e9282b5f543cc57ec3624a46ca9d8984a99b5dbf60f604998c0252",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "4ed9b98190ba1404944c0fde8566441b4927c91d1a607b5813f0564b7a604f76",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "aaeff04324b82ef250d16c10e3c8cb0cd9e08ff9a99f9a6cc5ad3dddda91d3a6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "54e27e4fdc76c8427ec64f066cadcf50958632f26894de3887264becf3bb8707",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "918a20e680208f1a970a39e22cae4f7bee0c620ce389c80631b89e7c5425ec4c",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c6aa81032a019ae58bef5d5d2ab5c534e9d98f7151e5c9640c600fa9e2114c57",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "99a41cc4601978db8898efb1c60e3d8b0565c28722942994ae4247aad04a563a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b078128a73c04e40427e792a70be8066ef7d25893105d46277072cfde91bba04",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1917a951ba2d75664d1d86f671887b57d6233b4c52423df12003222dcc890392",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e6d983e0f348ccea382a1372f65fd0102cf1e915a62d674477aa6c1c8121ebdd",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "5e3cdb8a35cd7e3a22feca19295a103f78ab7729b6a42082218a5278147b0fc0",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b3c9713f29e5244b94a5b37ab9cb39d7ad16b2acc4dd6ba6bff0dad73a339b99",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "293795c60d1e4241ff28fd796643281dac3ea08560febd35bf664f591111a514",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f339bc34aba358f2c6326870b5bf83ba8799fdc163568d02093780b8f12050a1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "26e94a800ede26a4747bfc24bfa3cdfa32fbaf198a818ab836e398c8db358414",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "0d3ea369421ce08b0a5557a5ce83a5d4b8bb18257d03c2eb84407e388d075749",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a07f55eb1adc981a02a0827c03f133ed0b8b7ed878555aaca8ba312da56bf55e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "fdbf4b939f09a6b5ad2173a1f70f595ce9fbbe1a0809f31870ced545b3725681",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7ef4e7b12020893e9fdcf684f6780bd597118a0935c6bbfc9f3db37e4b2cee94",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "08b84841202ed4e05f1f08d7936e0673179534bf478663a3fc6e160b197b795c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "832baa303dbee90f9c5ae85bd1aa56c74a4906710b3a743fe4f34afa04cfbc73",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "d9ccf0c21c84ebe7de2cc6481a0b7882e9efab5d06ce21dfe62017dffc563e87",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.125576344793,
+      "price": 1.2164648299999998,
+      "quantity": 2054.7502339925427,
+      "reserved_risk_usd": 15.703203617306908,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1636296060000
+    },
+    {
+      "intent_id": "6e1f7a1919671d1673e322e3432810987538480aeea285052b819f1212f7cc31",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ebe3185ff743ea025951bb3f57d4c6bbeda60e042fcf08649a670b6cf04a195a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a9c5656fba92292e1566bbe1b0bf10ce57b3879b640dd3c361bd9faad12b2549",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1acbb5810d69f94ad382b21995f68232f92aac20650d32b437a34f830d9afa92",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "36e26fdf9c5cd9fee8d27d993c0ed645582668c38907d507fb3922f637c313f6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "597fc7e4883b46db3f178c0e9a6cb5e2c4a37d86d304be71f67a98ba6e36381c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "c38f95c8fcdf60b60459ff533e66f2aed11b81b84518b1577ed9206aad3084d9",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "11b82c899ad75a38dc5c16db82970cf8460d6f445c2a07da1f9466afca1539b3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6a696f784d167048ce6bf77345fe665867d9ec13a15d46032d1170dc4fb56357",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "414b52e0aab35638ecf11f439684f8431e93b7c8139a71b9bf5cfcdaab5984cd",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a2e1c4fd9c12f58685cb88d3f2c083551d492ccb37ce38cbaa76011211138ad5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "397f022ea48664d54beed6e7963add430291f2706fef4243a715398166ea91f2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2a3574a103388b8139396c10cc21963657ffd1d5c084d3db79b40c5e25178505",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d2ef68c2fda5382c5863e696a76372de6cd0ac1949e054ce1584d795c938c8ba",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "9aefa9774d0cd7855343fca7b2e4686adffb26a3143b54d4b493b2f5041061f3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2654cc0b08dc45795f299db1c40e55cd3507d47b963d24ba8c606303f7312922",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "59ef7594151970c2a2866e3067fe7d757aed2e5be367e8a374d8dc46329c39f5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "483e1e5671a0931bdfda363addf07df3e912eb8ccb157cff31021b8037ac2692",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7441590d0990747ef6ecbd38187754c0e90e61c822655d649bc2e3d83f5cc252",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f63dbdafe666e16a69f9d0e8b5522beb91bb39a9351677e2970b35ec7da92106",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "56e26ca2894c79a5db7cb93bd2c9ef237e0cc172ee968eef8e228a83c92ac6ea",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "73f14f82881db505bc6f55727970bf24db4a9143642407bc912878552a94a7ff",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6695ae93c6ab8dec2483eaead4081e39e750b95681b11044df24c4f113cece24",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "1d685e9ffc12960d10b6e06da90a39335e9803021c210523bba9114b11ac5ad6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6337cb793c9baca4577037245abe2791c2e3d7216f579366e9ef5a9f16474346",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "8667b0c5c1b501b418715983f43f8d9b3e0e31f929694e8a86b59463456e35a0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "705729d9e43ceb7931e1ce39b08ad2f331aa3d141f07728609ecfd5f1ffeb6c6",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "104d975b2ef5322d1c752f7c7f9c36a8d66f8673decfedaabcbdcbb34d08cd62",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b849d7d3e9ff84a7fcfda8669fd1c3588483a12faa78cb0755e70e964bb00242",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "273a0d0e6a5181ba9db06b9bc12ae91942e92ce4f192cddc1e03a9cf147d8e21",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "ab5216a80c2f57548ff1ec6799e0198175b001202e0da09527f65f34039d0e36",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0a9d1cc22df8a0b0ceb356e91a6ee0cb444aa5f31b44239eceddf0cf353a42b0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3d8e5582f2f5212d5aec185d6dc8f845ad62998e091bb55e816e3518b0cc176a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d899cab0285c7d8ac2765ba0c813b2e06b84e6e0967aadb67a4d6863b79b7cdc",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "cd579d2cd8bcb160303666a9184712798fd6ea949d98f81a57617f66823fe320",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b5ba3974c3d1c0e50789ce195fdf52d279ee5f172c42e8c0c64ae9c37affe2fc",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d65267d27712cb60a4360faa1da7bb809911b940dd356d88fa5c78c680cda6d3",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "92e7ee7095b65b88c32e1758065ca4e4aaa978764dc379509d24393f03dd5c80",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "74556f2bcb24d479c766f961af8c97e06a22f957f2a2098d24c2b3503d3d34d6",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7910bb791e0f211f5018cea9f81c0cddddd4d2109f706c618412f46a6fddb4c2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "621e25649162b80f487e44fdd452e448f4393f3208b4b7e5d06b56554c014f49",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "cfedb8fd6c0cd78d40421874c53a7b5f934053a8f2125e7a8b5451723fb4fad1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e9a8cc1041e6c80de96eb18a5be1b9c901e387fa0bd889144985cf8eee653410",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bbdf385e05f2b303c59cd15c95f79cf90888c3bddecf31a25b98f343b9c0d24e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "388ae7b46f75c072d3cb57c965fa6bb0439155dbabde2e3904c6526e0cbbfc98",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7014ea101fb021ae986be65f4f400890eb7e8d81b7f71805020aa275ac317ded",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "95ebd552f589118f3eb2685fa0e35cb3dacedaf5c710a81caec38b62ab1c8f87",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6ecb91887bed810d6c47cf1f3005ce807a8a5fa6d9d0b77cd7e89bfc6261bfd7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "19e398814931f32946647a5b10683b0c3d7fc0806eec9a3e758dbc6c1e6dff84",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6056c1a6f06e718c2fd78e7439103a2f4a1426780b4ebf413e05ba17d9d63665",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "c19447c5fae15db8a7bdb79863140620f8c97e979096011c7430aa6c2efb4aa5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "490241e13819f8f8ee98bb98cfb96c2c0720dea304404ecdff85b4bd05dd849b",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "2710ea102773e6b0ca56017cdd8ebee7db9627db9b53f32dde78ae0a3825ff3e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "882af568df00123f151b986dbcbc2b9b6388b097a62e585d2dea8e7aa1a82e53",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ade84fa75a3e342a0ca5c3a6796808158a67707f6f2fd599b3ae018b02e02b9f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "746a36cffb5210221a6f1e59b940639788d0713ff47f528adaa81fda12700d2e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "62eea1051eaa830bf62c67976be348d9a9fbbd75b133f8a4d5695d93916e1f37",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "989ecdfb3c04bf8ab58265fcf2b4c6a98d7d44507f3b2b0e45833b0b89d7575d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "0021bb299c01e648cdd352d208b60f25fb2032e1a630e7d9ec75bdb1385800cc",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "542e2f609355d9c9914460a7acaea8de8d876525a55ad0044ec7b720c3c94bd2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "cb491d93eae96e4d82b5b189c2e7513415f6ffec39097c0b053c95a9fca863cf",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e3b7d91d265ab07e557ceebd24f90e854f8c4b790904c1589628cb6af1716362",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bbdac4b981df10b965f6caf71dc6154790a5bff4062d1afb715d4d359c1dcd6a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "6214d195f6c924400d032cc6f3aa5fd1e93892b418a292787a9926931c7beff7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f6fdc78a02809e4f13368853ff505339e56a0228e09cf82295bf1b7dbb5a2072",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "233d6ceb06fd344689a62c5a8dc1046050cc1d10a4999801d9362613aa7a2460",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0961a8bca564bb8fa7cb12d1b912768d0e4ed25b574ef789209733241cc16da5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "e757292d26cc2690e58bc8b1d0fe3e000aaf0c16a76378108ffea83b4e7d027a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "821d62ab9f77840317366093288c3d6d45a8976e3078b4ebe4617a37892c4fd7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "090fc638ebc486b9b9beafced698eabc74f0ac76f06d1d107a6a9c3895361d4a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "05cea5705603b11f4a64ead585a1da47d1c413f7677b0ef7f1f2c6265340c96b",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "1e2c98fb31417e48e8697ea85477bb5cd229474fab382d01ba3d802d0bbb1d6c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d9ba53d01dc4b0f47772291d22c9e2861bfac231d56ba5f2b56377fea0d7f5c9",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "82c982257c06b8f755983399e61dfbb12e95ca54cfd0e545f0f95ddbe7e50d61",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "44ef0f597591b4e0c9fd82a3e06051c840980e67b3b6cf78baa5f23f98aa82a7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "01f9281f86b886cc8d5f7ba4804b206bc8da11298f389420cac296707bc37104",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "27732429927ab4084914d037ac55db301fe0c7b85d53fa2567709b7fd2b2fec3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a458f9f0b8b16bb0edf19aed51ae4244d255d923ebac8046f6abcae7b5c00b02",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a5c6c3c8d35397fd6b3ca8fee2a4876755957efe6e272a371ffd9f798d5c6821",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d50ddbf2dd2b088e54d001ddea0a1d31dcb6b5cd7fd0e5bd33f0ab3f7089bb10",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "10f85539be3815c6aa3b8ec855949970d4c3f8ee4c9232372b0264f98663e10d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bbd9d78761bd5e05d3ba377fafb2db22521b019e48a585f6a77446334ad9cf99",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8fe3327b4724f5bf36b4c503a53010e0be652c027efb80743ffd5962ab40d033",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "0842543944f27a1c9e8d5a72781aba8e79442a15e2f039dfb806576c967aed0c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "16ff14b0a749e039d5bd4b498cbc9795b2f9ce14d8e4714ff93340970dfc40c7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "5aaee66017386a85b93033ee2e03d7b6ac7a7891cf5bdda81bc6fb0df53677e4",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d26949dee110fb3d1a1df94dbad71253dab4f8df1b7af80df0ac9e30aea599a5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d4393c27761932570c8afe121dd86758b51fa2f3f5a033cdd32976a0467d6bab",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "7788c5f1092408d825519b3f7a7bf2ef5882ca0404026108980af4dca6f940e8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "5bf4ebad5474a85cd4c6dc4f19f3f96229e6540bf080f2e0c68fd42685f58858",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "30f066f4b43580d184266cde2685e5e841854400e2e61a449c01c7abd5e96150",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "03308d4a4ddc73b2cae5659f036ca1a9254caed0a433f85d1379764f228edfee",
+      "kind": "REJECT",
+      "reason": "FILL_reward_below_cost_hurdle"
+    },
+    {
+      "intent_id": "f32193fd3d449a02f336e4f700a381c03a60357b75e6dd8be685c04c49a25254",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "0d3d42563aafbb4582331879dac90bea2054d1fcadd790dd416fd1f2a0a2a183",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "413e130c1e1f8ededd93806711586198f8927a4eaf08711e76e3a6bd89a5dc9e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "deaa5dab9065bda5ad7a81106f5f64bd433dd22dc947965b97eaf6b0967a06e1",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "83d43cc5f654e4b8cf453da838729c27332a2eb30c4ebfec7840b9fc5495a72a",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "8ef5602b820ffefc97a4e78603ec9077f8afe405e77af4be0c8ddc4f8bc2d707",
+      "kind": "REJECT",
+      "reason": "FILL_invalid_target_side"
+    },
+    {
+      "intent_id": "61a261ec5e0593472c365770ed4c00a086bdf4625f22c76af7ffd51b0527abce",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "4ff4f08c6758c7350ef8be658d17a17e0fd6b9efd38e3ca76a0395f892e9ac80",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "109ef97d761469e47785e7d686a189888dae324803b599b67577a3b711409d9c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "680b812aa3fc42107686c114ba54dd8521dc2e4b93d95359fb43884709e6ba37",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "766092888c8f85b97951504fc9ce92d1b9bffc91ca08d28ffc2745283b434189",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "2cf5197e6dca86da877b1be5cf38b7274ee899f3e7806231a6d9e8329c2a5ae5",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "3812675ffffcbb99b4dfec42ff2060612369c5441fb4984530dcb2e42f193221",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2b205a1e1c60cd6c17da17e71c9d284e7ec04f42a80138e7c49f5be32fca2a4e",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "bd0eafd8c375375ef9c8aacbb65774a367c7ddf574fdb9413f0c8c4210d7299f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a6607f9545083f4b4440271db22f87cc54c91f1084eff554753031c37bfe6b8d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0a3f4bbb517da23b3295bda466bf9813f8fbfaa85f0268475c9b554fa0536b81",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "567eb842e68dda4121a4533bbf97d3898c610579eda0571ee50f8db55f2732f1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d07bd87b4fb87d2b574ff18732c09c038a7e643cbf684c2c1e1a95f60123bb5c",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "aa4e73b601f7c9691699b4d4d376dbdd4ca9da61489879fbcc19bd9469ef8c03",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a675d96efce8ad566130a6c75cc09adbe5b2b9d8fb485b207e339d4f25f7e52f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "a831141e6b27b3f733a6f50c77da5355068568005baeb65735185ffea686af48",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "bf6e87c209760ad68640168a4489fd77a5fd8021f673f39ff524f5192d022655",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 1.1247891273387893,
+      "entry_ms": 1636296060000,
+      "entry_price": 1.2164648299999998,
+      "exit_fee_usd": 1.1196362722864892,
+      "exit_ms": 1636296539999,
+      "exit_price": 1.2108919925739825,
+      "gap": false,
+      "gross_pnl_usd": -11.450789005111508,
+      "holding_ms": 479999,
+      "intent_id": "d9ccf0c21c84ebe7de2cc6481a0b7882e9efab5d06ce21dfe62017dffc563e87",
+      "net_pnl_usd": -13.695214404736788,
+      "quantity": 2054.7502339925427,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 15.703203617306908,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

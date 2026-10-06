@@ -2,3 +2,5 @@
 # Do not let Windows autocrlf alter an immutable receipt after checkout.
 docs/receipts/*.json -text
 docs/receipts/*.json.asc -text
+# Published comparison receipts are byte-bound to their original runtime files.
+development/adaptive_replay/evidence/comparison-2026-10-06/** -text

@@ -1,0 +1,2184 @@
+{
+  "events": [
+    {
+      "intent_id": "88fb0ff0d928ba756833f2939a8ecfe271a0f16b7ec976194a346a1791257f29",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "c4dbd7ad8bb81c6e66eaf232b1033c45d6d121b8e022e9e19ee6f676c224686f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "adc5614f7273ec480c833cea3c96da77fddac68da7201d63551b4f0f2a09fae0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "98e204222332ce3ab32bdc4dd07a5dd79244ff16c5d83d8ef4bdee3f9147a622",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9997.787720894292,
+      "price": 29.945020000000003,
+      "quantity": 52.76059565276444,
+      "reserved_risk_usd": 24.994469302235732,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655081760000
+    },
+    {
+      "intent_id": "bfe2e5e4e0b57e7fa2267fa965297c63ede518435783dfab0bd0241be573e437",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "6576c89155549b516cf1c50d0f67212a27d1de9ab32292ee4fbfd3c25a404ed4",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10013.213892267895,
+      "price": 246.79654,
+      "quantity": 8.796992009655476,
+      "reserved_risk_usd": 25.03303473066974,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655082060000
+    },
+    {
+      "active_stop_price": 29.852961543078887,
+      "effective_after_ms": 1655082119999,
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655082119999
+    },
+    {
+      "active_stop_price": 29.832961543078884,
+      "effective_after_ms": 1655082539999,
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655082539999
+    },
+    {
+      "active_stop_price": 29.752961543078886,
+      "effective_after_ms": 1655082599999,
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655082599999
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "e604d7aeeac3b40ce5f3ddd17735b5ccb73a78cda5873c92b43b1ec8fecfe8f2",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10022.656395896593,
+      "price": 26278.0544,
+      "quantity": 0.09477607424886401,
+      "reserved_risk_usd": 25.05664098974148,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655082660000
+    },
+    {
+      "intent_id": "cc40957067293119c93eb33d952cc02dacc2d8ab4e7d94ea250cc89639b69ae9",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "active_stop_price": 29.652961543078884,
+      "effective_after_ms": 1655082779999,
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655082779999
+    },
+    {
+      "intent_id": "34ff04be7cfa8ee8ea782a52dff7170ef6ded1d856a8146ce23b759e45c95680",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "abfe7dac56d17096262bf1404fa1628322f7fd61f7671784ebb41994769a1422",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10072.652838701379,
+      "price": 29.16541,
+      "quantity": 46.946572454432356,
+      "reserved_risk_usd": 25.18163209675345,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655082960000
+    },
+    {
+      "intent_id": "e810228c8d6de16204608c7f263e64adde5798149604c6136ecfa0d5a549d703",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "active_stop_price": 245.89885296480276,
+      "effective_after_ms": 1655083019999,
+      "intent_id": "6576c89155549b516cf1c50d0f67212a27d1de9ab32292ee4fbfd3c25a404ed4",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655083019999
+    },
+    {
+      "active_stop_price": 26166.70380373306,
+      "effective_after_ms": 1655083079999,
+      "intent_id": "e604d7aeeac3b40ce5f3ddd17735b5ccb73a78cda5873c92b43b1ec8fecfe8f2",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655083079999
+    },
+    {
+      "active_stop_price": 245.48885296480276,
+      "effective_after_ms": 1655083079999,
+      "intent_id": "6576c89155549b516cf1c50d0f67212a27d1de9ab32292ee4fbfd3c25a404ed4",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655083079999
+    },
+    {
+      "intent_id": "ba285b1bdfbd0c893d4ca6ff1a183ab5e3708c709b71c57855cb6854faec34ed",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "680cfa789f0a695e299716be7898bb92c71f82b48d76106386e3ae9528c09b5a",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10042.455692958456,
+      "price": 243.548165,
+      "quantity": 8.71937722691968,
+      "reserved_risk_usd": 25.106139232396142,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655083860000
+    },
+    {
+      "intent_id": "dd6d0f6ed5babeaf0b327bbdd6c4a9eac557dab8aa707f8fd51c0760c4ec8949",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "active_stop_price": 242.72958321338615,
+      "effective_after_ms": 1655085359999,
+      "intent_id": "680cfa789f0a695e299716be7898bb92c71f82b48d76106386e3ae9528c09b5a",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655085359999
+    },
+    {
+      "intent_id": "695439535df1cef41fed615b880b77539d684511fa528915d3241ac5bca5c162",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "846848b57b36ae6ee9cb92633b9632f17ec225042589ca295f88485cb4d921ac",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "active_stop_price": 29.091284481254583,
+      "effective_after_ms": 1655085419999,
+      "intent_id": "abfe7dac56d17096262bf1404fa1628322f7fd61f7671784ebb41994769a1422",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655085419999
+    },
+    {
+      "active_stop_price": 241.79958321338614,
+      "effective_after_ms": 1655085419999,
+      "intent_id": "680cfa789f0a695e299716be7898bb92c71f82b48d76106386e3ae9528c09b5a",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655085419999
+    },
+    {
+      "intent_id": "6763f60702a74a86b8b42103c24864fc3cb1761069cb092140070fc7a832e801",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "41014c2a2bb550f6bcb5e2240c06c49c03633f1ecdb580efa9b9ca0441e90096",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b8d4a90ba9e50b512015bed3fbefb20259466dbe4060e5885a21f8fd346d6b3c",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e9b72887461c94498c7f87cea234a3684b873230a7aa305713cacf3fc0f2975d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "7874017040ac40ae0dff0f28a347e4ea2685fb79dfd061670582277274564d7a",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10054.537914151086,
+      "price": 237.391245,
+      "quantity": 9.195951585487249,
+      "reserved_risk_usd": 25.136344785377712,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655089260000
+    },
+    {
+      "intent_id": "c006cec16863c457732f4a8497ce9fab1465c12907b02504bc5e98526984cd01",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "cc1e97733b343147dddfe4bb00c3d130597409a06af4d3d44fa719b9aa8e52e3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "86c98e9369a737f00e0b7fad8ab5467c0bfb1c9cb51b48ed7dbbf2e610b7f994",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e006d7d916c4a5f423c77179cae9a6d09b5ea415eb9d70c69a306c4e84a7605a",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "4dac2bcf9a24c4e649d17be9153c4c76e0a061ab52f38778f2ae588012771d2e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "25c0c71a36e6aec356831657631fa96d71509e2010cb8a504ff1757947fc5e18",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d26db173cac097cdadf81422cc9b124f8c2c191a289b1782d9e555a6cf3164c4",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ccb0dd03189c96bce3e9fc32393c018f7b3da3bd7edd031648f1902bd3c2bae9",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "fbea368f02401b475f94bd376efa18f14025e5d44e580c86730c3cafa0e88228",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e47309d3d70f49a4b1d50b077eae07cfdb7d09ac4b32fd98a456fcdb29a7687e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "dfece15350203d90d536d865e17dc85c5a21954b0a448a4bba4222c83f035c7a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10032.112533471667,
+      "price": 1330.0046650000002,
+      "quantity": 1.3756049418848013,
+      "reserved_risk_usd": 25.080281333679167,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655099460000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "c8469f145577d58c1224a0886e4840f52582dd5ff89a7ec04d67575abb8aeff4",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10029.709140446528,
+      "price": 27.926030000000004,
+      "quantity": 61.46246530103401,
+      "reserved_risk_usd": 25.07427285111632,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655099460000
+    },
+    {
+      "intent_id": "46c089aec0911fb10b358af5bb6e3e8f7a1ba4ec8a37d426218b18f573feaf09",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d11c5432fdab7c6ae4b8606040aa687d4c62ef21b2e0954dd03f3138608cf644",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "b84783452b4af48212367bfa2ab57ae2b5f9eed3d05a7a07b96542cc1a248414",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10037.890874080973,
+      "price": 25280.45345,
+      "quantity": 0.09248251388409598,
+      "reserved_risk_usd": 25.094727185202434,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655099760000
+    },
+    {
+      "intent_id": "e2bf372698c77133b03ed198a2e4fcf3f5f8960a714f05ada323e0c8fca58f52",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "61aff8f68abe81a92b91434e01d6666f1fe6d720dcd492a35b7467580189ef81",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "04ed90954b19d0d578fe2975c2a5001583c0ab4ad03bc227ec894c9c25a32393",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ed7aeac6ed2c1e8db144551d1b74a500560b18a079d8088831bd7c7c40da190f",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "21a35e9490b01137132b2a9cfe954699253bce8dce37e8d608c882100218d10a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "active_stop_price": 1327.381840499385,
+      "effective_after_ms": 1655100239999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655100239999
+    },
+    {
+      "active_stop_price": 1325.581840499385,
+      "effective_after_ms": 1655100299999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655100299999
+    },
+    {
+      "active_stop_price": 1325.521840499385,
+      "effective_after_ms": 1655100359999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655100359999
+    },
+    {
+      "intent_id": "f16daf3318246309e9b1b266d4d3380b5a1a4233eee371ce473ee326bfdc0484",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "439d47417006364d1c3a7814da358127b93ecdc7de4c204c3830688660e72e92",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "9a11b0d5da2f75b0fb8222e7c80722d801603f50524a0b075b57d96cebcf6703",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "60343ada7fd2af1e273a10222850caf5339aea979f5fa1efea381fbfb724eaac",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "active_stop_price": 1323.751840499385,
+      "effective_after_ms": 1655100419999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655100419999
+    },
+    {
+      "active_stop_price": 1322.681840499385,
+      "effective_after_ms": 1655100479999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655100479999
+    },
+    {
+      "intent_id": "33fb00db9e4e7a6e5e404ba8be0c88ca02802db8825ba0fffdf0a13a80066226",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "799a7afdc1d36a6f97fcc5d8fbba48a0bbcdca90106c6a0e5032f38bc42accca",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b049c8b0ed4ad1f95080df17400b5680a0368838011bbaf15fc29b0418cb9b67",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "12fb71608c1be4a22f2014710e9cde1269cbe7462e557c8c362d15d0044dc6b2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f43473e3f5e49dd97a45ef129a1a1bcee1b26551a542efbf3f9a8f353f5e76a5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "c34b8d8858efd7082f0517ee913e6b9811316ee401d89acfe0f6dcc7a70b2be9",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9992.181571093579,
+      "price": 27.556215,
+      "quantity": 60.24642723316805,
+      "reserved_risk_usd": 24.980453927733944,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655106360000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "b8efcf3545c0a6a15a2569afc29f79ebe8f815c02d2037c08fdf816c74ded438",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9988.857645009148,
+      "price": 233.15336500000004,
+      "quantity": 10.181319111419448,
+      "reserved_risk_usd": 24.97214411252287,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655106360000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "65bf49c0581ee0d46e9bfb04ea1b6d461e7f63002cdcb7e1496c10cca76f8c11",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9986.030811718192,
+      "price": 0.31694145,
+      "quantity": 6369.6495204163075,
+      "reserved_risk_usd": 24.96507702929548,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1655106360000
+    },
+    {
+      "intent_id": "b871affa8ae42aeae14fcb30c9b8cdf303a2583532a49872c6049932ea5ef2ba",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "506777e153a0bbe4705cd3f260446583d90c837cf700b37fb320df274daed55f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2c2a2dc2b4e91c5654068be4e919142c3b9fdb0641fdccccf647b87aff022a4d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2bbb19ac40e4de54beb52d0c1be73ce5b019f965ae09031dd387ed2348a75791",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "10506a15257106ef9abecf2e388dc00c39f8373ab79387d88464f2e43cf5ac38",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c9ca6ecd0858e4a73e0016d5fd95c93e9c75b527a70da64925d03df51c640ab5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "02991b8773d38604bf7dda85b9fe50f54da8810773074d3ae8b4cf05ac429aff",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "35e26eb5be249b4037ad9480a1078e3b4c4ec396b4818238ddef8d0f336d1372",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "1900c215e8f0c6288618bac3082826de5bacc63402613ae1f1c662f546339ea8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e5e87eb37723c9086642584509245144a130792031f855db64f979a737ca2a3d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0ff9863722303abba36a99a2d272a7ab778d1c79b784b7d76b5112dd4938c5ba",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "e4710c97e71be9db87ea3d46dbee1119d9388c4d4a7d1e37b6e2d31ba6e3c649",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9924.134086481665,
+      "price": 1209.684855,
+      "quantity": 0.9496248612042713,
+      "reserved_risk_usd": 24.810335216204162,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655110860000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "edb05f663768f0adc9774c32585b77738fc083d907de1eab808d3eeff837ad33",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9922.453756893192,
+      "price": 26.26686,
+      "quantity": 45.68574331580353,
+      "reserved_risk_usd": 24.80613439223298,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655110860000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "ea35870d1e398c1e05951f2d0a2b984e8a03688c74fffd691c391350da7804e7",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9920.400108520693,
+      "price": 222.20884,
+      "quantity": 6.6002309605359795,
+      "reserved_risk_usd": 24.801000271301735,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655110860000
+    },
+    {
+      "intent_id": "a5a3d2d0582aba9afb6ed756469a129a87af9557fc469efaec8775a216c1f634",
+      "kind": "REJECT",
+      "reason": "AGGREGATE_OPEN_RISK_CAP"
+    },
+    {
+      "active_stop_price": 1203.4192404871542,
+      "effective_after_ms": 1655111339999,
+      "intent_id": "e4710c97e71be9db87ea3d46dbee1119d9388c4d4a7d1e37b6e2d31ba6e3c649",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655111339999
+    },
+    {
+      "active_stop_price": 221.79255941030442,
+      "effective_after_ms": 1655111339999,
+      "intent_id": "ea35870d1e398c1e05951f2d0a2b984e8a03688c74fffd691c391350da7804e7",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655111339999
+    },
+    {
+      "intent_id": "6f8bc48b6fe8468d7489e8cc4464ca49e21b94faed4fbed385d30f643e07573a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3b6e7a2a7f35cc047e73ca456c6fa9e88b79a9bfc31b9cde2e4304843eb0b67a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "e1586203f143806682578a1039e21d3957a309cef7e3e68706923797ccc5f4fa",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "59f55595f357cdb0f84ce7b8ed9068205d14cf6ae8baabaa70a08d9c4f0a5d5d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "013139c9a851d0354f543266075742412ffe895bdd352cafb5baf6b2de2d6cba",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c48657424bac73857bb2a6903485c60f6a762bcd7458e8419a1f937bb567fe69",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "cac3828694d7719f34476ea9c2b109a5377a8d05d118e3f0b9c07eab75107513",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3ab4cc39b0dea602eb6d50604c68d3ec00d2e78fed2f3d4d0a3bc1bc5793bb56",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2573aa7ae29961f81ca07b13674986dc1fe776fb9d587a203b56aaf38a5fb067",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c728d8b6a4946bb10efc6dbcb1f3d05de742a18b7b0b39615ab0d396f71ba1ec",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "a66ffa0103ed85da36d6e012a06f87aa77434765f9c51f8e74eadc0863f834c9",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9903.217985492589,
+      "price": 26.3868,
+      "quantity": 44.67392021983162,
+      "reserved_risk_usd": 24.75804496373147,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655121360000
+    },
+    {
+      "intent_id": "d0bf25d478d561fb691df1010766b06384cab965f4c84b67999777ec33bf66c1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3722e8a7a4dc2b77d30df51513de8020986760bb69085f1b956e0bec43f262d4",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "b489bc5873e22ee6da53ec8fd7b1c7b9da19a198d12268c5dedc5beb1b23a5cd",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9878.16323749536,
+      "price": 23140.0242,
+      "quantity": 0.09768281499223508,
+      "reserved_risk_usd": 24.695408093738404,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655131560000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "649dc5db271abdfbe90ac941f2e6dc9e65a7496636692c7936656ac9944fd4a5",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9876.463858268962,
+      "price": 1199.509945,
+      "quantity": 1.011767749304444,
+      "reserved_risk_usd": 24.691159645672403,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655131560000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "f9a621c3ef3795ef237955545c805f7381a8ffb7f654fd222981f45f8ecdd674",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9873.950346615286,
+      "price": 218.93048000000002,
+      "quantity": 8.199154192018538,
+      "reserved_risk_usd": 24.684875866538217,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655131560000
+    },
+    {
+      "intent_id": "1e4cc492b43b3f98aa5ed61c992c7dff48afe0741adc7f9fedea7e1c0a4f39fc",
+      "kind": "REJECT",
+      "reason": "AGGREGATE_OPEN_RISK_CAP"
+    },
+    {
+      "active_stop_price": 217.99091558421688,
+      "effective_after_ms": 1655131739999,
+      "intent_id": "f9a621c3ef3795ef237955545c805f7381a8ffb7f654fd222981f45f8ecdd674",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655131739999
+    },
+    {
+      "active_stop_price": 23033.275165958377,
+      "effective_after_ms": 1655131799999,
+      "intent_id": "b489bc5873e22ee6da53ec8fd7b1c7b9da19a198d12268c5dedc5beb1b23a5cd",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655131799999
+    },
+    {
+      "active_stop_price": 217.8209155842169,
+      "effective_after_ms": 1655131799999,
+      "intent_id": "f9a621c3ef3795ef237955545c805f7381a8ffb7f654fd222981f45f8ecdd674",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655131799999
+    },
+    {
+      "active_stop_price": 22885.17516595838,
+      "effective_after_ms": 1655131859999,
+      "intent_id": "b489bc5873e22ee6da53ec8fd7b1c7b9da19a198d12268c5dedc5beb1b23a5cd",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655131859999
+    },
+    {
+      "active_stop_price": 1191.5846346896656,
+      "effective_after_ms": 1655131859999,
+      "intent_id": "649dc5db271abdfbe90ac941f2e6dc9e65a7496636692c7936656ac9944fd4a5",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655131859999
+    },
+    {
+      "intent_id": "e6847feee2f1be354804d5fab2613bbeee248ab3059cdf96ef5e8557f144c7b8",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "a8f7b6519b4786ad4452439329a8101969873d718c31b29e7d202a1665115f57",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "ad9ffccba36a5b5475fb38139b62f4777e0d7788df5079a2f09d454bd0c89325",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f6d1cc37387883b30f481bd7f9818dca3e05b0d370e7d0e721d7e591789fa545",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "4de762bd239a8a8270c71c8dbfd199dc0a649519b0d2aad425c186954600e937",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "52f94010925d06531a18262bfdf8863fe1dfbb1f18854a7eb61a1c2792d069a8",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9994.949854572309,
+      "price": 23193.89725,
+      "quantity": 0.10476371136117706,
+      "reserved_risk_usd": 24.987374636430776,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655148660000
+    },
+    {
+      "intent_id": "97fd8fd62c20ec275faaa8d56baaa0ad3cb1623ff43a47f891f4037e583f8577",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "48f8bb73a28ed9d3a8cd98bf58b40594fab703f4a38743056496d11bd807fa3d",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "2cadf0388891770cf12fd61b2534137e3d228f2ccaf6bfac8444ced1058876b0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3c36747d3c846bc4a35cfcec78780179f69b9af14e892e22044b69cc4c2ee89e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "76796a6cf1951be407ffe401a40afe7e68041e45fba21d43157965dd1973e9d7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "3d95c397728e0d94db43117965fb80d332effaa559e453bdda7201b8dcec3db7",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "367429713bec044c2f80316020fc1d55d0a58e5d82fd7ac7a423fed5d4e2250d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "13f2086e5fb62d24137915735876a0468775a446ef228c74275ebf47f141f2fa",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9973.822809365189,
+      "price": 28.47423,
+      "quantity": 50.25542894443258,
+      "reserved_risk_usd": 24.934557023412975,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655164860000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9949.493745214288,
+      "price": 21803.2929,
+      "quantity": 0.09359445879245722,
+      "reserved_risk_usd": 24.873734363035723,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655168460000
+    },
+    {
+      "intent_id": "7726671cd304ed171a1b1f6bd5d8730d9b0af95aa8c74fc2314ef78b69bf4433",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "9ef60f268ba2d02e060fff6f4b75b00cb04beaa0af96fe4a78cfaaf801eb2a9b",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "active_stop_price": 21705.012258372633,
+      "effective_after_ms": 1655169599999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169599999
+    },
+    {
+      "active_stop_price": 21704.612258372632,
+      "effective_after_ms": 1655169719999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169719999
+    },
+    {
+      "active_stop_price": 21673.612258372632,
+      "effective_after_ms": 1655169779999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169779999
+    },
+    {
+      "active_stop_price": 21630.712258372634,
+      "effective_after_ms": 1655169839999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169839999
+    },
+    {
+      "active_stop_price": 21624.612258372632,
+      "effective_after_ms": 1655169899999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169899999
+    },
+    {
+      "active_stop_price": 21542.312258372633,
+      "effective_after_ms": 1655169959999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655169959999
+    },
+    {
+      "intent_id": "28d348cc369eedb1cf648d55c0aa099658b5d5beb91f9c063784dca446165936",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "583b70f274c92f7129c7fa537867638330a51208021b5fdca372a05b4158072f",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9988.997129561592,
+      "price": 21255.466949999998,
+      "quantity": 0.1008901066591099,
+      "reserved_risk_usd": 24.972492823903984,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655170260000
+    },
+    {
+      "intent_id": "7508490623470d60848300572d08bd519e9155f3e3a39cd6ea21c05d159052c2",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "intent_id": "31fd599a4fcf9dac242a5015b99401a0fd1f16369b43d94972141dc580d655ae",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "active_stop_price": 21081.68976451183,
+      "effective_after_ms": 1655171819999,
+      "intent_id": "583b70f274c92f7129c7fa537867638330a51208021b5fdca372a05b4158072f",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655171819999
+    },
+    {
+      "active_stop_price": 21054.98976451183,
+      "effective_after_ms": 1655171999999,
+      "intent_id": "583b70f274c92f7129c7fa537867638330a51208021b5fdca372a05b4158072f",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655171999999
+    },
+    {
+      "intent_id": "94ffcbe7edf1b9fcafb449c8041f612190cc70984028b7569336e3d56acbe857",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "b21204a576b2dfa15860feb7b280a9121e4b1b4eab3d1411bd2920d4dad06c44",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10025.693556379547,
+      "price": 1104.30757,
+      "quantity": 1.17268247063408,
+      "reserved_risk_usd": 25.064233890948863,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655172060000
+    },
+    {
+      "intent_id": "588ee6b48739869d3e7c988d87e5a7d5ae7833e46c034f1e5855cbd10dd095f1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "01a968fb07e89d07b7d0e1bcdc5f35e0d15db7d2a2957ef71d2ce1d838a2f3b4",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 10022.9384038812,
+      "price": 0.29435275,
+      "quantity": 6684.546126173538,
+      "reserved_risk_usd": 25.057346009703,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_ms": 1655172060000
+    },
+    {
+      "intent_id": "f6b2934aad78808dd988c32a42c119c5e3de5c7809f137509c9dd667e53ced5a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "ec5b3339e3d7aa8e46149b938f98f321ec3180cdefac8a85ef9c04855eb44aba",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9958.507264209198,
+      "price": 1100.199625,
+      "quantity": 1.3164004022235023,
+      "reserved_risk_usd": 24.896268160522993,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655173860000
+    },
+    {
+      "intent_id": "e15203e6e8f97a3a3c5b29d637d51344b5e4f67bc0fd40d64e2730a6f15cc1d0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "5c6fe0923984fac3d9476bbc14541a5be0836d3f1b2ccb1047e421a8fc80f744",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9935.201197443745,
+      "price": 30.29514,
+      "quantity": 45.3601176002071,
+      "reserved_risk_usd": 24.838002993609358,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655219160000
+    },
+    {
+      "intent_id": "cf35250c1b940087e5f12510fd9feed5e39ed3c551ee5ccb49a57cdaa1a52da7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "72af64aaf030638ed21ad18753c737d40ecc7fc14076c00673dab445d1bd75c3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "25cd8b7b00dc04080258274337fdddeb2aa7ec83b81384a7204a1b616a65700d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8e4915c66985eced9a8023915db270893012e4a542ae472b322ac93191e5afe5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "994b3ce44eb6c77127debeb67684924a56992c5b3f418cfe62dacb1394338e42",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "614e7ecc0a9e01950b5343f57617521418fa1550725e2625de2475b98e78e2f2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "ba1b01e97c4aaaca3337e55aea65906d5a78f3f75ead617188197518e95b0bf8",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "f099e2e20f61175fb3b4697fe036dbf0bb66c472b25552ea0d83d14bf20dc446",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6d7a9e2d06b7dfb6af3b89669db2a147dfce48cc9ac77f2c2d6813c75fe9e40a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "52f2f594b42ff06b2dddd8b1c98e8190c16afebe812c7be6c1c165fc9b2199f3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "75f90a95e58f93380ba5d882607ea9267b8cfe6a3e84c4435a198284d95922bc",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "250be088427934c0dd833a77a0570dc427ffa3b70fb4c35bc7ddfd4c0d63db26",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0cc78738239bdfc41f99391f22352c7537e017f561aea268ef13b307266dfcc5",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "7ae4f8af430f3733ad24b5a732679573711b96cbc9bcadb1308e2bb3d18b9b1d",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f81e29e4dc250d7f1e26b20747eded61a5ff6195726dbdbfdc1c994bc69dd187",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d73bc698a149baebbaf3945303f487558eacf15bb8546af5203092a58a65f793",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8c381d4805931e14338f3d6c4670dea21aa4065bf3249ebc6314868cde307c66",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "5ec429e0e333c25f58e9d98a7638240dd9964ceb3a53a921a106fa62aba3dbb8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b3176e8e4ab3b948dded96a9876cccf32ddbdbd85592ee080d77d311ceca45f7",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "bbd63bb23cff08131503fb3484f5b4e1538f14b6f2946638b7adeedb81d4dfc2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6c804460d39f269e0e5d649406b0eac1390293605ae8ed521b23616e85d7f6ac",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2006444eeed7b5d7b790b49e5c6bc55abd6a31f51a2fd37ac11a970f78206b31",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "cc40d3878b8a46e756132b4581dac515c7d3d94b2a24bbe30ce0157f4e6d7a61",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a0b7b914c18ec8b12f29028ecdf80e8b74d205cf1ff421f1be651809f4960f13",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "a65e339b149c4d1913359fab9ba1ffe860baa6819715c2ead6c874ed7e592b48",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ad98fdd682f875ea07b1d63301b376f3f67034facc5025bafdbea779b00e7618",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "87ae56bdb1ab7cffa763e1903931b75f6d372c86f58f3ff28fabd11326af99e2",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "6f3e447e3ee38d136e4090d0c63adef893c975463aaa61fbacee1175649fe2ce",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "8d0ae32566b0ef52adc906aaaa75569a6a5f2dc19d648c7e5da1a869422d102a",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9910.424294366492,
+      "price": 1070.6644000000001,
+      "quantity": 2.178264083183383,
+      "reserved_risk_usd": 24.776060735916232,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655280360000
+    },
+    {
+      "intent_id": "ef713a573eb5a9ac074b5434925653db72399128e4ec926cbd6604bf78076d6f",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "407b4b5ab9f79b2f86e97a468fe6f6b242b974bdd4b5b749f01b6dde9355ea96",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "b105c6cd411394781494a475c0708a280d591e766878d74d05c288ae9a0f54ad",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "66d3320dd92a1e9470b0c0ba37c457b5ff3a0f7752bf170b38a0a98aa28ab107",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9888.571382585224,
+      "price": 1060.3295699999999,
+      "quantity": 1.8225427496846083,
+      "reserved_risk_usd": 24.72142845646306,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655280960000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "49185a0d79bcc2e6e1f7159532135dff88695a57cc1b7a4d2eee6d92670a7c0c",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9885.34767237327,
+      "price": 203.368265,
+      "quantity": 11.320541244020367,
+      "reserved_risk_usd": 24.713369180933178,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655280960000
+    },
+    {
+      "intent_id": "1868b119f8929fdba15ed30fb688dd2573abf0635b723dd6f1248294592ec7c2",
+      "kind": "REJECT",
+      "reason": "FILL_INSUFFICIENT_COST_HEADROOM"
+    },
+    {
+      "intent_id": "d57793b9ab1b2c0f563fff440e85abec5fc8f78cab319058ab923b415aec2bd3",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "0effb7716c0ec33e1281b7e1b38502978382af627b5832ec8c76c0edd2b97cfb",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "499b16bc358e3d762e21fa5aba1a3071700b05138514bc16e998bdfb8fd8d331",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "ee3e693934c439edd06e7e7c62101456f14b6012945ffc5bc04845b5a20e0bce",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9844.45910942938,
+      "price": 1032.053715,
+      "quantity": 1.1648885139937628,
+      "reserved_risk_usd": 24.611147773573446,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1655283360000
+    },
+    {
+      "intent_id": "e3234203139c7becf23558d54ac0356458ef80e989d2df2c053e5bade4e465ca",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "5c8fd1a90152f7e63dd75913a27870e5e19e0d9b81a14bf50860262d9c6ffdc0",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "a845b1cf1c7f9ee464382907231068f3bc1b4c42e6c1d7617e9c9113ce48f573",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9849.568845527283,
+      "price": 26.946520000000003,
+      "quantity": 65.55965180930663,
+      "reserved_risk_usd": 24.62392211381821,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655284560000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "61fba21b83a08da8cd6048d059759ca8f3fa2da979456abf7fb7dbde51658ea1",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9846.842261318247,
+      "price": 200.529685,
+      "quantity": 9.710344176184554,
+      "reserved_risk_usd": 24.617105653295614,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655284560000
+    },
+    {
+      "intent_id": "0cf6b7cfcff52548ee2ce00731f7655f85335969a99eb326c45331a679871f33",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "55258802eafcea22d73188a6f71c26506d7aa2eb1c2c3230da059b3fd1f28931",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "43db6576faf1db6eafd5b3228cc6386d96bf03f298ffb9c913c1bbcf67bccd92",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c2dd4eb6cded2bf3d0d3ef40e80e1da320c024b3ca4ecb5558282cf69600dbda",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "5edd75719e8a965adad08a4e20282c798b746d26907642d0a9a2634624e906cb",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "3e23ab25336824541b7008c9726f161010fcde5bc789adecdff99b024d3b170e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "84797962dcd4881665abb63aac22512496b4ac7c1034cf9fc164e124471a763a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "c98197a472dbe45e7a0929ea627374e217c4fe8f73cea922aa72995e10a473ef",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "b0cf1cf32126dddbd6baa32e4eb3fe23f94e76a981e4f1f6011da7307b92dae1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "109ea924a3da2310e9a626734bb5a48ac4c0c11df090c55acd6d34780f83201a",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "609efc16b9fcb1c611960c0688c743f6d030355b3aee917903173f32ebd252de",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "480b0bc18fda5a5c321fbcbabb9e610f5ead587876b91090a14e508ee832a161",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "fac594e14bc50333b571701cb7f638a7bedfc314082b2256a037ff4de15a6033",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9774.086330400227,
+      "price": 22218.403649999997,
+      "quantity": 0.1037601980241342,
+      "reserved_risk_usd": 24.43521582600057,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655330160000
+    },
+    {
+      "intent_id": "55c9e8fa14f5207c4d81cd2a9bfbaa8e5cf373f551e493d00f1bc85d008b956e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "604a030f1fc7728ee40a9657afbe2fe5d0fe5d8bdd8da5c38ceb7ad73d157529",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "active_stop_price": 22362.78190199752,
+      "effective_after_ms": 1655330819999,
+      "intent_id": "fac594e14bc50333b571701cb7f638a7bedfc314082b2256a037ff4de15a6033",
+      "kind": "TRAILING_UPDATE",
+      "risk_reservation_released_usd": 0,
+      "timestamp_ms": 1655330819999
+    },
+    {
+      "intent_id": "dad1e67f116842e9a1c54241a3f605bf8b4e9d483fd2fce384b9c38500327735",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "ea2c659d64aeddab3629e80f5d11b92be08b9335506665f127a269b7321301d8",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "8a4bd7bf6bcb737aa7c2f46617bdf7271318f598d1077315ad38990949235d0f",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "2578bf87e23a7f35a6cc9b0da117a497936795faf815930abf9e1a0cff84046e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "84de3df3cf13ebcc528cd24cdc93b3a48cb87aa142abb261367484f65c45e277",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "dafeec6b209ffa0ab1cd63ec009d8474f9b432c8539c3418b263e8f72e16b0d1",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "d0556350579d19916268687e66c4847026b6f3b0d9eff7814b6d49e9dd97241b",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "9d54f1e31e09930b5560a7293ba9a49b510bb5a7324340d628ae904259b5f8ec",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 1.42192538283055,
+      "entry_ms": 1655081760000,
+      "entry_price": 29.945020000000003,
+      "exit_fee_usd": 1.3874354151391748,
+      "exit_ms": 1655082839999,
+      "exit_price": 29.21867895229915,
+      "gap": false,
+      "gross_pnl_usd": 38.322186323749975,
+      "holding_ms": 1079999,
+      "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "net_pnl_usd": 35.51282552578025,
+      "quantity": 52.76059565276444,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.994469302235732,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.241477751437079,
+      "entry_ms": 1655082660000,
+      "entry_price": 26278.0544,
+      "exit_fee_usd": 2.233095706153721,
+      "exit_ms": 1655083139999,
+      "exit_price": 26179.787155634924,
+      "gap": false,
+      "gross_pnl_usd": 9.31338364817582,
+      "holding_ms": 479999,
+      "intent_id": "e604d7aeeac3b40ce5f3ddd17735b5ccb73a78cda5873c92b43b1ec8fecfe8f2",
+      "net_pnl_usd": 4.83881019058502,
+      "quantity": 0.09477607424886401,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 25.05664098974148,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.9539604713515561,
+      "entry_ms": 1655082060000,
+      "entry_price": 246.79654,
+      "exit_fee_usd": 1.9445789337568675,
+      "exit_ms": 1655083199999,
+      "exit_price": 245.61159739128516,
+      "gap": false,
+      "gross_pnl_usd": 10.423930660764714,
+      "holding_ms": 1139999,
+      "intent_id": "6576c89155549b516cf1c50d0f67212a27d1de9ab32292ee4fbfd3c25a404ed4",
+      "net_pnl_usd": 6.525391255656292,
+      "quantity": 8.796992009655476,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 25.03303473066974,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.2322944303554035,
+      "entry_ms": 1655082960000,
+      "entry_price": 29.16541,
+      "exit_fee_usd": 1.2297770664651608,
+      "exit_ms": 1655085539999,
+      "exit_price": 29.10583012349521,
+      "gap": false,
+      "gross_pnl_usd": 2.797070989158335,
+      "holding_ms": 2579999,
+      "intent_id": "abfe7dac56d17096262bf1404fa1628322f7fd61f7671784ebb41994769a1422",
+      "net_pnl_usd": 0.3349994923377706,
+      "quantity": 46.946572454432356,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 25.18163209675345,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.9112294912031689,
+      "entry_ms": 1655083860000,
+      "entry_price": 243.548165,
+      "exit_fee_usd": 1.8984563552152296,
+      "exit_ms": 1655085599999,
+      "exit_price": 241.92048300499283,
+      "gap": false,
+      "gross_pnl_usd": 14.192373319932793,
+      "holding_ms": 1739999,
+      "intent_id": "680cfa789f0a695e299716be7898bb92c71f82b48d76106386e3ae9528c09b5a",
+      "net_pnl_usd": 10.382687473514395,
+      "quantity": 8.71937722691968,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 25.106139232396142,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.9647345562546878,
+      "entry_ms": 1655089260000,
+      "entry_price": 237.391245,
+      "exit_fee_usd": 1.9818109689971182,
+      "exit_ms": 1655090999999,
+      "exit_price": 239.45452162337602,
+      "gap": false,
+      "gross_pnl_usd": -18.97379193603355,
+      "holding_ms": 1739999,
+      "intent_id": "7874017040ac40ae0dff0f28a347e4ea2685fb79dfd061670582277274564d7a",
+      "net_pnl_usd": -22.920337461285353,
+      "quantity": 9.195951585487249,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 25.136344785377712,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.6466048909134559,
+      "entry_ms": 1655099460000,
+      "entry_price": 1330.0046650000002,
+      "exit_fee_usd": 1.638357678153364,
+      "exit_ms": 1655100659999,
+      "exit_price": 1323.3431814196347,
+      "gap": false,
+      "gross_pnl_usd": 9.16356973343522,
+      "holding_ms": 1199999,
+      "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "net_pnl_usd": 5.878607164368401,
+      "quantity": 1.3756049418848013,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 25.080281333679167,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.1041998984672805,
+      "entry_ms": 1655099760000,
+      "entry_price": 25280.45345,
+      "exit_fee_usd": 2.1208497413639287,
+      "exit_ms": 1655100899999,
+      "exit_price": 25480.48937748252,
+      "gap": false,
+      "gross_pnl_usd": -18.49982544072022,
+      "holding_ms": 1139999,
+      "intent_id": "b84783452b4af48212367bfa2ab57ae2b5f9eed3d05a7a07b96542cc1a248414",
+      "net_pnl_usd": -22.72487508055143,
+      "quantity": 0.09248251388409598,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 25.094727185202434,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.5447623848835714,
+      "entry_ms": 1655099460000,
+      "entry_price": 27.926030000000004,
+      "exit_fee_usd": 1.5629551430925952,
+      "exit_ms": 1655100899999,
+      "exit_price": 28.254916511284545,
+      "gap": false,
+      "gross_pnl_usd": -20.214175787804212,
+      "holding_ms": 1439999,
+      "intent_id": "c8469f145577d58c1224a0886e4840f52582dd5ff89a7ec04d67575abb8aeff4",
+      "net_pnl_usd": -23.32189331578038,
+      "quantity": 61.46246530103401,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 25.07427285111632,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.4941471516371307,
+      "entry_ms": 1655106360000,
+      "entry_price": 27.556215,
+      "exit_fee_usd": 1.5123969649677835,
+      "exit_ms": 1655106479999,
+      "exit_price": 27.892792143220678,
+      "gap": false,
+      "gross_pnl_usd": -20.27757036739206,
+      "holding_ms": 119999,
+      "intent_id": "c34b8d8858efd7082f0517ee913e6b9811316ee401d89acfe0f6dcc7a70b2be9",
+      "net_pnl_usd": -23.284114483996973,
+      "quantity": 60.24642723316805,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.980453927733944,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.136427929869629,
+      "entry_ms": 1655106360000,
+      "entry_price": 233.15336500000004,
+      "exit_fee_usd": 2.1528778142137797,
+      "exit_ms": 1655106479999,
+      "exit_price": 234.9485792616548,
+      "gap": false,
+      "gross_pnl_usd": -18.277649271278396,
+      "holding_ms": 119999,
+      "intent_id": "b8efcf3545c0a6a15a2569afc29f79ebe8f815c02d2037c08fdf816c74ded438",
+      "net_pnl_usd": -22.566955015361806,
+      "quantity": 10.181319111419448,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.97214411252287,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.8169253594932941,
+      "entry_ms": 1655106360000,
+      "entry_price": 0.31694145,
+      "exit_fee_usd": 1.8342605659165456,
+      "exit_ms": 1655106479999,
+      "exit_price": 0.31996537469295866,
+      "gap": false,
+      "gross_pnl_usd": -19.26134047027907,
+      "holding_ms": 119999,
+      "intent_id": "65bf49c0581ee0d46e9bfb04ea1b6d461e7f63002cdcb7e1496c10cca76f8c11",
+      "net_pnl_usd": -22.912526395688907,
+      "quantity": 6369.6495204163075,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.96507702929548,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0338721312772556,
+      "entry_ms": 1655110860000,
+      "entry_price": 1209.684855,
+      "exit_fee_usd": 1.0290314048694953,
+      "exit_ms": 1655111399999,
+      "exit_price": 1204.0209501073978,
+      "gap": false,
+      "gross_pnl_usd": 5.378584897511561,
+      "holding_ms": 539999,
+      "intent_id": "e4710c97e71be9db87ea3d46dbee1119d9388c4d4a7d1e37b6e2d31ba6e3c649",
+      "net_pnl_usd": 3.3156813613648106,
+      "quantity": 0.9496248612042713,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 24.810335216204162,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.3199666989255072,
+      "entry_ms": 1655110860000,
+      "entry_price": 222.20884,
+      "exit_fee_usd": 1.3181526526456124,
+      "exit_ms": 1655111459999,
+      "exit_price": 221.90345569000957,
+      "gap": false,
+      "gross_pnl_usd": 2.015606977660846,
+      "holding_ms": 599999,
+      "intent_id": "ea35870d1e398c1e05951f2d0a2b984e8a03688c74fffd691c391350da7804e7",
+      "net_pnl_usd": -0.6225123739102736,
+      "quantity": 6.6002309605359795,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 24.801000271301735,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0800189213049325,
+      "entry_ms": 1655110860000,
+      "entry_price": 26.26686,
+      "exit_fee_usd": 1.0992680299801365,
+      "exit_ms": 1655111639999,
+      "exit_price": 26.73501257836915,
+      "gap": false,
+      "gross_pnl_usd": -21.387898528004573,
+      "holding_ms": 779999,
+      "intent_id": "edb05f663768f0adc9774c32585b77738fc083d907de1eab808d3eeff837ad33",
+      "net_pnl_usd": -23.567185479289645,
+      "quantity": 45.68574331580353,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.80613439223298,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0609216182509877,
+      "entry_ms": 1655121360000,
+      "entry_price": 26.3868,
+      "exit_fee_usd": 1.0801808637971744,
+      "exit_ms": 1655121599999,
+      "exit_price": 26.86580792257953,
+      "gap": false,
+      "gross_pnl_usd": -21.39916171798522,
+      "holding_ms": 239999,
+      "intent_id": "a66ffa0103ed85da36d6e012a06f87aa77434765f9c51f8e74eadc0863f834c9",
+      "net_pnl_usd": -23.54026420003338,
+      "quantity": 44.67392021983162,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.75804496373147,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.6155402865673678,
+      "entry_ms": 1655131560000,
+      "entry_price": 218.93048000000002,
+      "exit_fee_usd": 1.5794163515585873,
+      "exit_ms": 1655131859999,
+      "exit_price": 214.03513291598205,
+      "gap": false,
+      "gross_pnl_usd": 40.13770556531167,
+      "holding_ms": 299999,
+      "intent_id": "f9a621c3ef3795ef237955545c805f7381a8ffb7f654fd222981f45f8ecdd674",
+      "net_pnl_usd": 36.94274892718572,
+      "quantity": 8.199154192018538,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.684875866538217,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.034344432559998,
+      "entry_ms": 1655131560000,
+      "entry_price": 23140.0242,
+      "exit_fee_usd": 1.9895198795264573,
+      "exit_ms": 1655131919999,
+      "exit_price": 22630.15909291729,
+      "gap": false,
+      "gross_pnl_usd": 49.805058926156576,
+      "holding_ms": 359999,
+      "intent_id": "b489bc5873e22ee6da53ec8fd7b1c7b9da19a198d12268c5dedc5beb1b23a5cd",
+      "net_pnl_usd": 45.781194614070124,
+      "quantity": 0.09768281499223508,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.695408093738404,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0922629295888526,
+      "entry_ms": 1655131560000,
+      "entry_price": 1199.509945,
+      "exit_fee_usd": 1.0594563728508088,
+      "exit_ms": 1655131919999,
+      "exit_price": 1163.482180985979,
+      "gap": false,
+      "gross_pnl_usd": 36.4517297089376,
+      "holding_ms": 359999,
+      "intent_id": "649dc5db271abdfbe90ac941f2e6dc9e65a7496636692c7936656ac9944fd4a5",
+      "net_pnl_usd": 34.30001040649793,
+      "quantity": 1.011767749304444,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.691159645672403,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.1868908811558185,
+      "entry_ms": 1655148660000,
+      "entry_price": 23193.89725,
+      "exit_fee_usd": 2.2032136031972196,
+      "exit_ms": 1655150519999,
+      "exit_price": 23367.014043860552,
+      "gap": false,
+      "gross_pnl_usd": -18.13635782377909,
+      "holding_ms": 1859999,
+      "intent_id": "52f94010925d06531a18262bfdf8863fe1dfbb1f18854a7eb61a1c2792d069a8",
+      "net_pnl_usd": -22.52646230813213,
+      "quantity": 0.10476371136117706,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.987374636430776,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.2878861782611875,
+      "entry_ms": 1655164860000,
+      "entry_price": 28.47423,
+      "exit_fee_usd": 1.2690602537777136,
+      "exit_ms": 1655165819999,
+      "exit_price": 28.058002453844633,
+      "gap": false,
+      "gross_pnl_usd": -20.917693870526502,
+      "holding_ms": 959999,
+      "intent_id": "13f2086e5fb62d24137915735876a0468775a446ef228c74275ebf47f141f2fa",
+      "net_pnl_usd": -23.4746403025654,
+      "quantity": 50.25542894443258,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.934557023412975,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.8366006589820325,
+      "entry_ms": 1655168460000,
+      "entry_price": 21803.2929,
+      "exit_fee_usd": 1.7976459810766665,
+      "exit_ms": 1655170019999,
+      "exit_price": 21340.840570996363,
+      "gap": false,
+      "gross_pnl_usd": 43.28297545040684,
+      "holding_ms": 1559999,
+      "intent_id": "8151a9678ab0b048b2f5437386c29aaf3ea6f2c53df4c2061cb428103da82d76",
+      "net_pnl_usd": 39.64872881034813,
+      "quantity": 0.09359445879245722,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.873734363035723,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.9300196949072166,
+      "entry_ms": 1655170260000,
+      "entry_price": 21255.466949999998,
+      "exit_fee_usd": 1.9127720548166307,
+      "exit_ms": 1655172479999,
+      "exit_price": 21065.517259394084,
+      "gap": false,
+      "gross_pnl_usd": 19.16404454509558,
+      "holding_ms": 2219999,
+      "intent_id": "583b70f274c92f7129c7fa537867638330a51208021b5fdca372a05b4158072f",
+      "net_pnl_usd": 15.321252795371734,
+      "quantity": 0.1008901066591099,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 24.972492823903984,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.1655019165747655,
+      "entry_ms": 1655172060000,
+      "entry_price": 1104.30757,
+      "exit_fee_usd": 1.1847441014055193,
+      "exit_ms": 1655172479999,
+      "exit_price": 1122.5394493901165,
+      "gap": false,
+      "gross_pnl_usd": -21.380205367504434,
+      "holding_ms": 419999,
+      "intent_id": "b21204a576b2dfa15860feb7b280a9121e4b1b4eab3d1411bd2920d4dad06c44",
+      "net_pnl_usd": -23.73045138548472,
+      "quantity": 1.17268247063408,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 25.064233890948863,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.770853081266925,
+      "entry_ms": 1655172060000,
+      "entry_price": 0.29435275,
+      "exit_fee_usd": 1.7883996760908953,
+      "exit_ms": 1655172479999,
+      "exit_price": 0.2972693603581424,
+      "gap": false,
+      "gross_pnl_usd": -19.496216471078334,
+      "holding_ms": 419999,
+      "intent_id": "01a968fb07e89d07b7d0e1bcdc5f35e0d15db7d2a2957ef71d2ce1d838a2f3b4",
+      "net_pnl_usd": -23.055469228436152,
+      "quantity": 6684.546126173538,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 25.057346009703,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "XRPUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.3034729059885317,
+      "entry_ms": 1655173860000,
+      "entry_price": 1100.199625,
+      "exit_fee_usd": 1.3221792954317442,
+      "exit_ms": 1655174759999,
+      "exit_price": 1115.9888006368485,
+      "gap": false,
+      "gross_pnl_usd": -20.784877159124942,
+      "holding_ms": 899999,
+      "intent_id": "ec5b3339e3d7aa8e46149b938f98f321ec3180cdefac8a85ef9c04855eb44aba",
+      "net_pnl_usd": -23.41052936054522,
+      "quantity": 1.3164004022235023,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.896268160522993,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.2367720018032642,
+      "entry_ms": 1655219160000,
+      "entry_price": 30.29514,
+      "exit_fee_usd": 1.2178898971416092,
+      "exit_ms": 1655220779999,
+      "exit_price": 29.83261658955293,
+      "gap": false,
+      "gross_pnl_usd": -20.980116290727917,
+      "holding_ms": 1619999,
+      "intent_id": "5c6fe0923984fac3d9476bbc14541a5be0836d3f1b2ccb1047e421a8fc80f744",
+      "net_pnl_usd": -23.43477818967279,
+      "quantity": 45.3601176002071,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.838002993609358,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.098970826896778,
+      "entry_ms": 1655280360000,
+      "entry_price": 1070.6644000000001,
+      "exit_fee_usd": 2.115349263629904,
+      "exit_ms": 1655280419999,
+      "exit_price": 1079.0188796874265,
+      "gap": false,
+      "gross_pnl_usd": -18.198263036806104,
+      "holding_ms": 59999,
+      "intent_id": "8d0ae32566b0ef52adc906aaaa75569a6a5f2dc19d648c7e5da1a869422d102a",
+      "net_pnl_usd": -22.412583127332788,
+      "quantity": 2.178264083183383,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.776060735916232,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.7392463730717282,
+      "entry_ms": 1655280960000,
+      "entry_price": 1060.3295699999999,
+      "exit_fee_usd": 1.7565796935232596,
+      "exit_ms": 1655282039999,
+      "exit_price": 1070.89680906722,
+      "gap": false,
+      "gross_pnl_usd": -19.259244946145834,
+      "holding_ms": 1079999,
+      "intent_id": "66d3320dd92a1e9470b0c0ba37c457b5ff3a0f7752bf170b38a0a98aa28ab107",
+      "net_pnl_usd": -22.755071012740824,
+      "quantity": 1.8225427496846083,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.72142845646306,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.0720149484916273,
+      "entry_ms": 1655280960000,
+      "entry_price": 203.368265,
+      "exit_fee_usd": 2.0884123484948116,
+      "exit_ms": 1655282099999,
+      "exit_price": 204.9776697929462,
+      "gap": false,
+      "gross_pnl_usd": -18.219333336871284,
+      "holding_ms": 1139999,
+      "intent_id": "49185a0d79bcc2e6e1f7159532135dff88695a57cc1b7a4d2eee6d92670a7c0c",
+      "net_pnl_usd": -22.37976063385772,
+      "quantity": 11.320541244020367,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.713369180933178,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.5899440218052658,
+      "entry_ms": 1655284560000,
+      "entry_price": 26.946520000000003,
+      "exit_fee_usd": 1.6076065030235782,
+      "exit_ms": 1655285579999,
+      "exit_price": 27.245865383781805,
+      "gap": false,
+      "gross_pnl_usd": -19.62497913145818,
+      "holding_ms": 1019999,
+      "intent_id": "a845b1cf1c7f9ee464382907231068f3bc1b4c42e6c1d7617e9c9113ce48f573",
+      "net_pnl_usd": -22.822529656287024,
+      "quantity": 65.55965180930663,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.62392211381821,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.7524910330026857,
+      "entry_ms": 1655284560000,
+      "entry_price": 200.529685,
+      "exit_fee_usd": 1.7696937618904587,
+      "exit_ms": 1655288279999,
+      "exit_price": 202.4981160732791,
+      "gap": false,
+      "gross_pnl_usd": -19.11414320863648,
+      "holding_ms": 3719999,
+      "intent_id": "61fba21b83a08da8cd6048d059759ca8f3fa2da979456abf7fb7dbde51658ea1",
+      "net_pnl_usd": -22.636328003529623,
+      "quantity": 9.710344176184554,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.617105653295614,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0820047665852832,
+      "entry_ms": 1655283360000,
+      "entry_price": 1032.053715,
+      "exit_fee_usd": 1.1010733349758697,
+      "exit_ms": 1655288339999,
+      "exit_price": 1050.2419776167574,
+      "gap": false,
+      "gross_pnl_usd": -21.187298211762783,
+      "holding_ms": 4979999,
+      "intent_id": "ee3e693934c439edd06e7e7c62101456f14b6012945ffc5bc04845b5a20e0bce",
+      "net_pnl_usd": -23.370376313323934,
+      "quantity": 1.1648885139937628,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": null,
+      "reserved_risk_usd": 24.611147773573446,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 2.0748473662537315,
+      "entry_ms": 1655330160000,
+      "entry_price": 22218.403649999997,
+      "exit_fee_usd": 2.0872858456642738,
+      "exit_ms": 1655330999999,
+      "exit_price": 22351.600511046523,
+      "gap": false,
+      "gross_pnl_usd": 13.820532678380674,
+      "holding_ms": 839999,
+      "intent_id": "fac594e14bc50333b571701cb7f638a7bedfc314082b2256a037ff4de15a6033",
+      "net_pnl_usd": 9.658399466462669,
+      "quantity": 0.1037601980241342,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TRAILING_STOP",
+      "regime": null,
+      "reserved_risk_usd": 24.43521582600057,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "trend_breakout_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

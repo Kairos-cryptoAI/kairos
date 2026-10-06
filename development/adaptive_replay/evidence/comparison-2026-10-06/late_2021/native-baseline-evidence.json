@@ -1,0 +1,170 @@
+{
+  "baselines": {
+    "range_mean_reversion_v1": {
+      "scoring_intents": 27,
+      "symbols": {
+        "BNBUSDT": {
+          "full_prefix_intent_count": 8,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 3,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "BTCUSDT": {
+          "full_prefix_intent_count": 18,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 10,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "ETHUSDT": {
+          "full_prefix_intent_count": 15,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 6,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "SOLUSDT": {
+          "full_prefix_intent_count": 5,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 4,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "XRPUSDT": {
+          "full_prefix_intent_count": 6,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 4,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        }
+      }
+    },
+    "trend_breakout_v1": {
+      "scoring_intents": 144,
+      "symbols": {
+        "BNBUSDT": {
+          "full_prefix_intent_count": 43,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 34,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "BTCUSDT": {
+          "full_prefix_intent_count": 35,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 33,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "ETHUSDT": {
+          "full_prefix_intent_count": 32,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 27,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "SOLUSDT": {
+          "full_prefix_intent_count": 42,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 21,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        },
+        "XRPUSDT": {
+          "full_prefix_intent_count": 39,
+          "prefix_bar_count": 7560,
+          "scoring_intent_count": 29,
+          "verified_prefix_cuts_ms": [
+            1636329600000,
+            1636416000000,
+            1636502400000
+          ]
+        }
+      }
+    }
+  },
+  "exit_tail_used": false,
+  "identities": {
+    "range_mean_reversion_v1": {
+      "config": {
+        "atr_period": 14,
+        "band_atr_multiple": 1.25,
+        "intent_valid_bars": 1,
+        "max_hold_bars": 12,
+        "maximum_abs_hourly_slope": 0.00025,
+        "maximum_regime_efficiency": 0.3,
+        "minimum_gross_reward_to_risk": null,
+        "regime_lookback_hours": 12,
+        "stop_atr_multiple": 1.0,
+        "target_atr_extension": 0.0,
+        "vwap_lookback_bars": 24
+      },
+      "fingerprint": "703ca9f4fa5c2dbc124b12232ee56a71eaedbf961be509f0c3cd7d55628ba5a5",
+      "installed_source_tree_sha256": "3262a4a9ec33ef99df3046497a51b0e9565af495d7554c4058e7cd52a6dd22c0",
+      "registry_status": "rejected",
+      "revision": "1"
+    },
+    "trend_breakout_v1": {
+      "config": {
+        "atr_period": 14,
+        "donchian_lookback": 20,
+        "intent_valid_bars": 1,
+        "max_hold_bars": 24,
+        "minimum_abs_hourly_slope": 0.00025,
+        "minimum_breakout_atr": 0.0,
+        "minimum_directional_taker_share": null,
+        "minimum_regime_efficiency": 0.3,
+        "minimum_volume_surprise": null,
+        "regime_lookback_hours": 12,
+        "stop_atr_multiple": 1.25,
+        "target_atr_multiple": 2.0,
+        "trailing_activation_atr_multiple": 1.0,
+        "trailing_distance_atr_multiple": 1.0,
+        "volume_lookback": 20
+      },
+      "fingerprint": "d1ce5f5306e0efab4e5b9f44fd1d691fb5a4ba7d0305b752a8a7100a3da09865",
+      "installed_source_tree_sha256": "0334f227fa1fa35111505a9bdd5e00a378f4477a0979b2142d3e4ebda4198f31",
+      "registry_status": "rejected",
+      "revision": "1"
+    }
+  },
+  "prefix_semantics": "Native EMA/Wilder state initializes on the exact 54h prefix; this differs from adaptive's rolling 54h decision window.",
+  "prefix_start_ms": 1636048800000,
+  "protocol": "NATIVE_EXPANDING_PREFIX_V1",
+  "score_end_exclusive_ms": 1636502400000,
+  "score_start_ms": 1636243200000,
+  "scoring_cuts_ms": [
+    1636329600000,
+    1636416000000,
+    1636502400000
+  ],
+  "warmup_hours": 54
+}

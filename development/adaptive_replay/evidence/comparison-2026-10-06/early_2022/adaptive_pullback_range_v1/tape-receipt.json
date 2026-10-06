@@ -1,0 +1,10 @@
+{
+  "quiet_slots": 4320,
+  "raw_candidates": 0,
+  "scheduled_slots": 4320,
+  "source_availability_status": "FULLY_READY_ORIGINAL_OUTCOMES_VERIFIED",
+  "source_ready_slots": 4320,
+  "source_unavailable_slots": 0,
+  "tape_sha256": "138367852f18e83748e7ace928dd55a576eebfb13a31fa581f908dca04341c56",
+  "verified_input_ready_slots": 4320
+}
