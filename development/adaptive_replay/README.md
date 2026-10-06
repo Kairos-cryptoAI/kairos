@@ -129,6 +129,42 @@ does not run the existing sealed matched A/B campaign or qualify any model route
 
 ## Reproduction
 
+### Additive full-system accounting
+
+The [system.py](adaptive_replay/system.py) API accepts a complete five-minute,
+five-symbol roster and independently replays `strategy_only`, `context_review`,
+`independent_proposals` and `combined`. No provider/venue calls, campaign loading,
+runtime risk decisions or trading authority are introduced. All accounts use
+`COMMON_COST_RISK_V1`, **not** the older adaptive-only structural-ATR control.
+
+Every attempt binds the per-slot causal source context, receive clocks and TTLs.
+Review keeps its unchanged candidate and uses the local captured/observed clock,
+not the earlier provider completion. Native proposals require their exact native
+completion plus a separately supplied deterministic mapper receipt/policy hash.
+The actual mapper, source payload archive and provider/invoice receipts remain
+unqualified. Missing mapping is not `NO_PROPOSAL`; missing responses and unknown
+model costs keep that path's economics null. Unknown feed costs keep
+`recorded_all_in_net_result` null even if a conditional trading ledger exists.
+
+The fixed conservative combined control requires review of baseline candidates;
+`VETO/DEFER` cannot be bypassed in that slot. Opposite eligible directions abstain;
+same-direction candidates select the unchanged baseline once; quiet strategy
+slots may use independent mapped proposals. It waits for every required observation
+and rechecks expiry/freshness after waiting. This is an engineering test control,
+not a frozen production policy or an economically selected optimal arbitration.
+
+Recorded costs debit each independent account once at the observable clock, before
+same-clock sizing, including veto/error/no-action/no-fill and exit-tail costs.
+Combined pays both incurred paths. Its return is not the sum of isolated trade
+returns. Counterfactual missed winners/avoided losses are baseline diagnostics,
+not attributable account profit. Scheduled `NOT_CALLED` requires an explicit
+policy reason and is counted separately from complete model responses.
+
+Fixtures require `fixture_only=True` and cannot mix with observation receipts.
+All execution/alpha/readiness/complete-all-in markers remain false. See the
+[engineering receipt](../../docs/FULL-SYSTEM-EVALUATION-2026-10-06.md).
+Earlier published historical results and their absent model arms are untouched.
+
 Use uv 0.12.3 with Python 3.11/3.14. Install outside protected runtime environments:
 
 ```powershell

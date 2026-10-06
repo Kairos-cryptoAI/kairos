@@ -16,8 +16,9 @@ The target is:
 1. Capture closed market data and source-attributed news at their actual
    availability times. Build one causal context with compact multi-timeframe
    features, slow macro context and explicit source availability.
-2. Evaluate a selected, versioned adaptive strategy. Save both candidates and
-   explicit no-action/unavailable outcomes; do not infer an evaluation from
+2. Evaluate a selected, versioned adaptive scenario system, which may combine
+   bounded existing strategy families rather than require one new algorithm.
+   Save candidates and explicit no-action/unavailable outcomes; do not infer an evaluation from
    silence. A candidate fixes entry eligibility/expiry, side, stop, target and
    timeout. Trade count is an outcome, never a quota.
 3. Router selects the review workload. Review returns only `ALLOW/VETO/DEFER`;
@@ -49,6 +50,13 @@ compatible policy, not silently treat `CHOP` as `RANGE`.
   denominator is engineering coverage, not naturally closed trade count or
   proof of profitability.
 
+The economic target belongs to the complete system, not exclusively to the
+deterministic strategy. Strategy-only remains a control for measuring the
+incremental benefit or harm of context/review/proposals. Measure avoided losses,
+missed winners, independent opportunities, execution latency and all incurred
+costs; additional layers do not automatically compensate for a weak strategy.
+Risk limits are safety constraints, not a separate source of predicted alpha.
+
 ## Capability boundaries and required remaining work
 
 | component/path | current boundary | work needed for the target |
@@ -60,7 +68,7 @@ compatible policy, not silently treat `CHOP` as `RANGE`.
 | Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
-| Matched research economics | observation journal, not complete economic evaluator | common causal fills, arm latency, funding, fees and model/feed costs; natural closes and sealed evaluation |
+| Matched research economics | observation journal plus offline four-path caller-attested accounting adapter; no accepted point-in-time full-system economics | qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
 | Current release | engineering-only source identity | exact matching Windows, integration and CI evidence; no inheritance from historical green runs |
 | Production | LIVE startup blocked | security, custody, backup/restore, alerts, limits and manual arming after all gates |
 
@@ -127,6 +135,7 @@ budget. No primary mutation or consumer start follows from this document.
 - Original dated approved trading concept: [TRADING-CONCEPT-2026-09-28.md](TRADING-CONCEPT-2026-09-28.md).
 - Existing engineering research acceptance: [adaptive scoped source set](../config/adaptive-causal-source-set.json).
 - Current structural corrections and test boundaries: [engineering receipt](CONCEPT-CORRECTIONS-2026-10-06.md).
+- Offline complete-system accounting mechanics, not measured LLM profitability: [four-path receipt](FULL-SYSTEM-EVALUATION-2026-10-06.md).
 - Selected new strategy, checks and qualification boundary: [adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md).
 
 Implementation changes in a new engineering source set do not enroll a

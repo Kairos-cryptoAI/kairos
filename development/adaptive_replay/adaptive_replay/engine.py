@@ -25,6 +25,31 @@ COMMON_COST_RISK = "COMMON_COST_RISK_V1"
 
 
 @dataclass(frozen=True)
+class AccountCost:
+    """One recorded service debit, independent of whether a trade is opened."""
+
+    cost_id: str
+    timestamp_ms: int
+    amount_usd: float
+    kind: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.cost_id, str) or not self.cost_id or self.cost_id != self.cost_id.strip():
+            raise ValueError("normalized service cost identity required")
+        if type(self.timestamp_ms) is not int or self.timestamp_ms < 0:
+            raise ValueError("service cost clock must be a nonnegative integer")
+        if (
+            isinstance(self.amount_usd, bool)
+            or not isinstance(self.amount_usd, (int, float))
+            or not math.isfinite(self.amount_usd)
+            or self.amount_usd < 0
+        ):
+            raise ValueError("finite nonnegative recorded service cost required")
+        if self.kind not in {"MODEL", "FEED"}:
+            raise ValueError("explicit MODEL or FEED cost required")
+
+
+@dataclass(frozen=True)
 class CostScenario:
     id: str
     fee_bps_per_side: float
@@ -125,6 +150,14 @@ class Portfolio:
         self.intrabar_ambiguities = 0
         self.suppressed_entry_minute_targets = 0
         self.suppressed_deadline_minute_targets = 0
+        self.service_costs: list[AccountCost] = []
+
+    def debit_service(self, cost: AccountCost) -> None:
+        if any(prior.cost_id == cost.cost_id for prior in self.service_costs):
+            raise ValueError("duplicate service cost identity")
+        self.cash -= cost.amount_usd
+        self.service_costs.append(cost)
+        self.events.append({"kind": "SERVICE_COST", **asdict(cost)})
 
     def equity(self, prices: dict[str, float]) -> float:
         return self.cash + math.fsum(p.unrealized(prices[s]) for s, p in self.positions.items())
@@ -377,12 +410,13 @@ class Portfolio:
         open_contribution = math.fsum(
             p.unrealized(final_prices[s]) - p.entry_fee - p.funding_cost for s, p in self.positions.items()
         )
-        error = equity - self.initial_equity - closed_net - open_contribution
+        service_total = math.fsum(cost.amount_usd for cost in self.service_costs)
+        error = equity - self.initial_equity - closed_net - open_contribution + service_total
         if not math.isclose(error, 0.0, abs_tol=1e-7):
             raise ValueError("economic cash/fee/funding ledger does not reconcile")
         profits = math.fsum(max(t["net_pnl_usd"], 0) for t in self.trades)
         losses = math.fsum(max(-t["net_pnl_usd"], 0) for t in self.trades)
-        return {
+        report = {
             "entry_mode": self.mode,
             "admission_policy": self.admission_policy,
             "common_maximum_stop_distance_bps": DEFAULT_CONFIG.maximum_stop_bps,
@@ -456,6 +490,24 @@ class Portfolio:
             "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
             "execution_qualification": False,
         }
+        if self.service_costs:
+            model_costs = [cost for cost in self.service_costs if cost.kind == "MODEL"]
+            feed_costs = [cost for cost in self.service_costs if cost.kind == "FEED"]
+            report.update(
+                {
+                    "recorded_service_cost_usd": service_total,
+                    "model_calls": len(model_costs),
+                    "model_cost_usd": math.fsum(cost.amount_usd for cost in model_costs),
+                    "model_cost_status": "RECORDED_DEBITS_NOT_PROVIDER_INVOICE_PROOF",
+                    "market_feed_cost_usd": math.fsum(cost.amount_usd for cost in feed_costs)
+                    if feed_costs
+                    else None,
+                    "market_feed_cost_status": "RECORDED_DEBITS" if feed_costs else "UNAVAILABLE",
+                    "return_scope": "CONDITIONAL_TRADING_NET_LESS_RECORDED_SERVICE_DEBITS",
+                    "trade_components_exclude_service_costs": True,
+                }
+            )
+        return report
 
 
 def replay_tape(
@@ -468,14 +520,33 @@ def replay_tape(
     *,
     admission_policy: str = ADAPTIVE_STRUCTURAL,
     deadline: float | None = None,
+    completion_times_ms: dict[str, int] | None = None,
+    service_costs: tuple[AccountCost, ...] = (),
 ) -> tuple[dict[str, Any], Portfolio]:
+    replay_end = inputs.end_ms + exit_tail_hours * 3_600_000
+    intents_all = [intent for values in tape.values() for intent in values]
+    if completion_times_ms is not None:
+        if set(completion_times_ms) != {intent.intent_id for intent in intents_all}:
+            raise ValueError("exact per-candidate completion coverage required")
+        for intent in intents_all:
+            clock = completion_times_ms[intent.intent_id]
+            if type(clock) is not int or clock < intent.decision_ts_ms:
+                raise ValueError("observed completion cannot be invalid or backdated")
+    if len({cost.cost_id for cost in service_costs}) != len(service_costs):
+        raise ValueError("duplicate service cost identity")
+    if any(not inputs.start_ms <= cost.timestamp_ms < replay_end for cost in service_costs):
+        raise ValueError("service cost outside replay horizon cannot be silently dropped")
     account = Portfolio(10_000, scenario, mode, admission_policy)
     execution_queue: dict[int, list[tuple[int, SleeveIntent]]] = {}
     for intents in tape.values():
         for intent in intents:
             if not inputs.start_ms <= intent.entry_eligible_ts_ms < inputs.end_ms:
                 continue  # No candidate generation/admission in the bounded exit tail.
-            completion = intent.decision_ts_ms + latency_ms
+            completion = (
+                intent.decision_ts_ms + latency_ms
+                if completion_times_ms is None
+                else completion_times_ms[intent.intent_id]
+            )
             fill_ms = entry_time(intent, completion, mode)
             # Preserve a missing-quote rejection; otherwise wait for the
             # actual future minute quote, never use the signal-minute bar.
@@ -490,8 +561,10 @@ def replay_tape(
             minute = event.timestamp_ms // MINUTE * MINUTE
             funding.setdefault(minute, []).append((event.timestamp_ms, symbol, event.rate))
     by_symbol = {s: {bar.open_time_ms: bar for bar in rows} for s, rows in inputs.bars.items()}
+    costs_by_minute: dict[int, list[AccountCost]] = {}
+    for cost in service_costs:
+        costs_by_minute.setdefault(cost.timestamp_ms // MINUTE * MINUTE, []).append(cost)
     final_prices: dict[str, float] = {}
-    replay_end = inputs.end_ms + exit_tail_hours * 3_600_000
     if inputs.data_end_ms < replay_end:
         raise ValueError("complete bounded exit tail required")
     for ts in range(inputs.start_ms, replay_end, MINUTE):
@@ -512,6 +585,12 @@ def replay_tape(
             for event_ms, symbol, rate in events
             if event_ms > ts
         ]
+        # All costs at a clock precede every symbol's sizing at that clock.
+        # Tail costs are retained even though tail entry admission is forbidden.
+        ordered_events.extend(
+            (cost.timestamp_ms, -1, index, cost)
+            for index, cost in enumerate(sorted(costs_by_minute.get(ts, []), key=lambda c: c.cost_id))
+        )
         if ts < inputs.end_ms:
             ordered_events.extend(
                 (
@@ -523,12 +602,20 @@ def replay_tape(
                 for event_ms, intent in execution_queue.get(ts, [])
             )
         for event_ms, kind, _, payload in sorted(ordered_events, key=lambda item: item[:3]):
-            if kind == 0:
+            if kind == -1:
+                account.debit_service(payload)
+                account.mark(opens)
+            elif kind == 0:
                 symbol, rate = payload
                 account.settle(symbol, event_ms, rate, opens[symbol])
             else:
                 intent = payload
-                account.admit(intent, intent.decision_ts_ms + latency_ms, bars[intent.symbol], opens)
+                completion = (
+                    intent.decision_ts_ms + latency_ms
+                    if completion_times_ms is None
+                    else completion_times_ms[intent.intent_id]
+                )
+                account.admit(intent, completion, bars[intent.symbol], opens)
         account.mark(opens)
         account.adverse_envelope(bars)
         for bar in bars.values():

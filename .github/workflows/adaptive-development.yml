@@ -8,12 +8,14 @@ on:
       - .github/workflows/adaptive-development.yml
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
+      - docs/FULL-SYSTEM-EVALUATION-*.md
   pull_request:
     paths:
       - development/adaptive_replay/**
       - .github/workflows/adaptive-development.yml
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
+      - docs/FULL-SYSTEM-EVALUATION-*.md
 
 permissions:
   contents: read

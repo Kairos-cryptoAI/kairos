@@ -2,6 +2,21 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-06_
 
+## Current full-system accounting engineering — 2026-10-06
+
+The [additive offline four-path adapter](FULL-SYSTEM-EVALUATION-2026-10-06.md)
+now accounts for strategy-only, context review, independent mapped proposals
+and a conservative combined control in separate accounts. It retains quiet and
+unavailable slots, vetoes, conflicts, local response delays and service costs.
+Missing observations or model costs keep arm economics null; unknown feed costs
+do not become a zero-cost all-in result. All paths use a declared common-risk
+control, not the original adaptive-only admission policy. Local installed-wheel
+tests and focused review pass; caller-supplied fixtures/receipts are not accepted
+provider/source authenticity or measured full-system alpha. Actual point-in-time
+inputs, mapper/producer qualification and own campaign gates remain unfinished.
+No historical LLM run, paid call, frozen evidence or trading authority changed.
+All four readiness flags remain false and policy remains `REJECT_ALL`.
+
 ## Current bounded strategy comparison — 2026-10-06
 
 The [small native-strategy comparison](STRATEGY-COMPARISON-2026-10-06.md)
