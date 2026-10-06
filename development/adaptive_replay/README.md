@@ -165,6 +165,24 @@ All execution/alpha/readiness/complete-all-in markers remain false. See the
 [engineering receipt](../../docs/FULL-SYSTEM-EVALUATION-2026-10-06.md).
 Earlier published historical results and their absent model arms are untouched.
 
+### Native saved-window transport
+
+The [observations.py](adaptive_replay/observations.py) API exports/imports one
+native causal campaign window without rewriting clocks or original intent IDs.
+It validates native source/evaluation/attempt/pair/outcome links, preserves
+immutable outcomes alongside late append facts, and distinguishes committed
+charges from held/unresolved reservations. Empty or incomplete expense coverage
+has a null total, not zero. File import requires a separately supplied SHA256;
+export is create-only and fixture/observation modes must match exactly.
+
+This is bounded transport/inspection, **not** a native-to-four-path economics
+conversion, full campaign denominator, provider/DB authenticity proof or trade
+mapper. It opens no DB and has no provider/seal/trading action. Its injected
+reader must be separately trusted SELECT-only; no writable repository is
+constructed. See [the native transport receipt](../../docs/NATIVE-OBSERVATION-IMPORT-2026-10-06.md)
+for limits, CLI usage and the remaining native-clock/cadence adapter boundary.
+All economics/readiness/authority markers stay false.
+
 Use uv 0.12.3 with Python 3.11/3.14. Install outside protected runtime environments:
 
 ```powershell

@@ -9,6 +9,7 @@ on:
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
+      - docs/NATIVE-OBSERVATION-IMPORT-*.md
   pull_request:
     paths:
       - development/adaptive_replay/**
@@ -16,6 +17,7 @@ on:
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
+      - docs/NATIVE-OBSERVATION-IMPORT-*.md
 
 permissions:
   contents: read

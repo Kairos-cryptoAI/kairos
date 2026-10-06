@@ -68,7 +68,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 | Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
-| Matched research economics | observation journal plus offline four-path caller-attested accounting adapter; no accepted point-in-time full-system economics | qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
+| Matched research economics | observation journal, immutable native-window transport and separate offline four-path caller-attested accounting; no accepted full-system economics | native clock/cadence economics bridge, qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
 | Current release | engineering-only source identity | exact matching Windows, integration and CI evidence; no inheritance from historical green runs |
 | Production | LIVE startup blocked | security, custody, backup/restore, alerts, limits and manual arming after all gates |
 
@@ -136,6 +136,7 @@ budget. No primary mutation or consumer start follows from this document.
 - Existing engineering research acceptance: [adaptive scoped source set](../config/adaptive-causal-source-set.json).
 - Current structural corrections and test boundaries: [engineering receipt](CONCEPT-CORRECTIONS-2026-10-06.md).
 - Offline complete-system accounting mechanics, not measured LLM profitability: [four-path receipt](FULL-SYSTEM-EVALUATION-2026-10-06.md).
+- Native-window transport and its still-unqualified economics bridge: [import receipt](NATIVE-OBSERVATION-IMPORT-2026-10-06.md).
 - Selected new strategy, checks and qualification boundary: [adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md).
 
 Implementation changes in a new engineering source set do not enroll a

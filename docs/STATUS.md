@@ -2,6 +2,18 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-06_
 
+## Current native observation transport — 2026-10-06
+
+The [bounded native-window export/import](NATIVE-OBSERVATION-IMPORT-2026-10-06.md)
+preserves original receipt/intent IDs, separate source/anchor/context/evaluation/
+response/commit clocks, immutable outcomes and later append facts. It rejects
+broken links, repeated arm fences, aliased budget IDs and malformed contracts;
+unknown expenses remain null rather than becoming zero. This is transport and
+inspection only: native cadence/clock-aware economic replay, full schedule and
+DB/provider authenticity, history resolution and proposal mapping are still
+separate. No real observation, database, paid call, frozen campaign or trading
+authority was touched. All readiness flags remain false and policy `REJECT_ALL`.
+
 ## Current full-system accounting engineering — 2026-10-06
 
 The [additive offline four-path adapter](FULL-SYSTEM-EVALUATION-2026-10-06.md)
