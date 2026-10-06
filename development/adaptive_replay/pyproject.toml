@@ -19,7 +19,7 @@ dependencies = [
 kairos-adaptive-development = "adaptive_replay.runner:main"
 
 [dependency-groups]
-dev = ["pytest>=8.3,<9", "ruff>=0.16,<0.17"]
+dev = ["pytest>=9.0.3,<10", "ruff>=0.16,<0.17"]
 
 [tool.uv]
 required-version = "==0.12.3"
