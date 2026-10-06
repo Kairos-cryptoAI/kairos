@@ -1,0 +1,39 @@
+{
+  "schema": "kairos.strategy.comparison-plan.v1",
+  "purpose": "BOUNDED_SEEN_WINDOW_DEVELOPMENT_NOT_STRATEGY_QUALIFICATION",
+  "base_development_plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+  "arms": ["trend_breakout_v1", "range_mean_reversion_v1", "fixed_breakout_range_union_v1", "adaptive_pullback_range_v1"],
+  "baseline_config_fingerprints": {
+    "trend_breakout_v1": "d1ce5f5306e0efab4e5b9f44fd1d691fb5a4ba7d0305b752a8a7100a3da09865",
+    "range_mean_reversion_v1": "703ca9f4fa5c2dbc124b12232ee56a71eaedbf961be509f0c3cd7d55628ba5a5"
+  },
+  "baseline_source_fingerprints": {
+    "trend_breakout_v1": "0334f227fa1fa35111505a9bdd5e00a378f4477a0979b2142d3e4ebda4198f31",
+    "range_mean_reversion_v1": "3262a4a9ec33ef99df3046497a51b0e9565af495d7554c4058e7cd52a6dd22c0"
+  },
+  "adaptive_evidence_result_sha256": "f73c246d6a2fdd17538ed10911223b386e1a3da07d1e0a1365153d9f21f0ce0c",
+  "adaptive_tape_reuse": "Verified original decision tapes only; never reuse earlier evaluator economics",
+  "common_admission": {
+    "policy": "COMMON_COST_RISK_V1",
+    "minimum_stop_distance_bps": 10,
+    "maximum_stop_distance_bps": 300,
+    "minimum_net_reward_to_risk": 1.25,
+    "maximum_cost_stop_fraction": 0.5,
+    "adaptive_atr15_fill_filter": false
+  },
+  "native_entry_lifetimes": true,
+  "native_close_updated_trailing": true,
+  "legacy_history": "Exact 54h pre-window prefix, then native expanding Wilder state; no rolling reseeding",
+  "adaptive_history": "Unchanged finite rolling 3240 closed 1m bars",
+  "union_policy": "Opposite directions same symbol/slot => no entry; same direction => breakout first; unchanged native intent and exits",
+  "exposure_disclosure": "All four slices and earlier adaptive diagnostic were already observed; NOT untouched holdout, annual alpha or representative crash proof",
+  "selection_policy": "Report every arm/window/mode/cost; no automatic winner, ranking, annualization, cross-window compounding, parameter search or enrollment",
+  "minimum_future_gate": "Separate frozen strategy/evaluator; 365 genuine future days and 500 natural closes plus all approved gates remain required",
+  "max_wall_seconds": 1800,
+  "workers": 1,
+  "no_downloads": true,
+  "no_paid_calls": true,
+  "no_parameter_search": true,
+  "no_blind_campaign_credit": true,
+  "readiness": {"TECHNICAL_PAPER_READY": false, "PAPER_QUALIFIED": false, "ALPHA_READY": false, "LIVE_READY": false, "STRATEGY_POLICY": "REJECT_ALL"}
+}

@@ -21,6 +21,41 @@ explicit dependency overrides install current Core/Quant/Strategy/Persistence:
 **this is a separate development environment, not the frozen campaign closure**.
 No legacy evaluation command, ledger or blind result is run/read.
 
+## Small native-baseline comparison
+
+The separate [comparison-plan.json](comparison-plan.json) and
+[preregistered protocol](../../docs/STRATEGY-COMPARISON-PROTOCOL-2026-10-06.md)
+reuse unchanged native Donchian breakout and VWAP range defaults, their fixed
+union control, and the adaptive candidate. The four dates are already seen;
+this is diagnostic comparison, not independent alpha or strategy qualification.
+
+All arms are replayed with the same explicit `COMMON_COST_RISK_V1` evaluator,
+native lifetimes and completed-minute-close trailing. Legacy keeps native
+expanding Wilder state; adaptive keeps its rolling 54h rule. Exact original
+adaptive decision tapes may be reused only after published-byte/source/input
+verification; no previous economic result is reused. No LLM/provider calls.
+
+After installing a **fresh non-editable wheel**, run from a separate runtime
+working directory, using an output directory that does not yet exist:
+
+```powershell
+$env:UV_PROJECT_ENVIRONMENT = 'D:\Kairos\runtime\baseline-comparison-20261006\py311'
+uv sync --locked --no-editable --python 3.11 `
+  --reinstall-package kairos-adaptive-development-replay `
+  --refresh-package kairos-adaptive-development-replay
+& 'D:\Kairos\runtime\baseline-comparison-20261006\py311\Scripts\python.exe' -m adaptive_replay.compare `
+  --plan 'D:\Kairos\kairos\development\adaptive_replay\comparison-plan.json' `
+  --bar-cache 'D:\Kairos\kairos-backtest\data\historical' `
+  --factor-cache 'D:\Kairos\kairos-backtest\data\historical-factors' `
+  --adaptive-evidence 'D:\Kairos\runtime\adaptive-development-20261006\bounded-20261006-b' `
+  --output 'D:\Kairos\runtime\baseline-comparison-20261006\new-approved-run'
+```
+
+The refresh/reinstall flags prevent a local cached wheel from hiding harness
+source edits; dependency locks/pins remain unchanged. This comparison has one
+worker and a 30-minute wall limit. No resume, parameter grid, winner promotion,
+cross-window compounding, forced quota or edits to original evidence.
+
 ## Timing and execution limitations
 
 Adaptive eligibility is next-minute open and expiry is that open+59,999ms.

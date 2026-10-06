@@ -7,6 +7,7 @@ Minute OHLC cannot prove intraminute quotes, capacity or protective-order latenc
 from __future__ import annotations
 
 import math
+import time
 from collections import Counter
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
@@ -19,6 +20,8 @@ from kairos_strategy.candles import Candle
 from kairos_strategy.models import SleeveIntent
 
 MINUTE = 60_000
+ADAPTIVE_STRUCTURAL = "ADAPTIVE_STRUCTURAL_V1"
+COMMON_COST_RISK = "COMMON_COST_RISK_V1"
 
 
 @dataclass(frozen=True)
@@ -80,6 +83,9 @@ class Position:
     entry_fee: float
     reserved_risk: float
     funding_cost: float = 0.0
+    active_stop_price: float | None = None
+    active_stop_reason: str = "SL"
+    trailing_activated: bool = False
 
     @property
     def direction(self) -> int:
@@ -88,13 +94,22 @@ class Position:
     def unrealized(self, price: float) -> float:
         return self.direction * self.quantity * (price - self.entry_price)
 
+    @property
+    def stop(self) -> float:
+        return self.intent.exit_plan.stop_price if self.active_stop_price is None else self.active_stop_price
+
 
 class Portfolio:
-    def __init__(self, equity: float, scenario: CostScenario, mode: str) -> None:
+    def __init__(
+        self, equity: float, scenario: CostScenario, mode: str, admission_policy: str = ADAPTIVE_STRUCTURAL
+    ) -> None:
         if not math.isfinite(equity) or equity <= 0:
             raise ValueError("positive finite equity required")
         if mode not in {"STRICT_MINUTE_OPEN", "INTRABAR_OPEN_PROXY"}:
             raise ValueError("unknown fill observation mode")
+        if admission_policy not in {ADAPTIVE_STRUCTURAL, COMMON_COST_RISK}:
+            raise ValueError("unknown explicit admission policy")
+        self.admission_policy = admission_policy
         self.initial_equity = self.cash = self.peak = equity
         self.scenario, self.mode = scenario, mode
         self.positions: dict[str, Position] = {}
@@ -135,17 +150,21 @@ class Portfolio:
             return self._reject("NO_POSITIVE_EQUITY", intent)
         entry = fill_price(bar.open, intent.side, True, self.scenario)
         stop, target = intent.exit_plan.stop_price, intent.exit_plan.target_price
-        features = dict(intent.metadata)
-        try:
-            atr = float(features["frozen_atr15"])
-        except (KeyError, ValueError):
-            return self._reject("STRUCTURAL_ATR_UNAVAILABLE", intent)
         risk = abs(entry - stop)
         risk_bps = risk / entry * 10_000
-        if not math.isfinite(atr) or atr <= 0:
-            return self._reject("STRUCTURAL_ATR_UNAVAILABLE", intent)
-        if not DEFAULT_CONFIG.minimum_stop_atr * atr <= risk <= DEFAULT_CONFIG.maximum_stop_atr * atr:
-            return self._reject("FILL_STOP_OUTSIDE_STRUCTURAL_ATR_BOUNDS", intent)
+        # Preserve the original adaptive diagnostic policy by default. The
+        # explicit comparator policy does not transplant adaptive-only ATR
+        # metadata/geometry into independent native legacy strategies.
+        if self.admission_policy == ADAPTIVE_STRUCTURAL:
+            features = dict(intent.metadata)
+            try:
+                atr = float(features["frozen_atr15"])
+            except (KeyError, ValueError):
+                return self._reject("STRUCTURAL_ATR_UNAVAILABLE", intent)
+            if not math.isfinite(atr) or atr <= 0:
+                return self._reject("STRUCTURAL_ATR_UNAVAILABLE", intent)
+            if not DEFAULT_CONFIG.minimum_stop_atr * atr <= risk <= DEFAULT_CONFIG.maximum_stop_atr * atr:
+                return self._reject("FILL_STOP_OUTSIDE_STRUCTURAL_ATR_BOUNDS", intent)
         if (
             self.scenario.costs.estimated_round_trip_bps
             > DEFAULT_CONFIG.maximum_cost_stop_fraction * risk_bps
@@ -187,6 +206,7 @@ class Portfolio:
             {
                 "kind": "ENTRY",
                 "intent_id": intent.intent_id,
+                "sleeve_id": intent.sleeve_id,
                 "symbol": intent.symbol,
                 "timestamp_ms": ts,
                 "quantity": quantity,
@@ -233,6 +253,7 @@ class Portfolio:
         self.trades.append(
             {
                 "intent_id": p.intent.intent_id,
+                "sleeve_id": p.intent.sleeve_id,
                 "symbol": symbol,
                 "side": p.intent.side.value,
                 "entry_ms": p.entry_ms,
@@ -259,11 +280,11 @@ class Portfolio:
         p = self.positions.get(bar.symbol)
         if p is None:
             return
-        stop, target = p.intent.exit_plan.stop_price, p.intent.exit_plan.target_price
+        stop, target = p.stop, p.intent.exit_plan.target_price
         stop_gap = bar.open <= stop if p.direction == 1 else bar.open >= stop
         target_gap = bar.open >= target if p.direction == 1 else bar.open <= target
         if stop_gap:
-            self._close(bar.symbol, bar.open_time_ms, bar.open, "SL", True)
+            self._close(bar.symbol, bar.open_time_ms, bar.open, p.active_stop_reason, True)
         elif target_gap:
             self._close(bar.symbol, bar.open_time_ms, target, "TP", True)
         elif bar.open_time_ms >= p.entry_ms + p.intent.exit_plan.max_holding_ms:
@@ -273,7 +294,7 @@ class Portfolio:
         p = self.positions.get(bar.symbol)
         if p is None:
             return
-        stop, target = p.intent.exit_plan.stop_price, p.intent.exit_plan.target_price
+        stop, target = p.stop, p.intent.exit_plan.target_price
         stop_touch = bar.low <= stop if p.direction == 1 else bar.high >= stop
         target_touch = bar.high >= target if p.direction == 1 else bar.low <= target
         deadline = p.entry_ms + p.intent.exit_plan.max_holding_ms
@@ -288,11 +309,46 @@ class Portfolio:
         # An intrabar stop may have preceded the entry/deadline: adverse bound,
         # explicitly not an inferred observed sequence. Never credit that TP.
         if stop_touch:
-            self._close(bar.symbol, min(bar.close_time_ms, deadline), stop, "SL")
+            self._close(bar.symbol, min(bar.close_time_ms, deadline), stop, p.active_stop_reason)
         elif deadline_minute:
             self._close(bar.symbol, deadline, bar.open, "TIMEOUT")
         elif target_touch and not entry_minute:
             self._close(bar.symbol, bar.close_time_ms, target, "TP")
+
+    def update_trailing_at_close(self, bar: Candle) -> None:
+        """Ratchet only after old barriers; new stop applies to later candles.
+
+        Mirrors native close-based ExitPlan semantics, not high/low hindsight.
+        The original risk reservation is retained after tightening.
+        """
+        position = self.positions.get(bar.symbol)
+        if position is None:
+            return
+        plan = position.intent.exit_plan
+        activation, distance = plan.trailing_activation_price, plan.trailing_distance
+        if activation is None or distance is None:
+            return
+        crossed = bar.close >= activation if position.direction == 1 else bar.close <= activation
+        position.trailing_activated = position.trailing_activated or crossed
+        if not position.trailing_activated:
+            return
+        candidate = bar.close - distance if position.direction == 1 else bar.close + distance
+        if not math.isfinite(candidate) or candidate <= 0:
+            raise ValueError("computed trailing stop must be finite and positive")
+        improves = candidate > position.stop if position.direction == 1 else candidate < position.stop
+        if improves:
+            position.active_stop_price = candidate
+            position.active_stop_reason = "TRAILING_STOP"
+            self.events.append(
+                {
+                    "kind": "TRAILING_UPDATE",
+                    "intent_id": position.intent.intent_id,
+                    "timestamp_ms": bar.close_time_ms,
+                    "effective_after_ms": bar.close_time_ms,
+                    "active_stop_price": candidate,
+                    "risk_reservation_released_usd": 0,
+                }
+            )
 
     def adverse_envelope(self, bars: dict[str, Candle]) -> None:
         # Worst prices need not have been simultaneous, and may be after a stop:
@@ -328,11 +384,19 @@ class Portfolio:
         losses = math.fsum(max(-t["net_pnl_usd"], 0) for t in self.trades)
         return {
             "entry_mode": self.mode,
+            "admission_policy": self.admission_policy,
+            "common_maximum_stop_distance_bps": DEFAULT_CONFIG.maximum_stop_bps,
             "cost_scenario": asdict(self.scenario),
             "planning_round_trip_bps": self.scenario.costs.estimated_round_trip_bps,
             "final_equity_usd": equity,
             "net_return_pct": (equity / self.initial_equity - 1) * 100,
             "closed_trade_net_usd": closed_net,
+            "total_entry_fees_usd": math.fsum(t["entry_fee_usd"] for t in self.trades)
+            + math.fsum(p.entry_fee for p in self.positions.values()),
+            "total_exit_fees_usd": math.fsum(t["exit_fee_usd"] for t in self.trades),
+            "signed_funding_cost_usd": math.fsum(t["signed_funding_cost_usd"] for t in self.trades)
+            + math.fsum(p.funding_cost for p in self.positions.values()),
+            "closed_trades_by_family": dict(Counter(t["sleeve_id"] for t in self.trades)),
             "closed_trades": len(self.trades),
             "profit_factor": profits / losses if losses else None,
             "profit_factor_status": "FINITE"
@@ -401,8 +465,25 @@ def replay_tape(
     mode: str,
     latency_ms: int,
     exit_tail_hours: int = 3,
+    *,
+    admission_policy: str = ADAPTIVE_STRUCTURAL,
+    deadline: float | None = None,
 ) -> tuple[dict[str, Any], Portfolio]:
-    account = Portfolio(10_000, scenario, mode)
+    account = Portfolio(10_000, scenario, mode, admission_policy)
+    execution_queue: dict[int, list[tuple[int, SleeveIntent]]] = {}
+    for intents in tape.values():
+        for intent in intents:
+            if not inputs.start_ms <= intent.entry_eligible_ts_ms < inputs.end_ms:
+                continue  # No candidate generation/admission in the bounded exit tail.
+            completion = intent.decision_ts_ms + latency_ms
+            fill_ms = entry_time(intent, completion, mode)
+            # Preserve a missing-quote rejection; otherwise wait for the
+            # actual future minute quote, never use the signal-minute bar.
+            event_ms = max(intent.entry_eligible_ts_ms, completion) if fill_ms is None else fill_ms
+            if event_ms >= inputs.end_ms:
+                account._reject("FILL_AFTER_ENTRY_WINDOW", intent)
+                continue
+            execution_queue.setdefault(event_ms // MINUTE * MINUTE, []).append((event_ms, intent))
     funding: dict[int, list[tuple[int, str, float]]] = {}
     for symbol, rows in inputs.funding.items():
         for event in rows:
@@ -414,6 +495,8 @@ def replay_tape(
     if inputs.data_end_ms < replay_end:
         raise ValueError("complete bounded exit tail required")
     for ts in range(inputs.start_ms, replay_end, MINUTE):
+        if deadline is not None and time.monotonic() > deadline:
+            raise TimeoutError("bounded replay wall-time limit reached")
         bars = {s: by_symbol[s][ts] for s in UNIVERSE}
         opens = {s: bar.open for s, bar in bars.items()}
         events = funding.get(ts, [])
@@ -432,12 +515,12 @@ def replay_tape(
         if ts < inputs.end_ms:
             ordered_events.extend(
                 (
-                    max(intent.entry_eligible_ts_ms, intent.decision_ts_ms + latency_ms),
+                    event_ms,
                     1,
                     UNIVERSE.index(intent.symbol),
                     intent,
                 )
-                for intent in tape.get(ts, [])
+                for event_ms, intent in execution_queue.get(ts, [])
             )
         for event_ms, kind, _, payload in sorted(ordered_events, key=lambda item: item[:3]):
             if kind == 0:
@@ -450,6 +533,7 @@ def replay_tape(
         account.adverse_envelope(bars)
         for bar in bars.values():
             account.exit_intrabar(bar)
+            account.update_trailing_at_close(bar)
         final_prices = {s: bar.close for s, bar in bars.items()}
         account.mark(final_prices)
     days = [
