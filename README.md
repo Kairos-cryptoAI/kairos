@@ -54,6 +54,11 @@ research adapter, not enrolled in the trading service or economically qualified.
 The [strategy receipt](docs/ADAPTIVE-STRATEGY-2026-10-06.md) records exact rules,
 source pins, tests and remaining economic/campaign gates. Trial 15 is unchanged.
 
+The isolated [bounded development replay](development/adaptive_replay/README.md)
+keeps the selected strategy and all frozen evidence unchanged. It distinguishes
+strict minute-quote timing from conditional candle-price economics and leaves
+unobserved historical LLM arms null; it is not an accepted matched A/B campaign.
+
 The legacy `TacticalCommand -> ValidatedOrder` route is retained only for explicit synthetic
 `DRY_RUN`. PAPER never consumes it, `KAIROS_DRY_RUN=false` is a startup error, and LIVE is
 disabled.

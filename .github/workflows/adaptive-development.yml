@@ -1,0 +1,59 @@
+name: adaptive-development
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - development/adaptive_replay/**
+      - .github/workflows/adaptive-development.yml
+      - docs/ADAPTIVE-DEVELOPMENT-*.md
+  pull_request:
+    paths:
+      - development/adaptive_replay/**
+      - .github/workflows/adaptive-development.yml
+      - docs/ADAPTIVE-DEVELOPMENT-*.md
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-fixtures:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.14"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/kairos-adaptive-development-env
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install locked tooling
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.3"
+          python-version: ${{ matrix.python }}
+      - name: Install isolated immutable dependencies and non-editable replay wheel
+        working-directory: development/adaptive_replay
+        run: uv sync --locked --no-editable --python ${{ matrix.python }}
+      - name: Check code style
+        working-directory: development/adaptive_replay
+        run: |
+          uv run --no-sync ruff check .
+          uv run --no-sync ruff format --check .
+      - name: Verify offline fixture and installed-source boundaries
+        shell: pwsh
+        run: |
+          $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
+          $testPath = Join-Path $project 'tests'
+          Set-Location $env:RUNNER_TEMP
+          uv run --no-sync --project $project python -m pytest --import-mode=importlib $testPath -q
+          if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }

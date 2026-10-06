@@ -1,0 +1,45 @@
+{
+  "schema": "kairos.adaptive.development-plan.v1",
+  "purpose": "BOUNDED_HISTORICAL_DEVELOPMENT_NOT_QUALIFICATION",
+  "strategy_id": "adaptive_pullback_range_v1",
+  "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+  "strategy_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+  "source_revisions": {
+    "kairos-backtest": "da1237854066fde381542e43c106d0de727448be",
+    "kairos-strategy-engine": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+    "kairos-core": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+    "kairos-quant-scouts": "927f5730d09383736c1dfc7dc5c400b06851019f",
+    "kairos-persistence": "fd2966761e84b32688c9aee73e00604965f5d7f2"
+  },
+  "universe": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT"],
+  "windows": [
+    {"id": "late_2021", "start": "2021-11-07", "end_exclusive": "2021-11-10"},
+    {"id": "early_2022", "start": "2022-02-05", "end_exclusive": "2022-02-08"},
+    {"id": "may_2022", "start": "2022-05-09", "end_exclusive": "2022-05-12"},
+    {"id": "june_2022", "start": "2022-06-13", "end_exclusive": "2022-06-16"}
+  ],
+  "window_selection": "Calendar diagnostics chosen before this replay's returns; NOT unseen crash validation or representative annual alpha",
+  "warmup_hours": 54,
+  "exit_tail_hours": 3,
+  "initial_equity_usd_each_window": 10000,
+  "pipeline_latency_ms_assumed": 100,
+  "entry_modes": ["STRICT_MINUTE_OPEN", "INTRABAR_OPEN_PROXY"],
+  "cost_scenarios": [
+    {"id": "base", "fee_bps_per_side": 4.5, "spread_bps": 2, "slippage_bps_per_side": 1, "latency_bps_round_trip": 2, "uncertainty_bps": 2, "admission_adverse_carry_bps": 3},
+    {"id": "stress", "fee_bps_per_side": 9, "spread_bps": 4, "slippage_bps_per_side": 2, "latency_bps_round_trip": 2, "uncertainty_bps": 2, "admission_adverse_carry_bps": 3}
+  ],
+  "fill_policy": "Deterministic full-fill conditional approximation; no venue capacity, partial-fill, protective-latency or liquidity qualification",
+  "intrabar_policy": "SL-first on ambiguity including entry minute; adverse gap open for stop, no target gap improvement; do not interpolate paths",
+  "funding_policy": "Signed archived 8h rates applied at actual settlement, candle-open not mark-price proxy; fixed prior allowance for admission, never future-rate admission",
+  "settlement_order": "Existing position settles before same-open exits; entries after same-open settlement; unknown intrabar exits settle no later than bar close",
+  "risk_policy": {"per_trade_fraction": 0.0025, "aggregate_open_fraction": 0.01, "max_notional_fraction_per_symbol": 0.25, "gross_leverage": 1},
+  "simultaneous_entry_order": "Fixed universe order; risk never nets across long and short",
+  "drawdown_policy": "Closed-minute MTM and conservative within-minute adverse-envelope bound, not tick-level observed equity",
+  "max_wall_seconds": 3600,
+  "workers": 1,
+  "llm_arms": {"review": "NOT_CALLED", "proposals": "NOT_CALLED", "reason": "No point-in-time news/provider responses or measured historical completion/cost; pretrained future-event contamination"},
+  "readiness": {"TECHNICAL_PAPER_READY": false, "PAPER_QUALIFIED": false, "ALPHA_READY": false, "LIVE_READY": false, "STRATEGY_POLICY": "REJECT_ALL"},
+  "no_downloads": true,
+  "no_parameter_search": true,
+  "no_blind_campaign_credit": true
+}
