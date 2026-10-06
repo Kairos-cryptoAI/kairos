@@ -2,7 +2,18 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-03
+## Current boundary — 2026-10-06
+
+The [selected adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md)
+records one implemented `adaptive_pullback_range_v1` research candidate, exact
+source pins and scoped engineering tests. The candidate is not economically
+qualified, campaign-frozen or enrolled in a trading service. Current source
+identity is [the engineering manifest](../config/current-release.json); all
+four readiness flags remain false and policy remains `REJECT_ALL`. No primary
+runtime recovery, venue/production qualification or trading permission follows.
+Trial 15/V4/V5 and their frozen evaluators remain unchanged.
+
+## Previous boundary — 2026-10-03
 
 The [research/transport continuation](RESEARCH-TRANSPORT-ENGINEERING-2026-10-03.md)
 records new signed sources, 323 deployment unit tests per Windows Python,

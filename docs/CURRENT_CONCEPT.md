@@ -53,11 +53,11 @@ compatible policy, not silently treat `CHOP` as `RANGE`.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
-| Adaptive strategy | no selected/frozen LIVE candidate or evaluator | select one hypothesis and executable regime/entry/exit policy; validate before freezing |
-| Strategy evaluation | explicit causal runtime receipts separate intent, valid no-intent, warmup, disabled and unavailable/error states | enroll only the selected new strategy; unsupported generators do not acquire adaptive eligibility |
+| Adaptive strategy | one selected `adaptive_pullback_range_v1` generator and exact finite regime/entry/exit policy, isolated RESEARCH only; not economically qualified or campaign-frozen | point-in-time development economics, matched evaluator and own eligible freeze; do not select a parameter grid |
+| Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |
 | Candidate review | runtime consumes source-bound context; required missing/late inputs defer before a provider call | exact new-contract/provider qualification; old context-free corpus is not qualifying evidence |
-| Macro and regime/capital | opt-in versioned policy and account-bound allocation; legacy behavior unchanged; external macro/onchain unavailable | selected deterministic detector publisher, durable capital-basis recovery, accepted policy/source set and independent input qualification |
+| Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
 | Matched research economics | observation journal, not complete economic evaluator | common causal fills, arm latency, funding, fees and model/feed costs; natural closes and sealed evaluation |
@@ -127,6 +127,7 @@ budget. No primary mutation or consumer start follows from this document.
 - Original dated approved trading concept: [TRADING-CONCEPT-2026-09-28.md](TRADING-CONCEPT-2026-09-28.md).
 - Existing engineering research acceptance: [adaptive scoped source set](../config/adaptive-causal-source-set.json).
 - Current structural corrections and test boundaries: [engineering receipt](CONCEPT-CORRECTIONS-2026-10-06.md).
+- Selected new strategy, checks and qualification boundary: [adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md).
 
 Implementation changes in a new engineering source set do not enroll a
 candidate, adopt a budget, qualify a model, disclose blind PnL, change the frozen

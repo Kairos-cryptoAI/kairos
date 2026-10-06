@@ -48,6 +48,12 @@ immutable source-bound context; missing required evidence defers before a paid
 call. The optional regime/capital policy binds strategy, detector, intent and
 account identity without changing legacy defaults or admitting a strategy.
 
+One new concrete strategy is implemented: `adaptive_pullback_range_v1`, with
+trend pullbacks, range reclaims and a defensive crash overlay. It is an opt-in
+research adapter, not enrolled in the trading service or economically qualified.
+The [strategy receipt](docs/ADAPTIVE-STRATEGY-2026-10-06.md) records exact rules,
+source pins, tests and remaining economic/campaign gates. Trial 15 is unchanged.
+
 The legacy `TacticalCommand -> ValidatedOrder` route is retained only for explicit synthetic
 `DRY_RUN`. PAPER never consumes it, `KAIROS_DRY_RUN=false` is a startup error, and LIVE is
 disabled.

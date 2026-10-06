@@ -54,7 +54,7 @@ path stays readable.
 | Risk | `kairos.risk.trade_decision.v1` / `RiskTradeDecisionV1` | PAPER Execution |
 | Execution | `kairos.execution.trade_event.v1` / `TradeExecutionEventV1` | durable lifecycle audit |
 | Execution | `kairos.account.snapshot.v2` / `AccountSnapshotV2` | Risk, Macro and readiness metrics |
-| Selected deterministic detector (not yet supplied) | `kairos.market.regime_observation.v1` / `RegimeObservationV1` | opt-in Macro/Risk intent-bound regime context |
+| Selected research adapter (durable publisher pending) | `kairos.market.regime_observation.v1` / `RegimeObservationV1` | opt-in Macro/Risk intent-bound regime context; no admission |
 | Macro | `kairos.macro.regime_bound_allocation.v1` / `RegimeBoundAllocationV1` | opt-in Risk only; exact policy, intent and account binding |
 
 ## 1 — Closed market data and venue observations
@@ -93,6 +93,12 @@ not-scheduled, unsupported/unavailable and error are separate states. It records
 receipt then intents before acknowledging input and reuses the prepared bytes on
 retry. These receipts do not attest a full-window archive or admit any strategy.
 Frozen pure generators and historical research identities remain unchanged.
+
+The separate selected `adaptive_pullback_range_v1` generator and strict research
+adapter use a finite closed-bar window and explicit observation/source clocks.
+They distinguish valid no-intent from warmup, gaps, expiry and error, but are not
+inserted into the legacy registry or durable service. Exact rules and scope are
+recorded in the [selected strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md).
 
 All previous sleeves retain their recorded `REJECTED` results. One exact revision,
 `regime_aligned_right_tail_v1`, is `FORWARD_FROZEN`; the PAPER strategy allow-list is still empty
@@ -137,7 +143,8 @@ are implemented as an opt-in versioned policy and bound allocation, disabled by
 default. They require exact strategy/code/config, deterministic detector and
 source-set identity, explicit BULL/RANGE/BEAR/CRASH direction capabilities and a
 current intent/account-bound capital basis. `UNCERTAIN` has no entry capability.
-The selected detector producer and policy qualification remain future work; an
+The selected finite detector is implemented in the research adapter. Its durable
+publisher, account-bound policy enrollment and qualification remain future work; an
 empty allow-list or a model confidence value can never create trading authority.
 
 ## 4 — Deterministic risk and EVEDEX gate
@@ -308,8 +315,9 @@ values in dated receipts are not current-source approval.
 `PAPER_QUALIFIED=false`: authenticated EVEDEX DEV reconciliation and venue semantics, the
 24-hour read-only gate, the manually armed five-symbol protected canary set, and the seven-day
 soak remain pending. `ALPHA_READY=false` and runtime `REJECT_ALL` remain independent because the
-Trial 15 is merely `FORWARD_FROZEN` and the separate adaptive candidate/evaluator
-has not yet been selected and frozen.
+Trial 15 is merely `FORWARD_FROZEN`. The separate `adaptive_pullback_range_v1`
+candidate is now selected and implemented, but not economically qualified or
+campaign-frozen; its matched economic evaluator remains required.
 `LIVE_READY=false`; production endpoints, credentials and mutation
 authority remain blocked. The exact evidence boundary and reviewed SHAs are in
 [READINESS.md](READINESS.md).
