@@ -47,17 +47,32 @@ SL wins ambiguous candles including entry minute; entry-minute target-only touch
 are not credited because they may predate entry. Timeout starts at first fill.
 For a deadline inside a minute, an adverse stop touch takes precedence; otherwise
 timeout uses exact deadline with that minute's open-price proxy, and unknown TP is
-not credited. Intrabar timestamps are bounds/proxies, not actual order receipts.
+not credited. Its exposure stays reserved until bar-close processing: conservative
+admission blocking, not exact real-time timeout execution. Intrabar timestamps
+are bounds/proxies, not actual order receipts.
 No fabricated intrabar path is interpolated. Terminal positions are reported,
 never forcibly liquidated or counted as naturally closed campaign trades.
 
 Base/stress planning allowances are 20/33bps. Fees are per side; spread/slippage
 and latency displacement appear in fill prices **once**. Carry/uncertainty are
 planning reserves, not cash charges. Archived native signed eight-hour funding
-rates debit/credit positions at settlement; candle open proxies the unavailable
+rates debit/credit positions at the unrounded archived `calc_time` proxy;
+this is `ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY`, not proof of venue settlement or
+historical local availability. Candle open proxies the unavailable
 mark price. Funding is never read for entry sizing. Existing positions settle
 before same-open exit; new same-open entries do not settle retroactively. Missing
 checksums, CRC, rows, gaps or required funding block the window with null economics.
+
+Native archive `calc_time` timestamps can differ by milliseconds from nominal
+00:00/08:00/16:00 boundaries. Coverage requires one native eight-hour event per
+bucket within its first minute (this replay's price-resolution limit), not exact
+millisecond equality. Actual timestamps are retained and funding/entry clocks
+merged; funding after a gap exit or an earlier holding deadline is not charged.
+This is not a claim about venue timing tolerance or historical mark availability.
+The official [funding history API](https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/market-data#get-funding-rate-history)
+exposes `fundingTime` and mark prices separately; their equivalence to this
+archive's `calc_time` has not been proved. The local archived rates do not supply
+this harness with a real mark-price execution tape.
 
 Returns are **trading net under these assumptions**, excluding unavailable
 model/live-feed costs. Closed-minute MTM drawdown and an adverse within-minute

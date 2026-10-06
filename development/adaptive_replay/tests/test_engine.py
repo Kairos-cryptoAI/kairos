@@ -228,6 +228,52 @@ def test_same_open_funding_before_exit_but_new_entry_not_charged():
     assert second["signed_funding_cost_usd"] == 0
 
 
+@pytest.mark.parametrize("offset,charged", [(1, False), (18, False), (99, False), (100, True)])
+def test_native_funding_timestamp_merged_against_99ms_entry(offset, charged):
+    inputs = inputs_fixture()
+    inputs.funding["BTCUSDT"] = (SimpleNamespace(timestamp_ms=START + offset, rate=0.001),)
+    _, account = replay_tape(inputs, {START: [intent()]}, FREE, "INTRABAR_OPEN_PROXY", 100)
+    assert (account.trades[0]["signed_funding_cost_usd"] > 0) is charged
+    funding_events = [e for e in account.events if e["kind"] == "FUNDING"]
+    if charged:
+        assert funding_events[0]["timestamp_ms"] == START + offset
+        assert funding_events[0]["clock_authority"] == "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY"
+    else:
+        assert not funding_events
+
+
+@pytest.mark.parametrize("offset,charged", [(18, True), (99, True), (100, False)])
+def test_native_funding_at_deadline_and_one_ms_after(offset, charged):
+    inputs = inputs_fixture()
+    inputs.funding["BTCUSDT"] = (SimpleNamespace(timestamp_ms=START + 60_000 + offset, rate=0.001),)
+    _, account = replay_tape(inputs, {START: [intent(holding=60_000)]}, FREE, "INTRABAR_OPEN_PROXY", 100)
+    trade = account.trades[0]
+    assert trade["exit_ms"] == START + 60_099
+    assert trade["reason"] == "TIMEOUT"
+    assert (trade["signed_funding_cost_usd"] > 0) is charged
+
+
+def test_gap_open_exit_never_charged_later_native_funding():
+    inputs = inputs_fixture()
+    ts = START + 60_000
+    rows = list(inputs.bars["BTCUSDT"])
+    rows[1] = bar(ts=ts, open_=90, high=90, low=90, close=90)
+    inputs.bars["BTCUSDT"] = tuple(rows)
+    inputs.funding["BTCUSDT"] = (SimpleNamespace(timestamp_ms=ts + 18, rate=0.001),)
+    _, account = replay_tape(inputs, {START: [intent()]}, FREE, "INTRABAR_OPEN_PROXY", 100)
+    assert account.trades[0]["gap"] is True
+    assert account.trades[0]["exit_ms"] == ts
+    assert account.trades[0]["signed_funding_cost_usd"] == 0
+
+
+def test_intraminute_timeout_before_native_funding_skips_later_charge():
+    inputs = inputs_fixture()
+    inputs.funding["BTCUSDT"] = (SimpleNamespace(timestamp_ms=START + 60_018, rate=0.001),)
+    _, account = replay_tape(inputs, {START: [intent(holding=59_911)]}, FREE, "INTRABAR_OPEN_PROXY", 100)
+    assert account.trades[0]["exit_ms"] == START + 60_010
+    assert account.trades[0]["signed_funding_cost_usd"] == 0
+
+
 def test_marks_include_current_open_peak_before_adverse_envelope():
     p = Portfolio(10_000, FREE, "INTRABAR_OPEN_PROXY")
     assert p.admit(intent(risk=2, atr=2), START + 99, bar(), opens())

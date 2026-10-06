@@ -164,31 +164,35 @@ def load_window(
         timestamps = [item.timestamp_ms for item in observations]
         if len(timestamps) != len(set(timestamps)):
             raise ValueError(f"duplicate funding timestamp for {symbol}")
-        selected: list[FundingObservation] = []
-        expected_times = range(data_start_ms, data_end_ms, FUNDING_INTERVAL_MS)
-        expected_set = set(expected_times)
-        available = {item.timestamp_ms: item for item in observations}
-        observed_in_range = {timestamp for timestamp in available if data_start_ms <= timestamp < data_end_ms}
-        if observed_in_range != expected_set:
-            extras = sorted(observed_in_range - expected_set)
-            missing = sorted(expected_set - observed_in_range)
-            raise ValueError(
-                f"unexpected funding settlement stamp set for {symbol}: "
-                f"extra={extras[:3]} missing={missing[:3]}"
-            )
-        for timestamp in sorted(expected_set):
-            item = available.get(timestamp)
-            if item is None:
-                raise ValueError(f"missing 8-hour funding settlement for {symbol} at {timestamp}")
+        expected_times = set(range(data_start_ms, data_end_ms, FUNDING_INTERVAL_MS))
+        bucketed: dict[int, FundingObservation] = {}
+        max_offset_ms = 0
+        for item in observations:
+            if not data_start_ms <= item.timestamp_ms < data_end_ms:
+                continue
+            bucket = item.timestamp_ms - item.timestamp_ms % FUNDING_INTERVAL_MS
+            offset = item.timestamp_ms - bucket
+            if bucket not in expected_times or offset >= 60_000:
+                raise ValueError(f"unexpected funding settlement cadence for {symbol} at {item.timestamp_ms}")
             if item.interval_hours != 8:
-                raise ValueError(f"funding interval is not 8 hours for {symbol} at {timestamp}")
-            selected.append(item)
+                raise ValueError(f"funding interval is not 8 hours for {symbol} at {item.timestamp_ms}")
+            if bucket in bucketed:
+                raise ValueError(f"duplicate funding settlement bucket for {symbol} at {bucket}")
+            bucketed[bucket] = item
+            max_offset_ms = max(max_offset_ms, offset)
+        missing_buckets = expected_times - bucketed.keys()
+        if missing_buckets:
+            raise ValueError(f"missing 8-hour funding settlement for {symbol} at {min(missing_buckets)}")
+        selected = [bucketed[timestamp] for timestamp in sorted(expected_times)]
         funding[symbol] = tuple(selected)
         normalized = json.dumps([asdict(item) for item in selected], separators=(",", ":")).encode()
         funding_evidence[symbol] = {
             "normalized_rows_sha256": _sha(normalized),
             "rows": len(selected),
             "archives": funding_archives,
+            "max_event_offset_ms": max_offset_ms,
+            "timestamps_rounded": False,
+            "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
         }
 
     return WindowInputs(

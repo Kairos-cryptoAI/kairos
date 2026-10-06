@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     env:
-      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/kairos-adaptive-development-env
+      UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/.adaptive-development-env
       OPENBLAS_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
     steps:

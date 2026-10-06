@@ -165,7 +165,7 @@ def test_missing_funding_settlement_fails_closed(caches: tuple[Path, Path]) -> N
             rows.append((stamp, 8, "0.0001"))
         event += timedelta(hours=8)
     _write_archive(archive, _zip_csv("BTCUSDT-fundingRate-2022-01.csv", rows))
-    with pytest.raises(ValueError, match="unexpected funding settlement stamp set"):
+    with pytest.raises(ValueError, match="missing 8-hour funding settlement"):
         load_window(bars, factors, WINDOW)
 
 
@@ -175,14 +175,40 @@ def test_extra_off_grid_funding_stamp_in_loaded_slice_fails(caches: tuple[Path, 
     rows = []
     start = datetime.combine(MONTH, time.min, UTC)
     event = start
-    injected = int(datetime(2022, 1, 3, 9, tzinfo=UTC).timestamp() * 1_000)
+    injected = int(datetime(2022, 1, 3, 8, tzinfo=UTC).timestamp() * 1_000) + 1
     while event < start + timedelta(days=31):
         rows.append((int(event.timestamp() * 1_000), 8, "0.0001"))
         event += timedelta(hours=8)
     rows.append((injected, 8, "0.0001"))
     _write_archive(archive, _zip_csv("BTCUSDT-fundingRate-2022-01.csv", rows))
-    with pytest.raises(ValueError, match="unexpected funding settlement stamp set"):
+    with pytest.raises(ValueError, match="duplicate funding settlement bucket"):
         load_window(bars, factors, WINDOW)
+
+
+@pytest.mark.parametrize("offset", [5, 59_999, 60_000])
+def test_funding_first_minute_offsets_are_preserved_not_rounded(
+    caches: tuple[Path, Path], offset: int
+) -> None:
+    bars, factors = caches
+    archive = factors / "fundingRate" / "BTCUSDT" / "BTCUSDT-fundingRate-2022-01.zip"
+    rows = []
+    start = datetime.combine(MONTH, time.min, UTC)
+    event = start
+    while event < start + timedelta(days=31):
+        rows.append((int(event.timestamp() * 1_000) + offset, 8, "0.0001"))
+        event += timedelta(hours=8)
+    _write_archive(archive, _zip_csv("BTCUSDT-fundingRate-2022-01.csv", rows))
+    if offset >= 60_000:
+        with pytest.raises(ValueError, match="unexpected funding settlement cadence"):
+            load_window(bars, factors, WINDOW)
+        return
+    result = load_window(bars, factors, WINDOW)
+    stamps = [item.timestamp_ms for item in result.funding["BTCUSDT"]]
+    evidence = result.evidence["funding"]["BTCUSDT"]
+    assert all(stamp % FUNDING_INTERVAL_MS == offset for stamp in stamps)
+    assert evidence["max_event_offset_ms"] == offset
+    assert evidence["timestamps_rounded"] is False
+    assert evidence["clock_authority"] == "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY"
 
 
 def test_wrong_funding_interval_in_required_slice_fails(caches: tuple[Path, Path]) -> None:

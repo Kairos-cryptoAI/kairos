@@ -206,6 +206,8 @@ class Portfolio:
         position = self.positions.get(symbol)
         if position is None:
             return
+        if ts < position.entry_ms or ts > position.entry_ms + position.intent.exit_plan.max_holding_ms:
+            return
         cost = position.direction * position.quantity * price * rate
         self.cash -= cost
         position.funding_cost += cost
@@ -217,6 +219,7 @@ class Portfolio:
                 "native_8h_rate": rate,
                 "signed_cost_usd": cost,
                 "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+                "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
             }
         )
 
@@ -340,6 +343,10 @@ class Portfolio:
             if self.trades
             else "NO_TRADES",
             "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+            "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+            "intraminute_timeout_reservation": (
+                "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION"
+            ),
             "complete_all_in_net_economics": False,
             "closed_minute_mtm_drawdown_pct": self.max_closed_minute_drawdown * 100,
             "adverse_envelope_bound_pct": self.max_adverse_envelope_drawdown * 100,
@@ -396,7 +403,11 @@ def replay_tape(
     exit_tail_hours: int = 3,
 ) -> tuple[dict[str, Any], Portfolio]:
     account = Portfolio(10_000, scenario, mode)
-    funding = {s: {f.timestamp_ms: f.rate for f in rows} for s, rows in inputs.funding.items()}
+    funding: dict[int, list[tuple[int, str, float]]] = {}
+    for symbol, rows in inputs.funding.items():
+        for event in rows:
+            minute = event.timestamp_ms // MINUTE * MINUTE
+            funding.setdefault(minute, []).append((event.timestamp_ms, symbol, event.rate))
     by_symbol = {s: {bar.open_time_ms: bar for bar in rows} for s, rows in inputs.bars.items()}
     final_prices: dict[str, float] = {}
     replay_end = inputs.end_ms + exit_tail_hours * 3_600_000
@@ -405,12 +416,35 @@ def replay_tape(
     for ts in range(inputs.start_ms, replay_end, MINUTE):
         bars = {s: by_symbol[s][ts] for s in UNIVERSE}
         opens = {s: bar.open for s, bar in bars.items()}
-        for s in UNIVERSE:
-            if ts in funding[s]:
-                account.settle(s, ts, funding[s][ts], opens[s])
-            account.exit_at_open(bars[s])
+        events = funding.get(ts, [])
+        for event_ms, symbol, rate in events:
+            if event_ms == ts:
+                account.settle(symbol, event_ms, rate, opens[symbol])
+        for symbol in UNIVERSE:
+            account.exit_at_open(bars[symbol])
+        # Actual archive funding events are NOT rounded back to open. Merge
+        # their cash clocks with the modeled review/entry attempt clocks.
+        ordered_events: list[tuple[int, int, int, Any]] = [
+            (event_ms, 0, UNIVERSE.index(symbol), (symbol, rate))
+            for event_ms, symbol, rate in events
+            if event_ms > ts
+        ]
         if ts < inputs.end_ms:
-            for intent in sorted(tape.get(ts, []), key=lambda item: UNIVERSE.index(item.symbol)):
+            ordered_events.extend(
+                (
+                    max(intent.entry_eligible_ts_ms, intent.decision_ts_ms + latency_ms),
+                    1,
+                    UNIVERSE.index(intent.symbol),
+                    intent,
+                )
+                for intent in tape.get(ts, [])
+            )
+        for event_ms, kind, _, payload in sorted(ordered_events, key=lambda item: item[:3]):
+            if kind == 0:
+                symbol, rate = payload
+                account.settle(symbol, event_ms, rate, opens[symbol])
+            else:
+                intent = payload
                 account.admit(intent, intent.decision_ts_ms + latency_ms, bars[intent.symbol], opens)
         account.mark(opens)
         account.adverse_envelope(bars)
