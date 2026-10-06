@@ -18,8 +18,8 @@ from typing import Any
 
 from kairos_core.enums import Side
 from kairos_strategy.adaptive.config import DEFAULT_CONFIG, STRATEGY_ID
+from kairos_strategy.adaptive.provenance import adaptive_window_sha256
 from kairos_strategy.models import ExitPlan, SleeveIntent
-from kairos_strategy.provenance import input_window_sha256
 
 from .baselines import BASELINE_IDS, baseline_identities, combine_tapes, generate_baseline_tapes
 from .engine import COMMON_COST_RISK, CostScenario, replay_tape
@@ -163,7 +163,7 @@ def adaptive_tape(
                 intent = decode_intent(item["intent"])
                 end = (ts - inputs.data_start_ms) // 60_000
                 actual_window = inputs.bars[symbol][end - DEFAULT_CONFIG.history_bars : end]
-                if input_window_sha256(actual_window) != item["input_window_sha256"]:
+                if adaptive_window_sha256(actual_window) != item["input_window_sha256"]:
                     raise ValueError("adaptive candidate closed-history hash changed")
                 if intent.symbol != symbol or intent.decision_ts_ms != ts - 1:
                     raise ValueError("adaptive candidate escaped its causal slot")

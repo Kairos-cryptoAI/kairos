@@ -2,12 +2,13 @@ import hashlib
 import json
 from dataclasses import asdict
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 from adaptive_replay import compare
 
-from .test_engine import START, UNIVERSE, inputs_fixture, intent
+from .test_engine import START, UNIVERSE, bar, inputs_fixture, intent
 
 ROOT = Path(__file__).parents[1]
 
@@ -77,6 +78,65 @@ def test_original_tape_result_byte_identity_required_before_import(tmp_path):
     (tmp_path / "result.json").write_text("{}")
     with pytest.raises(ValueError, match="published byte identity"):
         compare.adaptive_tape(tmp_path, inputs_fixture(), {}, {}, float("inf"))
+
+
+def test_adaptive_tape_revalidates_native_closed_bar_hash_schema(tmp_path, monkeypatch):
+    inputs = inputs_fixture()
+    inputs.evidence = {"verified": "synthetic"}
+    inputs.data_start_ms = START - 120_000
+    inputs.end_ms = START + 300_000
+    inputs.bars = {symbol: (bar(symbol, START - 120_000), bar(symbol, START - 60_000)) for symbol in UNIVERSE}
+    monkeypatch.setattr(compare, "DEFAULT_CONFIG", SimpleNamespace(history_bars=2))
+    base = {"strategy_code_sha256": "code", "strategy_config_sha256": "config"}
+    window = {"id": "fixture"}
+    directory = tmp_path / window["id"]
+    directory.mkdir()
+    compare.write_json(directory / "inputs.json", inputs.evidence)
+    records = []
+    for symbol in UNIVERSE:
+        value = intent(symbol=symbol) if symbol == "BTCUSDT" else None
+        records.append(
+            {
+                "symbol": symbol,
+                "logical_decision_ms": START - 1,
+                "context_cut_ms": START - 1,
+                "input_window_sha256": compare.adaptive_window_sha256(inputs.bars[symbol]),
+                "source_clock_authority": "HISTORICAL_EVENT_TIME_NOT_LIVE_RECEIPT",
+                "status": "INTENT" if value else "NO_INTENT",
+                "intent": asdict(value) if value else None,
+            }
+        )
+    tape_bytes = b"".join(compare.canonical(row) + b"\n" for row in records)
+    (directory / "decisions.jsonl").write_bytes(tape_bytes)
+    result = {
+        "state": "COMPLETED",
+        "sources": {
+            "plan_sha256": compare.digest(base),
+            "adaptive_identity": {"strategy_code_sha256": "code", "config_sha256": "config"},
+        },
+        "windows": [
+            {
+                "window": window,
+                "counts": {
+                    "tape_sha256": hashlib.sha256(tape_bytes).hexdigest(),
+                    "statuses": {"INTENT": 1, "NO_INTENT": 4},
+                    "candidates": 1,
+                },
+            }
+        ],
+    }
+    compare.write_json(tmp_path / "result.json", result)
+    monkeypatch.setattr(compare, "ADAPTIVE_RESULT_SHA", compare.file_sha(tmp_path / "result.json"))
+    imported, evidence = compare.adaptive_tape(tmp_path, inputs, window, base, float("inf"))
+    assert imported[START] == [intent()]
+    assert evidence["original_economic_results_reused"] is False
+    # Using a different public provenance schema must not pass as the native
+    # adaptive closed-bar runtime schema, even for the exact same price rows.
+    from kairos_strategy.provenance import input_window_sha256
+
+    monkeypatch.setattr(compare, "adaptive_window_sha256", input_window_sha256)
+    with pytest.raises(ValueError, match="closed-history"):
+        compare.adaptive_tape(tmp_path, inputs, window, base, float("inf"))
 
 
 @pytest.mark.parametrize("status", ["WARMUP", "UNAVAILABLE", "NUMERIC_ERROR", "UNKNOWN"])

@@ -85,3 +85,19 @@ false-positive/overfitting risk, as explained by the original
 [Probability of Backtest Overfitting paper](https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf).
 This small development comparison still has prior exposure; it is not immunity
 to selection bias and not a replacement for independent evidence.
+
+## Preserved first adapter failure
+
+The first fixed run stopped after26.547 seconds at adaptive tape import in the
+May2022 slice, before that slice's common economic accounts. The importer used
+the public generic candle hash instead of adaptive's separate `closed-bar.v1`
+runtime schema. Inputs were identical and native source/decision-tape byte
+identity passed; the comparator's schema choice was wrong.
+
+The correction calls the unchanged installed `adaptive_window_sha256` helper;
+a complete synthetic tape-import regression proves that the generic schema
+fails and the exact adaptive runtime schema passes. No candidate, configuration,
+date, fee, admission limit, original evidence or performance criterion changes.
+The first attempt remains under
+`D:/Kairos/runtime/baseline-comparison-20261006/bounded-20261006-a`.
+Any corrected run writes a fresh directory and does not resume that attempt.
