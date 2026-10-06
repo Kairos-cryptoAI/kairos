@@ -34,7 +34,7 @@ Both retain 2 hourly ATR stops, a 4R target, 72h timeout and 1h entry lifetime.
 No change to the desired variable frequency, including zero, follows from
 keeping this slower reference. There is no daily trade quota.
 
-The published [Trial 15 reused-data screen](../../kairos-backtest/reports/regime-aligned-screen/REPORT.md)
+The published [Trial 15 reused-data screen](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/da1237854066fde381542e43c106d0de727448be/reports/regime-aligned-screen/REPORT.md)
 compared the candidate with that exact base under the same historical execution
 model. Stress PF was 1.2040 versus 1.1833 in selection and 1.1071 versus 1.0382
 in robustness; roughly 68–69% of stress trades remained. This is why it is a
@@ -109,11 +109,11 @@ TTL silently or treat an unobservable fill as an ordinary no-trade evaluation.
 ## What is not pursued now
 
 - The unchanged medium EMA pullback is not an untested promising omission.
-  The [published January–June 2023 screen](../../kairos-backtest/reports/development-screen/REPORT.md)
+  The [published January–June 2023 screen](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/da1237854066fde381542e43c106d0de727448be/reports/development-screen/REPORT.md)
   recorded 105 baseline closes, −0.7125% and PF .683; stress 41 closes,
   −0.1080% and PF .887. Shallow failed stress, deep had only 38/10 closes.
   Extra warmup fixes comparability, not that evidence. No fourth depth band.
-- The [regime/retest/flow conjunction](../../kairos-backtest/reports/regime-retest-screen/REPORT.md)
+- The [regime/retest/flow conjunction](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/da1237854066fde381542e43c106d0de727448be/reports/regime-retest-screen/REPORT.md)
   reduced 41,741 structural breakout events to 12 structural intents and one
   losing baseline trade, zero stress trades. Do not accumulate more hard
   conditions merely because each concept sounds reasonable.
