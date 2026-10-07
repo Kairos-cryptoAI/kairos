@@ -84,3 +84,15 @@ this receipt does not claim it has completed.
 Paid matched A/B remains blocked by unadmitted exact historical NEWS versions and
 bounded coverage. No credentials are loaded to discover that already-known gate.
 Readiness remains false and `STRATEGY_POLICY=REJECT_ALL`.
+
+## Addendum: portable retained-artifact gate
+
+The initial signed source `64cf69fbae3b0351895024cd5bc2b07921661c4f`
+passed both local installed-wheel gates, validate and CodeQL; its GitHub
+adaptive-development run `37659690553` failed because two macro tests used a
+machine-specific runtime path. This failed run is retained. The correction
+publishes the existing public raw/request/receipt bytes unchanged under
+`development/adaptive_replay/evidence/historical-macro-2026-10-07/` and switches
+those tests to a repository-relative path. Exact SHA checks remain mandatory;
+scoped Git `-text` attributes preserve bytes on Windows/Linux. No source was
+downloaded again, no test was skipped, and no gate or claim was weakened.

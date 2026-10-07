@@ -11,7 +11,7 @@ import pytest
 
 from adaptive_replay import historical_macro_archive as hma
 
-ROOT = Path(r"D:\Kairos\runtime\historical-macro-raw-20261007-a")
+ROOT = Path(__file__).resolve().parents[1] / "evidence" / "historical-macro-2026-10-07"
 
 
 def test_retained_artifact_has_only_two_scoped_observations() -> None:
