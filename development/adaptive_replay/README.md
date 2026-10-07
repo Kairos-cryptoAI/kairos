@@ -370,3 +370,29 @@ artifacts/native tapes are losslessly bound by
 [the evidence index](evidence/intraday-reference-2026-10-07/checksums.json).
 The command above documents that completed attempt; **do not run it again**.
 No source/economic prerequisite, winner or trading authority is granted.
+
+## Separate historical pilot: blocked no-call preflight
+
+The [fixed pilot roster](historical-episodes-draft.json) preserves only A and D,
+four fixed UTC cuts, twenty underlying paid-attempt maximum, zero retries and
+the cumulative USD 1 pilot ceiling intersecting the existing USD 12 campaign.
+Owner approval does not supply exact historical NEWS/MACRO or source coverage.
+
+`python -m adaptive_replay.historical_pilot_preflight --workspace-root D:\Kairos
+--output-root <new-direct-runtime-child>` is strictly offline and has no provider,
+database, strategy, candidate or economic execution. It checks existing five-symbol
+market inputs and installed source pins, and retains all 72,000 one-minute cells
+with explicit source/scheduling no-call reasons, null candidates and zero cost.
+Its successful **preflight** state is `PREFLIGHT_COMPLETED_PAID_RUN_BLOCKED` and
+its CLI intentionally exits nonzero. It is not a successful paid A/B run.
+
+`adaptive_replay.historical_context_capture` separately captures nine fixed public
+leads into a new runtime child only with `--capture`; without that flag it makes
+no request or output. Raw documents and current capture clocks stay unadmitted,
+including audit-only future documents and modern deleted-post tombstones.
+
+The [single actual attempts and independent audit](../../docs/HISTORICAL-PILOT-NO-CALL-2026-10-07.md)
+are retained. Do not rerun them, overwrite evidence, change cuts, infer zero
+candidates, demote required sources to optional or treat these commands as a paid
+dispatcher. The required source/strategy/route and durable budget admits remain
+separate prerequisites. No blind campaign, primary recovery or venue is touched.

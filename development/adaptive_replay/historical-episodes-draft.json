@@ -84,7 +84,9 @@
     "admitted_model_route": null,
     "required_context_source_roster": null,
     "paid_dispatch_ready": false,
-    "source_preflight_receipt": "../../docs/HISTORICAL-CONTEXT-PREFLIGHT-2026-10-07.md"
+    "source_preflight_receipt": "../../docs/HISTORICAL-CONTEXT-PREFLIGHT-2026-10-07.md",
+    "actual_no_call_preflight_receipt": "../../docs/HISTORICAL-PILOT-NO-CALL-2026-10-07.md",
+    "actual_no_call_preflight_state": "PREFLIGHT_COMPLETED_PAID_RUN_BLOCKED"
   },
   "execution_prerequisites": [
     "One separately fixed strategy/configuration and economic protocol; no parameter grid",
