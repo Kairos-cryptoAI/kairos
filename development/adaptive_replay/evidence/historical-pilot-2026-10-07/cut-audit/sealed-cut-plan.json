@@ -1,0 +1,90 @@
+{
+  "admission_policy": "COMMON_COST_RISK_V1",
+  "baseline_latency_ms": 100,
+  "blind_campaign_credit": false,
+  "candidate_authority": "PINNED_EXISTING_PROTOTYPE_NOT_SELECTED_CHAMPION_OR_LIVE_STRATEGY",
+  "cost_scenarios": [
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 4.5,
+      "id": "base",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 1,
+      "spread_bps": 2,
+      "uncertainty_bps": 2
+    },
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 9,
+      "id": "stress",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 2,
+      "spread_bps": 4,
+      "uncertainty_bps": 2
+    }
+  ],
+  "denominator_cadence_ms": 60000,
+  "economic_replay": false,
+  "entry_modes": [
+    "STRICT_MINUTE_OPEN",
+    "INTRABAR_OPEN_PROXY"
+  ],
+  "episodes": [
+    {
+      "end_exclusive": "2021-05-22",
+      "id": "episode_a",
+      "review_cuts": [
+        "2021-05-19T00:00:00Z",
+        "2021-05-19T08:00:00Z"
+      ],
+      "start": "2021-05-17"
+    },
+    {
+      "end_exclusive": "2024-01-13",
+      "id": "episode_d",
+      "review_cuts": [
+        "2024-01-09T21:15:00Z",
+        "2024-01-09T21:30:00Z"
+      ],
+      "start": "2024-01-08"
+    }
+  ],
+  "exit_tail_hours": 3,
+  "macro_scope": "OFFLINE_CPI_SEMANTICS_ONLY_NOT_FULL_MACRO_OR_RECEIPT_PROOF",
+  "max_wall_seconds": 120,
+  "new_data_downloads": false,
+  "other_original_cells": "NOT_EVALUATED_NOT_IMPUTED_QUIET",
+  "parameter_search": false,
+  "pilot_draft_raw_sha256": "d9347eeca568f6b8fc98a75645ffe484e27df2ce3cd84415b97f8b554d12e497",
+  "provider_calls": 0,
+  "purpose": "FIXED_TWENTY_CUT_CANDIDATE_AUDIT_NOT_FULL_STRATEGY_SIM_OR_MATCHED_AB",
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "required_news_ready": false,
+  "review_arms": "UNAVAILABLE_NOT_EXECUTED_NOT_ZERO_RETURN",
+  "risk_policy": {
+    "aggregate_open_fraction": 0.01,
+    "gross_leverage": 1,
+    "max_notional_fraction_per_symbol": 0.25,
+    "per_trade_fraction": 0.0025
+  },
+  "schema": "kairos.development.historical-pilot-price-sim.v1",
+  "strategy_cadence_ms": 300000,
+  "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+  "strategy_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+  "strategy_id": "adaptive_pullback_range_v1",
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "BNBUSDT",
+    "XRPUSDT"
+  ],
+  "warmup_hours": 54,
+  "workers": 1
+}

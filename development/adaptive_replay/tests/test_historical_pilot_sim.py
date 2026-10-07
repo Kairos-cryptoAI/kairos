@@ -208,3 +208,104 @@ def test_json_receipt_write_never_replaces_prior_content(tmp_path):
     with pytest.raises(FileExistsError):
         write_json(path, {"fixture": 2})
     assert path.read_bytes() == before
+
+
+def prepare_cut_audit(monkeypatch, tmp_path, *, mutation=None):
+    output = prepare_run(monkeypatch, tmp_path, mutate_source=mutation == "source")
+    rows = [SimpleNamespace(close_time_ms=START - 1)] * sim.DEFAULT_CONFIG.history_bars
+    inputs = SimpleNamespace(
+        start_ms=START,
+        end_ms=END,
+        data_start_ms=START - sim.DEFAULT_CONFIG.history_bars * 60_000,
+        bars={
+            symbol: rows + [SimpleNamespace(close_time_ms=START + i * 60_000 - 1) for i in range(1, 11)]
+            for symbol in UNIVERSE
+        },
+        evidence={"fixture_only": True},
+    )
+    loads = 0
+
+    def load(*_):
+        nonlocal loads
+        loads += 1
+        return (
+            SimpleNamespace(**{**vars(inputs), "evidence": {"changed": True}})
+            if mutation == "cache" and loads > 1
+            else inputs
+        )
+
+    monkeypatch.setattr(sim, "load_window", load)
+    calls = []
+
+    def evaluate(prefix):
+        assert (output / "sealed-cut-plan.json").exists()
+        assert (output / "before.json").exists()
+        calls.append(prefix[-1].close_time_ms)
+        if mutation == "cancel":
+            raise KeyboardInterrupt
+        if mutation == "deadline":
+            raise TimeoutError
+        return SimpleNamespace(
+            status="NO_INTENT",
+            reason="fixture_only",
+            intent=None,
+            decision_ts_ms=prefix[-1].close_time_ms - (1 if mutation == "anchor" else 0),
+            input_window_sha256="a" * 64,
+        )
+
+    monkeypatch.setattr(sim, "evaluate_adaptive", evaluate)
+    monkeypatch.setattr(sim, "build_tape", lambda *_: pytest.fail("cut audit must not replay full tape"))
+    monkeypatch.setattr(sim, "replay_tape", lambda *_: pytest.fail("cut audit must not run economics"))
+    return output, calls
+
+
+def test_cut_audit_only_evaluates_fixed_cells_without_economics_or_quiet_imputation(monkeypatch, tmp_path):
+    output, calls = prepare_cut_audit(monkeypatch, tmp_path)
+    result = sim.run_cut_audit(tmp_path, output)
+    assert calls == [START - 1] * 5 + [START + 300_000 - 1] * 5
+    assert result["evaluated_cut_cells"] == 10  # one synthetic episode, not historical evidence
+    assert result["candidate_count"] == 0
+    assert result["economic_results"] is result["review_arms"] is None
+    assert result["provider_calls"] == result["network_calls"] == result["database_calls"] == 0
+    assert result["other_original_cells"] == "NOT_EVALUATED_NOT_IMPUTED_QUIET"
+    protocol = json.loads((output / "sealed-cut-plan.json").read_text())
+    assert not protocol["economic_replay"]
+    assert protocol["max_wall_seconds"] == 120
+    assert not result["readiness"]["LIVE_READY"]
+    assert (output / "result.json").exists()
+    before = (output / "result.json").read_bytes()
+    with pytest.raises(FileExistsError):
+        sim.run_cut_audit(tmp_path, output)
+    assert (output / "result.json").read_bytes() == before
+
+
+@pytest.mark.parametrize("mutation", ["source", "cache", "anchor", "cancel", "deadline"])
+def test_cut_audit_failure_preserves_seal_and_never_writes_success(monkeypatch, tmp_path, mutation):
+    output, _ = prepare_cut_audit(monkeypatch, tmp_path, mutation=mutation)
+    error = (
+        KeyboardInterrupt if mutation == "cancel" else TimeoutError if mutation == "deadline" else ValueError
+    )
+    with pytest.raises(error):
+        sim.run_cut_audit(tmp_path, output)
+    assert not (output / "result.json").exists()
+    assert (output / "sealed-cut-plan.json").exists()
+    assert json.loads((output / "failure.json").read_text())["state"] == "FAILED_CLOSED"
+
+
+def test_cut_audit_final_source_hashing_cannot_exceed_deadline(monkeypatch, tmp_path):
+    output, _ = prepare_cut_audit(monkeypatch, tmp_path)
+    now = [0.0]
+    source_calls = [0]
+    monkeypatch.setattr(sim.time, "monotonic", lambda: now[0])
+
+    def sources(*_):
+        source_calls[0] += 1
+        if source_calls[0] == 2:
+            now[0] = 121.0
+        return {"fixture": True}
+
+    monkeypatch.setattr(sim, "installed_sources", sources)
+    with pytest.raises(TimeoutError):
+        sim.run_cut_audit(tmp_path, output)
+    assert not (output / "result.json").exists()
+    assert json.loads((output / "failure.json").read_text())["error_type"] == "TimeoutError"

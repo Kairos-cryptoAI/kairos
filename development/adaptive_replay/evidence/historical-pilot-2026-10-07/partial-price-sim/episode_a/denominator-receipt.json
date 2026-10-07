@@ -1,0 +1,20 @@
+{
+  "denominator_sha256": "8ba0542460631e761ed16fee222f68f0cf7dd673a51c2940636c69c00d38d9f6",
+  "native_decisions": 7200,
+  "native_tape_sha256": "d34f98002ea45082db0fcc4549af65b67a05ec5ad7675bbf83bdeafdeaa2e691",
+  "no_call_reasons": {
+    "REQUIRED_SOURCE_UNAVAILABLE": 10,
+    "SCHEDULED_POLICY_ABSTAIN": 35990
+  },
+  "required_sources_ready": false,
+  "rows": 36000,
+  "scheduled_candidates": [],
+  "scheduled_states": {
+    "QUIET": 10
+  },
+  "states": {
+    "CANDIDATE": 1,
+    "NOT_SCHEDULED_NATIVE_CADENCE": 28800,
+    "QUIET": 7199
+  }
+}

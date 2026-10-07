@@ -1,0 +1,10 @@
+{
+  "events": [
+    {
+      "intent_id": "55b38b3ce3c1d4df89354850d923a6ef1c0a5da7abdf5b0f0ceab9f68c86f6cd",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    }
+  ],
+  "trades": []
+}

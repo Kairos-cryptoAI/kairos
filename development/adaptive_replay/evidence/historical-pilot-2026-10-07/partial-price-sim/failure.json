@@ -1,0 +1,10 @@
+{
+  "completed_episodes": [
+    "episode_a"
+  ],
+  "elapsed_seconds": 900.0470000000205,
+  "error_type": "TimeoutError",
+  "provider_calls": 0,
+  "schema": "kairos.development.historical-pilot-price-sim.v1",
+  "state": "FAILED_CLOSED"
+}

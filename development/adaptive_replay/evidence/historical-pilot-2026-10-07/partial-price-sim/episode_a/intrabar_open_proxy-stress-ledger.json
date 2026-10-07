@@ -1,0 +1,41 @@
+{
+  "events": [
+    {
+      "authority": "CONDITIONAL_CANDLE_PRICE_PROXY",
+      "intent_id": "55b38b3ce3c1d4df89354850d923a6ef1c0a5da7abdf5b0f0ceab9f68c86f6cd",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.570024003064,
+      "price": 2673.5925349999998,
+      "quantity": 0.3819688151693649,
+      "reserved_risk_usd": 24.996425060007663,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1621455000099
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 0.9191060755556477,
+      "entry_ms": 1621455000099,
+      "entry_price": 2673.5925349999998,
+      "exit_fee_usd": 0.8820958854977565,
+      "exit_ms": 1621457639999,
+      "exit_price": 2565.9333969642853,
+      "gap": false,
+      "gross_pnl_usd": 41.12243339765696,
+      "holding_ms": 2639900,
+      "intent_id": "55b38b3ce3c1d4df89354850d923a6ef1c0a5da7abdf5b0f0ceab9f68c86f6cd",
+      "net_pnl_usd": 39.32123143660356,
+      "quantity": 0.3819688151693649,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": "BEAR",
+      "reserved_risk_usd": 24.996425060007663,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

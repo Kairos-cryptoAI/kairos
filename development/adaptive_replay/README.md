@@ -450,3 +450,16 @@ Common risk, strict/proxy fills, base/stress costs and original candidate TTL
 remain intact. One worker / 900 seconds / no downloads / no provider or database
 calls apply. NEWS-blocked model arms stay unavailable, not zero or imputed.
 Neither successful software tests nor this diagnostic qualify alpha or LIVE.
+
+The [single actual price attempt and fixed-cut audit](../../docs/HISTORICAL-PILOT-RESULT-2026-10-07.md)
+are retained separately. The full price attempt stopped at its 900-second bound
+after episode A; episode D is partial, and no global success receipt exists.
+Do not repeat, resume or overwrite that attempt. Its declared full denominator
+is not a claim that all 72,000 cells completed.
+
+The separate `--cut-audit-only` mode seals a 120-second, create-only audit before
+evaluating only the original four review cuts across the five symbols. It runs
+no economics, does not retry the full SIM, and marks every other original cell
+`NOT_EVALUATED_NOT_IMPUTED_QUIET`. Exact closed prefixes, source equality,
+cancellation and final deadline checks apply. Its single actual attempt completed
+all twenty cells with no review candidates; model arms remain unavailable.

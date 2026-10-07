@@ -1,0 +1,81 @@
+{
+  "actual_started_utc": "2026-10-07T18:00:07.061682+00:00",
+  "sources": {
+    "adaptive_identity": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "dependency_projection": "EXPLICIT_DEVELOPMENT_OVERRIDES_NOT_FROZEN_CAMPAIGN_ENVIRONMENT",
+    "installed_dependencies": {
+      "kairos-backtest": {
+        "revision": "da1237854066fde381542e43c106d0de727448be",
+        "version": "0.1.0"
+      },
+      "kairos-core": {
+        "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+        "version": "0.3.0"
+      },
+      "kairos-persistence": {
+        "revision": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+        "version": "0.1.0"
+      },
+      "kairos-quant-scouts": {
+        "revision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+        "version": "0.1.0"
+      },
+      "kairos-strategy-engine": {
+        "revision": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+        "version": "0.2.12"
+      }
+    },
+    "native_llm_dependency": {
+      "revision": "f1e25893f9078a467eba584e233ac9129e9ff9b1",
+      "version": "0.1.0"
+    },
+    "plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+    "replay_modules_sha256": {
+      "__init__.py": "219b779856cfe5d816a818cbf6ee4c6f73685b7208de533d6ec4f9ea2f152909",
+      "baselines.py": "9c6e3d98775a957c5b2d02e9ccb6f5bd62ff376cfa1c58f898c1f73cf4e5e9dc",
+      "calendar_inputs.py": "795f255e2bf47b530f40b01767cc264ea68a22dd3819610d6e66556f48c074f7",
+      "calendar_pair.py": "557de050c1a090ff6e3010a2da5fbd54ac91d137c1c1b4684fd20921054cf625",
+      "candidate_audit.py": "d0db282981028af5f59acf532a65f6531e3d919f8288336ae6ad6cbd8aac23a9",
+      "compare.py": "ea3e6087db4dfc400bdce5a2c12eb4aea4ff5ab9644b9fc57e48fcd75ff58ada",
+      "engine.py": "112891680ab1e2b8d8202588fa6ddc68d21adff6e1e0b3c99f895e853eede4a3",
+      "filters.py": "19fad1bb1a50be29ec4e818da8ed25440399d7ffd1884aafcba4e430288037c1",
+      "historical_acquisition.py": "f2608e9b1725ee70041bdd0a35abeb8ff606ea63328e2276ffc4798777b2ecdd",
+      "historical_bars.py": "d0689c7338ea4ffb402cfc0195ccd5c4f8da960fd8ba5c92286687e03882216f",
+      "historical_context.py": "a1f9975356aea12e946dcb70b067998f58a46976512e1add19b29daf1f383607",
+      "historical_context_capture.py": "0857e335291be6804479426fed1961c3ce1a6b7323b0d38c1a955cb75cbaf167",
+      "historical_inputs.py": "5c44f9ad3e5e1dc8808c43fcddb4522ac17ef3190704f6074a95551ebd43f7f8",
+      "historical_macro_archive.py": "e3452f2a7666eb1a88823cebf67d9bd551bd791824ab7ba6d3ec16ffc2a6d192",
+      "historical_macro_capture.py": "ed9c73d73712bc6273ecf55965e436bb2c479f55f9f4f1f186ec7975cf677f05",
+      "historical_pilot_budget.py": "de80a26e41b474462eab7db256bdb32d57c219abf6d09f9b0ddac8f327e324fb",
+      "historical_pilot_dispatch.py": "806902d836c58ee9e808db48df3a77bf61c3b1667100752bd4ae145550a49a49",
+      "historical_pilot_preflight.py": "68d2eaeb0c156b2a593039d4e8bb0e3a86b921a236f4c2f6ced962fd84663bea",
+      "historical_pilot_sim.py": "5aa3f5233bff043e43c1a3f1ad075e6321c401c7f4850804b705cee54ad90b61",
+      "historical_replay.py": "abe159046630c244e411feb0b42c28f4e73a0ac56c719ae882a67f6b3807c1ec",
+      "inputs.py": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+      "intraday_audit.py": "8327b59a88e7d3b42cd5c7f08b356195ba2433794bf83c003ac4d47e5336b640",
+      "intraday_references.py": "88cb8d7b6fee4bcf0ea8fc3e8f1a2a4a1cb92497bd5315b4ca0af51929111454",
+      "matched.py": "6d3838b584ef20f49d23a7cbfe4e4e9b2fe6e1c62d1606e7172c03354b5124ec",
+      "observations.py": "754163114a42ebd661d63ecdf1a601e4f385538c35d46a7c43342e666feab14a",
+      "price_calendar.py": "273fbfde9b2b45e6ae19b7fbdc2891cb00ce3222c1a5f8594311c6f4076bfe8d",
+      "price_inputs.py": "5f6e8f4635409aa403dc22ed5c5ae585af82dee8565ed98520583cbbd81fea23",
+      "right_tail.py": "1ba36e791d1051939a0da656e4fa142f7759bd36419882210505cbae96450226",
+      "runner.py": "a986321af7d641e85d46a7d51143acd532c9da03022d9d293afbea2c4f16a2e4",
+      "selection.py": "1a4c0afb152fb9d2689519a5f97fc9a531ebf2d534fa36d4230918a27aa5dd4d",
+      "source_composition.py": "d9f391cdb273a22427506a68f0e41f879045182a79eba43b5f8e7486689e4c42",
+      "source_set.py": "008114823f12c72c5b24a7a34a8dc52cbeff3a14e8812a3d2d495f021f564330",
+      "system.py": "4aed8d30161ccbc90114081487c719eea3120428d94989210d940f81057ff98e"
+    },
+    "reused_backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    },
+    "uv_lock_sha256": "c39ac3a7a1ecaaee2b7ee399925cb1d5271bcfec1f735f3a97f4b2448f48bd4e"
+  }
+}

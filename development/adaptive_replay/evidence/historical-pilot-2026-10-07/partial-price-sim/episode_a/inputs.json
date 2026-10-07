@@ -1,0 +1,143 @@
+{
+  "bar_end_ms": 1621728000000,
+  "bar_field_profile": "full_kline",
+  "bar_start_ms": 1620950400000,
+  "bars": {
+    "BNBUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "46d4942ee087126ca6632d5177121bdb9f800ebc27a4a780f515555ad5100663",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/bars/BNBUSDT/1m/BNBUSDT-1m-2021-05.zip",
+          "raw_sha256": "8e7f30e34feee9d6f3b240c9c7c9538186535b97d97be4f3ecdc4f643b13b836"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "7942b0b3f96a687e0256ee6cf42dbef59641be6e4f79393fc957d1083af1b981",
+      "rows": 12960
+    },
+    "BTCUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "d757004fd1721f2734e7725f300a7e46b91613a91ec829b31e6217276f633a62",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/bars/BTCUSDT/1m/BTCUSDT-1m-2021-05.zip",
+          "raw_sha256": "dcf7c567cbde49a5e564b29f01be95e28d32f12cb68c40b2a14da75930187dc8"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "9e960295197f34faaa67926d69a4adfc9311b7c2b30666542ed21997a99e42f9",
+      "rows": 12960
+    },
+    "ETHUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "fb434b7f0d8561241cb42f88f080ea95bba80668861a134414d033765db1a25a",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/bars/ETHUSDT/1m/ETHUSDT-1m-2021-05.zip",
+          "raw_sha256": "3b8c11f3f8a87320b4a948b60257157b2920ef5363929a26f184bfe205f40446"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "3bc01d0a3c83912060c12245fca677a8a4dbdcc4f19a74e9e4aeeedbe6cd1ab0",
+      "rows": 12960
+    },
+    "SOLUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "6c011f45169b09cae7fc2273dea591995d586f01d88b9498aedc179dd478963d",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/bars/SOLUSDT/1m/SOLUSDT-1m-2021-05.zip",
+          "raw_sha256": "cd19f804b2119de233b015dd7dee05b7ad760f128c53f00a03da207f86a16616"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "3894e3da66050ad951287219f34be04e820fbf5ecc0c136e767b2acf1016be7a",
+      "rows": 12960
+    },
+    "XRPUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "c51fd8b0892968b25232bd34b36e2758e1853fd18d94d9869b2a4a7cfb31cce7",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/bars/XRPUSDT/1m/XRPUSDT-1m-2021-05.zip",
+          "raw_sha256": "b4b1a367c0f7cfe98d1d5acf62422edfd83d428847883524c3a3dbebae23529a"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "0ba7b0a4097f451a0ee5274e210d0ccd4e2db7c01e6d07fe21a66f0d96c533c4",
+      "rows": 12960
+    }
+  },
+  "funding": {
+    "BNBUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "19eb037d0de5a659523ea169739ec8c1d4cc2a784d272da5fae8213d11f1133b",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/factors/fundingRate/BNBUSDT/BNBUSDT-fundingRate-2021-05.zip",
+          "raw_sha256": "e08391c3ac416df2bcebba182792fb8632a828b1f7bd3de02f0eba11607b6cb7"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 22,
+      "normalized_rows_sha256": "82dda55050397585c3ac8b1c55e0f5d0aa3363c8d6228ed78eb4b79c30d81f2b",
+      "rows": 27,
+      "timestamps_rounded": false
+    },
+    "BTCUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "4e6da223fb549bd61ae7c1acc142d7159f4d4ed778553df0f0e833e08089f9a2",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/factors/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-05.zip",
+          "raw_sha256": "ed934afb9cf84df6ecae742e755147333a84244836a66b51523abc66dd5f63af"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 22,
+      "normalized_rows_sha256": "d3fde7460d934c9469c18255308e015d67de64eeafa0cac076189b06f48c64df",
+      "rows": 27,
+      "timestamps_rounded": false
+    },
+    "ETHUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "aee42ba1af0274c16fc5558fc731f29c7bd805fc37e1a173d6c51f24bc7f1f99",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/factors/fundingRate/ETHUSDT/ETHUSDT-fundingRate-2021-05.zip",
+          "raw_sha256": "21809ef6691a1441bd55ba4af4494a038d1a399ae0ae432e80cb41b47d71f3bd"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 22,
+      "normalized_rows_sha256": "2fe2842eb0920b426721cd7e8cdfe333300c5d6d0c17700897c0fa49a89d3390",
+      "rows": 27,
+      "timestamps_rounded": false
+    },
+    "SOLUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "df72b4bb6474bb08547f6b8257082beacdb95899b819b96ad757b2187f4883f4",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/factors/fundingRate/SOLUSDT/SOLUSDT-fundingRate-2021-05.zip",
+          "raw_sha256": "f9a657f15d4753cb73bf8ffd0d62405d480044162c19e1f7437608e2c1bb6694"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 22,
+      "normalized_rows_sha256": "9593cfafb654edda30107ea424afd3d3bea65d44a38e7a4aa41b6dd28f8fe1e7",
+      "rows": 27,
+      "timestamps_rounded": false
+    },
+    "XRPUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "d54ca137e58a36d78b1289530498d6b015083c0d5fe75045423b35f31c333c1b",
+          "path": "D:/Kairos/runtime/historical-pilot-market-20261007-a/factors/fundingRate/XRPUSDT/XRPUSDT-fundingRate-2021-05.zip",
+          "raw_sha256": "f261889d8ae5b14dd67950f9433a54f39c328a8f83212e73b458ee41e06a1ea7"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 22,
+      "normalized_rows_sha256": "1c738cdb5bb56ef41a399c0f42ea0c0ff518dddb1f4ac29a5ceee8d28e810755",
+      "rows": 27,
+      "timestamps_rounded": false
+    }
+  },
+  "funding_end_ms": 1621728000000,
+  "funding_for_entry_decisions": false,
+  "funding_start_ms": 1620950400000,
+  "window_id": "episode_a"
+}

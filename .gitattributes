@@ -14,3 +14,4 @@ development/adaptive_replay/evidence/intraday-reference-2026-10-07/** -text
 # The historical pilot cap binds this exact draft hash on every platform.
 development/adaptive_replay/historical-episodes-draft.json -text
 development/adaptive_replay/evidence/historical-macro-2026-10-07/* -text
+development/adaptive_replay/evidence/historical-pilot-2026-10-07/** -text

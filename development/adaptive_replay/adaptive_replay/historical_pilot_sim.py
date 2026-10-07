@@ -4,6 +4,8 @@ No archive search, provider, database, key, venue, or campaign operations. The
 native strategy is evaluated at its frozen 5m cadence; every original 1m cell
 is retained, including unscheduled cells and zero-trade days. This is not the
 source-blocked paid matched A/B, and model arms are never imputed as zero PnL.
+The separate cut-only mode evaluates twenty fixed cells with no economics;
+every other original cell remains unevaluated rather than quiet.
 """
 
 from __future__ import annotations
@@ -17,6 +19,9 @@ from dataclasses import asdict
 from importlib.metadata import distribution
 from pathlib import Path
 from typing import Any
+
+from kairos_strategy.adaptive.config import DEFAULT_CONFIG
+from kairos_strategy.adaptive.logic import evaluate_adaptive
 
 from .engine import COMMON_COST_RISK, CostScenario, replay_tape
 from .historical_inputs import validate_replay_inputs
@@ -253,6 +258,7 @@ def run_sim(workspace_root: Path, output_root: Path) -> dict[str, Any]:
             or sealed_protocol(load_plan(source_plan_path)) != protocol
         ):
             raise ValueError("installed source or sealed protocol changed during SIM")
+        _check_time(deadline)
         result = {
             "schema": SCHEMA,
             "state": "PRICE_SIM_COMPLETED_PAID_MATCHED_AB_BLOCKED",
@@ -292,11 +298,132 @@ def run_sim(workspace_root: Path, output_root: Path) -> dict[str, Any]:
         raise
 
 
+def run_cut_audit(workspace_root: Path, output_root: Path) -> dict[str, Any]:
+    """Only the twenty approved cut/symbol cells; no economic interpretation.
+
+    This does not retry/resume the full price SIM or impute unevaluated cells as
+    quiet. It answers whether a review candidate exists at the original cuts.
+    """
+    workspace, draft_path, source_plan_path = validate_paths(workspace_root, output_root)
+    validate_pilot_plan(draft_path)
+    if hashlib.sha256(draft_path.read_bytes()).hexdigest() != FROZEN_PLAN_SHA256:
+        raise ValueError("exact immutable pilot draft bytes required")
+    source_plan = load_plan(source_plan_path)
+    sources = installed_sources(source_plan, source_plan_path)
+    base_protocol = sealed_protocol(source_plan)
+    protocol = {
+        **base_protocol,
+        "purpose": "FIXED_TWENTY_CUT_CANDIDATE_AUDIT_NOT_FULL_STRATEGY_SIM_OR_MATCHED_AB",
+        "economic_replay": False,
+        "other_original_cells": "NOT_EVALUATED_NOT_IMPUTED_QUIET",
+        "max_wall_seconds": 120,
+    }
+    started = time.monotonic()
+    deadline = started + 120
+    output_root.mkdir(exist_ok=False)
+    write_json(output_root / "sealed-cut-plan.json", protocol)
+    write_json(output_root / "before.json", {"actual_started_utc": utc_now(), "sources": sources})
+    rows = []
+    try:
+        for episode, start, end, cut1, cut2, cache in EPISODES:
+            _check_time(deadline)
+            bar_root, factor_root = _input_roots(workspace, cache)
+            window = {"id": episode, "start": start, "end_exclusive": end}
+            inputs = load_window(bar_root, factor_root, window)
+            validate_replay_inputs(inputs, fixture_only=False, deadline=deadline)
+            _market_summary(inputs)
+            write_json(output_root / f"{episode}-inputs.json", inputs.evidence)
+            for cut in (cut1, cut2):
+                cut_ms = _utc_ms(cut)
+                for symbol in UNIVERSE:
+                    _check_time(deadline)
+                    end_index = (cut_ms - inputs.data_start_ms) // 60_000
+                    prefix = inputs.bars[symbol][end_index - DEFAULT_CONFIG.history_bars : end_index]
+                    decision = evaluate_adaptive(prefix)
+                    if (
+                        len(prefix) != DEFAULT_CONFIG.history_bars
+                        or prefix[-1].close_time_ms != cut_ms - 1
+                        or decision.decision_ts_ms != cut_ms - 1
+                        or decision.input_window_sha256 is None
+                    ):
+                        raise ValueError("exact native closed-prefix/cut binding required")
+                    rows.append(
+                        {
+                            "episode": episode,
+                            "cut_utc": cut,
+                            "symbol": symbol,
+                            "closed_anchor_ms": cut_ms - 1,
+                            "input_window_sha256": decision.input_window_sha256,
+                            "status": str(decision.status),
+                            "reason": decision.reason,
+                            "intent": None if decision.intent is None else asdict(decision.intent),
+                            "model_decision": None,
+                            "provider_calls": 0,
+                        }
+                    )
+            if load_window(bar_root, factor_root, window).evidence != inputs.evidence:
+                raise ValueError("cached source changed during cut audit")
+        _check_time(deadline)
+        if (
+            installed_sources(load_plan(source_plan_path), source_plan_path) != sources
+            or hashlib.sha256(draft_path.read_bytes()).hexdigest() != FROZEN_PLAN_SHA256
+            or sealed_protocol(load_plan(source_plan_path)) != base_protocol
+        ):
+            raise ValueError("installed source or pilot draft changed during cut audit")
+        _check_time(deadline)
+        result = {
+            "schema": SCHEMA,
+            "state": "TWENTY_CUT_AUDIT_COMPLETED_NOT_MATCHED_AB",
+            "actual_finished_utc": utc_now(),
+            "elapsed_seconds": time.monotonic() - started,
+            "sealed_protocol_sha256": digest(protocol),
+            "sources": sources,
+            "evaluated_cut_cells": len(rows),
+            "rows": rows,
+            "candidate_count": sum(row["intent"] is not None for row in rows),
+            "other_original_cells": "NOT_EVALUATED_NOT_IMPUTED_QUIET",
+            "economic_results": None,
+            "review_arms": None,
+            "required_news_ready": False,
+            "provider_calls": 0,
+            "database_calls": 0,
+            "network_calls": 0,
+            "actual_provider_spend_usd": 0,
+            "paid_matched_ab_executed": False,
+            "readiness": protocol["readiness"],
+        }
+        write_json(output_root / "result.json", result)
+        return result
+    except BaseException as exc:
+        write_json(
+            output_root / "failure.json",
+            {
+                "schema": SCHEMA,
+                "state": "FAILED_CLOSED",
+                "error_type": type(exc).__name__,
+                "completed_cut_cells": len(rows),
+                "provider_calls": 0,
+            },
+        )
+        raise
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace-root", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument(
+        "--cut-audit-only", action="store_true", help="twenty original cuts only, no economics"
+    )
     args = parser.parse_args(argv)
+    if args.cut_audit_only:
+        result = run_cut_audit(args.workspace_root, args.output_root)
+        print(
+            json.dumps(
+                {k: result[k] for k in ("state", "elapsed_seconds", "evaluated_cut_cells", "candidate_count")}
+            )
+        )
+        return 0
     result = run_sim(args.workspace_root, args.output_root)
     print(
         json.dumps({k: result[k] for k in ("state", "elapsed_seconds", "denominator_rows", "provider_calls")})
