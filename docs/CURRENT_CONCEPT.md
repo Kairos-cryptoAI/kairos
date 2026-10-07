@@ -41,6 +41,16 @@ uniform unavailable-field projection. This is not generic adaptive/volume or
 production source qualification. The old attempt is not resumed, and annual
 reference economics cannot replace final adaptive/LLM selection or forward gates.
 
+The [completed price-only annual comparison](STRATEGY-PRICE-RESULT-2026-10-07.md)
+now covers all sixteen 2022--2025 cells and independently checked ledgers.
+Its original rule returns `NO_ECONOMIC_REFERENCE_WINNER`: aligned's higher
+primary returns do not overcome the 2023 drawdown tradeoff or both arms'
+observed mark-risk overruns. Preserve the finished negative selection and
+original sources without a rescue run. Broad slow-reference comparison is no
+longer an unexecuted task; native event-driven entry observability and a
+defensible final adaptive identity remain missing. No news/LLM integration,
+campaign freeze or trading permission is inferred.
+
 ## Objective and decision path
 
 Kairos seeks independently demonstrated net trading value under fixed risk

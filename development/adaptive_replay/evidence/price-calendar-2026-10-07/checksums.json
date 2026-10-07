@@ -1,0 +1,391 @@
+{
+  "schema": "kairos.strategy.price-calendar-publication.v1",
+  "source_commit": "28891bbfa4bc17436e248508c84ae47e6cb67a42",
+  "result_sha256": "5d007bba857c91a6321030da812367403f873062872691e9784b9eaf532ee403",
+  "independent_audit_sha256": "92550e7e6683d73bc395058b5a64a252eea28572396cc44399c01d4c13fa8464",
+  "source_acceptance_sha256": "130935ccfa310d656b22135c0e18ead69f20d00250d39066eabbb5ff283e961e",
+  "compression": "LOSSLESS_GZIP_ORIGINAL_AND_COMPRESSED_BYTES_BOUND",
+  "old_attempt_rewritten": false,
+  "economic_attempts": 1,
+  "trial15_v4_v5_ledger_or_blind_results_read": false,
+  "files": [
+    {
+      "file": "before.json.gz",
+      "original_sha256": "39f32962140af78b66d2365ae21c1622cd5621f784c4e119e0e4bcb00c984fa7",
+      "compressed_sha256": "f6af815fd625c4f6c018aa04496a986e063c0988a71164697370ee299137ca5d",
+      "original_bytes": 6292,
+      "compressed_bytes": 2619
+    },
+    {
+      "file": "result.json.gz",
+      "original_sha256": "5d007bba857c91a6321030da812367403f873062872691e9784b9eaf532ee403",
+      "compressed_sha256": "58504ab2b3ebc455965a8cea6954eb5dab3e1e513d20b1eda9b61ec6634c462a",
+      "original_bytes": 256376,
+      "compressed_bytes": 18225
+    },
+    {
+      "file": "sealed-price-reference-plan.json.gz",
+      "original_sha256": "7d8009b5de498673d484e7e760558dc3d337435e928251c4d00a607c507ba3e5",
+      "compressed_sha256": "76385cbc5c0d1c0fe0f6ead5916566b6ade5dc209bf4aa3afc62de88cd373652",
+      "original_bytes": 3860,
+      "compressed_bytes": 1911
+    },
+    {
+      "file": "calendar_2022/inputs.json.gz",
+      "original_sha256": "96fc02de2058b2eb2a6e76ab2d14bf1b161cbf11061bb1f48f4d2f88067c4f7d",
+      "compressed_sha256": "3bc8157cbd70e372c7a4ab51e7d82cf98eea4373f6632254d09fbf9a64133f8a",
+      "original_bytes": 59538,
+      "compressed_bytes": 13676
+    },
+    {
+      "file": "calendar_2022/native-pair-evidence.json.gz",
+      "original_sha256": "3ff6ac576b9d6d31f3528b53076400f307b9229e1d51b7708ba93f3b09480fa1",
+      "compressed_sha256": "f6cf0607109909dc648028033234402c6570af31369afd93b7193e5f47b7aca4",
+      "original_bytes": 2344,
+      "compressed_bytes": 394
+    },
+    {
+      "file": "calendar_2022/regime_aligned_right_tail_v1/base-ledger.json.gz",
+      "original_sha256": "cac71eff2e1961c2a6f6ef26ed5a93d06b9833a73aa0c1093fcbfe874c5d1807",
+      "compressed_sha256": "97a2dbb85aa89727180f5dffe5f1bad33444928b4cdf572041bd48008c51aefc",
+      "original_bytes": 589545,
+      "compressed_bytes": 76409
+    },
+    {
+      "file": "calendar_2022/regime_aligned_right_tail_v1/base.json.gz",
+      "original_sha256": "73ee049fb068a301f031ddef3dd8d400eda0b4c1273c8485a038505303e2e079",
+      "compressed_sha256": "c33f99ab7a600936bf4f4332a9d87c5917874b2e34a0af3e932784250b6d4032",
+      "original_bytes": 10100,
+      "compressed_bytes": 2479
+    },
+    {
+      "file": "calendar_2022/regime_aligned_right_tail_v1/decisions.jsonl.gz",
+      "original_sha256": "038be7bfcb72a5df6db682d92c55d07dabaf4cbf0a824047840ae474bd30dfa5",
+      "compressed_sha256": "3c4769b041ed0d8771a4e30a0382dde3cd23d23a70d8da3aa469f1535efef7b8",
+      "original_bytes": 932311,
+      "compressed_bytes": 110278
+    },
+    {
+      "file": "calendar_2022/regime_aligned_right_tail_v1/stress-ledger.json.gz",
+      "original_sha256": "7841de638f08973eb18dda45d3ec47ea941fd97c3a8e2c39e54d89cdf282036b",
+      "compressed_sha256": "0a31f986a2023b7e81446dcc50e9b4b72d4ea8ba647c6937b51d87cd12e86cee",
+      "original_bytes": 580094,
+      "compressed_bytes": 75414
+    },
+    {
+      "file": "calendar_2022/regime_aligned_right_tail_v1/stress.json.gz",
+      "original_sha256": "73cf969c8f9d419285d74bb9f4c410a4dda4ecdb8019f7ba3c8406162d569f4c",
+      "compressed_sha256": "a3089d4570b86cd89b2d456391bd0727b41fa1c2ff2cec27eea3651fc8aa97bf",
+      "original_bytes": 10140,
+      "compressed_bytes": 2493
+    },
+    {
+      "file": "calendar_2022/right_tail_trend_v1/base-ledger.json.gz",
+      "original_sha256": "38326a4bf0dcb26ddcf504c488c296b1de215cade9b4716b6008c34b5f15c8eb",
+      "compressed_sha256": "865953b375ed42d51c070499f6f553b46de341cc262966f6b1b8bd519cb66d06",
+      "original_bytes": 865421,
+      "compressed_bytes": 114011
+    },
+    {
+      "file": "calendar_2022/right_tail_trend_v1/base.json.gz",
+      "original_sha256": "326aa52a090c3f3460caff99ba07d1b8f4687bba6275f81dbc047ce7e3a1bed6",
+      "compressed_sha256": "2c2457997b9544c64a895ebb58eb3e555b440a06973d552936050c0634dd9a00",
+      "original_bytes": 10088,
+      "compressed_bytes": 2501
+    },
+    {
+      "file": "calendar_2022/right_tail_trend_v1/decisions.jsonl.gz",
+      "original_sha256": "c7c89315b0c1f94881b886667c3bb8ceb92d359a22b2e67a0ced71fbd6ff1b57",
+      "compressed_sha256": "2bb0b1f8e31c4c17ad98acc5097427a86f5ec9dc15386a497637f0a2a97e7379",
+      "original_bytes": 923145,
+      "compressed_bytes": 103129
+    },
+    {
+      "file": "calendar_2022/right_tail_trend_v1/stress-ledger.json.gz",
+      "original_sha256": "5b67997bd57aacb28e9ee4bafd9d86e7f928f5bf59500b84ef04763c7cda973c",
+      "compressed_sha256": "e3d5e10f1e005f1baaf4379cee79b3a207bdfbce218d849e44cdafb2f967b0f8",
+      "original_bytes": 853684,
+      "compressed_bytes": 112772
+    },
+    {
+      "file": "calendar_2022/right_tail_trend_v1/stress.json.gz",
+      "original_sha256": "0fa5e0de5c0799bd9dca7471478b5a2cc86eb36c82c45a65a92221684bbd00fa",
+      "compressed_sha256": "8b82b7470b7f4aa3431f3416bc5bedb38e74985a0bd5bddbaf8e8e64ddf02f68",
+      "original_bytes": 10127,
+      "compressed_bytes": 2510
+    },
+    {
+      "file": "calendar_2023/inputs.json.gz",
+      "original_sha256": "3421916df7236eb79a22b61e1db7fdce6c975f241c4ea71ba0edc49a57a9d3d0",
+      "compressed_sha256": "5323152fcd0c928196e1e104571ec4b3277a1702e83cfdfa0c351e11aa635eb7",
+      "original_bytes": 59470,
+      "compressed_bytes": 13668
+    },
+    {
+      "file": "calendar_2023/native-pair-evidence.json.gz",
+      "original_sha256": "3c0b24f832f1d4c797dfb67ba763e7f3a1b2c112762d1d2c450119e7111ed72a",
+      "compressed_sha256": "9df55406dcabfdd717fb0947031890ee9b614a516b848ac4d605a54ccb4d90bd",
+      "original_bytes": 2340,
+      "compressed_bytes": 398
+    },
+    {
+      "file": "calendar_2023/regime_aligned_right_tail_v1/base-ledger.json.gz",
+      "original_sha256": "583102ed5198ca71f563dc1eab50322378e60c2a3da5a5f1a7a4e1eb4ba38f7f",
+      "compressed_sha256": "60646fd67f133b8310afc74d3df8fac2f7ee4acd28960b233d7896a22c901918",
+      "original_bytes": 663180,
+      "compressed_bytes": 86786
+    },
+    {
+      "file": "calendar_2023/regime_aligned_right_tail_v1/base.json.gz",
+      "original_sha256": "5c4b3887aff17c550c5cc10beda9e32ea9100260a130b5d278a5ee62c582db8b",
+      "compressed_sha256": "43cac6b9c9f91e6beb8f97164aaf8dbe53aac7a08f8011734c863d6c85aa56f0",
+      "original_bytes": 10140,
+      "compressed_bytes": 2503
+    },
+    {
+      "file": "calendar_2023/regime_aligned_right_tail_v1/decisions.jsonl.gz",
+      "original_sha256": "6038541cfd7f034d58ae340cb4cdc4713648d4ab9771c339a5c1613a57b12cb4",
+      "compressed_sha256": "1342a0c03c6154f294c3f7239d602b1629c4642d1f3682b5703a48bd0bef12c1",
+      "original_bytes": 886538,
+      "compressed_bytes": 101431
+    },
+    {
+      "file": "calendar_2023/regime_aligned_right_tail_v1/stress-ledger.json.gz",
+      "original_sha256": "f7548f8d35b80d9deca03e50742d79284508bbe37808a21304fa79c765659955",
+      "compressed_sha256": "370c3533595f8233c3b7eb5f1d116b26d46faa46b9f1f1132087fea261512633",
+      "original_bytes": 646225,
+      "compressed_bytes": 84837
+    },
+    {
+      "file": "calendar_2023/regime_aligned_right_tail_v1/stress.json.gz",
+      "original_sha256": "80a62b0f2eb617d74d1c4fe45be7443968a314c28e2b5c5c504fe8b9051bd35c",
+      "compressed_sha256": "3f3c7737aa293530174fff065f1d4ae3c2972b3bac877aeea5c59238ed1b0c03",
+      "original_bytes": 10141,
+      "compressed_bytes": 2506
+    },
+    {
+      "file": "calendar_2023/right_tail_trend_v1/base-ledger.json.gz",
+      "original_sha256": "283c261da4f21287ce8b13e5bf2c99af1e618dfe229d921a2627e784a4ab13fb",
+      "compressed_sha256": "38df346f718559ec5e53a36ff22a04f9878f5bb68a1fe2e4a9d8bfa9812d77c2",
+      "original_bytes": 931965,
+      "compressed_bytes": 121831
+    },
+    {
+      "file": "calendar_2023/right_tail_trend_v1/base.json.gz",
+      "original_sha256": "8afb82955c07fef880c9bd9da0e43570c235428559eacf5264d7f4fd5a0574a6",
+      "compressed_sha256": "34bca8d507e0a6b0103752eadb0c97d8d4d7c3ca9f5706587f2d7d1b82d5d32b",
+      "original_bytes": 10132,
+      "compressed_bytes": 2536
+    },
+    {
+      "file": "calendar_2023/right_tail_trend_v1/decisions.jsonl.gz",
+      "original_sha256": "0a3f2052e97792334ff0f3ea29d8e1e4a570fd0820d2b76761630959c83b970f",
+      "compressed_sha256": "0675e2e9eddfc83633ac9310ef0def99ea5f06fd8ff281224b581e9cabdb1a1f",
+      "original_bytes": 856097,
+      "compressed_bytes": 90705
+    },
+    {
+      "file": "calendar_2023/right_tail_trend_v1/stress-ledger.json.gz",
+      "original_sha256": "200482324fdbc52fe04df1186863631c03ef354118e6eb55ca3d38649027a347",
+      "compressed_sha256": "44b44627279913c8bd10a4e7814a833c03286bf26e07296fa34dea0dde7f652f",
+      "original_bytes": 909922,
+      "compressed_bytes": 119368
+    },
+    {
+      "file": "calendar_2023/right_tail_trend_v1/stress.json.gz",
+      "original_sha256": "09b99bac5ea4f9dcd9d23fcde17e983f2f314014b997e604c31a46855c34782f",
+      "compressed_sha256": "2737fd836cb0b62c2cce2774151bf4cb27d028fd6e4bd2727dae2fe05cc724b4",
+      "original_bytes": 10132,
+      "compressed_bytes": 2534
+    },
+    {
+      "file": "calendar_2024/inputs.json.gz",
+      "original_sha256": "3c63b916f218f787c660701a3668af45c44bd93feb1c059f585a6186178e5d8f",
+      "compressed_sha256": "d1d9cae672c490e8738f6dcc235c385df24189e5eea8bcd2dbbb7878b326fa24",
+      "original_bytes": 59454,
+      "compressed_bytes": 13625
+    },
+    {
+      "file": "calendar_2024/native-pair-evidence.json.gz",
+      "original_sha256": "281ed0bd8f71ec4f2b566b48baaf604b0a42ea0714eda041f6518bc1fb92edbd",
+      "compressed_sha256": "e6827dcdb8596815196e799284e607edbf44276287e1b9439449078074610151",
+      "original_bytes": 2343,
+      "compressed_bytes": 407
+    },
+    {
+      "file": "calendar_2024/regime_aligned_right_tail_v1/base-ledger.json.gz",
+      "original_sha256": "775d4fcd1f492c4ea8e311bb9dcb737800aeb95d683fbcf75c07d09c48007033",
+      "compressed_sha256": "c3376c15bd5e1fc8f4a7f84e6db94d8a672758c1dd89f48e508818fb505099d8",
+      "original_bytes": 703208,
+      "compressed_bytes": 89770
+    },
+    {
+      "file": "calendar_2024/regime_aligned_right_tail_v1/base.json.gz",
+      "original_sha256": "13be4f80f3b36d97d8314ced843268f17880dee855fe3b36d0de32d5715af8c4",
+      "compressed_sha256": "0bfcd6b428d00adec04e4a286c4be853956dd0aff0db148da5238e01039b5c73",
+      "original_bytes": 10119,
+      "compressed_bytes": 2500
+    },
+    {
+      "file": "calendar_2024/regime_aligned_right_tail_v1/decisions.jsonl.gz",
+      "original_sha256": "5d61ddc81be84ddf4a6f240ac83c8ca89d7b8679ecacefeec6f5ed2dfdd5e0cd",
+      "compressed_sha256": "ec432b8b6f806a252e62013a512dc12a01fa263a9cc28048ede70f95df37959f",
+      "original_bytes": 933455,
+      "compressed_bytes": 111377
+    },
+    {
+      "file": "calendar_2024/regime_aligned_right_tail_v1/stress-ledger.json.gz",
+      "original_sha256": "ec6d4c7aa66aea4372eb9ac8e7c26b8cdcd86c13751a24ccdf37ae957e7e424f",
+      "compressed_sha256": "ece7a0b48318c857823894458a2a05a8e14b62fcf9f057d88db8fb51e9e32b23",
+      "original_bytes": 700087,
+      "compressed_bytes": 89249
+    },
+    {
+      "file": "calendar_2024/regime_aligned_right_tail_v1/stress.json.gz",
+      "original_sha256": "253becb597a22130ff1565dbdf5179b0fd82dea091272cde6b8b473ae2aecc35",
+      "compressed_sha256": "76c081d3d869905c7b59841d13736ee87e44d65bc7e81d99f2206e2d22cee7da",
+      "original_bytes": 10122,
+      "compressed_bytes": 2505
+    },
+    {
+      "file": "calendar_2024/right_tail_trend_v1/base-ledger.json.gz",
+      "original_sha256": "46bdda519e3a9b58e4ff6750e2a1e65288e7ced76b2a24974c8d155e40a38cbd",
+      "compressed_sha256": "09d49b1f5273c6f51a820130ca39419de43b8e95cfee69f01d764de57c5f54c9",
+      "original_bytes": 962276,
+      "compressed_bytes": 122973
+    },
+    {
+      "file": "calendar_2024/right_tail_trend_v1/base.json.gz",
+      "original_sha256": "240754b2882df812157d34a02c068c748b8222c00befb774f75c8ef61b32a0bc",
+      "compressed_sha256": "2ef848ec548b5a8233614b8316f904d066572f03d43cab5a0b3a5e5d4947a9f2",
+      "original_bytes": 10109,
+      "compressed_bytes": 2500
+    },
+    {
+      "file": "calendar_2024/right_tail_trend_v1/decisions.jsonl.gz",
+      "original_sha256": "7f94df844122cf88d7ae453de691bbb5063e2666265008194020a9280e54bde8",
+      "compressed_sha256": "fe53594e033de963676c1f90572ba6a509afe4cca18dadd92fcec5bc61ad90d2",
+      "original_bytes": 897835,
+      "compressed_bytes": 98896
+    },
+    {
+      "file": "calendar_2024/right_tail_trend_v1/stress-ledger.json.gz",
+      "original_sha256": "3f3957fa4cc09d1665c3c13cd8f8e53b895744c46384f4d609b2fec773ef83bf",
+      "compressed_sha256": "62b89eb271d4fc1013615e8039fbe4dcd4e8e9784f76b4a6cc7ce7865338c6e3",
+      "original_bytes": 956634,
+      "compressed_bytes": 122298
+    },
+    {
+      "file": "calendar_2024/right_tail_trend_v1/stress.json.gz",
+      "original_sha256": "73dbeadb3e29f45c81d289e0c589e83a978d0ed493ae636c6a642e638865fc3b",
+      "compressed_sha256": "caa4e75f6d37509d03832845afdaac7a54489eaee8e89a30f1fa0ce850a2d275",
+      "original_bytes": 10113,
+      "compressed_bytes": 2504
+    },
+    {
+      "file": "calendar_2025/inputs.json.gz",
+      "original_sha256": "8ee446b0d049821f896bc8f28eeec2637445a3928bb48da384347a64e4993678",
+      "compressed_sha256": "b8c3396cb554a7351d902fbaefa461cad21778b71bb692a31c8e498b71040c34",
+      "original_bytes": 59494,
+      "compressed_bytes": 13607
+    },
+    {
+      "file": "calendar_2025/native-pair-evidence.json.gz",
+      "original_sha256": "8c194aeb2e9905017987cd5b1d598818fcb2ea9d4d7fdb7ca7e6aeb8007693d1",
+      "compressed_sha256": "bf7cc2328c84fa933e5bdfc5ac9118699e1ce1e4d1787de453084813b48a4350",
+      "original_bytes": 2344,
+      "compressed_bytes": 399
+    },
+    {
+      "file": "calendar_2025/regime_aligned_right_tail_v1/base-ledger.json.gz",
+      "original_sha256": "1f4284f07fefd78b20348830e37adf480f4ebb35c445d681909380a9c57a7ba9",
+      "compressed_sha256": "36b5c59aa7187d8a390d4e998880dc1e562e16f64050b1fe5be613667f9adc3f",
+      "original_bytes": 625826,
+      "compressed_bytes": 82488
+    },
+    {
+      "file": "calendar_2025/regime_aligned_right_tail_v1/base.json.gz",
+      "original_sha256": "24cab0579ed20a19fcf2b11b299fa79931731914a81a66fa53f8c22ee01c37dd",
+      "compressed_sha256": "ab1e781f1002487b1d29ff642f3c601de23ec4892ef1eae3b24694806f77625f",
+      "original_bytes": 10100,
+      "compressed_bytes": 2477
+    },
+    {
+      "file": "calendar_2025/regime_aligned_right_tail_v1/decisions.jsonl.gz",
+      "original_sha256": "281ac90eb0bf1c99fb4fd6c10835c2a605ec019f671b40c345b9ad2764c69e16",
+      "compressed_sha256": "e1e691e50f225447629d83e74f6b5e9a70496ca4cd8effb4a6d0a9997b427d2b",
+      "original_bytes": 903736,
+      "compressed_bytes": 105337
+    },
+    {
+      "file": "calendar_2025/regime_aligned_right_tail_v1/stress-ledger.json.gz",
+      "original_sha256": "0d13fc6740d1c1df9a6f9fe1e4b6f26598e67a6c8a7dcff372861c35a11470d3",
+      "compressed_sha256": "3ce4cf35bf91a8f19a82eebea9777645678f73e28abdeceb2ee1a28d078ea243",
+      "original_bytes": 617669,
+      "compressed_bytes": 81455
+    },
+    {
+      "file": "calendar_2025/regime_aligned_right_tail_v1/stress.json.gz",
+      "original_sha256": "d21e49185c676271a6342bdcf96ec7bc48dfcc23732f9a200d6ffa10df750de6",
+      "compressed_sha256": "6febaf0d3c5a47a10570d2b8bc329d9b3c368e5fc579a498825b6e278ad8c33e",
+      "original_bytes": 10139,
+      "compressed_bytes": 2506
+    },
+    {
+      "file": "calendar_2025/right_tail_trend_v1/base-ledger.json.gz",
+      "original_sha256": "f47c0d2082eef081be3d5b18c259b9611dbaf7cda80ae5013610971228b3010a",
+      "compressed_sha256": "8639652170e840cfb33a9e21ef3d103de3ca3a783b8736406945c7a3910e3f6b",
+      "original_bytes": 963408,
+      "compressed_bytes": 124807
+    },
+    {
+      "file": "calendar_2025/right_tail_trend_v1/base.json.gz",
+      "original_sha256": "0ada4f39baaa48c591d8cab08b4f610e4ef93c11d37c40519622320c63ed25f1",
+      "compressed_sha256": "91c63c5d2bb449caa4281fa2728f002ba126bc27c0f54b8f6ce0489f95dc0df7",
+      "original_bytes": 10086,
+      "compressed_bytes": 2520
+    },
+    {
+      "file": "calendar_2025/right_tail_trend_v1/decisions.jsonl.gz",
+      "original_sha256": "70fd87b858067d217fc3647747d14e840b6c422bee345af82c2b8342704de7fb",
+      "compressed_sha256": "48502076869fea61a09d40848c0b547e04fdbf82f6d4925aa635906b2c3a3f83",
+      "original_bytes": 913657,
+      "compressed_bytes": 101793
+    },
+    {
+      "file": "calendar_2025/right_tail_trend_v1/stress-ledger.json.gz",
+      "original_sha256": "d9e73bc56a7ca16514a45ca6ce33c03d42f969e72c33c604f694fc1b29754651",
+      "compressed_sha256": "559dec1da54eddbf8a0db77a3d35d8fd99e4b2a91e20330590aa1060f7cdc2d4",
+      "original_bytes": 947911,
+      "compressed_bytes": 122871
+    },
+    {
+      "file": "calendar_2025/right_tail_trend_v1/stress.json.gz",
+      "original_sha256": "f9681e762c2083477abd380c3c9aa3b45022b9fa7ce791e1de62048cdc62ed6f",
+      "compressed_sha256": "175a038edd9e2f28b1e985730e5bdcbaf1211a5d46450d90ea645a573f79fafa",
+      "original_bytes": 10126,
+      "compressed_bytes": 2532
+    },
+    {
+      "file": "launch-evidence.json.gz",
+      "original_sha256": "52cb1f83352800f7dc1412d6be3f69fb7cd6e43ddc9cb3ef57e6358392b5a831",
+      "compressed_sha256": "f23305eda299ceb4f3afd9fdfdbf57152304132321cd31835408ffa2fc0f57ef",
+      "original_bytes": 897,
+      "compressed_bytes": 531
+    },
+    {
+      "file": "independent-ledger-audit.json.gz",
+      "original_sha256": "92550e7e6683d73bc395058b5a64a252eea28572396cc44399c01d4c13fa8464",
+      "compressed_sha256": "190c3a704b57645c5bdac545b88c7da219ce06224802a68bdf64094b9f0aeb2a",
+      "original_bytes": 17009,
+      "compressed_bytes": 3283
+    },
+    {
+      "file": "independent-calculator.ps1.gz",
+      "original_sha256": "c59ddcdc71f9ba320f2978c3a14ca573cc2779c7e1e164449e77a4a6a70dcaf5",
+      "compressed_sha256": "ca04d42a5b28788142b1353b0885cc6b9ba09df233c35ae76969199d790616fa",
+      "original_bytes": 8306,
+      "compressed_bytes": 2788
+    }
+  ]
+}

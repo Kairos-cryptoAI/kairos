@@ -2,6 +2,25 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## Completed four-year price-only reference — 2026-10-07
+
+The [separately preregistered 2022--2025 comparison](STRATEGY-PRICE-RESULT-2026-10-07.md)
+completed once in 654.25 seconds; all sixteen cells pass independent scoped
+ledger arithmetic and sealed before/after input/source checks. Primary stress
+base/aligned natural closes total 1,411/976, with no forced or unresolved exits.
+Aligned has higher stress returns in all four years, but the unchanged rule
+returns `NO_ECONOMIC_REFERENCE_WINNER`: its 2023 MTM drawdown is higher than
+base, and both arms breach the observed 1% aggregate mark-risk ratio in each
+year. Equal-year stress means (-0.38512%/+3.59458%) are not CAGR, full-system
+economics or future alpha. All original artifacts are losslessly byte-bound;
+no old attempt, strategy parameter, source fingerprint or threshold is rewritten.
+The broad reference experiment is finished; final adaptive/LLM selection still
+needs observable native intraday entries and accepted new evidence. All 330
+development tests pass on Python 3.11/3.14; lint and meta static checks pass.
+No integration,
+new blind enrollment or trading authority follows. All readiness stays false
+and policy stays `REJECT_ALL`.
+
 ## Accepted price-only slow-reference inputs — 2026-10-07
 
 The [separate field-scope protocol](STRATEGY-PRICE-SOURCE-PROTOCOL-2026-10-07.md)
@@ -12,9 +31,10 @@ defect repeats in monthly/daily/REST and remains invalid for FULL_KLINE.
 Only the two unchanged slow price references receive uniform PRICE_ONLY
 projection, with unavailable zero placeholders, no replacement and explicit
 quarantine. All 255 bars/255 funding/nineteen daily files are byte-bound.
-The new scoped engineering passes 326 installed-wheel tests on Python
-3.11/3.14 and method review. The separately signed protocol/CI must precede
-its single bounded economic attempt; no new annual result is claimed here.
+The pre-run scoped engineering passed 326 installed-wheel tests on Python
+3.11/3.14 and method review; final publication adds four evidence tests above.
+The separately signed protocol/CI preceded
+the single bounded economic attempt reported above.
 This does not select the adaptive/LLM strategy, qualify volume consumers or
 grant alpha/trading authority. All readiness remains false and `REJECT_ALL`.
 

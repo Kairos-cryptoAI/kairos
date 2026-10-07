@@ -272,3 +272,13 @@ It verifies all accepted bytes before generation and after the four years.
 The same native defaults, costs, risk, reference rule and 1,200s single-worker
 bound apply. Do not retry either old or new economic attempt, select incomplete
 years or turn this field-specific development comparison into qualification.
+
+The [completed price-only result](../../docs/STRATEGY-PRICE-RESULT-2026-10-07.md)
+covers all sixteen 2022--2025 cells in one 654.25-second run. Independent
+PowerShell ledger arithmetic passes; the unchanged nomination rule retains
+`NO_ECONOMIC_REFERENCE_WINNER` despite higher aligned stress returns, because
+of risk overruns and the 2023 drawdown tradeoff. This does not solve the final
+adaptive/LLM selection. All 54 original source/tape/report/ledger/audit artifacts
+are losslessly compressed and byte-bound by
+[the publication index](evidence/price-calendar-2026-10-07/checksums.json).
+CI checks the stored evidence without another historical economic replay.
