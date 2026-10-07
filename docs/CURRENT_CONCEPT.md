@@ -4,11 +4,15 @@ Updated: 2026-10-07 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Active work: strategy selection only
+## Active work: candidate-stream and causal selection evaluation
 
-The user's latest direction pauses further system integration while strategy
-families are selected. Existing news/Macro/Router/review/economic transport
-engineering is preserved, not removed or extended here. The previous adaptive
+The user's latest direction evaluates strategy families as candidate generators
+and tests whether causal selection adds complete-system value. A weak standalone
+result is not automatic research exclusion; it is not presumed rescued by LLM.
+The additive [selection controls and all-candidate audit](STRATEGY-FILTER-EVALUATION-2026-10-07.md)
+extend only the isolated offline evaluator, not production integration or frozen
+campaigns. Existing news/Macro/Router/review/economic transport is preserved.
+The previous adaptive
 implementation is a provisional research challenger, not a proven selected
 champion. Keep a small shortlist of aligned right-tail with its exact base as a
 slow historical reference, default intraday breakout as an active negative
@@ -117,14 +121,14 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
-| Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened family selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | finish bounded family selection and observed-fill development evidence before one own eligible identity/evaluator freeze; no parameter grid or system integration now |
+| Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened candidate-stream selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | assess source/execution validity and causal full-system incremental value before one own eligible identity/evaluator freeze; no parameter grid or production integration now |
 | Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |
 | Candidate review | runtime consumes source-bound context; required missing/late inputs defer before a provider call | exact new-contract/provider qualification; old context-free corpus is not qualifying evidence |
 | Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
-| Matched research economics | observation journal, immutable native-window transport and separate offline four-path caller-attested accounting; no accepted full-system economics | native clock/cadence economics bridge, qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
+| Matched research economics | observation journal, immutable native-window transport and separate offline four-path accounting plus opt-in causal-source/review-timing controls and all-candidate audit; no accepted full-system economics | native clock/cadence economics bridge, qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
 | Current release | engineering-only source identity | exact matching Windows, integration and CI evidence; no inheritance from historical green runs |
 | Production | LIVE startup blocked | security, custody, backup/restore, alerts, limits and manual arming after all gates |
 

@@ -12,6 +12,7 @@ from kairos_strategy.candles import Candle
 from kairos_strategy.models import ExitPlan, SleeveIntent
 
 from adaptive_replay.engine import AccountCost, CostScenario
+from adaptive_replay.filters import CausalFilterObservation, causal_filter_decision
 from adaptive_replay.inputs import UNIVERSE, WindowInputs
 from adaptive_replay.matched import MatchedSlot, ReviewReceipt
 from adaptive_replay.system import (
@@ -586,3 +587,289 @@ def test_unavailable_slot_still_validates_native_source_link_before_replay():
     )
     with pytest.raises(ValueError, match="common causal slot/market"):
         _run((inputs, (unavailable, *slots[1:]), reviews, (forged, *proposals[1:])))
+
+
+def _filter_observations(slots, delay=100):
+    return tuple(
+        CausalFilterObservation(
+            s.matched.slot_id,
+            s.candidate.intent_id,
+            s.context_sha256,
+            s.matched.decision_ms,
+            s.matched.decision_ms + delay,
+            "TEST_FIXTURE",
+        )
+        for s in slots
+        if s.state == "CANDIDATE"
+    )
+
+
+def _run_filter(data, observations, **kwargs):
+    return evaluate_system_paths(
+        *data,
+        SCENARIO,
+        "INTRABAR_OPEN_PROXY",
+        mapper_policy_sha256=POLICY,
+        fixture_only=True,
+        deterministic_filters=observations,
+        **kwargs,
+    )
+
+
+def test_opt_in_causal_control_all_pass_equals_baseline_with_identical_clocks_and_costs():
+    data = _fixture()
+    old = _run(data)
+    assert old["schema"] == "kairos.development.full-system-paths.v1"
+    assert "candidate_selection_audit" not in old
+    result = _run_filter(data, _filter_observations(data[1]))
+    assert result["schema"] == "kairos.development.full-system-paths.v2"
+    assert all(result["arms"][path] == old["arms"][path] for path in old["arms"])
+    arm = result["arms"]["deterministic_filter"]
+    assert arm["economic_results"] == result["arms"]["strategy_only"]["economic_results"]
+    assert arm["events"] == result["arms"]["strategy_only"]["events"]
+    assert arm["model_call_count"] == 0
+    assert arm["recorded_all_in_net_result"] is None
+    assert result["candidate_selection_audit"]["baseline_candidate_denominator"] == 4
+    assert (
+        result["deterministic_filter_control"]["standalone_profitability_is_admission_requirement"] is False
+    )
+    assert result["deterministic_filter_control"]["daily_trade_quota"] is None
+    assert not result["matched_campaign_executed"] and not result["live_ready"]
+
+
+def test_missing_filter_receipt_nulls_whole_account_not_selected_profitable_subset():
+    data = _fixture()
+    observations = _filter_observations(data[1])
+    result = _run_filter(data, observations[:-1])
+    arm = result["arms"]["deterministic_filter"]
+    assert arm["missing_observations"] == 1
+    assert arm["status"] == "INCOMPLETE" and arm["economic_results"] is None
+    audit = result["candidate_selection_audit"]
+    assert audit["baseline_candidate_denominator"] == 4
+    assert all(
+        row["paths"]["deterministic_filter"]["execution_status"] == "UNKNOWN" for row in audit["candidates"]
+    )
+
+
+def test_filter_required_missing_context_is_known_defer_not_fabricated_direction():
+    inputs, slots, _, _ = _fixture()
+    edited = tuple(replace(s, sources=(*s.sources[:3], replace(s.sources[3], required=True))) for s in slots)
+    result = _run_filter(
+        (inputs, edited, (), ()),
+        _filter_observations(edited),
+        feed_costs=(AccountCost("fixture-feed", START, 0.5, "FEED"),),
+    )
+    arm = result["arms"]["deterministic_filter"]
+    assert arm["decisions"]["REQUIRED_SOURCE_UNAVAILABLE"] == 4
+    assert arm["economic_results"]["closed_trades"] == 0
+    assert arm["economic_results"]["final_equity_usd"] == pytest.approx(9999.5)
+    assert arm["model_call_count"] == 0
+    assert result["candidate_selection_audit"]["schedule_denominator"] == 5
+
+
+@pytest.mark.parametrize("mode", ["STRICT_MINUTE_OPEN", "INTRABAR_OPEN_PROXY"])
+def test_filter_never_extends_original_lifetime_after_late_observation(mode):
+    slot = _fixture()[1][1]
+    obs = _filter_observations((slot,), delay=120_000)[0]
+    decision = causal_filter_decision(slot, obs, mode, fixture_only=True)
+    assert decision["disposition"] == "DEFER"
+    assert decision["reason"] == "NO_ELIGIBLE_QUOTE_WITHIN_ORIGINAL_LIFETIME"
+    assert decision["candidate_id"] == slot.candidate.intent_id
+
+
+def test_filter_rechecks_context_ttl_at_later_strict_quote():
+    slot = _fixture()[1][1]
+    candidate = replace(slot.candidate, entry_expires_ts_ms=slot.matched.decision_ms + 120_000)
+    sources = tuple(
+        replace(s, receipts=tuple(r.model_copy(update={"ttl_ms": 90}) for r in s.receipts))
+        if s.availability == "AVAILABLE"
+        else s
+        for s in slot.sources
+    )
+    slot = replace(
+        slot,
+        candidate=candidate,
+        matched=replace(slot.matched, candidate_id=candidate.intent_id),
+        sources=sources,
+    )
+    obs = _filter_observations((slot,), delay=50)[0]
+    assert slot.context_ready_at(obs.observed_ms)
+    decision = causal_filter_decision(slot, obs, "STRICT_MINUTE_OPEN", fixture_only=True)
+    assert decision["reason"] == "STALE_CONTEXT_AT_QUOTE"
+    assert decision["disposition"] == "DEFER"
+
+
+def test_filter_refuses_duplicate_wrong_candidate_context_and_fixture_relabel():
+    data = _fixture()
+    observations = _filter_observations(data[1])
+    with pytest.raises(ValueError, match="duplicate filter"):
+        _run_filter(data, (observations[0], observations[0]))
+    for field in ("candidate_id", "context_sha256"):
+        forged = replace(observations[0], **{field: H("different")})
+        with pytest.raises(ValueError, match="exact candidate"):
+            _run_filter(data, (forged, *observations[1:]))
+    forged = replace(observations[0], evidence_kind="OBSERVED_POINT_IN_TIME")
+    with pytest.raises(ValueError, match="cannot be mixed"):
+        _run_filter(data, (forged, *observations[1:]))
+    with pytest.raises(ValueError, match="exact candidate"):
+        _run_filter(data, (replace(observations[0], slot_id=data[1][0].matched.slot_id),))
+
+
+@pytest.mark.parametrize("clock", [True, -1, 1.5])
+def test_filter_clock_cannot_be_boolean_negative_or_fractional(clock):
+    obs = _filter_observations(_fixture()[1])[0]
+    with pytest.raises(ValueError, match="filter clocks"):
+        replace(obs, observed_ms=clock)
+
+
+@pytest.mark.parametrize("field,value", [("policy_sha256", H("other-policy")), ("observed_ms", True)])
+def test_filter_consumer_revalidates_unchecked_frozen_observation(field, value):
+    slot = _fixture()[1][1]
+    forged = _filter_observations((slot,))[0]
+    object.__setattr__(forged, field, value)
+    with pytest.raises(ValueError, match="filter policy|filter clocks"):
+        causal_filter_decision(slot, forged, "INTRABAR_OPEN_PROXY", fixture_only=True)
+
+
+def test_future_exit_prices_can_change_economics_but_not_causal_filter_selection():
+    data = _fixture()
+    inputs, slots, _, _ = data
+    observations = _filter_observations(slots)
+    edited_bars = {
+        symbol: tuple(replace(bar, low=98.0) if bar.open_time_ms == START + 60_000 else bar for bar in rows)
+        for symbol, rows in inputs.bars.items()
+    }
+    changed = (replace(inputs, bars=edited_bars), *data[1:])
+    before, after = _run_filter(data, observations), _run_filter(changed, observations)
+    assert before["deterministic_filter_control"] == after["deterministic_filter_control"]
+    assert (
+        before["arms"]["strategy_only"]["economic_results"]["net_return_pct"]
+        != after["arms"]["strategy_only"]["economic_results"]["net_return_pct"]
+    )
+    assert (
+        before["candidate_selection_audit"]["baseline_candidate_denominator"]
+        == after["candidate_selection_audit"]["baseline_candidate_denominator"]
+    )
+    # Weak standalone economics do not exclude the candidate stream from research.
+    assert after["arms"]["strategy_only"]["economic_results"]["net_return_pct"] < 0
+    assert after["arms"]["deterministic_filter"]["economic_results"] is not None
+
+
+def test_audit_only_preserves_four_accounts_and_missing_unknown_review_cost():
+    data = _fixture()
+    result = evaluate_system_paths(
+        *data,
+        SCENARIO,
+        "INTRABAR_OPEN_PROXY",
+        mapper_policy_sha256=POLICY,
+        fixture_only=True,
+        include_selection_audit=True,
+    )
+    assert set(result["arms"]) == set(_run(data)["arms"])
+    assert len(result["candidate_selection_audit"]["candidates"]) == 4
+    unknown_review = replace(data[2][0], attempt=replace(data[2][0].attempt, cost_usd=None))
+    changed = (data[0], data[1], (unknown_review, *data[2][1:]), data[3])
+    result = evaluate_system_paths(
+        *changed,
+        SCENARIO,
+        "INTRABAR_OPEN_PROXY",
+        mapper_policy_sha256=POLICY,
+        fixture_only=True,
+        include_selection_audit=True,
+    )
+    row = result["candidate_selection_audit"]["candidates"][0]["paths"]["context_review"]
+    assert row["cost_usd"] is None and row["execution_status"] == "UNKNOWN"
+
+
+def test_valid_quiet_roster_needs_no_filter_and_does_not_force_daily_trades():
+    inputs, slots, _, _ = _fixture()
+    quiet = tuple(
+        replace(s, state="QUIET", candidate=None, matched=replace(s.matched, candidate_id=None))
+        for s in slots
+    )
+    result = _run_filter((inputs, quiet, (), ()), ())
+    arm = result["arms"]["deterministic_filter"]
+    assert arm["economic_results"]["closed_trades"] == 0
+    assert arm["missing_observations"] == 0
+    assert result["candidate_selection_audit"]["baseline_candidate_denominator"] == 0
+
+
+def _run_timing(data):
+    return evaluate_system_paths(
+        *data,
+        SCENARIO,
+        "INTRABAR_OPEN_PROXY",
+        mapper_policy_sha256=POLICY,
+        fixture_only=True,
+        include_review_timing_control=True,
+    )
+
+
+def test_all_allow_timing_cost_control_equals_actual_review_independent_account():
+    result = _run_timing(_fixture())
+    review, control = (result["arms"][p] for p in ("context_review", "review_timing_control"))
+    assert review["economic_results"] == control["economic_results"]
+    assert review["events"] == control["events"]
+    assert review["known_model_cost_usd"] == control["known_model_cost_usd"]
+    assert result["review_timing_control"]["context_review_minus_timing_control_usd"] == 0
+
+
+def test_timing_control_ignores_veto_content_not_cost_or_response_time():
+    inputs, slots, reviews, proposals = _fixture()
+    vetoed = tuple(replace(r, review=replace(r.review, result="VETO")) for r in reviews)
+    result = _run_timing((inputs, slots, vetoed, proposals))
+    review, control = (result["arms"][p] for p in ("context_review", "review_timing_control"))
+    assert not any(e["kind"] == "ENTRY" for e in review["events"])
+    assert any(e["kind"] == "ENTRY" for e in control["events"])
+    assert control["known_model_cost_usd"] == review["known_model_cost_usd"] == pytest.approx(0.04)
+    assert [e for e in control["events"] if e["kind"] == "SERVICE_COST"] == [
+        e for e in review["events"] if e["kind"] == "SERVICE_COST"
+    ]
+    assert all(e["timestamp_ms"] == START + 99 for e in control["events"] if e["kind"] == "ENTRY")
+    assert result["candidate_selection_audit"]["baseline_candidate_denominator"] == 4
+
+
+def test_timing_control_missing_unknown_and_not_called_are_not_free_complete_responses():
+    inputs, slots, reviews, proposals = _fixture()
+    result = _run_timing((inputs, slots, reviews[1:], proposals))
+    assert result["arms"]["review_timing_control"]["economic_results"] is None
+    assert result["review_timing_control"]["context_review_minus_timing_control_usd"] is None
+    unknown = replace(reviews[0], attempt=replace(reviews[0].attempt, cost_usd=None))
+    result = _run_timing((inputs, slots, (unknown, *reviews[1:]), proposals))
+    assert result["arms"]["review_timing_control"]["economic_results"] is None
+    no_call = replace(
+        reviews[0],
+        review=None,
+        attempt=replace(reviews[0].attempt, status="NOT_CALLED", cost_usd=0, no_call_reason="BUDGET_DENIED"),
+    )
+    result = _run_timing((inputs, slots, (no_call, *reviews[1:]), proposals))
+    control = result["arms"]["review_timing_control"]
+    assert control["scheduled_no_call_outcomes"] == 1
+    assert control["observed_complete_response_count"] == 3
+    assert not any(e.get("intent_id") == slots[1].candidate.intent_id for e in control["events"])
+
+
+def test_timing_control_late_error_keeps_cost_without_backdating_fill():
+    inputs, slots, reviews, proposals = _fixture()
+    late = replace(
+        reviews[0],
+        review=None,
+        attempt=replace(
+            reviews[0].attempt,
+            status="ERROR",
+            observed_ms=slots[1].candidate.entry_expires_ts_ms + 1,
+        ),
+    )
+    result = _run_timing((inputs, slots, (late, *reviews[1:]), proposals))
+    control = result["arms"]["review_timing_control"]
+    assert control["retained_error_outcomes"] == 1
+    assert control["known_model_cost_usd"] == pytest.approx(0.04)
+    assert not any(
+        e.get("kind") == "ENTRY" and e.get("intent_id") == slots[1].candidate.intent_id
+        for e in control["events"]
+    )
+    row = result["candidate_selection_audit"]["candidates"][0]["paths"]["review_timing_control"]
+    assert row["retained_for_replay"] is True
+    assert row["execution_status"] == "REJECTED"
+    assert row["execution_reason"] == "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    assert row["classification"] == "NOT_FILLED_BASELINE_FLAT"

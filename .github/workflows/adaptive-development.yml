@@ -12,6 +12,7 @@ on:
       - docs/STRATEGY-CALENDAR-*.md
       - docs/STRATEGY-PRICE-*.md
       - docs/STRATEGY-INTRADAY-*.md
+      - docs/STRATEGY-FILTER-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
   pull_request:
@@ -24,6 +25,7 @@ on:
       - docs/STRATEGY-CALENDAR-*.md
       - docs/STRATEGY-PRICE-*.md
       - docs/STRATEGY-INTRADAY-*.md
+      - docs/STRATEGY-FILTER-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
 

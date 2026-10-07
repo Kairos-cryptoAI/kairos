@@ -23,6 +23,7 @@ from kairos_core.topics import Topics
 from kairos_strategy.models import SleeveIntent
 
 from .engine import COMMON_COST_RISK, AccountCost, CostScenario, entry_time, replay_tape
+from .filters import FILTER_POLICY, FILTER_POLICY_SHA256, CausalFilterObservation, causal_filter_decision
 from .inputs import UNIVERSE, WindowInputs
 from .matched import MatchedSlot, ReviewReceipt
 
@@ -393,6 +394,9 @@ def evaluate_system_paths(
     baseline_latency_ms: int = 100,
     feed_costs: tuple[AccountCost, ...] | None = None,
     deadline: float | None = None,
+    deterministic_filters: tuple[CausalFilterObservation, ...] | None = None,
+    include_selection_audit: bool = False,
+    include_review_timing_control: bool = False,
 ) -> dict[str, Any]:
     """Validate complete roster first, then replay independent nonqualifying accounts.
 
@@ -400,11 +404,19 @@ def evaluate_system_paths(
     subset. Missing mapper evidence is not a genuine NO_PROPOSAL observation.
     Feed debits are copied to each hypothetical path; shared model attempts are
     charged once per account, not added a second time in the combined path.
+    An explicit filter roster adds a fifth independent causal-source control;
+    absent filter observations null its economics, never select a winning subset.
+    A timing/cost-matched control omits review content but pays the same attempts;
+    its independent delta includes content selection AND operational error gating,
+    not pure content alpha. The called-error clock is terminal observation only.
+    Default four-arm semantics and output remain unchanged.
     """
     _sha(mapper_policy_sha256)
     _clock(baseline_latency_ms)
     if (
         type(fixture_only) is not bool
+        or type(include_selection_audit) is not bool
+        or type(include_review_timing_control) is not bool
         or not isinstance(slots, tuple)
         or not 0 < len(slots) <= 100_000
         or not isinstance(reviews, tuple)
@@ -435,28 +447,72 @@ def evaluate_system_paths(
         _index(proposals, by_id, fixture_only),
     )
     _validate_links(by_id, review_index, proposal_index, mapper_policy_sha256)
+    filter_decisions: dict[str, dict[str, Any]] = {}
+    if deterministic_filters is not None:
+        if not isinstance(deterministic_filters, tuple) or len(deterministic_filters) > len(slots):
+            raise ValueError("bounded immutable filter roster required")
+        for observation in deterministic_filters:
+            if (
+                not isinstance(observation, CausalFilterObservation)
+                or observation.slot_id not in by_id
+                or observation.slot_id in filter_decisions
+            ):
+                raise ValueError("unknown or duplicate filter observation")
+            filter_decisions[observation.slot_id] = causal_filter_decision(
+                by_id[observation.slot_id], observation, mode, fixture_only=fixture_only
+            )
     attempts = [obs.attempt for obs in (*reviews, *proposals)]
     if len({a.attempt_id for a in attempts}) != len(attempts):
         raise ValueError("duplicate model attempt identity")
     horizon = inputs.end_ms + 3 * 3_600_000
     if any(not inputs.start_ms <= a.observed_ms < horizon for a in attempts):
         raise ValueError("out-of-horizon model liability cannot be silently dropped")
+    if any(not inputs.start_ms <= d["observed_ms"] < horizon for d in filter_decisions.values()):
+        raise ValueError("out-of-horizon filter observation cannot be silently dropped")
     if feed_costs is not None and (
         any(c.kind != "FEED" or not inputs.start_ms <= c.timestamp_ms < horizon for c in feed_costs)
         or len({c.cost_id for c in feed_costs}) != len(feed_costs)
         or {c.cost_id for c in feed_costs} & {a.attempt_id for a in attempts}
     ):
         raise ValueError("exact unique feed debit clocks required")
-    selected: dict[str, list[tuple[SleeveIntent, int]]] = {path: [] for path in PATHS}
-    reasons: dict[str, Counter[str]] = {path: Counter() for path in PATHS}
+    paths = (*PATHS, "deterministic_filter") if deterministic_filters is not None else PATHS
+    if include_review_timing_control:
+        paths = (*paths, "review_timing_control")
+    selected: dict[str, list[tuple[SleeveIntent, int]]] = {path: [] for path in paths}
+    reasons: dict[str, Counter[str]] = {path: Counter() for path in paths}
     missing = Counter()
     for slot in sorted(slots, key=lambda s: (s.matched.decision_ms, UNIVERSE.index(s.symbol))):
         r, p = review_index.get(slot.matched.slot_id), proposal_index.get(slot.matched.slot_id)
         if slot.state == "UNAVAILABLE":
-            for path in PATHS:
+            for path in paths:
                 reasons[path]["SOURCE_UNAVAILABLE"] += 1
             continue
         base, reviewed, proposed = slot.candidate, None, None
+        if include_review_timing_control:
+            if base is None:
+                reasons["review_timing_control"]["QUIET"] += 1
+            elif r is None:
+                missing["review_timing_control"] += 1
+            elif r.attempt.status == "NOT_CALLED":
+                # A budget/source denial is not an actual inference completion.
+                reasons["review_timing_control"]["NOT_CALLED"] += 1
+            else:
+                quote_ms = entry_time(base, r.attempt.observed_ms, mode)
+                if slot.context_ready_at(max(r.attempt.observed_ms, quote_ms or 0)):
+                    selected["review_timing_control"].append((base, r.attempt.observed_ms))
+                else:
+                    reasons["review_timing_control"]["STALE_CONTEXT"] += 1
+        if deterministic_filters is not None:
+            if base is None:
+                reasons["deterministic_filter"]["QUIET"] += 1
+            elif slot.matched.slot_id not in filter_decisions:
+                missing["deterministic_filter"] += 1
+            else:
+                decision = filter_decisions[slot.matched.slot_id]
+                if decision["disposition"] == "ALLOW":
+                    selected["deterministic_filter"].append((base, decision["observed_ms"]))
+                else:
+                    reasons["deterministic_filter"][decision["reason"]] += 1
         if base is not None:
             selected["strategy_only"].append((base, base.decision_ts_ms + baseline_latency_ms))
             if r is None:
@@ -536,12 +592,12 @@ def evaluate_system_paths(
         else:
             reasons["combined"]["REVIEW_BLOCKED" if base else "NO_MAPPED_PROPOSAL"] += 1
     results: dict[str, Any] = {}
-    for path in PATHS:
+    for path in paths:
         observations = (
             ()
-            if path == "strategy_only"
+            if path in {"strategy_only", "deterministic_filter"}
             else reviews
-            if path == "context_review"
+            if path in {"context_review", "review_timing_control"}
             else proposals
             if path == "independent_proposals"
             else (*reviews, *proposals)
@@ -603,8 +659,10 @@ def evaluate_system_paths(
                     "scope": "RECORDED_COSTS_CONDITIONAL_EXECUTION_NOT_INVOICE_OR_ALPHA_PROOF",
                 }
         results[path] = result
-    return {
-        "schema": "kairos.development.full-system-paths.v1",
+    report = {
+        "schema": "kairos.development.full-system-paths.v2"
+        if deterministic_filters is not None or include_selection_audit or include_review_timing_control
+        else "kairos.development.full-system-paths.v1",
         "scope": "FIXTURE_ONLY" if fixture_only else "CALLER_ATTESTED_CONDITIONAL_REPLAY",
         "scheduled_slots": len(slots),
         "slot_states": dict(Counter(s.state for s in slots)),
@@ -617,7 +675,7 @@ def evaluate_system_paths(
             - results["strategy_only"]["economic_results"]["final_equity_usd"]
             if results[path]["economic_results"] is not None
             else None
-            for path in PATHS
+            for path in paths
             if path != "strategy_only"
         },
         "review_counterfactuals": [
@@ -651,3 +709,76 @@ def evaluate_system_paths(
         "live_ready": False,
         "strategy_policy": "REJECT_ALL",
     }
+    if deterministic_filters is not None:
+        report["deterministic_filter_control"] = {
+            "policy": FILTER_POLICY,
+            "policy_sha256": FILTER_POLICY_SHA256,
+            "receipt_count": len(filter_decisions),
+            "decisions": list(filter_decisions.values()),
+            "source_truth": "CALLER_ATTESTED_RECEIPTS_NOT_RAW_NEWS_OR_MACRO_PAYLOAD_PROOF",
+            "standalone_profitability_is_admission_requirement": False,
+            "daily_trade_quota": None,
+            "cpu_and_unrecorded_infrastructure_costs": "UNQUALIFIED",
+        }
+    if include_review_timing_control:
+        review_net = results["context_review"]["economic_results"]
+        timing_net = results["review_timing_control"]["economic_results"]
+        report["review_timing_control"] = {
+            "policy": "SAME_REVIEW_ATTEMPTS_CLOCKS_COSTS_CAUSAL_CONTEXT_WITHOUT_CONTENT_V1",
+            "called_errors": "KNOWN_TERMINAL_OBSERVATION_CLOCK_NOT_SUCCESSFUL_COMPLETION_STILL_CHARGED",
+            "not_called": "KNOWN_POLICY_ABSTENTION_NOT_INFERENCE_COMPLETION",
+            "context_review_minus_timing_control_usd": (
+                review_net["final_equity_usd"] - timing_net["final_equity_usd"]
+                if review_net is not None and timing_net is not None
+                else None
+            ),
+            "scope": "INDEPENDENT_ACCOUNT_CONTROL_NOT_ADDITIVE_TRADE_ALPHA_OR_INVOICE_PROOF",
+            "delta_includes": "REVIEW_CONTENT_SELECTION_AND_OPERATIONAL_ERROR_GATING_NOT_PURE_CONTENT_ALPHA",
+        }
+    if deterministic_filters is not None or include_selection_audit or include_review_timing_control:
+        from .candidate_audit import build_candidate_audit
+
+        audit_decisions: dict[str, dict[str, dict[str, Any]]] = {"context_review": {}}
+        reviewed_ids = {candidate.intent_id for candidate, _ in selected["context_review"]}
+        for slot_id, observation in review_index.items():
+            disposition = observation.attempt.status
+            if observation.review is not None:
+                disposition = observation.review.result
+                if disposition == "ALLOW" and observation.review.candidate_id not in reviewed_ids:
+                    disposition = "STALE_CONTEXT"
+            audit_decisions["context_review"][slot_id] = {
+                "disposition": disposition,
+                "retained_for_replay": by_id[slot_id].candidate.intent_id in reviewed_ids,
+                "observed_ms": observation.attempt.observed_ms,
+                "cost_usd": observation.attempt.cost_usd,
+                "no_call_reason": observation.attempt.no_call_reason,
+            }
+        if include_review_timing_control:
+            timing_ids = {candidate.intent_id for candidate, _ in selected["review_timing_control"]}
+            audit_decisions["review_timing_control"] = {
+                slot_id: {
+                    "disposition": "CONTENT_IGNORED_CAUSAL_CONTEXT_READY"
+                    if by_id[slot_id].candidate.intent_id in timing_ids
+                    else "NOT_CALLED"
+                    if observation.attempt.status == "NOT_CALLED"
+                    else "STALE_CONTEXT",
+                    "retained_for_replay": by_id[slot_id].candidate.intent_id in timing_ids,
+                    "observed_ms": observation.attempt.observed_ms,
+                    "cost_usd": observation.attempt.cost_usd,
+                    "no_call_reason": observation.attempt.no_call_reason,
+                }
+                for slot_id, observation in review_index.items()
+            }
+        if deterministic_filters is not None:
+            audit_decisions["deterministic_filter"] = {
+                slot_id: {
+                    "disposition": decision["reason"],
+                    "retained_for_replay": decision["disposition"] == "ALLOW",
+                    "observed_ms": decision["observed_ms"],
+                    "cost_usd": 0.0,
+                    "no_call_reason": "DETERMINISTIC_CONTROL_NO_MODEL_CALL",
+                }
+                for slot_id, decision in filter_decisions.items()
+            }
+        report["candidate_selection_audit"] = build_candidate_audit(slots, results, audit_decisions)
+    return report

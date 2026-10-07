@@ -178,6 +178,20 @@ All execution/alpha/readiness/complete-all-in markers remain false. See the
 [engineering receipt](../../docs/FULL-SYSTEM-EVALUATION-2026-10-06.md).
 Earlier published historical results and their absent model arms are untouched.
 
+### Candidate-stream selection controls
+
+The optional `deterministic_filters` roster and `include_review_timing_control`
+flag add independent causal-source and review-clock/cost controls to the existing
+system API. `include_selection_audit=True` reports every original candidate's
+selection/execution, baseline outcome, delay/cost and source coverage; missing
+observations keep economics null. Default four-arm output remains unchanged;
+opt-in output uses a separate v2 schema. Weak standalone PnL is not an automatic
+research exclusion, but no filter/LLM improvement is presumed or qualified.
+There is no return-based whitelist, new grid, quota, retrospective news call,
+production wiring or frozen campaign change. See the
+[candidate evaluation receipt](../../docs/STRATEGY-FILTER-EVALUATION-2026-10-07.md)
+for the fixed policies, API and outstanding real-data prerequisites.
+
 ### Native saved-window transport
 
 The [observations.py](adaptive_replay/observations.py) API exports/imports one
