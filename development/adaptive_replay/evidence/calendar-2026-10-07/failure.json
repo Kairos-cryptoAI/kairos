@@ -1,0 +1,8 @@
+{
+  "completed_windows": [],
+  "economic_reference_nominee": null,
+  "elapsed_seconds": 58.15600000001723,
+  "error_type": "ValueError",
+  "reason": "incomplete verified FULL_KLINE span for SOLUSDT",
+  "state": "FAILED_CLOSED"
+}

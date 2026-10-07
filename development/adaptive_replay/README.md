@@ -206,6 +206,11 @@ plan, loader, economic receipt or campaign changes. The output can nominate a
 development reference only, never select an adaptive/LLM strategy or qualify
 trading; resource/integrity failure yields no partial-year winner.
 
+The [single October 7 attempt](../../docs/STRATEGY-CALENDAR-RESULT-2026-10-07.md)
+failed input completeness before generation/economics; SOL is missing five
+calendar days. No annual return or reference nomination exists. Keep the
+byte-bound failure and do not resume/retry or fill missing candles.
+
 Use uv 0.12.3 with Python 3.11/3.14. Install outside protected runtime environments:
 
 ```powershell

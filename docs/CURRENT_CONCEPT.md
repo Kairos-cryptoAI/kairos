@@ -25,6 +25,13 @@ complete; final strategy selection still needs broader predefined coverage
 and observable event-driven entries. Do not integrate an unproved winner,
 rescue these returns with extra tuning, or assume future LLM profitability.
 
+The separately [preregistered full-calendar attempt](STRATEGY-CALENDAR-RESULT-2026-10-07.md)
+stopped on SOL input gaps before any generation or annual economics. Preserve
+the failure; it neither selects nor rejects a strategy on performance. A
+complete accepted historical source set and a separately agreed next protocol
+are prerequisites, not an excuse to fill missing bars, drop SOL or rerun this
+pass. Event-driven entry observability remains a separate missing capability.
+
 ## Objective and decision path
 
 Kairos seeks independently demonstrated net trading value under fixed risk

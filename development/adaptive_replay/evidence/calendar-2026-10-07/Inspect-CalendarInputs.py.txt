@@ -1,0 +1,228 @@
+"""Bounded, cache-only monthly Binance archive coverage inventory."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import time
+from dataclasses import asdict
+from datetime import date, datetime, timezone
+from pathlib import Path
+
+import kairos_backtest.data as backtest_data
+from kairos_backtest.data import audit_cached_archives
+
+
+SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
+CACHE = Path(r"D:\Kairos\kairos-backtest\data\historical")
+OUTPUT = Path(r"D:\Kairos\runtime\right-tail-calendar-20261007\calendar-input-audit.json")
+START = date(2021, 11, 1)
+END = date(2026, 2, 1)  # exclusive; includes monthly archives through 2026-01
+DEADLINE_SECONDS = 180
+
+
+def next_month(value: date) -> date:
+    return date(value.year + (value.month == 12), value.month % 12 + 1, 1)
+
+
+def month_sequence() -> list[date]:
+    values = []
+    current = START
+    while current < END:
+        values.append(current)
+        current = next_month(current)
+    return values
+
+
+def expected_minutes(month: date) -> int:
+    following = next_month(month)
+    return (following - month).days * 24 * 60
+
+
+def main() -> int:
+    if OUTPUT.exists():
+        raise FileExistsError(f"create-only output already exists: {OUTPUT}")
+
+    started = time.monotonic()
+    started_utc = datetime.now(timezone.utc).isoformat()
+    deadline = started + DEADLINE_SECONDS
+    months = month_sequence()
+    entries: list[dict[str, object]] = []
+    inventory = hashlib.sha256()
+    state = "COMPLETED"
+    fatal_error: str | None = None
+
+    try:
+        for symbol in SYMBOLS:
+            for month in months:
+                if time.monotonic() >= deadline:
+                    state = "PARTIAL_TIMEOUT"
+                    break
+                filename = f"{symbol}-1m-{month:%Y-%m}.zip"
+                try:
+                    audit = audit_cached_archives(CACHE, (symbol,), month, next_month(month), interval="1m")
+                    record: dict[str, object] = {
+                        "symbol": symbol,
+                        "month": month.isoformat()[:7],
+                        "filename": filename,
+                        "status": "AUDITED",
+                        **asdict(audit),
+                    }
+                    inventory.update(symbol.encode("ascii"))
+                    inventory.update(b"\0")
+                    inventory.update(month.strftime("%Y-%m").encode("ascii"))
+                    inventory.update(b"\0")
+                    inventory.update(bytes.fromhex(audit.inventory_sha256))
+                except FileNotFoundError:
+                    record = {
+                        "symbol": symbol,
+                        "month": month.isoformat()[:7],
+                        "filename": filename,
+                        "status": "MISSING_ARCHIVE",
+                        "expected_files": 1,
+                        "present_files": 0,
+                        "checksum_files_verified": 0,
+                        "rows": 0,
+                        "gaps": None,
+                        "invalid_rows": None,
+                        "missing_minutes": expected_minutes(month),
+                        "coverage_pct": 0.0,
+                        "zip_bytes": 0,
+                        "inventory_sha256": None,
+                        "gap_samples": [],
+                        "invalid_row_samples": [],
+                    }
+                except Exception as exc:  # Preserve diagnostics and continue within the fixed inventory.
+                    record = {
+                        "symbol": symbol,
+                        "month": month.isoformat()[:7],
+                        "filename": filename,
+                        "status": "AUDIT_ERROR",
+                        "error_type": type(exc).__name__,
+                        "error": str(exc),
+                        "expected_files": 1,
+                        "present_files": 1,
+                        "checksum_files_verified": 0,
+                        "rows": None,
+                        "gaps": None,
+                        "invalid_rows": None,
+                        "missing_minutes": None,
+                        "coverage_pct": None,
+                        "zip_bytes": None,
+                        "inventory_sha256": None,
+                        "gap_samples": [],
+                        "invalid_row_samples": [],
+                    }
+                entries.append(record)
+                if time.monotonic() >= deadline:
+                    state = "PARTIAL_TIMEOUT"
+                    break
+            if state == "PARTIAL_TIMEOUT":
+                break
+    except Exception as exc:
+        state = "FAILED_PARTIAL"
+        fatal_error = f"{type(exc).__name__}: {exc}"
+
+    per_symbol: list[dict[str, object]] = []
+    for symbol in SYMBOLS:
+        rows = [item for item in entries if item["symbol"] == symbol]
+        audited = [item for item in rows if item["status"] == "AUDITED"]
+        unavailable = [item for item in rows if item["status"] == "AUDIT_ERROR"]
+        per_symbol.append(
+            {
+                "symbol": symbol,
+                "expected_months": len(months),
+                "processed_months": len(rows),
+                "audited_months": len(audited),
+                "missing_archives": sum(item["status"] == "MISSING_ARCHIVE" for item in rows),
+                "audit_errors": len(unavailable),
+                "checksum_files_verified": sum(int(item["checksum_files_verified"] or 0) for item in rows),
+                "rows": sum(int(item["rows"] or 0) for item in audited),
+                "gaps": sum(int(item["gaps"] or 0) for item in audited),
+                "invalid_rows": sum(int(item["invalid_rows"] or 0) for item in audited),
+                "missing_minutes": sum(int(item["missing_minutes"] or 0) for item in rows if item["missing_minutes"] is not None),
+                "unverified_months": len(unavailable),
+                "zip_bytes": sum(int(item["zip_bytes"] or 0) for item in audited),
+                "coverage_pct_of_expected_rows": round(
+                    sum(int(item["rows"] or 0) for item in audited)
+                    / (sum(expected_minutes(month) for month in months) or 1)
+                    * 100,
+                    8,
+                ),
+                "gap_samples": [sample for item in audited for sample in item["gap_samples"]][:20],
+                "invalid_row_samples": [sample for item in audited for sample in item["invalid_row_samples"]][:25],
+            }
+        )
+
+    expected_files = len(SYMBOLS) * len(months)
+    audited_files = sum(item["status"] == "AUDITED" for item in entries)
+    missing_minutes = sum(
+        int(item["missing_minutes"] or 0)
+        for item in entries
+        if item["missing_minutes"] is not None
+    )
+    invalid_rows = sum(int(item["invalid_rows"] or 0) for item in entries if item["status"] == "AUDITED")
+    gaps = sum(int(item["gaps"] or 0) for item in entries if item["status"] == "AUDITED")
+    checksum_verified = sum(int(item["checksum_files_verified"] or 0) for item in entries)
+    complete = (
+        state == "COMPLETED"
+        and len(entries) == expected_files
+        and audited_files == expected_files
+        and checksum_verified == expected_files
+        and missing_minutes == 0
+        and invalid_rows == 0
+        and gaps == 0
+    )
+    payload = {
+        "schema": "kairos.cache.calendar-minute-input-audit.v1",
+        "state": state,
+        "coverage_complete": complete,
+        "scope": "CACHE_ONLY_MONTHLY_ARCHIVE_VALIDATION_NOT_GENERATION_OR_REPLAY",
+        "started_utc": started_utc,
+        "finished_utc": datetime.now(timezone.utc).isoformat(),
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "deadline_seconds": DEADLINE_SECONDS,
+        "workers": 1,
+        "cache_root": str(CACHE),
+        "requested_start": START.isoformat(),
+        "requested_end_exclusive": END.isoformat(),
+        "symbols": list(SYMBOLS),
+        "expected_months": len(months),
+        "expected_files": expected_files,
+        "processed_files": len(entries),
+        "audited_files": audited_files,
+        "missing_archives": sum(item["status"] == "MISSING_ARCHIVE" for item in entries),
+        "audit_errors": sum(item["status"] == "AUDIT_ERROR" for item in entries),
+        "checksum_files_verified": checksum_verified,
+        "rows": sum(int(item["rows"] or 0) for item in entries if item["status"] == "AUDITED"),
+        "gaps": gaps,
+        "invalid_rows": invalid_rows,
+        "missing_minutes": missing_minutes,
+        "unverified_files": sum(item["status"] == "AUDIT_ERROR" for item in entries),
+        "zip_bytes": sum(int(item["zip_bytes"] or 0) for item in entries if item["status"] == "AUDITED"),
+        "coverage_pct_of_expected_rows": round(
+            sum(int(item["rows"] or 0) for item in entries if item["status"] == "AUDITED")
+            / (expected_files and sum(expected_minutes(month) for month in months) * len(SYMBOLS) or 1)
+            * 100,
+            8,
+        ),
+        "aggregate_cached_inventory_sha256": inventory.hexdigest(),
+        "helper_path": str(Path(__file__).resolve()),
+        "helper_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "audit_module_path": str(Path(backtest_data.__file__).resolve()),
+        "per_symbol": per_symbol,
+        "files": entries,
+        "fatal_error": fatal_error,
+    }
+    with OUTPUT.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(payload, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+    print(json.dumps({key: payload[key] for key in (
+        "state", "coverage_complete", "expected_files", "processed_files", "audited_files",
+        "missing_archives", "audit_errors", "invalid_rows", "missing_minutes", "gaps", "helper_sha256"
+    )}, sort_keys=True))
+    return 0 if state == "COMPLETED" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

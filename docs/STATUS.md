@@ -2,6 +2,24 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## Full-calendar strategy comparison: unavailable inputs — 2026-10-07
+
+The separately [preregistered 2022--2025 pair](STRATEGY-CALENDAR-RESULT-2026-10-07.md)
+stopped fail-closed in its first input load, before generation or economics.
+The local SOL prefix/year/tail span is missing 7,200 minute bars: February
+26--28 and April 1--2, 2022. Matching cached SHA sidecars do not establish
+calendar completeness. A separate bounded audit completed 255 monthly files:
+XRP has the same missing intervals plus one invalid November 2023 row;
+BTC/ETH/BNB passed this input-format/coverage check. No annual return, economic reference nomination or
+qualified strategy follows; this is not a negative performance result.
+The source passed 277 local tests on both Python versions and its exact
+Windows/Linux CI matrix. Failed-attempt evidence is preserved; no retry,
+artificial candles, excluded asset/year or strategy tuning was used.
+The smaller completed diagnostic below remains immutable and insufficient.
+Full source qualification and native event-entry observability are still
+required before final strategy selection. All readiness remains false and
+policy is `REJECT_ALL`.
+
 ## Completed finite strategy-only comparison — 2026-10-07
 
 The [unchanged native right-tail pair](STRATEGY-SELECTION-2026-10-07.md) completes

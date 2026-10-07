@@ -1,0 +1,38 @@
+{
+  "schema": "kairos.strategy.calendar-input-gap-diagnostic.v1",
+  "purpose": "INPUT_ONLY_NO_GENERATION_OR_ECONOMICS",
+  "symbol": "SOLUSDT",
+  "requested_start_utc": "2021-11-27T00:00:00+00:00",
+  "requested_end_exclusive_utc": "2023-01-04T00:00:00+00:00",
+  "field_profile": "full_kline",
+  "expected_rows": 580320,
+  "actual_rows": 573120,
+  "missing_minutes": 7200,
+  "gaps": 2,
+  "quarantined_optional_rows": 0,
+  "checksum_files_verified": 15,
+  "expected_files": 15,
+  "checksum_status": "official_sha256_verified",
+  "normalized_rows_sha256": "0598065d2f09c6dcbcd95c19e87df8463119a946845039d5e6fa4c38f1ecfee6",
+  "missing_spans": [
+    {
+      "start_inclusive_utc": "2022-02-26T00:00:00+00:00",
+      "end_exclusive_utc": "2022-03-01T00:00:00+00:00",
+      "missing_minutes": 4320,
+      "archive": "SOLUSDT-1m-2022-02.zip",
+      "raw_sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c"
+    },
+    {
+      "start_inclusive_utc": "2022-04-01T00:00:00+00:00",
+      "end_exclusive_utc": "2022-04-03T00:00:00+00:00",
+      "missing_minutes": 2880,
+      "archive": "SOLUSDT-1m-2022-04.zip",
+      "raw_sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819"
+    }
+  ],
+  "sidecar_hashes_match_raw_archives": true,
+  "archive_sidecars_are_not_independent_external_completeness_proof": true,
+  "generator_invoked": false,
+  "economic_replay_invoked": false,
+  "qualified_winner": null
+}
