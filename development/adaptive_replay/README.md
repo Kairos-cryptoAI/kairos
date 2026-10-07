@@ -463,3 +463,31 @@ no economics, does not retry the full SIM, and marks every other original cell
 `NOT_EVALUATED_NOT_IMPUTED_QUIET`. Exact closed prefixes, source equality,
 cancellation and final deadline checks apply. Its single actual attempt completed
 all twenty cells with no review candidates; model arms remain unavailable.
+
+## Separate compact context-assisted complex
+
+The [new research-only protocol](../../docs/FULL-SYSTEM-EVALUATION-COMPACT-2026-10-07.md)
+combines unchanged expanding-prefix breakout and rolling-history pullback/range
+with shared crash defense. One strategy-blind joint directional context
+assessment supports isolated review/proposal/combined accounts, not two
+independent model trials. Deterministic proposal geometry, conflict abstention,
+once-measured mapper delay, actual modern expense clocks and common risk remain
+separate from model judgment. Neither the old review pilot nor frozen campaigns
+are rewritten.
+
+`python -m adaptive_replay.complex_prepare --workspace-root D:\Kairos
+--output-root <new-direct-runtime-child>` prepares the exact four-cut/five-symbol
+roster from existing cached inputs only. Output names must start with
+`compact-context-preparation-YYYYMMDD-`; outputs are exclusive and immutable.
+The optional `--archive` requires its exact `--expected-archive-sha256` and never
+admits authenticity merely from hashing. There is no paid-run flag, credential
+loader, budget creation/reset, provider call or order path. All unevaluated
+slots remain unevaluated; sparse cuts are not a continuous campaign.
+
+`complex_dispatch.ComplexAssessmentDispatcher` is a one-shot adapter over the
+existing native paired cap. Source, cumulative predecessor, shared-budget
+identity and fresh human-confirmation gates default to deny. Quiet slots may
+be assessed, but source gaps cannot be bypassed. The cumulative $1/20 attempt
+ceiling is reused, not extended. Full-path tests use explicit injected fixtures,
+not paid/historical provider or trading proof. Actual NEWS/MACRO admission and
+owner confirmation are still required before the later model test.

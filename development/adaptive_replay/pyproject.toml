@@ -19,6 +19,7 @@ dependencies = [
 [project.scripts]
 kairos-adaptive-development = "adaptive_replay.runner:main"
 kairos-historical-pilot-sim = "adaptive_replay.historical_pilot_sim:main"
+kairos-compact-context-prepare = "adaptive_replay.complex_prepare:main"
 
 [dependency-groups]
 dev = ["pytest>=9.0.3,<10", "ruff>=0.16,<0.17"]

@@ -1,0 +1,220 @@
+{
+  "account_costs": "ONE_CHARGE_PER_ATTEMPT_PER_MODEL_COUNTERFACTUAL_NEVER_SUM_AS_PHYSICAL_SPEND",
+  "arms": [
+    "strategy_only",
+    "context_review",
+    "independent_proposals",
+    "combined",
+    "review_timing_control"
+  ],
+  "budget": {
+    "additional_budget_granted": false,
+    "group": "EXISTING_HISTORICAL_SMALL_PILOT_CUMULATIVE_CAP",
+    "maximum_total_attempts": 20,
+    "maximum_total_usd": 1.0,
+    "openai_shared_ceiling_usd": 12.0,
+    "reserve_existing_and_prior_usage": true,
+    "reset_or_new_cap_allowed": false
+  },
+  "combined": "STRATEGY_FIRST_NO_VETO_BYPASS_OPPOSITE_ABSTAIN_FAILED_MAPPING_ABSTAIN",
+  "complex": {
+    "adaptive_config": {
+      "adverse_carry_bps": 3.0,
+      "atr_period": 14,
+      "crash_bars": 12,
+      "crash_holding_ms": 3600000,
+      "decision_minutes": 5,
+      "efficiency_hours": 24,
+      "entry_lifetime_ms": 60000,
+      "fast_hours": 20,
+      "fee_bps_per_side": 4.5,
+      "history_bars": 3240,
+      "latency_bps": 2.0,
+      "maximum_cost_stop_fraction": 0.5,
+      "maximum_stop_atr": 2.0,
+      "maximum_stop_bps": 300.0,
+      "minimum_net_reward_risk": 1.25,
+      "minimum_stop_atr": 0.5,
+      "policy_version": "adaptive-pullback-range.v1",
+      "range_bars": 16,
+      "range_efficiency": 0.2,
+      "range_holding_ms": 3600000,
+      "range_ma_gap_atr": 0.5,
+      "range_slope_atr": 0.1,
+      "setup_mean_bars": 20,
+      "shock_atr": 2.0,
+      "slippage_bps_per_side": 1.0,
+      "slope_hours": 3,
+      "slow_hours": 50,
+      "spread_bps": 2.0,
+      "target_r": 2.0,
+      "trend_efficiency": 0.3,
+      "trend_holding_ms": 7200000,
+      "trend_slope_atr": 0.25,
+      "uncertainty_buffer_bps": 2.0
+    },
+    "adaptive_history": "EXACT_ROLLING_3240_CLOSED_1M",
+    "breakout_config": {
+      "atr_period": 14,
+      "donchian_lookback": 20,
+      "intent_valid_bars": 1,
+      "max_hold_bars": 24,
+      "minimum_abs_hourly_slope": 0.00025,
+      "minimum_breakout_atr": 0.0,
+      "minimum_directional_taker_share": null,
+      "minimum_regime_efficiency": 0.3,
+      "minimum_volume_surprise": null,
+      "regime_lookback_hours": 12,
+      "stop_atr_multiple": 1.25,
+      "target_atr_multiple": 2.0,
+      "trailing_activation_atr_multiple": 1.0,
+      "trailing_distance_atr_multiple": 1.0,
+      "volume_lookback": 20
+    },
+    "crash_defense": "NATIVE_CRASH_AND_TWO_COMPLETED_POST_SHOCK_HOURS",
+    "daily_trade_quota": null,
+    "decision_cadence_ms": 300000,
+    "families": [
+      "trend_breakout_v1",
+      "adaptive_pullback_range_v1"
+    ],
+    "fixed_income_target": null,
+    "id": "compact_context_complex_v1",
+    "native_history": "EXACT_54H_ORIGIN_EXPANDING_PREFIX",
+    "opposite_side": "ABSTAIN_NO_RESURRECTION",
+    "production_registration": false,
+    "proposal_mapper": {
+      "atr": "FINITE_TRUE_RANGE_MEAN_14_COMPLETED_15M",
+      "crash": "ONLY_UNCHANGED_ADAPTIVE_CONTROLLED_RETEST_SHORT",
+      "entry_lifetime_ms": 300000,
+      "id": "context_atr_proposal_v1",
+      "maximum_cost_stop_fraction": 0.5,
+      "maximum_stop_atr": 2.0,
+      "maximum_stop_bps": 300.0,
+      "minimum_net_reward_risk": 1.25,
+      "minimum_stop_atr": 0.5,
+      "planning_round_trip_bps": 20.0,
+      "post_shock_cooldown": "ABSTAIN",
+      "range_holding_ms": 3600000,
+      "sizing": "COMMON_COST_RISK_V1_NO_MODEL_CONFIDENCE_UPLIFT",
+      "stop_atr": 1.25,
+      "target_r": 2.0,
+      "trend_holding_ms": 7200000
+    },
+    "right_tail_role": "REFERENCE_ONLY_NOT_INTRADAY_ENTRY",
+    "same_side_priority": [
+      "adaptive_pullback_range_v1",
+      "trend_breakout_v1"
+    ]
+  },
+  "cost_scenarios": [
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 4.5,
+      "id": "base",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 1,
+      "spread_bps": 2,
+      "uncertainty_bps": 2
+    },
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 9,
+      "id": "stress",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 2,
+      "spread_bps": 4,
+      "uncertainty_bps": 2
+    }
+  ],
+  "episodes": [
+    {
+      "assessment_cuts": [
+        "2021-05-19T00:00:00Z",
+        "2021-05-19T08:00:00Z"
+      ],
+      "end_exclusive": "2021-05-22",
+      "id": "episode_a",
+      "start": "2021-05-17"
+    },
+    {
+      "assessment_cuts": [
+        "2024-01-09T21:15:00Z",
+        "2024-01-09T21:30:00Z"
+      ],
+      "end_exclusive": "2024-01-13",
+      "id": "episode_d",
+      "start": "2024-01-08"
+    }
+  ],
+  "execution": {
+    "baseline_delay_ms": 100,
+    "cost_clock": "ACTUAL_MODERN_COST_ELAPSED_PROJECTED_BEFORE_SIZING",
+    "cost_risk_policy": "COMMON_COST_RISK_V1",
+    "exit_tail_hours": 3,
+    "initial_equity_usd_each_episode": 10000,
+    "mapping_delay": "MEASURED_LOCAL_ELAPSED_ADDED_TO_ASSESSMENT_READY",
+    "model_delay": "ACTUAL_MODERN_ELAPSED_PROJECTED_AFTER_BASELINE_DELAY",
+    "modes": [
+      "STRICT_MINUTE_OPEN",
+      "INTRABAR_OPEN_PROXY"
+    ],
+    "risk": {
+      "aggregate_open": 0.01,
+      "gross_leverage": 1,
+      "per_symbol_notional": 0.25,
+      "per_trade": 0.0025
+    }
+  },
+  "max_wall_seconds": 300,
+  "model_assessment": "ONE_STRATEGY_BLIND_JOINT_DIRECTIONAL_RESPONSE_PER_CELL",
+  "model_config_sha256": "80759a6d1a6ba8620a7093a670f71f618f80f3d9d48a485e6eaa46e595dc6d9c",
+  "model_roles_statistically_independent": false,
+  "model_route": {
+    "max_output_tokens": 2048,
+    "max_retries": 0,
+    "model": "gpt-6-luna",
+    "provider": "OPENAI",
+    "reasoning_effort": "medium",
+    "workload": "AGGREGATOR_NORMAL"
+  },
+  "no_blind_campaign_credit": true,
+  "no_parameter_search": true,
+  "owner_confirmation_required_before_models": true,
+  "prompt_policy": "CAUSAL_PRICES_NEWS_MACRO_NO_STRATEGY_CANDIDATE_OR_OUTCOME",
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "schema": "kairos.development.compact-context-diagnostic.v1",
+  "scope": "SPARSE_FIXED_CUT_RETROSPECTIVE_DIAGNOSTIC_NOT_FULL_TRADING_CAMPAIGN",
+  "source_admission": "EXPLICIT_AUTHENTICITY_AND_ARCHIVE_VERSION_COVERAGE_REVIEW_REQUIRED",
+  "source_requirements": [
+    {
+      "kind": "NEWS",
+      "lookback_ms": 86400000,
+      "maximum_age_ms": 86400000,
+      "required": true,
+      "source_name": "official_market_news"
+    },
+    {
+      "kind": "MACRO",
+      "lookback_ms": 2678400000,
+      "maximum_age_ms": 2678400000,
+      "required": true,
+      "source_name": "official_macro"
+    }
+  ],
+  "training_contamination_excluded": false,
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "BNBUSDT",
+    "XRPUSDT"
+  ],
+  "workers": 1
+}

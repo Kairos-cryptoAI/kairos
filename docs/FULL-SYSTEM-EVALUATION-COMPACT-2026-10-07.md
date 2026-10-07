@@ -85,7 +85,10 @@ mandatory; no ledger is created or reset by preparation.
 
 Actual request/response/cost clocks remain modern. An explicitly labelled
 reconstruction projects their elapsed times after the fixed 100 ms baseline
-delay. One separately timestamped mapper receipt is reused across all execution
+delay. The measured request begins at dispatcher entry, before reservations,
+prompt construction and native provider dispatch: local preparation/queue time
+cannot be omitted from the successful response path. One separately timestamped
+mapper receipt is reused across all execution
 modes and cost scenarios. Context review and its timing control share the same
 effective clock; combined waits for mapping and rechecks original expiry.
 Held NEWS/MACRO coverage, version identity and freshness are rechecked at the
@@ -124,6 +127,10 @@ source/budget admission. Modern retrospective model results cannot exclude
 pretrained historical-event memory and earn zero blind-campaign days. No new
 paid API calls, primary recovery, consumers, venue, PAPER or LIVE are operated.
 All readiness remains false; `STRATEGY_POLICY=REJECT_ALL`.
+
+The [actual preparation receipt](FULL-SYSTEM-EVALUATION-COMPACT-RESULT-2026-10-07.md)
+records completed engineering checks separately from unavailable historical
+NEWS/MACRO admission and the model test that has not been run.
 
 Structured response handling follows the official
 [OpenAI Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
