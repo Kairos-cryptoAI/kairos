@@ -306,3 +306,12 @@ Only a **new direct child** of the workspace runtime directory is accepted.
 `COMPLETED` denotes a completed source audit, not twelve qualified references or
 a strategy winner; inspect every recorded status. No economic or observed-fill
 credit follows from published prints, and readiness stays false/`REJECT_ALL`.
+
+The [single dated attempt](../../docs/STRATEGY-INTRADAY-RESULT-2026-10-07.md)
+is now `FAILED_CLOSED` at the fixed BTC June 14 row bound, not completed or an
+economic rejection. Seven scans retain ten candidate witnesses; two are
+unresolved and no final before/after gate ran. Thirty-two original partial
+artifacts/native tapes are losslessly bound by
+[the evidence index](evidence/intraday-reference-2026-10-07/checksums.json).
+The command above documents that completed attempt; **do not run it again**.
+No source/economic prerequisite, winner or trading authority is granted.

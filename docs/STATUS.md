@@ -2,17 +2,21 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
-## Preregistered native intraday source audit — 2026-10-07
+## Native intraday source attempt: resource-closed — 2026-10-07
 
-The [separate bounded source-only protocol](STRATEGY-INTRADAY-PROTOCOL-2026-10-07.md)
-preserves all four original native adaptive tapes and all twelve candidates.
-It checks published transaction prices after assumed completion within the
-unchanged native lifetime, without economics, new generation or a strategy
-winner. The local archive/official metadata checks do not provide BBO or our
-fills. The signed implementation and exact source CI precede the single
-source-only attempt; completion is reported separately. No prior plan,
-PRICE_ONLY-to-adaptive projection, protected ledger, risk ceiling or trading
-authority changes. All readiness remains false and policy stays `REJECT_ALL`.
+The [single signed source-only attempt](STRATEGY-INTRADAY-RESULT-2026-10-07.md)
+stopped `FAILED_CLOSED`: BTCUSDT June 14, 2022 exceeded its frozen five-million-row
+guard. Seven of nine archive scans completed, totaling 13,214,561 completed rows;
+eight downloaded ZIPs total 244,624,875 bytes. Ten of twelve original candidates
+retain bracketed print witnesses; two remain unresolved, not losses or missing
+prices. Independent partial-byte/witness and supplemental launch checks are
+scoped, not final-run certification. No result/final source-equality pass exists,
+and the source prerequisite remains unresolved. This resource limit is not an
+integrity conflict or strategy rejection. All thirty-two original artifacts are
+losslessly byte-bound; no retry or limit relaxation was used. Prints are not
+BBO/fills, economics or a qualified winner. The original plans/tapes, protected
+ledgers, risk ceilings and trading authority remain unchanged. All readiness
+stays false and policy remains `REJECT_ALL`.
 
 ## Completed four-year price-only reference — 2026-10-07
 

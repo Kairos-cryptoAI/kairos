@@ -51,6 +51,15 @@ longer an unexecuted task; native event-driven entry observability and a
 defensible final adaptive identity remain missing. No news/LLM integration,
 campaign freeze or trading permission is inferred.
 
+The separate [native intraday source attempt](STRATEGY-INTRADAY-RESULT-2026-10-07.md)
+is resource-closed at the frozen five-million-row guard on BTC June 14, 2022.
+Seven complete archive scans retain ten of twelve original candidate print
+witnesses; two remain unresolved. Partial byte/witness verification is not
+the unreached final source-equality gate, observed fills or economics. Preserve
+the stopped attempt without retry, weakening its limit or excluding the two
+candidates. Complete separately accepted sources and a fixed conditional
+execution contract remain necessary; a final strategy is not selected here.
+
 ## Objective and decision path
 
 Kairos seeks independently demonstrated net trading value under fixed risk
