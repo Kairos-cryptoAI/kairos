@@ -13,10 +13,12 @@ dependencies = [
   "kairos-core",
   "kairos-quant-scouts",
   "kairos-persistence",
+  "kairos-llm",
 ]
 
 [project.scripts]
 kairos-adaptive-development = "adaptive_replay.runner:main"
+kairos-historical-pilot-sim = "adaptive_replay.historical_pilot_sim:main"
 
 [dependency-groups]
 dev = ["pytest>=9.0.3,<10", "ruff>=0.16,<0.17"]
@@ -28,6 +30,7 @@ override-dependencies = [
   "kairos-quant-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git@927f5730d09383736c1dfc7dc5c400b06851019f",
   "kairos-strategy-engine @ git+https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git@cde8e9c00af0cc19848e800ee76472a800a5fd5d",
   "kairos-persistence @ git+https://github.com/Kairos-cryptoAI/kairos-persistence.git@fd2966761e84b32688c9aee73e00604965f5d7f2",
+  "kairos-llm @ git+https://github.com/Kairos-cryptoAI/kairos-llm.git@f1e25893f9078a467eba584e233ac9129e9ff9b1",
 ]
 
 [tool.uv.sources]
@@ -36,6 +39,7 @@ kairos-strategy-engine = { git = "https://github.com/Kairos-cryptoAI/kairos-stra
 kairos-core = { git = "https://github.com/Kairos-cryptoAI/kairos-core.git", rev = "6937eb4773fc00afaf5ba4e020b28b689f48e377" }
 kairos-quant-scouts = { git = "https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git", rev = "927f5730d09383736c1dfc7dc5c400b06851019f" }
 kairos-persistence = { git = "https://github.com/Kairos-cryptoAI/kairos-persistence.git", rev = "fd2966761e84b32688c9aee73e00604965f5d7f2" }
+kairos-llm = { git = "https://github.com/Kairos-cryptoAI/kairos-llm.git", rev = "f1e25893f9078a467eba584e233ac9129e9ff9b1" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["adaptive_replay"]

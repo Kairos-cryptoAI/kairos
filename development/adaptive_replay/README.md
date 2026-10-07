@@ -432,3 +432,21 @@ The [single actual download and fresh archive search](../../docs/HISTORICAL-PILO
 are retained. Do not rerun that download or the older preflight/capture. Each
 episode must later use only its appropriate vintage column, not the combined
 CSV or modern README narrative. NEWS admission and paid A/B remain blocked.
+
+## Local historical pilot integration and price-only SIM
+
+The [local implementation receipt](../../docs/HISTORICAL-PILOT-IMPLEMENTATION-2026-10-07.md)
+describes the offline CPI semantic extractor, one-shot paired budget adapter,
+immutable native OpenAI review route and full-path injected SDK/SIM tests.
+Fixtures are explicitly synthetic; source and authoritative budget admissions
+remain separate proofs, and no production ledger or provider is operated.
+
+The separate `adaptive_replay.historical_pilot_sim` command accepts only
+`--workspace-root D:\Kairos` and a new direct runtime child as `--output-root`.
+It seals fixed A/D price-only diagnostics before native candidate generation,
+uses the unchanged prototype at its native 5m cadence and retains all 72,000
+original 1m/five-symbol cells. Unscheduled native cells are not called quiet.
+Common risk, strict/proxy fills, base/stress costs and original candidate TTL
+remain intact. One worker / 900 seconds / no downloads / no provider or database
+calls apply. NEWS-blocked model arms stay unavailable, not zero or imputed.
+Neither successful software tests nor this diagnostic qualify alpha or LIVE.
