@@ -2,6 +2,21 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## One new failed-breakout reversal: fixed before next diagnostic — 2026-10-07
+
+The [separate pre-run protocol](STRATEGY-SELECTION-FAILED-REVERSAL-PROTOCOL-2026-10-07.md)
+fixes one false-breakout reversal hypothesis and one unchanged native breakout
+control across six already-seen calendar windows. Pre-excursion channel/ATR,
+first consumed return, event-extreme stop, opposite-edge target and native crash
+defense remain separate from unchanged cost/risk admission. Complete 5m rosters,
+both costs and all zero days/refusals are required. This is candidate research,
+not an income promise, historical model test, parameter search, production
+integration or blind credit. No result exists at the source-seal stage. NEWS/
+MACRO/model/venue admission and all readiness remain false with `REJECT_ALL`.
+Installed non-editable Windows Python3.11/3.14 suites each pass 825 tests (two
+symlink-privilege skips); focused fixtures, lint/format/build and meta static
+also pass. These source-seal tests are not performance or trading qualification.
+
 ## New frozen retest hypothesis: complete census, not selected — 2026-10-07
 
 The [separate new strategy and actual result](STRATEGY-SELECTION-FROZEN-RETEST-RESULT-2026-10-07.md)

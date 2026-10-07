@@ -509,3 +509,24 @@ be assessed, but source gaps cannot be bypassed. The cumulative $1/20 attempt
 ceiling is reused, not extended. Full-path tests use explicit injected fixtures,
 not paid/historical provider or trading proof. Actual NEWS/MACRO admission and
 owner confirmation are still required before the later model test.
+
+## Separate fixed failed-breakout reversal diagnostic
+
+The [new pre-run protocol](../../docs/STRATEGY-SELECTION-FAILED-REVERSAL-PROTOCOL-2026-10-07.md)
+defines one independent `failed_breakout_reversal_v1`, not tuning of the rejected
+frozen retest or an additional live sleeve. Pre-excursion closed channel/ATR,
+one/two-bar return, event-extreme stop, opposite-edge target, first consumption,
+fresh-channel reset and pinned native crash/cooldown are fixed before real counts.
+Raw structural candidates are retained before the unchanged cost/risk hurdles.
+First arrival independently binds completed source geometry and accepts only the
+first minute OPEN after assumed 100ms completion, never that minute's future HLC.
+
+`python -m adaptive_replay.reversal_search --workspace-root D:\Kairos
+--output-root D:\Kairos\runtime\reversal-search-20261007-a` is a separate create-only
+offline path after source seal and pre-run review. Six already-seen windows /
+five symbols / every 5m cut / unchanged native breakout control / base20 and
+stress33 / independent shared accounts are fixed. One worker, cooperative plus
+outer hard 600-second cap, no automatic retry, no downloads, no paid API,
+no new parameter search, no old receipts/ledger/plan modification. Complete
+conditional OHLC reference net, drawdown, mark overruns, natural frequency and
+all refusals are diagnostic, never source/venue/alpha/LLM qualification.
