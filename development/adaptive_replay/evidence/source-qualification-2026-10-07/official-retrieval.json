@@ -1,0 +1,2257 @@
+{
+  "all_local_monthly_zips_unchanged": true,
+  "allowed_host": "data.binance.vision",
+  "audit_module_path": "D:\\Kairos\\runtime\\native-observation-import-20261006\\py311\\Lib\\site-packages\\kairos_backtest\\data.py",
+  "audit_parser": "kairos_backtest.data._parse_csv(field_profile=FULL_KLINE)",
+  "cooperative_deadline_seconds": 180,
+  "daily_datasets": [
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:12.986373+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"57796459db4dd4ea8aa2f2bdb552d717\"",
+          "Last-Modified": "Mon, 28 Feb 2022 21:05:25 GMT"
+        },
+        "sha256": "8cf817c380ce7eacae58da7c46f46d539dd51e3f8013ae2ada55d246a48ba70a",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "8cf817c380ce7eacae58da7c46f46d539dd51e3f8013ae2ada55d246a48ba70a",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-02-25.csv",
+      "date": "2022-02-25",
+      "declared_sha256": "4ddba923fc0e922aecce13eda0f883dbc8cfcd83c27648b7a1afa2ab76a237a8",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "4ddba923fc0e922aecce13eda0f883dbc8cfcd83c27648b7a1afa2ab76a237a8",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-02-25.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02-25.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "OVERLAP_CONTROL",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 1440,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 1440,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 0
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 49231,
+        "fetched_utc": "2026-10-07T03:39:11.676033+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip",
+        "safe_headers": {
+          "Content-Length": "49231",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"4af1daa732a5aba7afeeb01ac9ec9962\"",
+          "Last-Modified": "Mon, 28 Feb 2022 21:05:25 GMT"
+        },
+        "sha256": "4ddba923fc0e922aecce13eda0f883dbc8cfcd83c27648b7a1afa2ab76a237a8",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:15.078299+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"6eeb63dde7c1807e731d20f84c988559\"",
+          "Last-Modified": "Tue, 01 Mar 2022 16:30:55 GMT"
+        },
+        "sha256": "c59faddaf023e49039127f6088906eca70291aba203ba65b1721c0f7be973d58",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "c59faddaf023e49039127f6088906eca70291aba203ba65b1721c0f7be973d58",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-02-26.csv",
+      "date": "2022-02-26",
+      "declared_sha256": "34edc8ed16789b073f5936c5aeac77d5233ee97261dd4f8cf424404565069a9b",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "34edc8ed16789b073f5936c5aeac77d5233ee97261dd4f8cf424404565069a9b",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-02-26.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02-26.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 47421,
+        "fetched_utc": "2026-10-07T03:39:13.766479+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip",
+        "safe_headers": {
+          "Content-Length": "47421",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"1ae74dcbca0970df564747c0fbf019b4\"",
+          "Last-Modified": "Tue, 01 Mar 2022 16:30:55 GMT"
+        },
+        "sha256": "34edc8ed16789b073f5936c5aeac77d5233ee97261dd4f8cf424404565069a9b",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:17.184707+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"2e312ec7bfc9ea9dea93c0e1c7c0b79b\"",
+          "Last-Modified": "Wed, 02 Mar 2022 21:16:34 GMT"
+        },
+        "sha256": "9bcd2e84caed299224ae3c8d230045f54a36e4b7d3f2316b4483dc7d9d4447af",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "9bcd2e84caed299224ae3c8d230045f54a36e4b7d3f2316b4483dc7d9d4447af",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-02-27.csv",
+      "date": "2022-02-27",
+      "declared_sha256": "2c27849bc6b152578ec54ad8cbc4c418f7653cd3e0f712de0107b289bbe0c355",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "2c27849bc6b152578ec54ad8cbc4c418f7653cd3e0f712de0107b289bbe0c355",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-02-27.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02-27.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 47949,
+        "fetched_utc": "2026-10-07T03:39:15.860093+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip",
+        "safe_headers": {
+          "Content-Length": "47949",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"0290afad0748fe22a359918e4a299999\"",
+          "Last-Modified": "Wed, 02 Mar 2022 21:16:34 GMT"
+        },
+        "sha256": "2c27849bc6b152578ec54ad8cbc4c418f7653cd3e0f712de0107b289bbe0c355",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:19.335574+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"4d4a7ec400681a30f08a14bfb0bce528\"",
+          "Last-Modified": "Thu, 03 Mar 2022 20:50:36 GMT"
+        },
+        "sha256": "7975e4b8db5193cb0d2aa85163d98a2197d90f22112730076be07f3bee6a126c",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "7975e4b8db5193cb0d2aa85163d98a2197d90f22112730076be07f3bee6a126c",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-02-28.csv",
+      "date": "2022-02-28",
+      "declared_sha256": "f77272622c24ef8ceb46048cc88683360d50ad6ddb7d4f6b08995041f85ab794",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "f77272622c24ef8ceb46048cc88683360d50ad6ddb7d4f6b08995041f85ab794",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-02-28.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02-28.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 49243,
+        "fetched_utc": "2026-10-07T03:39:17.984641+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip",
+        "safe_headers": {
+          "Content-Length": "49243",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"f3a0ee2e82ccd625a5845c4678d66aef\"",
+          "Last-Modified": "Thu, 03 Mar 2022 20:50:36 GMT"
+        },
+        "sha256": "f77272622c24ef8ceb46048cc88683360d50ad6ddb7d4f6b08995041f85ab794",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:21.506971+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"6a41d0753af608c8dc03a094a7562af9\"",
+          "Last-Modified": "Mon, 28 Feb 2022 21:05:39 GMT"
+        },
+        "sha256": "11a830d0b462d29462c0f6cefc736c54856ef1a68157476969288117f3c93ab9",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "11a830d0b462d29462c0f6cefc736c54856ef1a68157476969288117f3c93ab9",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-02-25.csv",
+      "date": "2022-02-25",
+      "declared_sha256": "2a981d4f502f752ff8d410c12f6f071af3d01165fec59f8dcc1b18a768dcd7a0",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "2a981d4f502f752ff8d410c12f6f071af3d01165fec59f8dcc1b18a768dcd7a0",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-02-25.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02-25.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "OVERLAP_CONTROL",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 1440,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 1440,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 0
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 58106,
+        "fetched_utc": "2026-10-07T03:39:20.171343+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip",
+        "safe_headers": {
+          "Content-Length": "58106",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"8e8a184b3ebeb06cc3809f5af4cfacb7\"",
+          "Last-Modified": "Mon, 28 Feb 2022 21:05:39 GMT"
+        },
+        "sha256": "2a981d4f502f752ff8d410c12f6f071af3d01165fec59f8dcc1b18a768dcd7a0",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:23.570734+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"f21b390e3eeac355897c98a23d8f5040\"",
+          "Last-Modified": "Tue, 01 Mar 2022 16:31:07 GMT"
+        },
+        "sha256": "242594d7e993e7890adeacce60ae96679554580a5b27558fc9dea74e05c25a68",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "242594d7e993e7890adeacce60ae96679554580a5b27558fc9dea74e05c25a68",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-02-26.csv",
+      "date": "2022-02-26",
+      "declared_sha256": "b0ab75e80659453a51ff5473ca94b41b8fe3d2394651b8db17853d4f3fa30e36",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "b0ab75e80659453a51ff5473ca94b41b8fe3d2394651b8db17853d4f3fa30e36",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-02-26.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02-26.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 57774,
+        "fetched_utc": "2026-10-07T03:39:22.772588+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip",
+        "safe_headers": {
+          "Content-Length": "57774",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"b7e550dc9931a61e98b086893227d8dc\"",
+          "Last-Modified": "Tue, 01 Mar 2022 16:31:07 GMT"
+        },
+        "sha256": "b0ab75e80659453a51ff5473ca94b41b8fe3d2394651b8db17853d4f3fa30e36",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:25.195018+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"4b845667350b233e34eaa5d76a05cb74\"",
+          "Last-Modified": "Wed, 02 Mar 2022 21:16:45 GMT"
+        },
+        "sha256": "04ae90cfe24d3872c80855c25e32bbbec7f61c62863ca90652f67f9bf52ba0c2",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "04ae90cfe24d3872c80855c25e32bbbec7f61c62863ca90652f67f9bf52ba0c2",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-02-27.csv",
+      "date": "2022-02-27",
+      "declared_sha256": "7283b18bb4999177417451a54239b32bfc5f535ec6d2d4595faa61b1dbb9ba9b",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "7283b18bb4999177417451a54239b32bfc5f535ec6d2d4595faa61b1dbb9ba9b",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-02-27.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02-27.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 57624,
+        "fetched_utc": "2026-10-07T03:39:24.340101+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip",
+        "safe_headers": {
+          "Content-Length": "57624",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"53fbed216f38f0c3ea95336e8b896273\"",
+          "Last-Modified": "Wed, 02 Mar 2022 21:16:45 GMT"
+        },
+        "sha256": "7283b18bb4999177417451a54239b32bfc5f535ec6d2d4595faa61b1dbb9ba9b",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:27.124912+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"b4da845e8972068e75c5b973e6af1118\"",
+          "Last-Modified": "Thu, 03 Mar 2022 20:50:47 GMT"
+        },
+        "sha256": "d5f0c2fb0881db001955aee5b86a02e02cddaa12014a22ec57c765312814d696",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "d5f0c2fb0881db001955aee5b86a02e02cddaa12014a22ec57c765312814d696",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-02-28.csv",
+      "date": "2022-02-28",
+      "declared_sha256": "8a56566f2d89c70572c9740868ec91de7c48e2677521f8a814628ea834fa04d6",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "8a56566f2d89c70572c9740868ec91de7c48e2677521f8a814628ea834fa04d6",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-02-28.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02-28.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-02",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "february-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 57724,
+        "fetched_utc": "2026-10-07T03:39:26.285166+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip",
+        "safe_headers": {
+          "Content-Length": "57724",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"349e57885876586f41cf01227c2d361d\"",
+          "Last-Modified": "Thu, 03 Mar 2022 20:50:47 GMT"
+        },
+        "sha256": "8a56566f2d89c70572c9740868ec91de7c48e2677521f8a814628ea834fa04d6",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:28.728702+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"83a527c3c6392b20f170101e06c61700\"",
+          "Last-Modified": "Fri, 04 Mar 2022 20:25:30 GMT"
+        },
+        "sha256": "046f7f1410ea399f3582ecdea89da6bf4ec6c9ade334a2dc224d9154dae18013",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "046f7f1410ea399f3582ecdea89da6bf4ec6c9ade334a2dc224d9154dae18013",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip.CHECKSUM",
+      "csv_name": "SOLUSDT-1m-2022-03-01.csv",
+      "date": "2022-03-01",
+      "declared_sha256": "d6c96fc3c92f5902e467179d85bd6e687fd34c7e300319cd88878fdc2a25e01c",
+      "downloaded_zip_sha256": "d6c96fc3c92f5902e467179d85bd6e687fd34c7e300319cd88878fdc2a25e01c",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "filename": "SOLUSDT-1m-2022-03-01.zip",
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-03-01.zip",
+      "role_hint": "march-after-february-gap",
+      "status": "FAILED_CLOSED",
+      "symbol": "SOLUSDT",
+      "zip_response": {
+        "bytes": 49059,
+        "fetched_utc": "2026-10-07T03:39:27.901448+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip",
+        "safe_headers": {
+          "Content-Length": "49059",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"063362a45ffd59eddefc2354e7612cba\"",
+          "Last-Modified": "Fri, 04 Mar 2022 20:25:30 GMT"
+        },
+        "sha256": "d6c96fc3c92f5902e467179d85bd6e687fd34c7e300319cd88878fdc2a25e01c",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:30.657462+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"e87dcf3637bcd7cc063fe92469634116\"",
+          "Last-Modified": "Fri, 04 Mar 2022 20:25:38 GMT"
+        },
+        "sha256": "b5919873446d8a48ee2c706c24d92f3b79d0741743805163209ff9e5fd9d582b",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "b5919873446d8a48ee2c706c24d92f3b79d0741743805163209ff9e5fd9d582b",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip.CHECKSUM",
+      "csv_name": "XRPUSDT-1m-2022-03-01.csv",
+      "date": "2022-03-01",
+      "declared_sha256": "6dc47c8c7daae89c93ba8bdd1b4ea9aee250066b62ce760bbeed8fd4add59591",
+      "downloaded_zip_sha256": "6dc47c8c7daae89c93ba8bdd1b4ea9aee250066b62ce760bbeed8fd4add59591",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "filename": "XRPUSDT-1m-2022-03-01.zip",
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-03-01.zip",
+      "role_hint": "march-after-february-gap",
+      "status": "FAILED_CLOSED",
+      "symbol": "XRPUSDT",
+      "zip_response": {
+        "bytes": 57391,
+        "fetched_utc": "2026-10-07T03:39:29.280514+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip",
+        "safe_headers": {
+          "Content-Length": "57391",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"f6464026c39baf2d2d8afcfa30f60ec8\"",
+          "Last-Modified": "Fri, 04 Mar 2022 20:25:38 GMT"
+        },
+        "sha256": "6dc47c8c7daae89c93ba8bdd1b4ea9aee250066b62ce760bbeed8fd4add59591",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:32.520096+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"a7dd9e44d2326386fafaa8d66f4c13b8\"",
+          "Last-Modified": "Sun, 03 Apr 2022 17:53:52 GMT"
+        },
+        "sha256": "2052ef5bff5b2865b1753664450452fc5393d1c0a81509bd1b2068cabea383ee",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "2052ef5bff5b2865b1753664450452fc5393d1c0a81509bd1b2068cabea383ee",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip.CHECKSUM",
+      "csv_name": "SOLUSDT-1m-2022-03-31.csv",
+      "date": "2022-03-31",
+      "declared_sha256": "dc6446248c5b8b7e9161fb3ec9bde9c31d5fda3ad1c69ed365bf386658906af5",
+      "downloaded_zip_sha256": "dc6446248c5b8b7e9161fb3ec9bde9c31d5fda3ad1c69ed365bf386658906af5",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "filename": "SOLUSDT-1m-2022-03-31.zip",
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-03-31.zip",
+      "role_hint": "march-before-april-gap",
+      "status": "FAILED_CLOSED",
+      "symbol": "SOLUSDT",
+      "zip_response": {
+        "bytes": 50394,
+        "fetched_utc": "2026-10-07T03:39:31.210262+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip",
+        "safe_headers": {
+          "Content-Length": "50394",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"5b431135b0c208faa2e49263f3ad8af3\"",
+          "Last-Modified": "Sun, 03 Apr 2022 17:53:52 GMT"
+        },
+        "sha256": "dc6446248c5b8b7e9161fb3ec9bde9c31d5fda3ad1c69ed365bf386658906af5",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:34.903839+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"eebfe4e413983fb763180bdc8e33ce61\"",
+          "Last-Modified": "Sun, 03 Apr 2022 17:54:03 GMT"
+        },
+        "sha256": "df624c1b73f799ff8526802e6a91581ad1d153fc1352193bc26c5ec7060589c9",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "df624c1b73f799ff8526802e6a91581ad1d153fc1352193bc26c5ec7060589c9",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip.CHECKSUM",
+      "csv_name": "XRPUSDT-1m-2022-03-31.csv",
+      "date": "2022-03-31",
+      "declared_sha256": "c3459db2cb0d800d84f8c6bda4ded3ccb593797174431cb737d4047eaf882697",
+      "downloaded_zip_sha256": "c3459db2cb0d800d84f8c6bda4ded3ccb593797174431cb737d4047eaf882697",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "filename": "XRPUSDT-1m-2022-03-31.zip",
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-03-31.zip",
+      "role_hint": "march-before-april-gap",
+      "status": "FAILED_CLOSED",
+      "symbol": "XRPUSDT",
+      "zip_response": {
+        "bytes": 56345,
+        "fetched_utc": "2026-10-07T03:39:33.576883+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip",
+        "safe_headers": {
+          "Content-Length": "56345",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"3d76b49f78cf6f13cf1fd3917f981069\"",
+          "Last-Modified": "Sun, 03 Apr 2022 17:54:03 GMT"
+        },
+        "sha256": "c3459db2cb0d800d84f8c6bda4ded3ccb593797174431cb737d4047eaf882697",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:36.434199+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"e417c742f85447b919e320e3dcaf0607\"",
+          "Last-Modified": "Mon, 04 Apr 2022 15:14:02 GMT"
+        },
+        "sha256": "29649c7d2082bd4da9a38332f0da71fbcc05321dbb49f0d91f2c1efc868c489f",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "29649c7d2082bd4da9a38332f0da71fbcc05321dbb49f0d91f2c1efc868c489f",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-04-01.csv",
+      "date": "2022-04-01",
+      "declared_sha256": "44e3335fbdf3b8337acd4032e90b66c086d910b948089d860250593f8518f791",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "44e3335fbdf3b8337acd4032e90b66c086d910b948089d860250593f8518f791",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-04-01.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-04-01.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 50787,
+        "fetched_utc": "2026-10-07T03:39:35.483494+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip",
+        "safe_headers": {
+          "Content-Length": "50787",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"dd0870992568d40a97a88bd71ab86946\"",
+          "Last-Modified": "Mon, 04 Apr 2022 15:14:02 GMT"
+        },
+        "sha256": "44e3335fbdf3b8337acd4032e90b66c086d910b948089d860250593f8518f791",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:38.332996+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"a7669910097f4a3c29d54c7ebe3fb395\"",
+          "Last-Modified": "Tue, 05 Apr 2022 14:44:19 GMT"
+        },
+        "sha256": "d879231f0cb44e9c6d2e85befb580c115af87db37a55b8ba1db45aa9bcf54161",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "d879231f0cb44e9c6d2e85befb580c115af87db37a55b8ba1db45aa9bcf54161",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-04-02.csv",
+      "date": "2022-04-02",
+      "declared_sha256": "d2f9d68165c7a13c6bbaee9efb44a90844b0f9d6090bd315f31d3666b852f6c7",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "d2f9d68165c7a13c6bbaee9efb44a90844b0f9d6090bd315f31d3666b852f6c7",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-04-02.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-04-02.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 50000,
+        "fetched_utc": "2026-10-07T03:39:37.703412+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip",
+        "safe_headers": {
+          "Content-Length": "50000",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"71a7952a2df6a274a46b6633115c76a7\"",
+          "Last-Modified": "Tue, 05 Apr 2022 14:44:19 GMT"
+        },
+        "sha256": "d2f9d68165c7a13c6bbaee9efb44a90844b0f9d6090bd315f31d3666b852f6c7",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:39.755475+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"fbaba769daa01e842b3e6d277dc688ac\"",
+          "Last-Modified": "Mon, 05 Jun 2023 23:28:47 GMT"
+        },
+        "sha256": "4216e0b3cb5dba7ac403c0fe1764141b3950ed3ac4a0e37306dcab24c9e2f1ac",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "4216e0b3cb5dba7ac403c0fe1764141b3950ed3ac4a0e37306dcab24c9e2f1ac",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "SOLUSDT-1m-2022-04-03.csv",
+      "date": "2022-04-03",
+      "declared_sha256": "e1210c72e2dfd470f8c02414de8c8bc4414bc9d78e73e7294d35472181dd721b",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "e1210c72e2dfd470f8c02414de8c8bc4414bc9d78e73e7294d35472181dd721b",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "SOLUSDT-1m-2022-04-03.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\SOLUSDT\\1m\\SOLUSDT-1m-2022-04-03.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "OVERLAP_CONTROL",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 1440,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 1440,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 0
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "SOLUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 49805,
+        "fetched_utc": "2026-10-07T03:39:39.132590+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip",
+        "safe_headers": {
+          "Content-Length": "49805",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"4364171004731a10c2e64f0562b352ff\"",
+          "Last-Modified": "Mon, 05 Jun 2023 23:28:47 GMT"
+        },
+        "sha256": "e1210c72e2dfd470f8c02414de8c8bc4414bc9d78e73e7294d35472181dd721b",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:41.886948+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"9500b5030c4d27aea0cf077d026358f3\"",
+          "Last-Modified": "Mon, 04 Apr 2022 15:14:14 GMT"
+        },
+        "sha256": "11a1514ec55726600fa62a77b60cc5dc4131c87028967a6585a6d61b133429e1",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "11a1514ec55726600fa62a77b60cc5dc4131c87028967a6585a6d61b133429e1",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-04-01.csv",
+      "date": "2022-04-01",
+      "declared_sha256": "018c6366274843d1041d7facf0a2c0ec014455d86c958fd3d90db0e9bca7a4b0",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "018c6366274843d1041d7facf0a2c0ec014455d86c958fd3d90db0e9bca7a4b0",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-04-01.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-04-01.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 55947,
+        "fetched_utc": "2026-10-07T03:39:40.551130+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip",
+        "safe_headers": {
+          "Content-Length": "55947",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"8c87b4a6fb459dbc58c1a314e1fd7b6f\"",
+          "Last-Modified": "Mon, 04 Apr 2022 15:14:14 GMT"
+        },
+        "sha256": "018c6366274843d1041d7facf0a2c0ec014455d86c958fd3d90db0e9bca7a4b0",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:43.731653+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"cb541705ee50923e75407f7273ce51e6\"",
+          "Last-Modified": "Tue, 05 Apr 2022 14:44:32 GMT"
+        },
+        "sha256": "8ccb79debc05b9acb6557896c690355d4f081d7d13c9937857bb588a5f021505",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "8ccb79debc05b9acb6557896c690355d4f081d7d13c9937857bb588a5f021505",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-04-02.csv",
+      "date": "2022-04-02",
+      "declared_sha256": "73073095f35fe004bfa61122cf5acce1db53a210e055abaad12c9f0048021e72",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "73073095f35fe004bfa61122cf5acce1db53a210e055abaad12c9f0048021e72",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-04-02.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-04-02.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "SUPPLEMENT_CANDIDATE",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 0,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 0,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 1440
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 55246,
+        "fetched_utc": "2026-10-07T03:39:42.682941+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip",
+        "safe_headers": {
+          "Content-Length": "55246",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"6991504fbd49a2d4d59597fe547dae7f\"",
+          "Last-Modified": "Tue, 05 Apr 2022 14:44:32 GMT"
+        },
+        "sha256": "73073095f35fe004bfa61122cf5acce1db53a210e055abaad12c9f0048021e72",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:45.327501+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"28dce4a0428073d5435d2ce11824256b\"",
+          "Last-Modified": "Mon, 05 Jun 2023 23:29:01 GMT"
+        },
+        "sha256": "3024f570e0de1032f51dbe06c5c1af588508ba53508c10cd7407494bb2587871",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "3024f570e0de1032f51dbe06c5c1af588508ba53508c10cd7407494bb2587871",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2022-04-03.csv",
+      "date": "2022-04-03",
+      "declared_sha256": "527c210d854ee9c07f52464eaae50eceeb4047091f48050b7a9df9dd491b3138",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "downloaded_zip_sha256": "527c210d854ee9c07f52464eaae50eceeb4047091f48050b7a9df9dd491b3138",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": true,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2022-04-03.zip",
+      "gap_count": 0,
+      "gap_samples": [],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2022-04-03.zip",
+      "missing_timestamp_samples": [],
+      "missing_timestamps": 0,
+      "monthly_comparison": {
+        "classification_only_not_merged": "OVERLAP_CONTROL",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": false,
+        "focus_timestamp_in_monthly": false,
+        "matching_overlap_rows": 1440,
+        "monthly_archive_month": "2022-04",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 1440,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 0
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1440,
+      "raw_row_count": 1440,
+      "role_hint": "april-boundary",
+      "status": "VALIDATED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 54831,
+        "fetched_utc": "2026-10-07T03:39:44.535680+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip",
+        "safe_headers": {
+          "Content-Length": "54831",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"82da792e8caae3251c17a90641084b79\"",
+          "Last-Modified": "Mon, 05 Jun 2023 23:29:01 GMT"
+        },
+        "sha256": "527c210d854ee9c07f52464eaae50eceeb4047091f48050b7a9df9dd491b3138",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip"
+    },
+    {
+      "checksum_matches": true,
+      "checksum_response": {
+        "bytes": 92,
+        "fetched_utc": "2026-10-07T03:39:47.936489+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "92",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"82aabf1f289361cb3bf25ef35a233d5b\"",
+          "Last-Modified": "Fri, 01 Dec 2023 06:42:06 GMT"
+        },
+        "sha256": "89055622d41d6a7382c7da7581748a57dd6dbd87485d81398215284206a57282",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "89055622d41d6a7382c7da7581748a57dd6dbd87485d81398215284206a57282",
+      "checksum_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip.CHECKSUM",
+      "chronologically_ordered": true,
+      "csv_name": "XRPUSDT-1m-2023-11-30.csv",
+      "date": "2023-11-30",
+      "declared_sha256": "c7eabaf3d710fa0068357c60ba7fe7ccf19ade32048f1a4cfb0faa23ffba01e8",
+      "domain_issue_count": 1,
+      "domain_issues": [
+        {
+          "line": 757,
+          "reason": "quote volume is inconsistent with OHLC and base volume",
+          "timestamp_ms": 1701347700000,
+          "timestamp_utc": "2023-11-30T12:35:00+00:00"
+        }
+      ],
+      "downloaded_zip_sha256": "c7eabaf3d710fa0068357c60ba7fe7ccf19ade32048f1a4cfb0faa23ffba01e8",
+      "duplicate_timestamps": 0,
+      "exact_1440_minute_coverage": false,
+      "expected_minutes": 1440,
+      "filename": "XRPUSDT-1m-2023-11-30.zip",
+      "gap_count": 1,
+      "gap_samples": [
+        "2023-11-30T12:34:00+00:00..2023-11-30T12:36:00+00:00"
+      ],
+      "local_zip_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\daily\\XRPUSDT\\1m\\XRPUSDT-1m-2023-11-30.zip",
+      "missing_timestamp_samples": [
+        "2023-11-30T12:35:00+00:00"
+      ],
+      "missing_timestamps": 1,
+      "monthly_comparison": {
+        "classification_only_not_merged": "OVERLAP_CONTROL",
+        "conflict_row_count": 0,
+        "conflict_rows": [],
+        "daily_duplicate_timestamps": 0,
+        "daily_raw_rows": 1440,
+        "daily_unique_timestamps": 1440,
+        "focus_timestamp_in_daily": true,
+        "focus_timestamp_in_monthly": true,
+        "matching_overlap_rows": 1440,
+        "monthly_archive_month": "2023-11",
+        "monthly_timestamps_missing_from_daily": 0,
+        "monthly_timestamps_on_day": 1440,
+        "replacement_candidate_rows": 0,
+        "supplement_candidate_rows": 0
+      },
+      "out_of_day_samples": [],
+      "out_of_day_timestamps": 0,
+      "parsed_full_kline_rows": 1439,
+      "raw_row_count": 1440,
+      "role_hint": "known-monthly-domain-issue",
+      "status": "VALIDATION_FAILED",
+      "symbol": "XRPUSDT",
+      "wrong_close_time_count": 0,
+      "zip_response": {
+        "bytes": 53112,
+        "fetched_utc": "2026-10-07T03:39:46.616641+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip",
+        "safe_headers": {
+          "Content-Length": "53112",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"56a1be5320ed8066272af6e31d348c47\"",
+          "Last-Modified": "Fri, 01 Dec 2023 06:42:06 GMT"
+        },
+        "sha256": "c7eabaf3d710fa0068357c60ba7fe7ccf19ade32048f1a4cfb0faa23ffba01e8",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip"
+      },
+      "zip_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip"
+    }
+  ],
+  "daily_datasets_expected": 19,
+  "daily_datasets_processed": 19,
+  "daily_datasets_validated": 14,
+  "daily_domain_issue_count": 1,
+  "economics_run": false,
+  "elapsed_seconds": 44.984,
+  "errors": [
+    {
+      "date": "2022-03-01",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "scope": "daily_source",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-03-01",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "scope": "daily_source",
+      "symbol": "XRPUSDT"
+    },
+    {
+      "date": "2022-03-31",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "scope": "daily_source",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-03-31",
+      "error": "matching local monthly archive is not checksum-qualified",
+      "error_type": "AuditError",
+      "scope": "daily_source",
+      "symbol": "XRPUSDT"
+    },
+    {
+      "date": "2023-11-30",
+      "error": "daily archive failed exact FULL_KLINE day coverage/domain checks",
+      "scope": "daily_quality",
+      "symbol": "XRPUSDT"
+    }
+  ],
+  "finished_utc": "2026-10-07T03:39:49.006083+00:00",
+  "focus_timestamp_ms": 1701347700000,
+  "focus_timestamp_utc": "2023-11-30T12:35:00+00:00",
+  "helper_path": "D:\\Kairos\\runtime\\calendar-source-qualification-20261007-a\\Qualify-OfficialCalendarArchives.py",
+  "helper_sha256": "874fbb751199651616e896b0a520ea6e3997dee24f59e7207b7fdb7470384144",
+  "local_monthly_zip_after_sha256": {
+    "SOLUSDT/2022-02": {
+      "bytes": 1204629,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02.zip",
+      "sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c",
+      "unchanged": true
+    },
+    "SOLUSDT/2022-04": {
+      "bytes": 1334627,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\SOLUSDT\\1m\\SOLUSDT-1m-2022-04.zip",
+      "sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819",
+      "unchanged": true
+    },
+    "XRPUSDT/2022-02": {
+      "bytes": 1422328,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02.zip",
+      "sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7",
+      "unchanged": true
+    },
+    "XRPUSDT/2022-04": {
+      "bytes": 1529786,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2022-04.zip",
+      "sha256": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b",
+      "unchanged": true
+    },
+    "XRPUSDT/2023-11": {
+      "bytes": 1650930,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2023-11.zip",
+      "sha256": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99",
+      "unchanged": true
+    }
+  },
+  "local_monthly_zip_before_sha256": {
+    "SOLUSDT/2022-02": {
+      "bytes": 1204629,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\SOLUSDT\\1m\\SOLUSDT-1m-2022-02.zip",
+      "sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c"
+    },
+    "SOLUSDT/2022-04": {
+      "bytes": 1334627,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\SOLUSDT\\1m\\SOLUSDT-1m-2022-04.zip",
+      "sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819"
+    },
+    "XRPUSDT/2022-02": {
+      "bytes": 1422328,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2022-02.zip",
+      "sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7"
+    },
+    "XRPUSDT/2022-04": {
+      "bytes": 1529786,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2022-04.zip",
+      "sha256": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b"
+    },
+    "XRPUSDT/2023-11": {
+      "bytes": 1650930,
+      "exists": true,
+      "path": "D:\\Kairos\\kairos-backtest\\data\\historical\\XRPUSDT\\1m\\XRPUSDT-1m-2023-11.zip",
+      "sha256": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99"
+    }
+  },
+  "max_zip_bytes": 4194304,
+  "merge_performed": false,
+  "monthly_coverage_diagnostics": [
+    {
+      "csv_name": "SOLUSDT-1m-2022-02.csv",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "duplicate_timestamp_count": 0,
+      "filename": "SOLUSDT-1m-2022-02.zip",
+      "local_before_sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c",
+      "month": "2022-02",
+      "monthly_checksum_match": true,
+      "official_checksum_url": null,
+      "official_sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c",
+      "raw_row_count": 36000,
+      "symbol": "SOLUSDT",
+      "unique_timestamp_count": 36000
+    },
+    {
+      "csv_name": "SOLUSDT-1m-2022-04.csv",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "duplicate_timestamp_count": 0,
+      "filename": "SOLUSDT-1m-2022-04.zip",
+      "local_before_sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819",
+      "month": "2022-04",
+      "monthly_checksum_match": true,
+      "official_checksum_url": null,
+      "official_sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819",
+      "raw_row_count": 40320,
+      "symbol": "SOLUSDT",
+      "unique_timestamp_count": 40320
+    },
+    {
+      "csv_name": "XRPUSDT-1m-2022-02.csv",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "duplicate_timestamp_count": 0,
+      "filename": "XRPUSDT-1m-2022-02.zip",
+      "local_before_sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7",
+      "month": "2022-02",
+      "monthly_checksum_match": true,
+      "official_checksum_url": null,
+      "official_sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7",
+      "raw_row_count": 36000,
+      "symbol": "XRPUSDT",
+      "unique_timestamp_count": 36000
+    },
+    {
+      "csv_name": "XRPUSDT-1m-2022-04.csv",
+      "domain_issue_count": 0,
+      "domain_issues": [],
+      "duplicate_timestamp_count": 0,
+      "filename": "XRPUSDT-1m-2022-04.zip",
+      "local_before_sha256": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b",
+      "month": "2022-04",
+      "monthly_checksum_match": true,
+      "official_checksum_url": null,
+      "official_sha256": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b",
+      "raw_row_count": 40320,
+      "symbol": "XRPUSDT",
+      "unique_timestamp_count": 40320
+    },
+    {
+      "csv_name": "XRPUSDT-1m-2023-11.csv",
+      "domain_issue_count": 1,
+      "domain_issues": [
+        {
+          "line": 42517,
+          "reason": "quote volume is inconsistent with OHLC and base volume",
+          "timestamp_ms": 1701347700000,
+          "timestamp_utc": "2023-11-30T12:35:00+00:00"
+        }
+      ],
+      "duplicate_timestamp_count": 0,
+      "filename": "XRPUSDT-1m-2023-11.zip",
+      "local_before_sha256": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99",
+      "month": "2023-11",
+      "monthly_checksum_match": true,
+      "official_checksum_url": null,
+      "official_sha256": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99",
+      "raw_row_count": 43200,
+      "symbol": "XRPUSDT",
+      "unique_timestamp_count": 43200
+    }
+  ],
+  "monthly_domain_issue_count": 1,
+  "monthly_sidecars_expected": 5,
+  "monthly_sidecars_verified_local_matches": 5,
+  "monthly_sources": [
+    {
+      "checksum_response": {
+        "bytes": 89,
+        "fetched_utc": "2026-10-07T03:39:04.028844+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "89",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"3413eeeaeafaad449038b8aff98fd6a7\"",
+          "Last-Modified": "Mon, 08 Jan 2024 12:14:37 GMT"
+        },
+        "sha256": "b4103aab91b3bf2d30b9124678f6aa2024d9763a4108e1a8442703c9c2070945",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "b4103aab91b3bf2d30b9124678f6aa2024d9763a4108e1a8442703c9c2070945",
+      "checksum_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip.CHECKSUM",
+      "declared_sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c",
+      "filename": "SOLUSDT-1m-2022-02.zip",
+      "local_matches_official": true,
+      "local_zip_sha256_before": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c",
+      "month": "2022-02",
+      "referenced_filename": "SOLUSDT-1m-2022-02.zip",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "checksum_response": {
+        "bytes": 89,
+        "fetched_utc": "2026-10-07T03:39:05.197487+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "89",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"cb741b0c8c7275b7c065af9b042854e5\"",
+          "Last-Modified": "Mon, 08 Jan 2024 14:17:23 GMT"
+        },
+        "sha256": "a339d5cb191b7c5cc4e888cd93d4c259cc0e7f2eb557eae5f8c15f8c7d5f22c4",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "a339d5cb191b7c5cc4e888cd93d4c259cc0e7f2eb557eae5f8c15f8c7d5f22c4",
+      "checksum_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04.zip.CHECKSUM",
+      "declared_sha256": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819",
+      "filename": "SOLUSDT-1m-2022-04.zip",
+      "local_matches_official": true,
+      "local_zip_sha256_before": "d7dd9e46951e917a5cb805a0d90d6bc45e597235da03f5984d9267af09858819",
+      "month": "2022-04",
+      "referenced_filename": "SOLUSDT-1m-2022-04.zip",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "checksum_response": {
+        "bytes": 89,
+        "fetched_utc": "2026-10-07T03:39:06.901203+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "89",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"b9dc454e25c4beb541e4cda30041de54\"",
+          "Last-Modified": "Mon, 08 Jan 2024 12:14:41 GMT"
+        },
+        "sha256": "fa50713ac228e08640ed07442bdc44e288eb9080dae080ac18f735aeb96a8205",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "fa50713ac228e08640ed07442bdc44e288eb9080dae080ac18f735aeb96a8205",
+      "checksum_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip.CHECKSUM",
+      "declared_sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7",
+      "filename": "XRPUSDT-1m-2022-02.zip",
+      "local_matches_official": true,
+      "local_zip_sha256_before": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7",
+      "month": "2022-02",
+      "referenced_filename": "XRPUSDT-1m-2022-02.zip",
+      "symbol": "XRPUSDT"
+    },
+    {
+      "checksum_response": {
+        "bytes": 89,
+        "fetched_utc": "2026-10-07T03:39:08.069879+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "89",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"5d437dd487c8cafadbfce193f25290e4\"",
+          "Last-Modified": "Mon, 08 Jan 2024 14:17:27 GMT"
+        },
+        "sha256": "9fad35504947dcfb6e9761bcf1df32a4e3fb1a4e0e478c012c4e172ef5a6cf25",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "9fad35504947dcfb6e9761bcf1df32a4e3fb1a4e0e478c012c4e172ef5a6cf25",
+      "checksum_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04.zip.CHECKSUM",
+      "declared_sha256": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b",
+      "filename": "XRPUSDT-1m-2022-04.zip",
+      "local_matches_official": true,
+      "local_zip_sha256_before": "28a9f6c9cc7bcf6cadc5acc1cacf297f7a83193fd1e13858ebc5dc927cb3df7b",
+      "month": "2022-04",
+      "referenced_filename": "XRPUSDT-1m-2022-04.zip",
+      "symbol": "XRPUSDT"
+    },
+    {
+      "checksum_response": {
+        "bytes": 89,
+        "fetched_utc": "2026-10-07T03:39:09.872421+00:00",
+        "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11.zip.CHECKSUM",
+        "safe_headers": {
+          "Content-Length": "89",
+          "Content-Type": "binary/octet-stream",
+          "ETag": "\"08113c828dceb7f3af8c0d918a73acca\"",
+          "Last-Modified": "Sun, 17 Dec 2023 13:30:58 GMT"
+        },
+        "sha256": "452baa2bc3c5d04068dd9e4f6355c513ec1edac5f1df3606230a696b4920efd5",
+        "status": 200,
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11.zip.CHECKSUM"
+      },
+      "checksum_sidecar_sha256": "452baa2bc3c5d04068dd9e4f6355c513ec1edac5f1df3606230a696b4920efd5",
+      "checksum_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11.zip.CHECKSUM",
+      "declared_sha256": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99",
+      "filename": "XRPUSDT-1m-2023-11.zip",
+      "local_matches_official": true,
+      "local_zip_sha256_before": "b817ca0a6478d73cfd50dfc224aab84ec7f15ed0129795c3df2c39e6ce08cc99",
+      "month": "2023-11",
+      "referenced_filename": "XRPUSDT-1m-2023-11.zip",
+      "symbol": "XRPUSDT"
+    }
+  ],
+  "overlap_conflict_rows": 0,
+  "replacement_candidate_rows": 0,
+  "request_timeout_seconds": 15,
+  "requests": [
+    {
+      "bytes": 89,
+      "fetched_utc": "2026-10-07T03:39:04.028844+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "89",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"3413eeeaeafaad449038b8aff98fd6a7\"",
+        "Last-Modified": "Mon, 08 Jan 2024 12:14:37 GMT"
+      },
+      "sha256": "b4103aab91b3bf2d30b9124678f6aa2024d9763a4108e1a8442703c9c2070945",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip.CHECKSUM"
+    },
+    {
+      "bytes": 89,
+      "fetched_utc": "2026-10-07T03:39:05.197487+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "89",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"cb741b0c8c7275b7c065af9b042854e5\"",
+        "Last-Modified": "Mon, 08 Jan 2024 14:17:23 GMT"
+      },
+      "sha256": "a339d5cb191b7c5cc4e888cd93d4c259cc0e7f2eb557eae5f8c15f8c7d5f22c4",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04.zip.CHECKSUM"
+    },
+    {
+      "bytes": 89,
+      "fetched_utc": "2026-10-07T03:39:06.901203+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "89",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"b9dc454e25c4beb541e4cda30041de54\"",
+        "Last-Modified": "Mon, 08 Jan 2024 12:14:41 GMT"
+      },
+      "sha256": "fa50713ac228e08640ed07442bdc44e288eb9080dae080ac18f735aeb96a8205",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip.CHECKSUM"
+    },
+    {
+      "bytes": 89,
+      "fetched_utc": "2026-10-07T03:39:08.069879+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "89",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"5d437dd487c8cafadbfce193f25290e4\"",
+        "Last-Modified": "Mon, 08 Jan 2024 14:17:27 GMT"
+      },
+      "sha256": "9fad35504947dcfb6e9761bcf1df32a4e3fb1a4e0e478c012c4e172ef5a6cf25",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04.zip.CHECKSUM"
+    },
+    {
+      "bytes": 89,
+      "fetched_utc": "2026-10-07T03:39:09.872421+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "89",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"08113c828dceb7f3af8c0d918a73acca\"",
+        "Last-Modified": "Sun, 17 Dec 2023 13:30:58 GMT"
+      },
+      "sha256": "452baa2bc3c5d04068dd9e4f6355c513ec1edac5f1df3606230a696b4920efd5",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11.zip.CHECKSUM"
+    },
+    {
+      "bytes": 49231,
+      "fetched_utc": "2026-10-07T03:39:11.676033+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip",
+      "safe_headers": {
+        "Content-Length": "49231",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"4af1daa732a5aba7afeeb01ac9ec9962\"",
+        "Last-Modified": "Mon, 28 Feb 2022 21:05:25 GMT"
+      },
+      "sha256": "4ddba923fc0e922aecce13eda0f883dbc8cfcd83c27648b7a1afa2ab76a237a8",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:12.986373+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"57796459db4dd4ea8aa2f2bdb552d717\"",
+        "Last-Modified": "Mon, 28 Feb 2022 21:05:25 GMT"
+      },
+      "sha256": "8cf817c380ce7eacae58da7c46f46d539dd51e3f8013ae2ada55d246a48ba70a",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-25.zip.CHECKSUM"
+    },
+    {
+      "bytes": 47421,
+      "fetched_utc": "2026-10-07T03:39:13.766479+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip",
+      "safe_headers": {
+        "Content-Length": "47421",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"1ae74dcbca0970df564747c0fbf019b4\"",
+        "Last-Modified": "Tue, 01 Mar 2022 16:30:55 GMT"
+      },
+      "sha256": "34edc8ed16789b073f5936c5aeac77d5233ee97261dd4f8cf424404565069a9b",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:15.078299+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"6eeb63dde7c1807e731d20f84c988559\"",
+        "Last-Modified": "Tue, 01 Mar 2022 16:30:55 GMT"
+      },
+      "sha256": "c59faddaf023e49039127f6088906eca70291aba203ba65b1721c0f7be973d58",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-26.zip.CHECKSUM"
+    },
+    {
+      "bytes": 47949,
+      "fetched_utc": "2026-10-07T03:39:15.860093+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip",
+      "safe_headers": {
+        "Content-Length": "47949",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"0290afad0748fe22a359918e4a299999\"",
+        "Last-Modified": "Wed, 02 Mar 2022 21:16:34 GMT"
+      },
+      "sha256": "2c27849bc6b152578ec54ad8cbc4c418f7653cd3e0f712de0107b289bbe0c355",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:17.184707+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"2e312ec7bfc9ea9dea93c0e1c7c0b79b\"",
+        "Last-Modified": "Wed, 02 Mar 2022 21:16:34 GMT"
+      },
+      "sha256": "9bcd2e84caed299224ae3c8d230045f54a36e4b7d3f2316b4483dc7d9d4447af",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-27.zip.CHECKSUM"
+    },
+    {
+      "bytes": 49243,
+      "fetched_utc": "2026-10-07T03:39:17.984641+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip",
+      "safe_headers": {
+        "Content-Length": "49243",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"f3a0ee2e82ccd625a5845c4678d66aef\"",
+        "Last-Modified": "Thu, 03 Mar 2022 20:50:36 GMT"
+      },
+      "sha256": "f77272622c24ef8ceb46048cc88683360d50ad6ddb7d4f6b08995041f85ab794",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:19.335574+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"4d4a7ec400681a30f08a14bfb0bce528\"",
+        "Last-Modified": "Thu, 03 Mar 2022 20:50:36 GMT"
+      },
+      "sha256": "7975e4b8db5193cb0d2aa85163d98a2197d90f22112730076be07f3bee6a126c",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-02-28.zip.CHECKSUM"
+    },
+    {
+      "bytes": 58106,
+      "fetched_utc": "2026-10-07T03:39:20.171343+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip",
+      "safe_headers": {
+        "Content-Length": "58106",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"8e8a184b3ebeb06cc3809f5af4cfacb7\"",
+        "Last-Modified": "Mon, 28 Feb 2022 21:05:39 GMT"
+      },
+      "sha256": "2a981d4f502f752ff8d410c12f6f071af3d01165fec59f8dcc1b18a768dcd7a0",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:21.506971+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"6a41d0753af608c8dc03a094a7562af9\"",
+        "Last-Modified": "Mon, 28 Feb 2022 21:05:39 GMT"
+      },
+      "sha256": "11a830d0b462d29462c0f6cefc736c54856ef1a68157476969288117f3c93ab9",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-25.zip.CHECKSUM"
+    },
+    {
+      "bytes": 57774,
+      "fetched_utc": "2026-10-07T03:39:22.772588+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip",
+      "safe_headers": {
+        "Content-Length": "57774",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"b7e550dc9931a61e98b086893227d8dc\"",
+        "Last-Modified": "Tue, 01 Mar 2022 16:31:07 GMT"
+      },
+      "sha256": "b0ab75e80659453a51ff5473ca94b41b8fe3d2394651b8db17853d4f3fa30e36",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:23.570734+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"f21b390e3eeac355897c98a23d8f5040\"",
+        "Last-Modified": "Tue, 01 Mar 2022 16:31:07 GMT"
+      },
+      "sha256": "242594d7e993e7890adeacce60ae96679554580a5b27558fc9dea74e05c25a68",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-26.zip.CHECKSUM"
+    },
+    {
+      "bytes": 57624,
+      "fetched_utc": "2026-10-07T03:39:24.340101+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip",
+      "safe_headers": {
+        "Content-Length": "57624",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"53fbed216f38f0c3ea95336e8b896273\"",
+        "Last-Modified": "Wed, 02 Mar 2022 21:16:45 GMT"
+      },
+      "sha256": "7283b18bb4999177417451a54239b32bfc5f535ec6d2d4595faa61b1dbb9ba9b",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:25.195018+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"4b845667350b233e34eaa5d76a05cb74\"",
+        "Last-Modified": "Wed, 02 Mar 2022 21:16:45 GMT"
+      },
+      "sha256": "04ae90cfe24d3872c80855c25e32bbbec7f61c62863ca90652f67f9bf52ba0c2",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-27.zip.CHECKSUM"
+    },
+    {
+      "bytes": 57724,
+      "fetched_utc": "2026-10-07T03:39:26.285166+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip",
+      "safe_headers": {
+        "Content-Length": "57724",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"349e57885876586f41cf01227c2d361d\"",
+        "Last-Modified": "Thu, 03 Mar 2022 20:50:47 GMT"
+      },
+      "sha256": "8a56566f2d89c70572c9740868ec91de7c48e2677521f8a814628ea834fa04d6",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:27.124912+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"b4da845e8972068e75c5b973e6af1118\"",
+        "Last-Modified": "Thu, 03 Mar 2022 20:50:47 GMT"
+      },
+      "sha256": "d5f0c2fb0881db001955aee5b86a02e02cddaa12014a22ec57c765312814d696",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-02-28.zip.CHECKSUM"
+    },
+    {
+      "bytes": 49059,
+      "fetched_utc": "2026-10-07T03:39:27.901448+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip",
+      "safe_headers": {
+        "Content-Length": "49059",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"063362a45ffd59eddefc2354e7612cba\"",
+        "Last-Modified": "Fri, 04 Mar 2022 20:25:30 GMT"
+      },
+      "sha256": "d6c96fc3c92f5902e467179d85bd6e687fd34c7e300319cd88878fdc2a25e01c",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:28.728702+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"83a527c3c6392b20f170101e06c61700\"",
+        "Last-Modified": "Fri, 04 Mar 2022 20:25:30 GMT"
+      },
+      "sha256": "046f7f1410ea399f3582ecdea89da6bf4ec6c9ade334a2dc224d9154dae18013",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-01.zip.CHECKSUM"
+    },
+    {
+      "bytes": 57391,
+      "fetched_utc": "2026-10-07T03:39:29.280514+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip",
+      "safe_headers": {
+        "Content-Length": "57391",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"f6464026c39baf2d2d8afcfa30f60ec8\"",
+        "Last-Modified": "Fri, 04 Mar 2022 20:25:38 GMT"
+      },
+      "sha256": "6dc47c8c7daae89c93ba8bdd1b4ea9aee250066b62ce760bbeed8fd4add59591",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:30.657462+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"e87dcf3637bcd7cc063fe92469634116\"",
+        "Last-Modified": "Fri, 04 Mar 2022 20:25:38 GMT"
+      },
+      "sha256": "b5919873446d8a48ee2c706c24d92f3b79d0741743805163209ff9e5fd9d582b",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-01.zip.CHECKSUM"
+    },
+    {
+      "bytes": 50394,
+      "fetched_utc": "2026-10-07T03:39:31.210262+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip",
+      "safe_headers": {
+        "Content-Length": "50394",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"5b431135b0c208faa2e49263f3ad8af3\"",
+        "Last-Modified": "Sun, 03 Apr 2022 17:53:52 GMT"
+      },
+      "sha256": "dc6446248c5b8b7e9161fb3ec9bde9c31d5fda3ad1c69ed365bf386658906af5",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:32.520096+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"a7dd9e44d2326386fafaa8d66f4c13b8\"",
+        "Last-Modified": "Sun, 03 Apr 2022 17:53:52 GMT"
+      },
+      "sha256": "2052ef5bff5b2865b1753664450452fc5393d1c0a81509bd1b2068cabea383ee",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-03-31.zip.CHECKSUM"
+    },
+    {
+      "bytes": 56345,
+      "fetched_utc": "2026-10-07T03:39:33.576883+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip",
+      "safe_headers": {
+        "Content-Length": "56345",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"3d76b49f78cf6f13cf1fd3917f981069\"",
+        "Last-Modified": "Sun, 03 Apr 2022 17:54:03 GMT"
+      },
+      "sha256": "c3459db2cb0d800d84f8c6bda4ded3ccb593797174431cb737d4047eaf882697",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:34.903839+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"eebfe4e413983fb763180bdc8e33ce61\"",
+        "Last-Modified": "Sun, 03 Apr 2022 17:54:03 GMT"
+      },
+      "sha256": "df624c1b73f799ff8526802e6a91581ad1d153fc1352193bc26c5ec7060589c9",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-03-31.zip.CHECKSUM"
+    },
+    {
+      "bytes": 50787,
+      "fetched_utc": "2026-10-07T03:39:35.483494+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip",
+      "safe_headers": {
+        "Content-Length": "50787",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"dd0870992568d40a97a88bd71ab86946\"",
+        "Last-Modified": "Mon, 04 Apr 2022 15:14:02 GMT"
+      },
+      "sha256": "44e3335fbdf3b8337acd4032e90b66c086d910b948089d860250593f8518f791",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:36.434199+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"e417c742f85447b919e320e3dcaf0607\"",
+        "Last-Modified": "Mon, 04 Apr 2022 15:14:02 GMT"
+      },
+      "sha256": "29649c7d2082bd4da9a38332f0da71fbcc05321dbb49f0d91f2c1efc868c489f",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-01.zip.CHECKSUM"
+    },
+    {
+      "bytes": 50000,
+      "fetched_utc": "2026-10-07T03:39:37.703412+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip",
+      "safe_headers": {
+        "Content-Length": "50000",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"71a7952a2df6a274a46b6633115c76a7\"",
+        "Last-Modified": "Tue, 05 Apr 2022 14:44:19 GMT"
+      },
+      "sha256": "d2f9d68165c7a13c6bbaee9efb44a90844b0f9d6090bd315f31d3666b852f6c7",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:38.332996+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"a7669910097f4a3c29d54c7ebe3fb395\"",
+        "Last-Modified": "Tue, 05 Apr 2022 14:44:19 GMT"
+      },
+      "sha256": "d879231f0cb44e9c6d2e85befb580c115af87db37a55b8ba1db45aa9bcf54161",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-02.zip.CHECKSUM"
+    },
+    {
+      "bytes": 49805,
+      "fetched_utc": "2026-10-07T03:39:39.132590+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip",
+      "safe_headers": {
+        "Content-Length": "49805",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"4364171004731a10c2e64f0562b352ff\"",
+        "Last-Modified": "Mon, 05 Jun 2023 23:28:47 GMT"
+      },
+      "sha256": "e1210c72e2dfd470f8c02414de8c8bc4414bc9d78e73e7294d35472181dd721b",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:39.755475+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"fbaba769daa01e842b3e6d277dc688ac\"",
+        "Last-Modified": "Mon, 05 Jun 2023 23:28:47 GMT"
+      },
+      "sha256": "4216e0b3cb5dba7ac403c0fe1764141b3950ed3ac4a0e37306dcab24c9e2f1ac",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2022-04-03.zip.CHECKSUM"
+    },
+    {
+      "bytes": 55947,
+      "fetched_utc": "2026-10-07T03:39:40.551130+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip",
+      "safe_headers": {
+        "Content-Length": "55947",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"8c87b4a6fb459dbc58c1a314e1fd7b6f\"",
+        "Last-Modified": "Mon, 04 Apr 2022 15:14:14 GMT"
+      },
+      "sha256": "018c6366274843d1041d7facf0a2c0ec014455d86c958fd3d90db0e9bca7a4b0",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:41.886948+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"9500b5030c4d27aea0cf077d026358f3\"",
+        "Last-Modified": "Mon, 04 Apr 2022 15:14:14 GMT"
+      },
+      "sha256": "11a1514ec55726600fa62a77b60cc5dc4131c87028967a6585a6d61b133429e1",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-01.zip.CHECKSUM"
+    },
+    {
+      "bytes": 55246,
+      "fetched_utc": "2026-10-07T03:39:42.682941+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip",
+      "safe_headers": {
+        "Content-Length": "55246",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"6991504fbd49a2d4d59597fe547dae7f\"",
+        "Last-Modified": "Tue, 05 Apr 2022 14:44:32 GMT"
+      },
+      "sha256": "73073095f35fe004bfa61122cf5acce1db53a210e055abaad12c9f0048021e72",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:43.731653+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"cb541705ee50923e75407f7273ce51e6\"",
+        "Last-Modified": "Tue, 05 Apr 2022 14:44:32 GMT"
+      },
+      "sha256": "8ccb79debc05b9acb6557896c690355d4f081d7d13c9937857bb588a5f021505",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-02.zip.CHECKSUM"
+    },
+    {
+      "bytes": 54831,
+      "fetched_utc": "2026-10-07T03:39:44.535680+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip",
+      "safe_headers": {
+        "Content-Length": "54831",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"82da792e8caae3251c17a90641084b79\"",
+        "Last-Modified": "Mon, 05 Jun 2023 23:29:01 GMT"
+      },
+      "sha256": "527c210d854ee9c07f52464eaae50eceeb4047091f48050b7a9df9dd491b3138",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:45.327501+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"28dce4a0428073d5435d2ce11824256b\"",
+        "Last-Modified": "Mon, 05 Jun 2023 23:29:01 GMT"
+      },
+      "sha256": "3024f570e0de1032f51dbe06c5c1af588508ba53508c10cd7407494bb2587871",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2022-04-03.zip.CHECKSUM"
+    },
+    {
+      "bytes": 53112,
+      "fetched_utc": "2026-10-07T03:39:46.616641+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip",
+      "safe_headers": {
+        "Content-Length": "53112",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"56a1be5320ed8066272af6e31d348c47\"",
+        "Last-Modified": "Fri, 01 Dec 2023 06:42:06 GMT"
+      },
+      "sha256": "c7eabaf3d710fa0068357c60ba7fe7ccf19ade32048f1a4cfb0faa23ffba01e8",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip"
+    },
+    {
+      "bytes": 92,
+      "fetched_utc": "2026-10-07T03:39:47.936489+00:00",
+      "final_url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip.CHECKSUM",
+      "safe_headers": {
+        "Content-Length": "92",
+        "Content-Type": "binary/octet-stream",
+        "ETag": "\"82aabf1f289361cb3bf25ef35a233d5b\"",
+        "Last-Modified": "Fri, 01 Dec 2023 06:42:06 GMT"
+      },
+      "sha256": "89055622d41d6a7382c7da7581748a57dd6dbd87485d81398215284206a57282",
+      "status": 200,
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2023-11-30.zip.CHECKSUM"
+    }
+  ],
+  "runtime_python": "D:\\Kairos\\runtime\\native-observation-import-20261006\\py311\\Scripts\\python.exe",
+  "schema": "kairos.public-binance-calendar-source-qualification.v1",
+  "scope": "PUBLIC_OFFICIAL_ARCHIVES_ONLY_NO_GENERATION_PNL_OR_ECONOMIC_MERGE",
+  "source_qualification_complete": false,
+  "started_utc": "2026-10-07T03:39:04.012037+00:00",
+  "state": "COMPLETED_SOURCE_ONLY",
+  "supplement_candidate_rows": 14400,
+  "worker_count": 1
+}

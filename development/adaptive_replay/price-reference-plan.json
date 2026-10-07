@@ -1,0 +1,77 @@
+{
+  "schema": "kairos.strategy.price-reference-calendar-plan.v1",
+  "purpose": "EXPOSED_DEVELOPMENT_FIELD_SCOPE_AMENDMENT_NOT_FULL_KLINE_REPAIR",
+  "base_development_plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+  "arms": ["right_tail_trend_v1", "regime_aligned_right_tail_v1"],
+  "config_fingerprints": {
+    "right_tail_trend_v1": "c36879cc052ccad8f126be29eb6cc8bd70c8274598e8a98fbae2e3ed69805253",
+    "regime_aligned_right_tail_v1": "ae4ff7d7c54353a544be045903b64d5c0be9d6ca8d22ec6158e4942a36a59efe"
+  },
+  "registry_source_fingerprints": {
+    "right_tail_trend_v1": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+    "regime_aligned_right_tail_v1": "f795c8f01d58666c5f215e5c98eabf7368e25d1ac83ff3bc7ae27332e0966b84"
+  },
+  "common_admission": {
+    "policy": "COMMON_COST_RISK_V1",
+    "minimum_stop_distance_bps": 10,
+    "maximum_stop_distance_bps": 300,
+    "minimum_net_reward_to_risk": 1.25,
+    "maximum_cost_stop_fraction": 0.5,
+    "adaptive_atr15_fill_filter": false
+  },
+  "warmup_hours": 840,
+  "exit_tail_hours": 72,
+  "entry_modes": ["STRICT_MINUTE_OPEN"],
+  "workers": 1,
+  "max_wall_seconds": 1200,
+  "unchanged_native_defaults": true,
+  "transitive_base_source_binding": true,
+  "no_downloads": true,
+  "no_paid_calls": true,
+  "no_parameter_search": true,
+  "no_blind_campaign_credit": true,
+  "no_second_economic_attempt": true,
+  "windows": [
+    {"id": "calendar_2022", "start": "2022-01-01", "end_exclusive": "2023-01-01"},
+    {"id": "calendar_2023", "start": "2023-01-01", "end_exclusive": "2024-01-01"},
+    {"id": "calendar_2024", "start": "2024-01-01", "end_exclusive": "2025-01-01"},
+    {"id": "calendar_2025", "start": "2025-01-01", "end_exclusive": "2026-01-01"}
+  ],
+  "prefix_cuts": "JAN_APR_JUL_OCT_01_0100_UTC_PLUS_END",
+  "reference_rule": {
+    "primary_cost": "stress",
+    "minimum_total_closes_each_arm": 100,
+    "minimum_year_closes_each_arm": 20,
+    "score": "EQUAL_YEAR_MEAN_RETURN_NOT_CAGR",
+    "require_positive_nominee_score": true,
+    "require_all_year_pareto_return_and_closed_minute_dd": true,
+    "require_nominee_no_observed_risk_or_gross_mark_overrun": true,
+    "numeric_tolerance_percentage_points": 1e-8,
+    "mechanical_base_control_never_replaced": true,
+    "authority": "REFERENCE_NOMINATION_ONLY_NOT_SELECTED_STRATEGY_OR_ALPHA"
+  },
+  "funding_schedule": "DEFAULT_8H_WITH_BYTE_BOUND_SOL_NOV2022_4H_2H_EXCEPTION",
+  "sol_exception_archive_sha256": "73fbada102584d8e19cb9594f04471f589ff37404b0cf64c0bd7cb4ac4d4a157",
+  "source_acceptance_sha256": "130935ccfa310d656b22135c0e18ead69f20d00250d39066eabbb5ff283e961e",
+  "prior_audit_sha256": "28b5bd74c983ed2761c1f6542566898ae7b5dd29a2edf645fbbcaac415b93db2",
+  "official_retrieval_receipt_sha256": "ea2ac4ab1229541f9adcbce9e18c4a180b84b8e49edfbf80d226f0ef27909217",
+  "old_failed_plan_sha256": "75a68d977519f3fdce3a494dbf6761887e89cfbca1c912f30be26df11c4d2fdd",
+  "old_failure_sha256": "63192f49e18a542ff0e52ea2ffb3eb3565257cde2a2e8c407dc9916dd549f6f1",
+  "field_profile": "PRICE_ONLY",
+  "allowed_consumers": ["right_tail_trend_v1", "regime_aligned_right_tail_v1", "COMMON_COST_RISK"],
+  "optional_fields": "NOT_EXPOSED_PLACEHOLDER_NOT_OBSERVED_ZERO",
+  "source_policy": "MONTHLY_PRICES_AND_CLOCKS_UNCHANGED_EXACT_ABSENT_DAILY_ROWS_ONLY",
+  "quarantined_optional_rows": 1,
+  "added_symbol_minutes": 14400,
+  "replaced_rejected_rows": 0,
+  "all_source_acceptance_before_generation": true,
+  "uniform_projection_all_bars": true,
+  "no_new_strategy_or_volume_qualification": true,
+  "readiness": {
+    "TECHNICAL_PAPER_READY": false,
+    "PAPER_QUALIFIED": false,
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "STRATEGY_POLICY": "REJECT_ALL"
+  }
+}

@@ -32,6 +32,15 @@ complete accepted historical source set and a separately agreed next protocol
 are prerequisites, not an excuse to fill missing bars, drop SOL or rerun this
 pass. Event-driven entry observability remains a separate missing capability.
 
+Continued source investigation supports a separate
+[PRICE_ONLY slow-reference protocol](STRATEGY-PRICE-SOURCE-PROTOCOL-2026-10-07.md):
+official daily rows supply exact absent minutes; the original XRP optional-field
+defect is retained/quarantined, not repaired. All existing OHLC/clocks remain.
+Only the two unchanged price reference consumers and common evaluator may use
+uniform unavailable-field projection. This is not generic adaptive/volume or
+production source qualification. The old attempt is not resumed, and annual
+reference economics cannot replace final adaptive/LLM selection or forward gates.
+
 ## Objective and decision path
 
 Kairos seeks independently demonstrated net trading value under fixed risk

@@ -2,6 +2,22 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## Accepted price-only slow-reference inputs — 2026-10-07
+
+The [separate field-scope protocol](STRATEGY-PRICE-SOURCE-PROTOCOL-2026-10-07.md)
+retains the failed FULL_KLINE attempt. Official daily bytes add exactly 14,400
+missing minutes without changing monthly prices/clocks; all eight complete
+adjacent controls match all twelve raw fields. XRP's single optional-field
+defect repeats in monthly/daily/REST and remains invalid for FULL_KLINE.
+Only the two unchanged slow price references receive uniform PRICE_ONLY
+projection, with unavailable zero placeholders, no replacement and explicit
+quarantine. All 255 bars/255 funding/nineteen daily files are byte-bound.
+The new scoped engineering passes 326 installed-wheel tests on Python
+3.11/3.14 and method review. The separately signed protocol/CI must precede
+its single bounded economic attempt; no new annual result is claimed here.
+This does not select the adaptive/LLM strategy, qualify volume consumers or
+grant alpha/trading authority. All readiness remains false and `REJECT_ALL`.
+
 ## Full-calendar strategy comparison: unavailable inputs — 2026-10-07
 
 The separately [preregistered 2022--2025 pair](STRATEGY-CALENDAR-RESULT-2026-10-07.md)

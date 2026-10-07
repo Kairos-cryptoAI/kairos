@@ -1,0 +1,554 @@
+"""Fetch only the fixed official Binance daily klines and qualify versus local monthlies."""
+
+from __future__ import annotations
+
+import csv
+import hashlib
+import io
+import json
+import re
+import sys
+import time
+import zipfile
+from datetime import date, datetime, time as datetime_time, timedelta, timezone
+from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+import kairos_backtest.data as data_module
+from kairos_backtest.data import ArchiveFieldProfile, BINANCE_KLINE_COLUMNS, _parse_csv
+
+
+ROOT = Path(__file__).resolve().parent
+RECEIPT = ROOT / "source-qualification.json"
+DAILY_ROOT = ROOT / "daily"
+CACHE = Path(r"D:\Kairos\kairos-backtest\data\historical")
+BASE_URL = "https://data.binance.vision/data/futures/um"
+PYTHON = Path(r"D:\Kairos\runtime\native-observation-import-20261006\py311\Scripts\python.exe")
+SYMBOLS = ("SOLUSDT", "XRPUSDT")
+MONTHLY_CHECKSUMS = (
+    ("SOLUSDT", "2022-02"),
+    ("SOLUSDT", "2022-04"),
+    ("XRPUSDT", "2022-02"),
+    ("XRPUSDT", "2022-04"),
+    ("XRPUSDT", "2023-11"),
+)
+DAILY_DATES = (
+    *((symbol, date(2022, 2, day), "february-boundary") for symbol in SYMBOLS for day in (25, 26, 27, 28)),
+    *((symbol, date(2022, 3, 1), "march-after-february-gap") for symbol in SYMBOLS),
+    *((symbol, date(2022, 3, 31), "march-before-april-gap") for symbol in SYMBOLS),
+    *((symbol, date(2022, 4, day), "april-boundary") for symbol in SYMBOLS for day in (1, 2, 3)),
+    ("XRPUSDT", date(2023, 11, 30), "known-monthly-domain-issue"),
+)
+DEADLINE_SECONDS = 180
+REQUEST_TIMEOUT_SECONDS = 15
+MAX_ZIP_BYTES = 4 * 1024 * 1024
+MAX_CHECKSUM_BYTES = 4096
+FOCUS_TIMESTAMP_MS = 1_701_347_700_000
+
+
+class AuditError(RuntimeError):
+    pass
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def url_for(kind: str, symbol: str, filename: str) -> str:
+    return f"{BASE_URL}/{kind}/klines/{symbol}/1m/{filename}"
+
+
+def validate_url(url: str, expected_path: str) -> None:
+    parts = urlsplit(url)
+    if (
+        parts.scheme != "https"
+        or parts.hostname != "data.binance.vision"
+        or parts.port not in (None, 443)
+        or parts.username is not None
+        or parts.password is not None
+        or parts.path != expected_path
+        or parts.query
+        or parts.fragment
+    ):
+        raise AuditError("URL/redirect escaped the fixed official HTTPS host and path")
+
+
+class FixedHostRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        expected_path = urlsplit(req.full_url).path
+        validate_url(newurl, expected_path)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+OPENER = build_opener(FixedHostRedirect())
+
+
+def fetch(url: str, deadline: float, byte_limit: int, requests: list[dict[str, object]]) -> tuple[bytes, dict[str, object]]:
+    expected_path = urlsplit(url).path
+    validate_url(url, expected_path)
+    if time.monotonic() >= deadline:
+        raise TimeoutError("cooperative 180-second deadline reached before request")
+    fetched = utc_now()
+    request = Request(url, headers={"User-Agent": "Kairos-offline-public-archive-audit/1.0"})
+    try:
+        with OPENER.open(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
+            status = response.getcode()
+            final_url = response.geturl()
+            validate_url(final_url, expected_path)
+            safe_headers = {
+                name: response.headers.get(name)
+                for name in ("ETag", "Last-Modified", "Content-Length", "Content-Type")
+                if response.headers.get(name) is not None
+            }
+            if status != 200:
+                raise AuditError(f"unexpected HTTP status {status}")
+            content_length = response.headers.get("Content-Length")
+            if content_length is not None and int(content_length) > byte_limit:
+                raise AuditError(f"response exceeds byte limit {byte_limit}")
+            payload = response.read(byte_limit + 1)
+            if len(payload) > byte_limit:
+                raise AuditError(f"response exceeds byte limit {byte_limit}")
+            item = {
+                "url": url,
+                "final_url": final_url,
+                "status": status,
+                "fetched_utc": fetched,
+                "bytes": len(payload),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "safe_headers": safe_headers,
+            }
+            requests.append(item)
+            return payload, item
+    except HTTPError as exc:
+        item = {
+            "url": url,
+            "final_url": exc.geturl(),
+            "status": exc.code,
+            "fetched_utc": fetched,
+            "bytes": 0,
+            "safe_headers": {
+                name: exc.headers.get(name)
+                for name in ("ETag", "Last-Modified", "Content-Length", "Content-Type")
+                if exc.headers.get(name) is not None
+            },
+        }
+        requests.append(item)
+        raise AuditError(f"HTTP status {exc.code} for fixed official URL") from exc
+    except (URLError, TimeoutError, OSError, ValueError) as exc:
+        requests.append({"url": url, "final_url": None, "status": None, "fetched_utc": fetched, "error_type": type(exc).__name__})
+        raise
+
+
+def parse_sidecar(payload: bytes, filename: str) -> dict[str, str]:
+    try:
+        fields = payload.decode("ascii").strip().split()
+    except UnicodeDecodeError as exc:
+        raise AuditError("checksum sidecar is not ASCII") from exc
+    if (
+        len(fields) != 2
+        or not re.fullmatch(r"[0-9a-fA-F]{64}", fields[0])
+        or fields[1].removeprefix("*") != filename
+    ):
+        raise AuditError("malformed checksum or referenced filename")
+    return {"sha256": fields[0].lower(), "filename": filename}
+
+
+def write_create(path: Path, payload: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("xb") as stream:
+        stream.write(payload)
+
+
+def extract_csv(payload: bytes) -> tuple[str, list[tuple[int, list[str]]]]:
+    try:
+        with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+            corrupt_member = archive.testzip()
+            if corrupt_member is not None:
+                raise AuditError(f"ZIP CRC failure in {corrupt_member}")
+            names = sorted(name for name in archive.namelist() if name.endswith(".csv"))
+            if len(names) != 1:
+                raise AuditError("ZIP must contain exactly one CSV")
+            text = archive.read(names[0]).decode("utf-8")
+    except (zipfile.BadZipFile, UnicodeDecodeError) as exc:
+        raise AuditError("ZIP/CSV is corrupt or not UTF-8") from exc
+    rows: list[tuple[int, list[str]]] = []
+    try:
+        for line_number, row in enumerate(csv.reader(io.StringIO(text, newline=""), strict=True), start=1):
+            if line_number == 1 and tuple(row) == BINANCE_KLINE_COLUMNS:
+                continue
+            if len(row) != 12:
+                raise AuditError(f"CSV line {line_number} has {len(row)} columns, expected 12")
+            rows.append((line_number, row))
+    except csv.Error as exc:
+        raise AuditError("malformed CSV encoding") from exc
+    return names[0], rows
+
+
+def row_map(rows: list[tuple[int, list[str]]]) -> tuple[dict[int, list[str]], list[int]]:
+    mapped: dict[int, list[str]] = {}
+    duplicates: list[int] = []
+    for _line, fields in rows:
+        try:
+            timestamp = int(fields[0])
+        except (ValueError, IndexError):
+            continue
+        if timestamp in mapped:
+            duplicates.append(timestamp)
+        else:
+            mapped[timestamp] = fields
+    return mapped, duplicates
+
+
+def utc_label(timestamp_ms: int) -> str:
+    return datetime.fromtimestamp(timestamp_ms / 1000, timezone.utc).isoformat()
+
+
+def month_cache_record(symbol: str, month: str, local_before: dict[str, object], official: dict[str, object], zip_bytes: bytes) -> dict[str, object]:
+    day = date.fromisoformat(month + "-01")
+    filename = f"{symbol}-1m-{month}.zip"
+    csv_name, raw_rows = extract_csv(zip_bytes)
+    raw_map, duplicates = row_map(raw_rows)
+    domain_issues: list[tuple[int, str]] = []
+    _parse_csv(zip_bytes, symbol, "1m", domain_issues=domain_issues, field_profile=ArchiveFieldProfile.FULL_KLINE)
+    line_to_row = {line: fields for line, fields in raw_rows}
+    issue_records = []
+    for line, reason in domain_issues:
+        fields = line_to_row.get(line, [])
+        stamp = int(fields[0]) if fields and fields[0].isdigit() else None
+        issue_records.append({"line": line, "timestamp_ms": stamp, "timestamp_utc": utc_label(stamp) if stamp is not None else None, "reason": reason})
+    return {
+        "symbol": symbol,
+        "month": month,
+        "filename": filename,
+        "official_checksum_url": official.get("url"),
+        "official_sha256": official.get("declared_sha256"),
+        "local_before_sha256": local_before.get("sha256"),
+        "monthly_checksum_match": local_before.get("sha256") == official.get("declared_sha256"),
+        "csv_name": csv_name,
+        "raw_row_count": len(raw_rows),
+        "unique_timestamp_count": len(raw_map),
+        "duplicate_timestamp_count": len(duplicates),
+        "domain_issue_count": len(issue_records),
+        "domain_issues": issue_records,
+        "rows_by_timestamp": raw_map,
+    }
+
+
+def compare_day(symbol: str, day: date, daily_rows: list[tuple[int, list[str]]], monthly: dict[str, object]) -> dict[str, object]:
+    month = f"{day:%Y-%m}"
+    monthly_rows = monthly.get("rows_by_timestamp", {})
+    assert isinstance(monthly_rows, dict)
+    daily_map, daily_dups = row_map(daily_rows)
+    monthly_day = {
+        timestamp: fields
+        for timestamp, fields in monthly_rows.items()
+        if int(datetime.fromtimestamp(timestamp / 1000, timezone.utc).strftime("%Y%m%d")) == int(day.strftime("%Y%m%d"))
+    }
+    daily_times, monthly_times = set(daily_map), set(monthly_day)
+    conflicts = []
+    for timestamp in sorted(daily_times & monthly_times):
+        monthly_fields = monthly_day[timestamp]
+        daily_fields = daily_map[timestamp]
+        if monthly_fields != daily_fields:
+            differing = [
+                name for name, before, after in zip(BINANCE_KLINE_COLUMNS, monthly_fields, daily_fields, strict=True)
+                if before != after
+            ]
+            conflicts.append(
+                {
+                    "timestamp_ms": timestamp,
+                    "timestamp_utc": utc_label(timestamp),
+                    "differing_fields": differing,
+                    "monthly_fields": dict(zip(BINANCE_KLINE_COLUMNS, monthly_fields, strict=True)),
+                    "daily_fields": dict(zip(BINANCE_KLINE_COLUMNS, daily_fields, strict=True)),
+                }
+            )
+    supplement = len(daily_times - monthly_times)
+    if supplement and (daily_times & monthly_times):
+        category = "MIXED_OVERLAP_AND_SUPPLEMENT"
+    elif supplement:
+        category = "SUPPLEMENT_CANDIDATE"
+    elif conflicts:
+        category = "REPLACEMENT_CANDIDATE"
+    else:
+        category = "OVERLAP_CONTROL"
+    return {
+        "monthly_archive_month": month,
+        "daily_raw_rows": len(daily_rows),
+        "daily_unique_timestamps": len(daily_map),
+        "daily_duplicate_timestamps": len(daily_dups),
+        "monthly_timestamps_on_day": len(monthly_times),
+        "matching_overlap_rows": len(daily_times & monthly_times) - len(conflicts),
+        "conflict_row_count": len(conflicts),
+        "supplement_candidate_rows": supplement,
+        "replacement_candidate_rows": len(conflicts),
+        "monthly_timestamps_missing_from_daily": len(monthly_times - daily_times),
+        "classification_only_not_merged": category,
+        "focus_timestamp_in_daily": FOCUS_TIMESTAMP_MS in daily_times,
+        "focus_timestamp_in_monthly": FOCUS_TIMESTAMP_MS in monthly_times,
+        "conflict_rows": conflicts,
+    }
+
+
+def audit_daily_rows(symbol: str, day: date, payload: bytes, monthly: dict[str, object]) -> dict[str, object]:
+    csv_name, rows = extract_csv(payload)
+    domain_issues: list[tuple[int, str]] = []
+    candles = _parse_csv(payload, symbol, "1m", domain_issues=domain_issues, field_profile=ArchiveFieldProfile.FULL_KLINE)
+    row_by_line = {line: fields for line, fields in rows}
+    domain_records = []
+    for line, reason in domain_issues:
+        fields = row_by_line.get(line, [])
+        timestamp = int(fields[0]) if fields and fields[0].isdigit() else None
+        domain_records.append({"line": line, "timestamp_ms": timestamp, "timestamp_utc": utc_label(timestamp) if timestamp is not None else None, "reason": reason})
+    start_ms = int(datetime.combine(day, datetime_time.min, timezone.utc).timestamp() * 1000)
+    end_ms = start_ms + 24 * 60 * 60 * 1000
+    expected = set(range(start_ms, end_ms, 60_000))
+    opens = [candle.open_time_ms for candle in candles]
+    open_set = set(opens)
+    missing = sorted(expected - open_set)
+    extra = sorted(open_set - expected)
+    duplicates = len(opens) - len(open_set)
+    wrong_closes = [candle.open_time_ms for candle in candles if candle.close_time_ms != candle.open_time_ms + 59_999]
+    ordered = opens == sorted(opens)
+    gaps = [f"{utc_label(a)}..{utc_label(b)}" for a, b in zip(sorted(open_set), sorted(open_set)[1:]) if b - a != 60_000]
+    coverage_ok = (
+        len(rows) == 1440
+        and len(candles) == 1440
+        and not missing
+        and not extra
+        and duplicates == 0
+        and ordered
+        and not wrong_closes
+        and not gaps
+        and not domain_records
+    )
+    return {
+        "csv_name": csv_name,
+        "raw_row_count": len(rows),
+        "parsed_full_kline_rows": len(candles),
+        "expected_minutes": 1440,
+        "missing_timestamps": len(missing),
+        "missing_timestamp_samples": [utc_label(value) for value in missing[:10]],
+        "out_of_day_timestamps": len(extra),
+        "out_of_day_samples": [utc_label(value) for value in extra[:10]],
+        "duplicate_timestamps": duplicates,
+        "chronologically_ordered": ordered,
+        "gap_count": len(gaps),
+        "gap_samples": gaps[:10],
+        "wrong_close_time_count": len(wrong_closes),
+        "domain_issue_count": len(domain_records),
+        "domain_issues": domain_records,
+        "exact_1440_minute_coverage": coverage_ok,
+        "monthly_comparison": compare_day(symbol, day, rows, monthly),
+    }
+
+
+def main() -> int:
+    if sys.executable.lower() != str(PYTHON).lower():
+        raise RuntimeError("must run with the pinned noneditable py311 executable")
+    if RECEIPT.exists() or DAILY_ROOT.exists():
+        raise FileExistsError("create-only output already exists; refusing overwrite")
+    if len(DAILY_DATES) != 19:
+        raise RuntimeError("fixed nineteen-dataset source list drift")
+
+    started_utc = utc_now()
+    started = time.monotonic()
+    deadline = started + DEADLINE_SECONDS
+    requests: list[dict[str, object]] = []
+    monthly_receipts: list[dict[str, object]] = []
+    daily_receipts: list[dict[str, object]] = []
+    errors: list[dict[str, object]] = []
+    before_hashes: dict[str, dict[str, object]] = {}
+    monthly_cache: dict[tuple[str, str], dict[str, object]] = {}
+    state = "COMPLETED_SOURCE_ONLY"
+    timeout_reached = False
+
+    for symbol, month in MONTHLY_CHECKSUMS:
+        filename = f"{symbol}-1m-{month}.zip"
+        local = CACHE / symbol / "1m" / filename
+        local_record: dict[str, object] = {"path": str(local), "exists": local.is_file()}
+        if local.is_file():
+            local_record["sha256"] = hashlib.sha256(local.read_bytes()).hexdigest()
+            local_record["bytes"] = local.stat().st_size
+        before_hashes[f"{symbol}/{month}"] = local_record
+
+    try:
+        for symbol, month in MONTHLY_CHECKSUMS:
+            filename = f"{symbol}-1m-{month}.zip"
+            checksum_url = url_for("monthly", symbol, filename + ".CHECKSUM")
+            try:
+                payload, request_meta = fetch(checksum_url, deadline, MAX_CHECKSUM_BYTES, requests)
+                parsed = parse_sidecar(payload, filename)
+                local = before_hashes[f"{symbol}/{month}"]
+                local_hash = local.get("sha256")
+                item = {
+                    "symbol": symbol,
+                    "month": month,
+                    "filename": filename,
+                    "checksum_url": checksum_url,
+                    "checksum_response": request_meta,
+                    "checksum_sidecar_sha256": hashlib.sha256(payload).hexdigest(),
+                    "declared_sha256": parsed["sha256"],
+                    "referenced_filename": parsed["filename"],
+                    "local_zip_sha256_before": local_hash,
+                    "local_matches_official": local_hash == parsed["sha256"],
+                }
+                monthly_receipts.append(item)
+                if local_hash != parsed["sha256"]:
+                    errors.append({"scope": "monthly_checksum", "symbol": symbol, "month": month, "error": "local ZIP SHA-256 differs from official sidecar"})
+                    continue
+                local_payload = (CACHE / symbol / "1m" / filename).read_bytes()
+                monthly_cache[(symbol, month)] = month_cache_record(symbol, month, local, item, local_payload)
+                monthly_cache[(symbol, month)]["local_payload"] = local_payload
+            except Exception as exc:
+                errors.append({"scope": "monthly_checksum", "symbol": symbol, "month": month, "error_type": type(exc).__name__, "error": str(exc)})
+
+        DAILY_ROOT.mkdir(parents=False, exist_ok=False)
+        for symbol in SYMBOLS:
+            (DAILY_ROOT / symbol).mkdir(parents=False, exist_ok=False)
+            (DAILY_ROOT / symbol / "1m").mkdir(parents=False, exist_ok=False)
+
+        for symbol, day, role in DAILY_DATES:
+            if time.monotonic() >= deadline:
+                timeout_reached = True
+                state = "PARTIAL_TIMEOUT"
+                break
+            filename = f"{symbol}-1m-{day:%Y-%m-%d}.zip"
+            zip_url = url_for("daily", symbol, filename)
+            checksum_url = url_for("daily", symbol, filename + ".CHECKSUM")
+            target = DAILY_ROOT / symbol / "1m" / filename
+            day_record: dict[str, object] = {
+                "symbol": symbol,
+                "date": day.isoformat(),
+                "role_hint": role,
+                "filename": filename,
+                "zip_url": zip_url,
+                "checksum_url": checksum_url,
+                "local_zip_path": str(target),
+                "status": "INCOMPLETE",
+            }
+            daily_receipts.append(day_record)
+            try:
+                zip_payload, zip_meta = fetch(zip_url, deadline, MAX_ZIP_BYTES, requests)
+                day_record["zip_response"] = zip_meta
+                write_create(target, zip_payload)
+                checksum_payload, checksum_meta = fetch(checksum_url, deadline, MAX_CHECKSUM_BYTES, requests)
+                day_record["checksum_response"] = checksum_meta
+                write_create(target.with_name(target.name + ".CHECKSUM"), checksum_payload)
+                parsed_sidecar = parse_sidecar(checksum_payload, filename)
+                zip_sha = hashlib.sha256(zip_payload).hexdigest()
+                day_record["downloaded_zip_sha256"] = zip_sha
+                day_record["checksum_sidecar_sha256"] = hashlib.sha256(checksum_payload).hexdigest()
+                day_record["declared_sha256"] = parsed_sidecar["sha256"]
+                day_record["checksum_matches"] = zip_sha == parsed_sidecar["sha256"]
+                csv_name, raw_rows = extract_csv(zip_payload)
+                day_record["csv_name"] = csv_name
+                month_key = (symbol, f"{day:%Y-%m}")
+                monthly = monthly_cache.get(month_key)
+                if monthly is None:
+                    raise AuditError("matching local monthly archive is not checksum-qualified")
+                day_record.update(audit_daily_rows(symbol, day, zip_payload, monthly))
+                day_record["status"] = "VALIDATED" if day_record["checksum_matches"] and day_record["exact_1440_minute_coverage"] else "VALIDATION_FAILED"
+                if not day_record["checksum_matches"]:
+                    errors.append({"scope": "daily_checksum", "symbol": symbol, "date": day.isoformat(), "error": "daily ZIP SHA-256 differs from official sidecar"})
+                if not day_record["exact_1440_minute_coverage"]:
+                    errors.append({"scope": "daily_quality", "symbol": symbol, "date": day.isoformat(), "error": "daily archive failed exact FULL_KLINE day coverage/domain checks"})
+            except Exception as exc:
+                day_record["status"] = "FAILED_CLOSED"
+                day_record["error_type"] = type(exc).__name__
+                day_record["error"] = str(exc)
+                errors.append({"scope": "daily_source", "symbol": symbol, "date": day.isoformat(), "error_type": type(exc).__name__, "error": str(exc)})
+            if time.monotonic() >= deadline:
+                timeout_reached = True
+                state = "PARTIAL_TIMEOUT"
+                break
+    except TimeoutError as exc:
+        timeout_reached = True
+        state = "PARTIAL_TIMEOUT"
+        errors.append({"scope": "deadline", "error_type": type(exc).__name__, "error": str(exc)})
+    except Exception as exc:
+        state = "FAILED_CLOSED_PARTIAL"
+        errors.append({"scope": "run", "error_type": type(exc).__name__, "error": str(exc)})
+
+    after_hashes: dict[str, dict[str, object]] = {}
+    for key, before in before_hashes.items():
+        path = Path(str(before["path"]))
+        after: dict[str, object] = {"path": str(path), "exists": path.is_file()}
+        if path.is_file():
+            after["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+            after["bytes"] = path.stat().st_size
+        after["unchanged"] = after.get("sha256") == before.get("sha256") and after["exists"] == before["exists"]
+        after_hashes[key] = after
+
+    all_daily_expected = len(daily_receipts) == len(DAILY_DATES) and all(item.get("status") == "VALIDATED" for item in daily_receipts)
+    all_monthly_verified = len(monthly_receipts) == len(MONTHLY_CHECKSUMS) and all(item.get("local_matches_official") for item in monthly_receipts)
+    all_local_unchanged = all(item.get("unchanged") for item in after_hashes.values())
+    complete = state == "COMPLETED_SOURCE_ONLY" and all_daily_expected and all_monthly_verified and all_local_unchanged and not timeout_reached
+    report = {
+        "schema": "kairos.public-binance-calendar-source-qualification.v1",
+        "state": state,
+        "source_qualification_complete": complete,
+        "scope": "PUBLIC_OFFICIAL_ARCHIVES_ONLY_NO_GENERATION_PNL_OR_ECONOMIC_MERGE",
+        "started_utc": started_utc,
+        "finished_utc": utc_now(),
+        "elapsed_seconds": round(time.monotonic() - started, 3),
+        "cooperative_deadline_seconds": DEADLINE_SECONDS,
+        "request_timeout_seconds": REQUEST_TIMEOUT_SECONDS,
+        "max_zip_bytes": MAX_ZIP_BYTES,
+        "worker_count": 1,
+        "allowed_host": "data.binance.vision",
+        "runtime_python": str(PYTHON),
+        "audit_module_path": str(Path(data_module.__file__).resolve()),
+        "audit_parser": "kairos_backtest.data._parse_csv(field_profile=FULL_KLINE)",
+        "monthly_sidecars_expected": len(MONTHLY_CHECKSUMS),
+        "monthly_sidecars_verified_local_matches": sum(bool(item.get("local_matches_official")) for item in monthly_receipts),
+        "daily_datasets_expected": len(DAILY_DATES),
+        "daily_datasets_processed": len(daily_receipts),
+        "daily_datasets_validated": sum(item.get("status") == "VALIDATED" for item in daily_receipts),
+        "local_monthly_zip_before_sha256": before_hashes,
+        "local_monthly_zip_after_sha256": after_hashes,
+        "all_local_monthly_zips_unchanged": all_local_unchanged,
+        "supplement_candidate_rows": sum(int((item.get("monthly_comparison") or {}).get("supplement_candidate_rows", 0)) for item in daily_receipts),
+        "replacement_candidate_rows": sum(int((item.get("monthly_comparison") or {}).get("replacement_candidate_rows", 0)) for item in daily_receipts),
+        "overlap_conflict_rows": sum(int((item.get("monthly_comparison") or {}).get("conflict_row_count", 0)) for item in daily_receipts),
+        "daily_domain_issue_count": sum(int(item.get("domain_issue_count", 0)) for item in daily_receipts),
+        "monthly_domain_issue_count": sum(int(item.get("domain_issue_count", 0)) for item in monthly_cache.values()),
+        "focus_timestamp_ms": FOCUS_TIMESTAMP_MS,
+        "focus_timestamp_utc": utc_label(FOCUS_TIMESTAMP_MS),
+        "requests": requests,
+        "monthly_sources": monthly_receipts,
+        "monthly_coverage_diagnostics": [
+            {key: value for key, value in item.items() if key != "rows_by_timestamp" and key != "local_payload"}
+            for item in monthly_cache.values()
+        ],
+        "daily_datasets": daily_receipts,
+        "errors": errors,
+        "merge_performed": False,
+        "economics_run": False,
+        "helper_path": str(Path(__file__).resolve()),
+        "helper_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    }
+    with RECEIPT.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(report, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+    print(json.dumps({
+        "state": state,
+        "source_qualification_complete": complete,
+        "monthly_sidecars_verified": report["monthly_sidecars_verified_local_matches"],
+        "daily_expected": report["daily_datasets_expected"],
+        "daily_processed": report["daily_datasets_processed"],
+        "daily_validated": report["daily_datasets_validated"],
+        "supplement_candidate_rows": report["supplement_candidate_rows"],
+        "replacement_candidate_rows": report["replacement_candidate_rows"],
+        "domain_issues_daily_monthly": [report["daily_domain_issue_count"], report["monthly_domain_issue_count"]],
+        "errors": len(errors),
+        "elapsed_seconds": report["elapsed_seconds"],
+        "helper_sha256": report["helper_sha256"],
+    }, sort_keys=True))
+    return 0 if complete else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

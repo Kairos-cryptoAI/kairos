@@ -1,0 +1,27 @@
+{
+  "schema": "kairos.source.rest-point-observation.v1",
+  "observed_utc": "2026-10-07T03:43:38.6940395+00:00",
+  "method": "GET",
+  "endpoint": "https://fapi.binance.com/fapi/v1/klines",
+  "parameters": {
+    "symbol": "XRPUSDT",
+    "interval": "1m",
+    "startTime": 1701347640000,
+    "endTime": 1701347819999,
+    "limit": 3
+  },
+  "http_status": 200,
+  "response_rows": [
+    [1701347640000,"0.6041","0.6041","0.6037","0.6037","355408.9",1701347699999,"214642.52783",277,"56783.1","34295.12913","0"],
+    [1701347700000,"0.6038","0.6038","0.6034","0.6036","91695.7",1701347759999,"200298.79368",470,"132462.5","79957.28937","0"],
+    [1701347760000,"0.6036","0.6038","0.6031","0.6033","489817.9",1701347819999,"295570.61470",521,"172239.6","103936.87501","0"]
+  ],
+  "sample_rows": 3,
+  "matches_original_monthly_and_daily_fields": true,
+  "known_optional_field_defect_still_present": true,
+  "full_kline_acceptance": false,
+  "independent_historical_price_authentication": false,
+  "economic_cells": 0,
+  "paid_calls": 0,
+  "trading_authority": false
+}

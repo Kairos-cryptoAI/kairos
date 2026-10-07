@@ -1,0 +1,6 @@
+{
+  "economic_cells": 0,
+  "error_type": "FileNotFoundError",
+  "reason": "missing cached archive: D:\\Kairos\\kairos-backtest\\data\\cache\\BTCUSDT\\1m\\BTCUSDT-1m-2021-11.zip",
+  "state": "FAILED_CLOSED"
+}

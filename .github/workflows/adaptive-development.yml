@@ -10,6 +10,7 @@ on:
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
       - docs/STRATEGY-CALENDAR-*.md
+      - docs/STRATEGY-PRICE-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
   pull_request:
@@ -20,6 +21,7 @@ on:
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
       - docs/STRATEGY-CALENDAR-*.md
+      - docs/STRATEGY-PRICE-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
 

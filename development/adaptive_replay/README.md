@@ -251,3 +251,24 @@ The completed small native comparison and its exact economic boundaries are in
 source, accounting and first-failure artifacts are byte-bound by
 [the evidence index](evidence/comparison-2026-10-06/checksums.json); CI validates
 them without replaying market history. No qualified winner is selected.
+
+## Separate price-only slow reference (October 7)
+
+The original failed full-calendar pass remains immutable. The
+[separate field-scope protocol](../../docs/STRATEGY-PRICE-SOURCE-PROTOCOL-2026-10-07.md)
+and [price-reference-plan.json](price-reference-plan.json) accept only two
+unchanged price consumers, not adaptive/volume/production use. All missing
+minutes come from byte-bound official daily files; the single inconsistent
+optional-field row retains its original OHLC/clocks, with no replacement.
+Uniform optional zeros mean unavailable placeholders, never observed volume.
+
+Input-only `adaptive_replay.source_set --price-reference-only` checks prior
+audit/retrieval provenance, complete grids, exact raw overlap, row lineage and
+current funding bytes. The retained losslessly compressed acceptance is in
+[the evidence directory](evidence/source-qualification-2026-10-07).
+The distinct `adaptive_replay.price_calendar` requires `--plan`, `--bar-cache`,
+`--factor-cache`, `--daily-cache`, `--source-acceptance` and create-only `--output`.
+It verifies all accepted bytes before generation and after the four years.
+The same native defaults, costs, risk, reference rule and 1,200s single-worker
+bound apply. Do not retry either old or new economic attempt, select incomplete
+years or turn this field-specific development comparison into qualification.
