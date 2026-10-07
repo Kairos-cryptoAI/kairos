@@ -154,6 +154,15 @@ future bars, funding, episode labels or ledgers to prompts. The
 an executable economic protocol. No actual model/economic run is claimed.
 Training contamination remains unexcluded; frozen campaigns are unchanged.
 
+The roster's `low_cost_pilot` defers the broader event/control set: two episodes,
+two preregistered cuts each, at most 20 total paid requests and no automatic
+retry/model grid. A proposed cumulative $1 pilot ceiling intersects the existing
+shared OpenAI $12 cap; it neither adopts nor resets a budget. Exact cuts, accepted
+sources and budget/dispatch gates are still prerequisites. Full five-symbol
+minute rosters retain explicit scheduled no-call observations. This sparse pilot
+is not continuous historical trading or full-system qualification; no paid calls
+are authorized or executed by the draft.
+
 ### Additive full-system accounting
 
 The [system.py](adaptive_replay/system.py) API accepts a complete five-minute,

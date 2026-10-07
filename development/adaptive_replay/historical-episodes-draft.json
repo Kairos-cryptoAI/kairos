@@ -49,6 +49,30 @@
     "predeclared_calendar_offsets_days": [-14, 14],
     "rule": "Same UTC hours and duration at both fixed offsets; preserve overlaps, gaps and eventful controls explicitly. No replacement after economic results; controls are not labelled quiet without independent coverage."
   },
+  "low_cost_pilot": {
+    "status": "DRAFT_NO_PAID_CALL_AUTHORITY",
+    "selected_episode_ids": ["episode_a", "episode_d"],
+    "selection_basis": "One downside policy-stress episode and one false-headline/announcement episode, chosen for distinct failure modes before any model/economic results. Other episodes remain deferred source leads, not extra paid runs.",
+    "decision_cuts_per_episode": 2,
+    "utc_decision_cuts": null,
+    "maximum_paid_requests_total": 20,
+    "automatic_retries": 0,
+    "additional_model_or_effort_comparisons": false,
+    "proposed_cumulative_pilot_ceiling_usd": 1.0,
+    "budget_rule": "No budget is adopted or reset here. Before any request, historical shared committed spend plus outstanding reservations plus the new reservation must fit the existing OpenAI 12 USD limit. Separately, all pilot-attributed committed spend plus outstanding reservations plus the new reservation must fit the proposed cumulative 1 USD pilot ceiling. Unknown spend, attribution or headroom blocks dispatch. Count each underlying paid request once, including failed/ambiguous attempts and upstream model calls, against the same pilot limits.",
+    "scheduling_rule": "Freeze exactly two UTC cuts per selected episode, source roster, strategy/configuration and one admitted model route before any paid invocation or economic outcome. At each cut, at most one review per symbol, only for an existing candidate and ready sources. No moving cuts or replacing episodes after outcomes or an empty candidate cut.",
+    "denominator_rule": "Retain every original 1m slot for all five symbols throughout each full window. Record every unscheduled slot explicitly as NOT_CALLED/SCHEDULED_POLICY_ABSTAIN at zero call cost; unavailable sources and budget denials keep their distinct reasons. No omitted candidate rows.",
+    "control_rule": "No additional paid calendar-control windows in this pilot. Timing/cost controls reuse the same recorded responses without another provider call. Calendar-offset controls remain deferred and unqualified, never evidence from unpaid model paths.",
+    "interpretation": "Sparse conditional context-review diagnostic only, not continuous or production-equivalent historical trading, not a full-system evaluation or alpha proof.",
+    "execution_prerequisites": [
+      "Write and freeze the exact UTC decision cuts; null cuts are not executable",
+      "Accept exact-version source and complete five-symbol bar/funding inputs",
+      "Admit the existing shared budget ledger and bounded provider dispatch separately",
+      "Stop at either cap; no top-up, retry, model escalation or source substitution"
+    ],
+    "paid_requests_executed": 0,
+    "economics_executed": false
+  },
   "execution_prerequisites": [
     "One separately fixed strategy/configuration and economic protocol; no parameter grid",
     "Complete exact-version source archive and declared source coverage, including macro vintages",
