@@ -17,3 +17,5 @@ development/adaptive_replay/evidence/historical-macro-2026-10-07/* -text
 development/adaptive_replay/evidence/historical-pilot-2026-10-07/** -text
 # Compact preparation receipts bind exact original bytes across platforms.
 development/adaptive_replay/evidence/compact-context-2026-10-07/** -text
+# Frozen retest census preserves original JSON and gzip bytes across platforms.
+development/adaptive_replay/evidence/frozen-retest-2026-10-07/** -text

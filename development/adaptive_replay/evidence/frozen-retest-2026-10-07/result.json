@@ -1,0 +1,837 @@
+{
+  "actual_finished_utc": "2026-10-07T20:08:04.489660+00:00",
+  "actual_started_utc": "2026-10-07T20:07:24.473884+00:00",
+  "blind_campaign_credit": false,
+  "complete_scheduled_slots": 14400,
+  "decisions_canonical_jsonl_sha256": "5341f26d0c7147df08b65cac0896395eb0b33dcdca698324d2f84326743a2c7a",
+  "decisions_gzip_sha256": "5941a27308d6477ce8988466cbe63617a7991be0b0c7626d893c475f5b37d928",
+  "economic_result": null,
+  "economics_executed": false,
+  "elapsed_seconds": 40.014999999984866,
+  "episodes": {
+    "episode_a": {
+      "BNBUSDT": {
+        "breakouts_armed": 2,
+        "candidates_each_utc_day": {
+          "2021-05-17": 0,
+          "2021-05-18": 0,
+          "2021-05-19": 0,
+          "2021-05-20": 0,
+          "2021-05-21": 0
+        },
+        "defense_counts": {
+          "CRASH": 146,
+          "NORMAL": 1239,
+          "POST_SHOCK_COOLDOWN": 55
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 1,
+          "BREAKOUT_ARMED": 2,
+          "NO_CHANNEL_CROSS": 7,
+          "RESET_TO_IDLE": 1,
+          "SETUP_TIMEOUT": 1,
+          "WAITING_FOR_CHANNEL_RESET": 1422,
+          "WAITING_FOR_FIRST_RETEST": 6
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 8,
+          "BLOCKED": 1424,
+          "IDLE": 8
+        },
+        "structural_reclaims_consumed": 0,
+        "transition_counts": {
+          "BLOCKED_HOLD": 1422,
+          "BLOCKED_TO_IDLE_RESET": 1,
+          "IDLE_HOLD": 7,
+          "IDLE_TO_ARMED": 2,
+          "SETUP_HOLD": 6,
+          "SETUP_TO_BLOCKED_EXPIRED": 1,
+          "SETUP_TO_BLOCKED_INVALIDATED": 1
+        }
+      },
+      "BTCUSDT": {
+        "breakouts_armed": 17,
+        "candidates_each_utc_day": {
+          "2021-05-17": 0,
+          "2021-05-18": 0,
+          "2021-05-19": 0,
+          "2021-05-20": 0,
+          "2021-05-21": 0
+        },
+        "defense_counts": {
+          "CRASH": 80,
+          "NORMAL": 1318,
+          "POST_SHOCK_COOLDOWN": 42
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 9,
+          "BREAKOUT_ARMED": 17,
+          "CRASH": 12,
+          "FIRST_RETEST_RECORDED": 6,
+          "INSUFFICIENT_COST_HEADROOM": 1,
+          "NO_CHANNEL_CROSS": 139,
+          "POST_SHOCK_COOLDOWN": 11,
+          "RESET_TO_IDLE": 16,
+          "SETUP_TIMEOUT": 6,
+          "TARGET_NOT_BEYOND_RECLAIM": 1,
+          "WAITING_FOR_CHANNEL_RESET": 1167,
+          "WAITING_FOR_FIRST_RETEST": 48,
+          "WAITING_FOR_RECLAIM": 7
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 65,
+          "BLOCKED": 1184,
+          "IDLE": 178,
+          "RETESTED": 13
+        },
+        "structural_reclaims_consumed": 2,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 6,
+          "BLOCKED_HOLD": 1167,
+          "BLOCKED_TO_IDLE_RESET": 16,
+          "IDLE_DEFENSE_ABSTAIN": 23,
+          "IDLE_HOLD": 139,
+          "IDLE_TO_ARMED": 17,
+          "RECLAIM_CONSUMED_NO_RETRY": 2,
+          "SETUP_HOLD": 55,
+          "SETUP_TO_BLOCKED_EXPIRED": 6,
+          "SETUP_TO_BLOCKED_INVALIDATED": 9
+        }
+      },
+      "ETHUSDT": {
+        "breakouts_armed": 21,
+        "candidates_each_utc_day": {
+          "2021-05-17": 0,
+          "2021-05-18": 0,
+          "2021-05-19": 0,
+          "2021-05-20": 0,
+          "2021-05-21": 0
+        },
+        "defense_counts": {
+          "CRASH": 80,
+          "NORMAL": 1316,
+          "POST_SHOCK_COOLDOWN": 44
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 9,
+          "BREAKOUT_ARMED": 21,
+          "CRASH": 6,
+          "CRASH_GUARD": 1,
+          "FIRST_RETEST_RECORDED": 7,
+          "NET_REWARD_RISK_TOO_LOW": 3,
+          "NO_CHANNEL_CROSS": 147,
+          "POST_SHOCK_COOLDOWN": 11,
+          "RESET_TO_IDLE": 20,
+          "SETUP_TIMEOUT": 8,
+          "WAITING_FOR_CHANNEL_RESET": 1148,
+          "WAITING_FOR_FIRST_RETEST": 57,
+          "WAITING_FOR_RECLAIM": 2
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 78,
+          "BLOCKED": 1169,
+          "IDLE": 184,
+          "RETESTED": 9
+        },
+        "structural_reclaims_consumed": 3,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 7,
+          "BLOCKED_HOLD": 1148,
+          "BLOCKED_TO_IDLE_RESET": 20,
+          "IDLE_DEFENSE_ABSTAIN": 17,
+          "IDLE_HOLD": 147,
+          "IDLE_TO_ARMED": 21,
+          "RECLAIM_CONSUMED_NO_RETRY": 3,
+          "SETUP_CANCELLED_BY_NATIVE_DEFENSE": 1,
+          "SETUP_HOLD": 59,
+          "SETUP_TO_BLOCKED_EXPIRED": 8,
+          "SETUP_TO_BLOCKED_INVALIDATED": 9
+        }
+      },
+      "SOLUSDT": {
+        "breakouts_armed": 27,
+        "candidates_each_utc_day": {
+          "2021-05-17": 0,
+          "2021-05-18": 0,
+          "2021-05-19": 0,
+          "2021-05-20": 0,
+          "2021-05-21": 0
+        },
+        "defense_counts": {
+          "CRASH": 106,
+          "NORMAL": 1277,
+          "POST_SHOCK_COOLDOWN": 57
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 9,
+          "BREAKOUT_ARMED": 27,
+          "CRASH": 37,
+          "CRASH_GUARD": 1,
+          "FIRST_RETEST_RECORDED": 13,
+          "NET_REWARD_RISK_TOO_LOW": 6,
+          "NO_CHANNEL_CROSS": 229,
+          "POST_SHOCK_COOLDOWN": 23,
+          "RESET_TO_IDLE": 26,
+          "SETUP_TIMEOUT": 10,
+          "TARGET_NOT_BEYOND_RECLAIM": 1,
+          "WAITING_FOR_CHANNEL_RESET": 990,
+          "WAITING_FOR_FIRST_RETEST": 63,
+          "WAITING_FOR_RECLAIM": 5
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 90,
+          "BLOCKED": 1017,
+          "IDLE": 315,
+          "RETESTED": 18
+        },
+        "structural_reclaims_consumed": 7,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 13,
+          "BLOCKED_HOLD": 990,
+          "BLOCKED_TO_IDLE_RESET": 26,
+          "IDLE_DEFENSE_ABSTAIN": 60,
+          "IDLE_HOLD": 229,
+          "IDLE_TO_ARMED": 27,
+          "RECLAIM_CONSUMED_NO_RETRY": 7,
+          "SETUP_CANCELLED_BY_NATIVE_DEFENSE": 1,
+          "SETUP_HOLD": 68,
+          "SETUP_TO_BLOCKED_EXPIRED": 10,
+          "SETUP_TO_BLOCKED_INVALIDATED": 9
+        }
+      },
+      "XRPUSDT": {
+        "breakouts_armed": 10,
+        "candidates_each_utc_day": {
+          "2021-05-17": 0,
+          "2021-05-18": 0,
+          "2021-05-19": 0,
+          "2021-05-20": 0,
+          "2021-05-21": 0
+        },
+        "defense_counts": {
+          "CRASH": 53,
+          "NORMAL": 1364,
+          "POST_SHOCK_COOLDOWN": 23
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 4,
+          "BREAKOUT_ARMED": 10,
+          "FIRST_RETEST_RECORDED": 3,
+          "NET_REWARD_RISK_TOO_LOW": 1,
+          "NO_CHANNEL_CROSS": 96,
+          "RESET_TO_IDLE": 9,
+          "SETUP_TIMEOUT": 5,
+          "WAITING_FOR_CHANNEL_RESET": 1280,
+          "WAITING_FOR_FIRST_RETEST": 31,
+          "WAITING_FOR_RECLAIM": 1
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2021-05-17": 0,
+              "2021-05-18": 0,
+              "2021-05-19": 0,
+              "2021-05-20": 0,
+              "2021-05-21": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 41,
+          "BLOCKED": 1290,
+          "IDLE": 105,
+          "RETESTED": 4
+        },
+        "structural_reclaims_consumed": 1,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 3,
+          "BLOCKED_HOLD": 1280,
+          "BLOCKED_TO_IDLE_RESET": 9,
+          "IDLE_HOLD": 96,
+          "IDLE_TO_ARMED": 10,
+          "RECLAIM_CONSUMED_NO_RETRY": 1,
+          "SETUP_HOLD": 32,
+          "SETUP_TO_BLOCKED_EXPIRED": 5,
+          "SETUP_TO_BLOCKED_INVALIDATED": 4
+        }
+      }
+    },
+    "episode_d": {
+      "BNBUSDT": {
+        "breakouts_armed": 25,
+        "candidates_each_utc_day": {
+          "2024-01-08": 0,
+          "2024-01-09": 0,
+          "2024-01-10": 0,
+          "2024-01-11": 0,
+          "2024-01-12": 0
+        },
+        "defense_counts": {
+          "CRASH": 166,
+          "NORMAL": 1190,
+          "POST_SHOCK_COOLDOWN": 84
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 13,
+          "BREAKOUT_ARMED": 25,
+          "CRASH": 78,
+          "CRASH_GUARD": 1,
+          "FIRST_RETEST_RECORDED": 9,
+          "INSUFFICIENT_COST_HEADROOM": 1,
+          "NET_REWARD_RISK_TOO_LOW": 1,
+          "NO_CHANNEL_CROSS": 260,
+          "POST_SHOCK_COOLDOWN": 46,
+          "RESET_TO_IDLE": 24,
+          "SETUP_TIMEOUT": 7,
+          "TARGET_NOT_BEYOND_RECLAIM": 2,
+          "WAITING_FOR_CHANNEL_RESET": 916,
+          "WAITING_FOR_FIRST_RETEST": 54,
+          "WAITING_FOR_RECLAIM": 3
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 79,
+          "BLOCKED": 941,
+          "IDLE": 408,
+          "RETESTED": 12
+        },
+        "structural_reclaims_consumed": 4,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 9,
+          "BLOCKED_HOLD": 916,
+          "BLOCKED_TO_IDLE_RESET": 24,
+          "IDLE_DEFENSE_ABSTAIN": 124,
+          "IDLE_HOLD": 260,
+          "IDLE_TO_ARMED": 25,
+          "RECLAIM_CONSUMED_NO_RETRY": 4,
+          "SETUP_CANCELLED_BY_NATIVE_DEFENSE": 1,
+          "SETUP_HOLD": 57,
+          "SETUP_TO_BLOCKED_EXPIRED": 7,
+          "SETUP_TO_BLOCKED_INVALIDATED": 13
+        }
+      },
+      "BTCUSDT": {
+        "breakouts_armed": 4,
+        "candidates_each_utc_day": {
+          "2024-01-08": 0,
+          "2024-01-09": 0,
+          "2024-01-10": 0,
+          "2024-01-11": 0,
+          "2024-01-12": 0
+        },
+        "defense_counts": {
+          "CRASH": 132,
+          "NORMAL": 1227,
+          "POST_SHOCK_COOLDOWN": 81
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "BREAKOUT_ARMED": 4,
+          "CRASH": 12,
+          "CRASH_GUARD": 1,
+          "FIRST_RETEST_RECORDED": 2,
+          "INSUFFICIENT_COST_HEADROOM": 1,
+          "NO_CHANNEL_CROSS": 98,
+          "POST_SHOCK_COOLDOWN": 1,
+          "RESET_TO_IDLE": 3,
+          "SETUP_TIMEOUT": 2,
+          "WAITING_FOR_CHANNEL_RESET": 1304,
+          "WAITING_FOR_FIRST_RETEST": 11,
+          "WAITING_FOR_RECLAIM": 1
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 15,
+          "BLOCKED": 1308,
+          "IDLE": 114,
+          "RETESTED": 3
+        },
+        "structural_reclaims_consumed": 1,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 2,
+          "BLOCKED_HOLD": 1304,
+          "BLOCKED_TO_IDLE_RESET": 3,
+          "IDLE_DEFENSE_ABSTAIN": 13,
+          "IDLE_HOLD": 98,
+          "IDLE_TO_ARMED": 4,
+          "RECLAIM_CONSUMED_NO_RETRY": 1,
+          "SETUP_CANCELLED_BY_NATIVE_DEFENSE": 1,
+          "SETUP_HOLD": 12,
+          "SETUP_TO_BLOCKED_EXPIRED": 2
+        }
+      },
+      "ETHUSDT": {
+        "breakouts_armed": 3,
+        "candidates_each_utc_day": {
+          "2024-01-08": 0,
+          "2024-01-09": 0,
+          "2024-01-10": 0,
+          "2024-01-11": 0,
+          "2024-01-12": 0
+        },
+        "defense_counts": {
+          "CRASH": 108,
+          "NORMAL": 1294,
+          "POST_SHOCK_COOLDOWN": 38
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "BREAKOUT_ARMED": 3,
+          "FIRST_RETEST_RECORDED": 2,
+          "INSUFFICIENT_COST_HEADROOM": 2,
+          "NO_CHANNEL_CROSS": 57,
+          "RESET_TO_IDLE": 2,
+          "SETUP_TIMEOUT": 1,
+          "WAITING_FOR_CHANNEL_RESET": 1363,
+          "WAITING_FOR_FIRST_RETEST": 10
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 13,
+          "BLOCKED": 1366,
+          "IDLE": 59,
+          "RETESTED": 2
+        },
+        "structural_reclaims_consumed": 2,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 2,
+          "BLOCKED_HOLD": 1363,
+          "BLOCKED_TO_IDLE_RESET": 2,
+          "IDLE_HOLD": 57,
+          "IDLE_TO_ARMED": 3,
+          "RECLAIM_CONSUMED_NO_RETRY": 2,
+          "SETUP_HOLD": 10,
+          "SETUP_TO_BLOCKED_EXPIRED": 1
+        }
+      },
+      "SOLUSDT": {
+        "breakouts_armed": 7,
+        "candidates_each_utc_day": {
+          "2024-01-08": 0,
+          "2024-01-09": 0,
+          "2024-01-10": 0,
+          "2024-01-11": 0,
+          "2024-01-12": 0
+        },
+        "defense_counts": {
+          "CRASH": 70,
+          "NORMAL": 1341,
+          "POST_SHOCK_COOLDOWN": 29
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 3,
+          "BREAKOUT_ARMED": 7,
+          "CRASH": 26,
+          "FIRST_RETEST_RECORDED": 4,
+          "NET_REWARD_RISK_TOO_LOW": 1,
+          "NO_CHANNEL_CROSS": 87,
+          "POST_SHOCK_COOLDOWN": 8,
+          "RESET_TO_IDLE": 7,
+          "SETUP_TIMEOUT": 3,
+          "WAITING_FOR_CHANNEL_RESET": 1270,
+          "WAITING_FOR_FIRST_RETEST": 24
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 31,
+          "BLOCKED": 1277,
+          "IDLE": 128,
+          "RETESTED": 4
+        },
+        "structural_reclaims_consumed": 1,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 4,
+          "BLOCKED_HOLD": 1270,
+          "BLOCKED_TO_IDLE_RESET": 7,
+          "IDLE_DEFENSE_ABSTAIN": 34,
+          "IDLE_HOLD": 87,
+          "IDLE_TO_ARMED": 7,
+          "RECLAIM_CONSUMED_NO_RETRY": 1,
+          "SETUP_HOLD": 24,
+          "SETUP_TO_BLOCKED_EXPIRED": 3,
+          "SETUP_TO_BLOCKED_INVALIDATED": 3
+        }
+      },
+      "XRPUSDT": {
+        "breakouts_armed": 6,
+        "candidates_each_utc_day": {
+          "2024-01-08": 0,
+          "2024-01-09": 0,
+          "2024-01-10": 0,
+          "2024-01-11": 0,
+          "2024-01-12": 0
+        },
+        "defense_counts": {
+          "CRASH": 187,
+          "NORMAL": 1152,
+          "POST_SHOCK_COOLDOWN": 101
+        },
+        "no_first_quote_at_assumed_100ms": 0,
+        "raw_candidates_after_fixed_base_hurdle": 0,
+        "reason_counts": {
+          "ADVERSE_INVALIDATION": 1,
+          "BREAKOUT_ARMED": 6,
+          "CRASH": 7,
+          "CRASH_GUARD": 1,
+          "FIRST_RETEST_RECORDED": 4,
+          "NET_REWARD_RISK_TOO_LOW": 1,
+          "NO_CHANNEL_CROSS": 92,
+          "POST_SHOCK_COOLDOWN": 1,
+          "RESET_TO_IDLE": 5,
+          "SETUP_TIMEOUT": 2,
+          "TARGET_NOT_BEYOND_RECLAIM": 1,
+          "WAITING_FOR_CHANNEL_RESET": 1305,
+          "WAITING_FOR_FIRST_RETEST": 12,
+          "WAITING_FOR_RECLAIM": 2
+        },
+        "scenarios": {
+          "base": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 20.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          },
+          "stress": {
+            "first_arrival_feasible_each_utc_day": {
+              "2024-01-08": 0,
+              "2024-01-09": 0,
+              "2024-01-10": 0,
+              "2024-01-11": 0,
+              "2024-01-12": 0
+            },
+            "first_arrival_geometry_feasible": 0,
+            "first_arrival_reasons": {},
+            "planning_round_trip_bps": 33.0,
+            "reference_geometry_feasible": 0,
+            "reference_geometry_reasons": {}
+          }
+        },
+        "scheduled_slots": 1440,
+        "state_counts": {
+          "ARMED": 18,
+          "BLOCKED": 1311,
+          "IDLE": 105,
+          "RETESTED": 6
+        },
+        "structural_reclaims_consumed": 2,
+        "transition_counts": {
+          "ARMED_TO_RETESTED_FIRST_TOUCH": 4,
+          "BLOCKED_HOLD": 1305,
+          "BLOCKED_TO_IDLE_RESET": 5,
+          "IDLE_DEFENSE_ABSTAIN": 8,
+          "IDLE_HOLD": 92,
+          "IDLE_TO_ARMED": 6,
+          "RECLAIM_CONSUMED_NO_RETRY": 2,
+          "SETUP_CANCELLED_BY_NATIVE_DEFENSE": 1,
+          "SETUP_HOLD": 14,
+          "SETUP_TO_BLOCKED_EXPIRED": 2,
+          "SETUP_TO_BLOCKED_INVALIDATED": 1
+        }
+      }
+    }
+  },
+  "model_execution_admitted": false,
+  "protocol_sha256": "3eb06d2a3397b19ba17a8ad54dfd41a39c324921a3ab319962e9b00b101d12e4",
+  "provider_calls": 0,
+  "provider_cost_usd": 0,
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "required_news_macro_ready": false,
+  "schema": "kairos.development.frozen-retest-census.v1",
+  "source_authenticity_admitted": false,
+  "source_receipt_unchanged": true,
+  "state": "OFFLINE_CANDIDATE_GEOMETRY_DIAGNOSTIC_COMPLETED_NOT_QUALIFICATION"
+}

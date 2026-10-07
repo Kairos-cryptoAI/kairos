@@ -1,0 +1,113 @@
+{
+  "assumed_completion_delay_ms": 100,
+  "blind_campaign_credit": false,
+  "cost_scenarios": [
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 4.5,
+      "id": "base",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 1,
+      "spread_bps": 2,
+      "uncertainty_bps": 2
+    },
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 9,
+      "id": "stress",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 2,
+      "spread_bps": 4,
+      "uncertainty_bps": 2
+    }
+  ],
+  "economics_executed": false,
+  "entry": "FIRST_STRICT_MINUTE_OPEN_AFTER_ASSUMED_100MS_COMPLETION_NO_RETRY",
+  "entry_lifetime_ms_new_identity_only": 300000,
+  "episodes": [
+    {
+      "end_exclusive": "2021-05-22",
+      "id": "episode_a",
+      "start": "2021-05-17"
+    },
+    {
+      "end_exclusive": "2024-01-13",
+      "id": "episode_d",
+      "start": "2024-01-08"
+    }
+  ],
+  "fresh_owner_confirmation_for_model_test": false,
+  "geometry_is_not": [
+    "REAL_FILL",
+    "EXPECTED_VALUE",
+    "CLOSED_TRADE",
+    "SOURCE_AUTHENTICITY",
+    "ALPHA_PASS"
+  ],
+  "max_wall_seconds": 300,
+  "native_compact_trial15_v5_plans_changed": false,
+  "new_downloads": false,
+  "parameter_search": false,
+  "provider_calls": 0,
+  "purpose": "ALREADY_SEEN_CALENDAR_CANDIDATE_AND_GEOMETRY_DIAGNOSTIC_NOT_ALPHA",
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "required_news_macro_ready": false,
+  "risk": {
+    "aggregate_open_fraction": 0.01,
+    "maximum_leverage": 1,
+    "maximum_symbol_notional_fraction": 0.25,
+    "per_trade_fraction": 0.0025
+  },
+  "roster": "EVERY_UTC_5M_CUT_IN_HALF_OPEN_WINDOWS_NOT_ONLY_TWENTY_PILOT_CELLS",
+  "schema": "kairos.development.frozen-retest-census.v1",
+  "sizing": "10000_USD_REFERENCE_ONLY_NO_ACCOUNT_ALLOCATION_OR_SIMULATED_POSITIONS",
+  "source_authenticity_admitted": false,
+  "state_origin": "EXACT_WINDOW_START_MINUS_54H_ONE_EXPANDING_PREFIX_NO_ROLLING_RESET",
+  "strategy": {
+    "adverse_invalidation_atr": 0.5,
+    "atr": "FINITE_TRUE_RANGE_MEAN_14_COMPLETED_5M_BARS_STRICTLY_BEFORE_BREAKOUT",
+    "breakout": "STRICT_CURRENT_CLOSE_CROSSES_PRIOR_20_HIGH_OR_LOW_FROM_INSIDE_OR_ON",
+    "candidate_status": "RESEARCH_ONLY_NOT_PRODUCTION_REGISTERED",
+    "channel_prior_5m_bars": 20,
+    "crash_short_exception": false,
+    "decision_cadence_ms": 300000,
+    "defense": "PINNED_NATIVE_REGIME_AT_EACH_CUT_CRASH_AND_TWO_COMPLETED_POST_SHOCK_HOURS_ABSTAIN",
+    "entry_lifetime_ms": 300000,
+    "id": "frozen_breakout_retest_v1",
+    "input": "CONTIGUOUS_CLOSED_1M_EXPLICIT_ORIGIN_EXPANDING_PREFIX",
+    "maximum_cost_stop_fraction": 0.5,
+    "maximum_holding_ms": 7200000,
+    "minimum_net_reward_risk": 1.25,
+    "planning_round_trip_bps": 20.0,
+    "prior_extreme_bars": 48,
+    "reclaim": "NEXT_DISTINCT_BAR_CLOSE_BACK_ACROSS_LEVEL_BY_AGE_6",
+    "reset": "BLOCKED_SETUP_REQUIRES_LATER_CLOSE_INSIDE_ORIGINAL_CHANNEL; RESET_CANDLE_CANNOT_ARM",
+    "retest": "FIRST_DISTINCT_LATER_BAR_AGE_1_TO_5_TOUCH_AND_CLOSE_ON_ORIGINAL_LEVEL_SIDE",
+    "setup_timeout_bars": 6,
+    "stop_buffer_atr": 0.25,
+    "stop_distance_atr": [
+      0.5,
+      2.0
+    ],
+    "stop_distance_bps": [
+      10.0,
+      300.0
+    ],
+    "target": "FROZEN_BREAKOUT_BAR_EXTREME_CAPPED_AT_CLOSER_PRIOR_48_BAR_EXTREME",
+    "warmup_ms": 194400000
+  },
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "BNBUSDT",
+    "XRPUSDT"
+  ],
+  "workers": 1
+}

@@ -2,6 +2,24 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## New frozen retest hypothesis: complete census, not selected — 2026-10-07
+
+The [separate new strategy and actual result](STRATEGY-SELECTION-FROZEN-RETEST-RESULT-2026-10-07.md)
+completed one fixed 40.015-second cache-only census over all 14,400 five-minute
+symbol slots of the already seen May 2021/January 2024 windows. It produced 122
+arms, fifty retests, twenty-three consumed structural reclaims and zero candidates
+after unchanged 20 bps base cost/geometry hurdles: thirteen insufficient net-RR,
+five insufficient cost headroom, five known targets no longer beyond entry.
+The conservative old-channel reset also withheld 84.48% of slots. This new
+version is not selected as the main technical candidate producer and is not
+integrated; no thresholds/targets/stops were changed after viewing these counts.
+Original complete tape/source/input receipts are byte-bound. No PnL, fill proof,
+model calls, source authenticity admission, blind credit or trading authority
+follows; empty candidates are not a zero-return performance result. Earlier
+native/compact/frozen controls and failures remain unchanged. The eventual
+historical model test still needs accepted causal source/budget evidence and
+fresh human confirmation. All readiness remains false and `REJECT_ALL`.
+
 ## Compact context complex: pre-model engineering complete — 2026-10-07
 
 The [separate compact implementation and actual preparation](FULL-SYSTEM-EVALUATION-COMPACT-RESULT-2026-10-07.md)

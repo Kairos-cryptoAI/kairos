@@ -1,0 +1,13 @@
+{
+  "scope": "SHA256_OF_ORIGINAL_CENSUS_BYTES_NOT_SOURCE_AUTHENTICITY",
+  "original_file_count": 7,
+  "files": {
+    "after.json": "997c0856d8fc57c5124076effca8087f9b407280cd0b206f72fa5d0a95f0a552",
+    "before.json": "1dc84f44d4bca2504b2dfc6616b8e6243eb3de3c5204edc4a2db4fd503d36522",
+    "decisions.jsonl.gz": "5941a27308d6477ce8988466cbe63617a7991be0b0c7626d893c475f5b37d928",
+    "episode_a-inputs.json": "c92979679a1761ea2503bbc5c5ce0cf187e2f68491110f34b12bfb64622b3b1a",
+    "episode_d-inputs.json": "1c42f06ce3aa5b8268eb387cba18947985b68ac22016df971eae70e0eaa20d09",
+    "protocol.json": "9f68bebb7d1e8433e28c1e33d651b7a8e2f4733b09876184dc7dda48f77e0388",
+    "result.json": "3b6dabb0f1744e27ceeb9a6fccdde33387e9d179b3f657b530e8abed085b4df0"
+  }
+}
