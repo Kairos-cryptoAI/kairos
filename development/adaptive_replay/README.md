@@ -196,6 +196,16 @@ constructed. See [the native transport receipt](../../docs/NATIVE-OBSERVATION-IM
 for limits, CLI usage and the remaining native-clock/cadence adapter boundary.
 All economics/readiness/authority markers stay false.
 
+### Full-calendar reference comparison
+
+The separate [calendar protocol](../../docs/STRATEGY-CALENDAR-PROTOCOL-2026-10-07.md)
+fixes four complete 2022--2025 years and a byte-bound SOL November 2022 funding
+schedule before returns. `python -m adaptive_replay.calendar_pair` uses the
+same required plan/cache/new-output arguments as the earlier replay. No old
+plan, loader, economic receipt or campaign changes. The output can nominate a
+development reference only, never select an adaptive/LLM strategy or qualify
+trading; resource/integrity failure yields no partial-year winner.
+
 Use uv 0.12.3 with Python 3.11/3.14. Install outside protected runtime environments:
 
 ```powershell

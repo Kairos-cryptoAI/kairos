@@ -9,6 +9,7 @@ on:
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
+      - docs/STRATEGY-CALENDAR-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
   pull_request:
@@ -18,6 +19,7 @@ on:
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
+      - docs/STRATEGY-CALENDAR-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
 
