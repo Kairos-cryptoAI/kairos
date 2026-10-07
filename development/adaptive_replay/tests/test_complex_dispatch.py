@@ -152,7 +152,7 @@ def make_dispatcher(*, fake_assessment=None, fail=False, gates=False):
     settings = LLMSettings.model_construct(max_retries=0, max_output_tokens=2_048, openai_api_key=None)
     gateway = LLMGateway(settings=settings, client=client)
     local = FakePilotBudget(
-        Path("C:/fixture/unused-ledger.sqlite"),
+        Path(__file__).resolve().with_name("unused-ledger.sqlite"),
         "00000000-0000-4000-8000-000000000001",
         FROZEN_PLAN_SHA256,
         ALLOWED_SLOT_IDS,

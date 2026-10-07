@@ -77,6 +77,12 @@ The protocol/strategy implementation was published as signed main commit
 validate and CodeQL runs passed. The replay/dispatcher/preparation/evidence
 publication receives its own signed main commit and exact-head CI checks.
 
+The initial replay publication's Linux CI caught a Windows-only fake ledger path
+in dispatcher fixtures, before any model call. A separate test-only follow-up
+uses an absolute native path on each platform; the production absolute-path
+check, budget logic, source fingerprints and original preparation bytes are
+unchanged. The full Windows/Linux matrix is rechecked on that follow-up head.
+
 ## Remaining model-test boundary
 
 The engineering implementation above is closed. **Source admission and the
