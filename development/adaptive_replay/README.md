@@ -282,3 +282,27 @@ adaptive/LLM selection. All 54 original source/tape/report/ledger/audit artifact
 are losslessly compressed and byte-bound by
 [the publication index](evidence/price-calendar-2026-10-07/checksums.json).
 CI checks the stored evidence without another historical economic replay.
+
+## Source-only native intraday references
+
+The separate [intraday source protocol](../../docs/STRATEGY-INTRADAY-PROTOCOL-2026-10-07.md)
+byte-binds all four original native decision tapes and every one of their twelve
+candidates. It streams nine fixed public daily aggTrades ZIPs under explicit
+resource/TLS/create-only guards. It records transaction-clock witnesses after
+assumed completion inside the unchanged 60-second lifetime; never BBO, our fills,
+capacity or economics. Old plans, generators, source caches and frozen campaigns
+are not changed or resumed. There is no automatic retry or promotion.
+
+Run the separately signed plan only after its exact source CI passes:
+
+```powershell
+python -m adaptive_replay.intraday_audit `
+  --plan D:\Kairos\kairos\development\adaptive_replay\intraday-source-plan.json `
+  --native-root D:\Kairos\runtime\adaptive-development-20261006\bounded-20261006-b `
+  --output D:\Kairos\runtime\intraday-reference-audit-20261007-a
+```
+
+Only a **new direct child** of the workspace runtime directory is accepted.
+`COMPLETED` denotes a completed source audit, not twelve qualified references or
+a strategy winner; inspect every recorded status. No economic or observed-fill
+credit follows from published prints, and readiness stays false/`REJECT_ALL`.

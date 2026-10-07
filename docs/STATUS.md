@@ -2,6 +2,18 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
 
+## Preregistered native intraday source audit — 2026-10-07
+
+The [separate bounded source-only protocol](STRATEGY-INTRADAY-PROTOCOL-2026-10-07.md)
+preserves all four original native adaptive tapes and all twelve candidates.
+It checks published transaction prices after assumed completion within the
+unchanged native lifetime, without economics, new generation or a strategy
+winner. The local archive/official metadata checks do not provide BBO or our
+fills. The signed implementation and exact source CI precede the single
+source-only attempt; completion is reported separately. No prior plan,
+PRICE_ONLY-to-adaptive projection, protected ledger, risk ceiling or trading
+authority changes. All readiness remains false and policy stays `REJECT_ALL`.
+
 ## Completed four-year price-only reference — 2026-10-07
 
 The [separately preregistered 2022--2025 comparison](STRATEGY-PRICE-RESULT-2026-10-07.md)

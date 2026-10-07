@@ -1,0 +1,70 @@
+{
+  "schema": "kairos.adaptive.intraday-source-plan.v1",
+  "purpose": "SOURCE_ONLY_RECORDED_PRINT_COMPATIBILITY_NOT_EXECUTION_OR_ECONOMICS",
+  "strategy_id": "adaptive_pullback_range_v1",
+  "original_plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+  "source_selection": "All twelve unchanged candidates from all four byte-bound original development tapes; not a return-selected sample or new strategy generation",
+  "tapes": [
+    {"window": "late_2021", "start": "2021-11-07", "end_exclusive": "2021-11-10", "sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612", "slots": 4320, "candidates": 0},
+    {"window": "early_2022", "start": "2022-02-05", "end_exclusive": "2022-02-08", "sha256": "e1ce735d76dee5ce388c77e265579b5de433e59f96e8b9b88c7787a5ad0cd2fe", "slots": 4320, "candidates": 0},
+    {"window": "may_2022", "start": "2022-05-09", "end_exclusive": "2022-05-12", "sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef", "slots": 4320, "candidates": 6},
+    {"window": "june_2022", "start": "2022-06-13", "end_exclusive": "2022-06-16", "sha256": "f434057c3cec0a04782e712ae81989450742ba0c8711c72da79c6f511dd9af6a", "slots": 4320, "candidates": 6}
+  ],
+  "candidate_ids": [
+    "38b46e3b35e1ac765856fb2b5c36f1b33e242ac4875ea3ef0f5ab2b7ea3beb2c",
+    "cd14e863558d65fd0a8fdb63e36d39472238fdb8789e7384b10eaccb324f56a5",
+    "8ac8361c5a8fd302d21a1bdfb56515d0fbd8cba879e57205b0d3ef36062cd6bc",
+    "0df46724a87ae5ca98e30acd48fcc889f9b61e087929fa3f6d93a5eca67dc9dc",
+    "275b984112089ef87bdd04d329dee680bd528e8c96ebbc719ae4a2b224d313d9",
+    "34bcbfd96455984015653b3ec5ebaf0504b4e4bc1f6cc87d8d4e864cbf8dc8a9",
+    "30ed52604078e55ded05c63c2c250493a4851490f7808fefd1dbf40bb1e5175e",
+    "f3079dd998e1a90244dffb1fb3bd365f40e7e59c3eabb860c13087196641bc8c",
+    "3faa432b8283c583cb29ee094eed7cdc89da6d22f44a94578bbbd9879b5630a8",
+    "1059ca3d9779756c26eb70234e8dddcd8767474a6ad636efc16ed71adbc5f75c",
+    "ebf9f62d7d9d4f36ea46e3202a8272fb6c99965f3799d93ade2f7b7daeb7da90",
+    "89809af3d694388d0fd9b3d0322eba0eca5a50b1a48dbe31d1214a6e6ce37cb7"
+  ],
+  "archives": [
+    {"symbol": "BTCUSDT", "day": "2022-05-09"},
+    {"symbol": "ETHUSDT", "day": "2022-05-09"},
+    {"symbol": "BNBUSDT", "day": "2022-05-09"},
+    {"symbol": "XRPUSDT", "day": "2022-05-09"},
+    {"symbol": "ETHUSDT", "day": "2022-05-11"},
+    {"symbol": "SOLUSDT", "day": "2022-06-13"},
+    {"symbol": "BNBUSDT", "day": "2022-06-13"},
+    {"symbol": "BTCUSDT", "day": "2022-06-14"},
+    {"symbol": "ETHUSDT", "day": "2022-06-14"}
+  ],
+  "clock_policy": {
+    "completion_delay_ms_assumed": 100,
+    "transport_delay_ms_assumed": 0,
+    "native_lifetime_ms": 60000,
+    "arrival": "max(native_eligibility, decision+100ms)+0ms; never round backwards or extend expiry",
+    "archive_clock": "HISTORICAL_TRANSACTION_TIME_NOT_LOCAL_RECEIVE",
+    "query": "Inclusive arrival through original expiry; strict predecessor before arrival and successor after expiry required"
+  },
+  "integrity_policy": "Whole published daily CSV, strict schema/UTC/IDs/raw ranges/SHA256/CRC; no sorting, deduplication, interpolation, raw sub-timestamps or source repair",
+  "aggregate_gap_policy": "Any gap envelope intersecting the full lifetime is GAP_TAINTED; no temporal allocation of missing IDs",
+  "raw_id_gap_policy": "Report separately as unknown or excluded trades, not automatically missing market events",
+  "limits": {
+    "workers": 1,
+    "max_wall_seconds": 900,
+    "max_compressed_bytes_each": 100663296,
+    "max_compressed_bytes_total": 536870912,
+    "max_uncompressed_bytes_each": 805306368,
+    "max_rows_each": 5000000,
+    "max_rows_total": 30000000,
+    "http_timeout_seconds": 20,
+    "attempts_each_request": 1,
+    "max_checksum_bytes": 512
+  },
+  "network_policy": "Only nine fixed public Binance USD-M daily aggTrades ZIPs and their CHECKSUMs into a fresh task directory; no redirects, retries, alternative dates, credentials or existing cache writes",
+  "source_fidelity": "RECORDED_AGGREGATE_TRADE_PRINT_NOT_BBO_DEPTH_OR_OUR_FILL",
+  "native_tape_input_authority": "Original native IDs and byte-bound producer evidence retained; not a fresh volume/context requalification or PRICE_ONLY projection",
+  "no_economics": true,
+  "no_strategy_generation": true,
+  "no_parameter_search": true,
+  "no_paid_calls": true,
+  "no_blind_campaign_credit": true,
+  "readiness": {"TECHNICAL_PAPER_READY": false, "PAPER_QUALIFIED": false, "ALPHA_READY": false, "LIVE_READY": false, "STRATEGY_POLICY": "REJECT_ALL"}
+}
