@@ -1,0 +1,101 @@
+{
+  "exit_tail_used": false,
+  "prefix_start_ms": 1633219200000,
+  "symbols": {
+    "BNBUSDT": {
+      "prefix_bars": 54720,
+      "prefix_checks_ms": [
+        1636246800000,
+        1636329600000,
+        1636333200000,
+        1636416000000,
+        1636419600000,
+        1636502400000
+      ],
+      "regime_aligned_right_tail_v1": {
+        "full_prefix_candidates": 2,
+        "scoring_candidates": 1
+      },
+      "right_tail_trend_v1": {
+        "full_prefix_candidates": 10,
+        "scoring_candidates": 1
+      }
+    },
+    "BTCUSDT": {
+      "prefix_bars": 54720,
+      "prefix_checks_ms": [
+        1636246800000,
+        1636329600000,
+        1636333200000,
+        1636416000000,
+        1636419600000,
+        1636502400000
+      ],
+      "regime_aligned_right_tail_v1": {
+        "full_prefix_candidates": 2,
+        "scoring_candidates": 2
+      },
+      "right_tail_trend_v1": {
+        "full_prefix_candidates": 15,
+        "scoring_candidates": 2
+      }
+    },
+    "ETHUSDT": {
+      "prefix_bars": 54720,
+      "prefix_checks_ms": [
+        1636246800000,
+        1636329600000,
+        1636333200000,
+        1636416000000,
+        1636419600000,
+        1636502400000
+      ],
+      "regime_aligned_right_tail_v1": {
+        "full_prefix_candidates": 2,
+        "scoring_candidates": 2
+      },
+      "right_tail_trend_v1": {
+        "full_prefix_candidates": 10,
+        "scoring_candidates": 2
+      }
+    },
+    "SOLUSDT": {
+      "prefix_bars": 54720,
+      "prefix_checks_ms": [
+        1636246800000,
+        1636329600000,
+        1636333200000,
+        1636416000000,
+        1636419600000,
+        1636502400000
+      ],
+      "regime_aligned_right_tail_v1": {
+        "full_prefix_candidates": 0,
+        "scoring_candidates": 0
+      },
+      "right_tail_trend_v1": {
+        "full_prefix_candidates": 8,
+        "scoring_candidates": 0
+      }
+    },
+    "XRPUSDT": {
+      "prefix_bars": 54720,
+      "prefix_checks_ms": [
+        1636246800000,
+        1636329600000,
+        1636333200000,
+        1636416000000,
+        1636419600000,
+        1636502400000
+      ],
+      "regime_aligned_right_tail_v1": {
+        "full_prefix_candidates": 1,
+        "scoring_candidates": 1
+      },
+      "right_tail_trend_v1": {
+        "full_prefix_candidates": 8,
+        "scoring_candidates": 1
+      }
+    }
+  }
+}

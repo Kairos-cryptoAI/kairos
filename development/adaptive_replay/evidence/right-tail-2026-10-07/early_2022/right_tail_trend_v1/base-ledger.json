@@ -1,0 +1,346 @@
+{
+  "events": [
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9999.265221513315,
+      "price": 41478.869929,
+      "quantity": 0.023622200749223946,
+      "reserved_risk_usd": 24.998163053783287,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1644022860000
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.651954166744,
+      "price": 2980.0737539999996,
+      "quantity": 0.2744186782111644,
+      "reserved_risk_usd": 24.99662988541686,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1644022860000
+    },
+    {
+      "intent_id": "32289f301e37867cfe6b6419b3e744dffcf372a474948c2a9c562f825c3fe94f",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9997.797799098156,
+      "price": 398.26944499999996,
+      "quantity": 2.859898190287468,
+      "reserved_risk_usd": 24.99449449774539,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1644022860000
+    },
+    {
+      "intent_id": "f6306f58dc9bed07697538902cf1761429fff9673928d39e66a31ff2838c947f",
+      "kind": "REJECT",
+      "reason": "AGGREGATE_OPEN_RISK_CAP"
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.09771970588217015,
+      "timestamp_ms": 1644048000000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 7.456e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.06140202138578773,
+      "timestamp_ms": 1644048000000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -0.0003478,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.4205674647498733,
+      "timestamp_ms": 1644048000000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.09857955398944189,
+      "timestamp_ms": 1644076800000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 4.351e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.03640265935289181,
+      "timestamp_ms": 1644076800000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.0,
+      "timestamp_ms": 1644076800000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.09773609968949011,
+      "timestamp_ms": 1644105600000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.08264338029271785,
+      "timestamp_ms": 1644105600000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -0.00010182,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.12037120842106588,
+      "timestamp_ms": 1644105600000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.09823750452259314,
+      "timestamp_ms": 1644134400000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.08259124074385774,
+      "timestamp_ms": 1644134400000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -4.58e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.05451788457407441,
+      "timestamp_ms": 1644134400000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.09802029838670401,
+      "timestamp_ms": 1644163200000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.08204953827306889,
+      "timestamp_ms": 1644163200000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -6.134e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.07206506447080943,
+      "timestamp_ms": 1644163200000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 1.477e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.014779867504470141,
+      "timestamp_ms": 1644192000003
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": -7.25e-06,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.006076558442820925,
+      "timestamp_ms": 1644192000003
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -3.128e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.037542677451641214,
+      "timestamp_ms": 1644192000003
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 5.264e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.05311218606081238,
+      "timestamp_ms": 1644220800014
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 8.15e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.06884007001124082,
+      "timestamp_ms": 1644220800014
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "kind": "FUNDING",
+      "native_8h_rate": -4.468e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.054471443259341966,
+      "timestamp_ms": 1644220800014
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": -9.617e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.0995144700065778,
+      "timestamp_ms": 1644249600003
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 1.491e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.01276577829126572,
+      "timestamp_ms": 1644249600003
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.10353608226164782,
+      "timestamp_ms": 1644278400001
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "kind": "FUNDING",
+      "native_8h_rate": 0.0001,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.08612767424996501,
+      "timestamp_ms": 1644278400001
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 0.5125545292510324,
+      "entry_ms": 1644022860000,
+      "entry_price": 398.26944499999996,
+      "exit_fee_usd": 0.5541179893491007,
+      "exit_ms": 1644240059999,
+      "exit_price": 430.56543545730017,
+      "gap": false,
+      "gross_pnl_usd": 92.36324466237419,
+      "holding_ms": 217199999,
+      "intent_id": "3c2995d9597cd3bb4a41ec420d61a2228b5f9bce8c476c850325e19b1769d40d",
+      "net_pnl_usd": 92.05610788670086,
+      "quantity": 2.859898190287468,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.99449449774539,
+      "side": "LONG",
+      "signed_funding_cost_usd": -0.759535742926806,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 0.4409199865412039,
+      "entry_ms": 1644022860000,
+      "entry_price": 41478.869929,
+      "exit_fee_usd": 0.4655310492719026,
+      "exit_ms": 1644282060000,
+      "exit_price": 43794.117822,
+      "gap": false,
+      "gross_pnl_usd": 54.69125051266376,
+      "holding_ms": 259200000,
+      "intent_id": "703c209517e45735f0a90f1b971658df9d4e36b6722ee81334464dbd3872ba87",
+      "net_pnl_usd": 53.222592648559896,
+      "quantity": 0.023622200749223946,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TIMEOUT",
+      "regime": null,
+      "reserved_risk_usd": 24.998163053783287,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.5622068282907519,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 0.36800455524500814,
+      "entry_ms": 1644022860000,
+      "entry_price": 2980.0737539999996,
+      "exit_fee_usd": 0.38572623920241633,
+      "exit_ms": 1644282060000,
+      "exit_price": 3123.582644,
+      "gap": false,
+      "gross_pnl_usd": 39.38151990535153,
+      "holding_ms": 259200000,
+      "intent_id": "0de88a282b137b4db819bf9565b2f61b04555bdb46eec29932100713a22a0710",
+      "net_pnl_usd": 38.12104330674613,
+      "quantity": 0.2744186782111644,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TIMEOUT",
+      "regime": null,
+      "reserved_risk_usd": 24.99662988541686,
+      "side": "LONG",
+      "signed_funding_cost_usd": 0.5067458041579747,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

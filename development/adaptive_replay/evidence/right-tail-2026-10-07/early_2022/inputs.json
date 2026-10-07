@@ -1,0 +1,193 @@
+{
+  "bar_end_ms": 1644537600000,
+  "bar_field_profile": "full_kline",
+  "bar_start_ms": 1640995200000,
+  "bars": {
+    "BNBUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "5a42e3ddd177265d7644138654f24771588d0352d8342bec652e18dbcfba4cac",
+          "path": "D:/Kairos/kairos-backtest/data/historical/BNBUSDT/1m/BNBUSDT-1m-2022-01.zip",
+          "raw_sha256": "d2e349fcd9a47c67b0804497ff8827cfd043c4adcbfcef3babdfd8fd5780b524"
+        },
+        {
+          "checksum_file_sha256": "ce1b7866d825b0ca4689614dfd928c51a808516406dfad80f4d9760147e9b782",
+          "path": "D:/Kairos/kairos-backtest/data/historical/BNBUSDT/1m/BNBUSDT-1m-2022-02.zip",
+          "raw_sha256": "07f6c14f594d234ed332f6e110eea1bfdd5995ee58c0add07e2f567fa9a7eff5"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "6f39f19ddcfe2e8e7f0bc03fdfa7f39d61808a8bd1ddf8106a4b4d598431c464",
+      "rows": 59040
+    },
+    "BTCUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "a4a0fc5937de792e72dd10d613ce580263547b52b2abd6ba2a80c807b4b620ce",
+          "path": "D:/Kairos/kairos-backtest/data/historical/BTCUSDT/1m/BTCUSDT-1m-2022-01.zip",
+          "raw_sha256": "9cdbcf68903434c850f9bec60d8174c2cfd105dd24a7566965b442ec15124e04"
+        },
+        {
+          "checksum_file_sha256": "f6205996db3db808e8b0cb2d848dfeab84a79dc8a39f6e866e3b5d04130e83d6",
+          "path": "D:/Kairos/kairos-backtest/data/historical/BTCUSDT/1m/BTCUSDT-1m-2022-02.zip",
+          "raw_sha256": "63672d552f98ec125ac4d90d82154313fb9832b7e1aaed196101816bd61bfb89"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "71e989152590a668ccb30b193eb8a7ac317d93acba2e0afa5b215d4a33c37952",
+      "rows": 59040
+    },
+    "ETHUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "0360fe90f482a100449d7336d195bbbea06d327b5d2e15e2ac2ae8e3ddd33999",
+          "path": "D:/Kairos/kairos-backtest/data/historical/ETHUSDT/1m/ETHUSDT-1m-2022-01.zip",
+          "raw_sha256": "6b1f5eef19ba80942734c04dd77cf177c7d82bfcc165424a6b9ad005e30df787"
+        },
+        {
+          "checksum_file_sha256": "e7dc04a69793c424755e184ced56ecc5e51e94df2014e2d5ddf5950882da556b",
+          "path": "D:/Kairos/kairos-backtest/data/historical/ETHUSDT/1m/ETHUSDT-1m-2022-02.zip",
+          "raw_sha256": "0a282034071d71093e41440a77eb6e5eecb9cb293191a05432df5de411a49782"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "8a9c45a6aba214b085ee5564a2c7146cff7eca6a310cac00c6afe8a9c60de8cb",
+      "rows": 59040
+    },
+    "SOLUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "75a58764d2bd55e730e346a4cf642e7f72b0ab54536e0c7b4e58a025bccc7d04",
+          "path": "D:/Kairos/kairos-backtest/data/historical/SOLUSDT/1m/SOLUSDT-1m-2022-01.zip",
+          "raw_sha256": "7b130e49b01048ee884d32c900c805a124999b516a58397afdda8bec77ee05fb"
+        },
+        {
+          "checksum_file_sha256": "b4103aab91b3bf2d30b9124678f6aa2024d9763a4108e1a8442703c9c2070945",
+          "path": "D:/Kairos/kairos-backtest/data/historical/SOLUSDT/1m/SOLUSDT-1m-2022-02.zip",
+          "raw_sha256": "cc76e9bf78f5b9d6f23d5f4b9d95f37544e47ee0511717c16d8a4cc39e68ff8c"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "eafa7d37fcf12710ea5b607b88cdfcd651f3c009552128b252772d79d728493b",
+      "rows": 59040
+    },
+    "XRPUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "70a9cb4b3e19577b0ee0f66679f37b6e6c89f7aea80d7b038179c5889b8a1b51",
+          "path": "D:/Kairos/kairos-backtest/data/historical/XRPUSDT/1m/XRPUSDT-1m-2022-01.zip",
+          "raw_sha256": "aa5bb48ffbabbe6971fa7e3a8965cb6afead2b881993074dbaf316304356787a"
+        },
+        {
+          "checksum_file_sha256": "fa50713ac228e08640ed07442bdc44e288eb9080dae080ac18f735aeb96a8205",
+          "path": "D:/Kairos/kairos-backtest/data/historical/XRPUSDT/1m/XRPUSDT-1m-2022-02.zip",
+          "raw_sha256": "c2427ac93c91a589c62f10193b9672cd3e7cca23e219e444bc12c945d6a245e7"
+        }
+      ],
+      "gaps": 0,
+      "normalized_rows_sha256": "a8f5cfa97387100fd9cd51cd645d6ddf7bd6a3791acf7be75a635fa8997da536",
+      "rows": 59040
+    }
+  },
+  "funding": {
+    "BNBUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "0c125896ea6fd04b5cb8e0daf038763c403fe9bf1dd8a1a16cf36acbec70d777",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/BNBUSDT/BNBUSDT-fundingRate-2022-01.zip",
+          "raw_sha256": "687891d67f99c3a622c44ed34413d65918fd96ea3a59d5e376af84d6d83f743b"
+        },
+        {
+          "checksum_file_sha256": "7d29e8c42e73f03986ca67cc0ffa55ea425308251a6bc5bd6ba6be6e5528b2b5",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/BNBUSDT/BNBUSDT-fundingRate-2022-02.zip",
+          "raw_sha256": "4f7641f27333f9a55a8fdeb827387504984a8734a37ef73ab6e620db41fe0303"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 28,
+      "normalized_rows_sha256": "1a1f6e22b43f48be1bdd1bef13be2e19634e339f26b27131e0187029100193ca",
+      "rows": 123,
+      "timestamps_rounded": false
+    },
+    "BTCUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "b60b9ea50214a3a17ad24013d572f3daf7b2772803e01e4a681615dd87d9ce16",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+          "raw_sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb"
+        },
+        {
+          "checksum_file_sha256": "70f6e1a566ee42efbc69690cd8a22b51966e299279b2510e4029b35812e7f7c1",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-02.zip",
+          "raw_sha256": "fa95088258a905c79ab79e8984d2f6f66933ec2e814dbab4ef9da89b01ab484a"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 28,
+      "normalized_rows_sha256": "6f01e80cf72f8c8a7354c860678eff2c0a954d754ddf069b70c0d0a7f450041f",
+      "rows": 123,
+      "timestamps_rounded": false
+    },
+    "ETHUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "fd7749afb1f4db8cd5205a13007e0da5542721fdf7ce9b7d867a1c8a5f6fa085",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/ETHUSDT/ETHUSDT-fundingRate-2022-01.zip",
+          "raw_sha256": "9f5bd01450b05a8c5e48cdc99fa147e85c82ecf7ee7919fa543a4e6039a2b98d"
+        },
+        {
+          "checksum_file_sha256": "03d98d248ac5f5d6f20118418fea8d81b797500583c7cabcc29efa604c0b0b6b",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/ETHUSDT/ETHUSDT-fundingRate-2022-02.zip",
+          "raw_sha256": "9c35e30327ac8915cc1333415b7d5018425781c81918e349d26b734525fcdfe5"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 28,
+      "normalized_rows_sha256": "da9f5d4ac750a9536e39eaaa954eb0e2ef0cd8917bd6d479b1ec00e16ab330b0",
+      "rows": 123,
+      "timestamps_rounded": false
+    },
+    "SOLUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "de25f8fff16f18dd72fa65b9f30ee72c0da96645f72d3f184653369c8518f2ad",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/SOLUSDT/SOLUSDT-fundingRate-2022-01.zip",
+          "raw_sha256": "f3be14b01356f33f6cbde6d12ee30311ae91fc521dc78d72a0aa39db8c295053"
+        },
+        {
+          "checksum_file_sha256": "85d0d30f690edb8f38a9c93dbca120a2c6177f6d4e49b52eaafbc7fdafdff815",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/SOLUSDT/SOLUSDT-fundingRate-2022-02.zip",
+          "raw_sha256": "d622a4a5cfb461e81d9cb13ebdd34b02e2d221c2ddb8d708dc4047d2f499fa96"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 28,
+      "normalized_rows_sha256": "319720e33bf261571983e9a5ba9c266626baf364fc1ed55d291fa5a004a7cc48",
+      "rows": 123,
+      "timestamps_rounded": false
+    },
+    "XRPUSDT": {
+      "archives": [
+        {
+          "checksum_file_sha256": "0dec54c4be457dbcd6d1febd9eaa2d00b134f406bc7e4a43e0370bef4ca93cbf",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/XRPUSDT/XRPUSDT-fundingRate-2022-01.zip",
+          "raw_sha256": "9ddff6efb16709debed38c0a6a0a2278c01659d18aedc2192b9fc02dc93d03ce"
+        },
+        {
+          "checksum_file_sha256": "88ed6bd7f8c286dd86819f5e13c23bc543085cf5aad7118361f5071bb6c9acf4",
+          "path": "D:/Kairos/kairos-backtest/data/historical-factors/fundingRate/XRPUSDT/XRPUSDT-fundingRate-2022-02.zip",
+          "raw_sha256": "033b260f54c03c4f32b3503e87f9a3d3bcf735a48f13b4057344bb05192006b4"
+        }
+      ],
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "max_event_offset_ms": 28,
+      "normalized_rows_sha256": "38dda24691839911b0df1f8c6bef34357eccdedce882509f9f936b0c971df109",
+      "rows": 123,
+      "timestamps_rounded": false
+    }
+  },
+  "funding_end_ms": 1644537600000,
+  "funding_for_entry_decisions": false,
+  "funding_start_ms": 1640995200000,
+  "window_id": "early_2022"
+}

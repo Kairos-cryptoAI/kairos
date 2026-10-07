@@ -1,0 +1,85 @@
+{
+  "events": [
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "473a8a8a949b7b4d1ecdda65d6c7dea228395c6f82136f1a936798de40183e08",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.864578498684,
+      "price": 26285.750550000004,
+      "quantity": 0.030848291198857562,
+      "reserved_risk_usd": 24.997161446246707,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_ms": 1655082060000
+    },
+    {
+      "intent_id": "5734cf275c5c60be7b7503c114c3cc7ffbcc18f3b6ce55f9656c8bab69413d2a",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "818a69ff6d9e6d1d528fa9343a4c00437185c5aa73a896c8c9836c7384b3ade1",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "7121afa1e508ac748ef975b6bec062b0531d85e20b41d63e6ba0ca927b98c4ff",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "473a8a8a949b7b4d1ecdda65d6c7dea228395c6f82136f1a936798de40183e08",
+      "kind": "FUNDING",
+      "native_8h_rate": -3.182e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": 0.024344576875390198,
+      "timestamp_ms": 1655107200000
+    },
+    {
+      "intent_id": "7e0e5b5c5804db2ad8faa4c82b00f3332441dbdea2a408dd74955db669ad806c",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "7862e5c790968c4096339cd9a6cd0ffcab0671c06052430c78d162788cead7b6",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "233b1ee2d2b9a27f794e3920f502291395f038327f964b740aa1d6d9453202e5",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "78502083881536e4226efc14c697a223e8e93d8320ace8a8413c8997c504cf45",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 0.7297834386122374,
+      "entry_ms": 1655082060000,
+      "entry_price": 26285.750550000004,
+      "exit_fee_usd": 0.6507866939560792,
+      "exit_ms": 1655126399999,
+      "exit_price": 23440.401348540337,
+      "gap": false,
+      "gross_pnl_usd": 87.77416072906463,
+      "holding_ms": 44339999,
+      "intent_id": "473a8a8a949b7b4d1ecdda65d6c7dea228395c6f82136f1a936798de40183e08",
+      "net_pnl_usd": 86.36924601962093,
+      "quantity": 0.030848291198857562,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.997161446246707,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.024344576875390198,
+      "sleeve_id": "right_tail_trend_v1",
+      "symbol": "BTCUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "events": [
+    {
+      "authority": "OBSERVED_MINUTE_OPEN_PRICE_WITH_MODELED_COSTS",
+      "intent_id": "245cccb5f16dd818d74117d8940d62e5a6a1c53dc4ed4cc288635b5246c6d921",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.701331577235,
+      "price": 2522.6580400000003,
+      "quantity": 0.3676497517799789,
+      "reserved_risk_usd": 24.99675332894309,
+      "sleeve_id": "regime_aligned_right_tail_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_ms": 1652058060000
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "245cccb5f16dd818d74117d8940d62e5a6a1c53dc4ed4cc288635b5246c6d921",
+      "kind": "FUNDING",
+      "native_8h_rate": 9.424e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.08477573743488315,
+      "timestamp_ms": 1652083200001
+    },
+    {
+      "clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "intent_id": "245cccb5f16dd818d74117d8940d62e5a6a1c53dc4ed4cc288635b5246c6d921",
+      "kind": "FUNDING",
+      "native_8h_rate": 9.769e-05,
+      "price_authority": "CANDLE_OPEN_NOT_MARK_PRICE",
+      "signed_cost_usd": -0.08553971450144132,
+      "timestamp_ms": 1652112000000
+    },
+    {
+      "intent_id": "3aea9de454cbcac83f1133a14de511ac5a7a3556b9e576ac8e10581be907e32c",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "de444eba9c16909fe79baf150f041ca327b2b4c79a5b844a48817354883207e5",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "7a0c1c938302e021252572ee858cd58f2cec17c6956cf2ca2459613e50a73c27",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "7f5850959a9e643abbebce3876146da99517679da4c5991a82278af398725b55",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    },
+    {
+      "intent_id": "ae2713f13bc1ed5ac9de890d4ade79f22fd9478006c8cd649f6b94832ca411e3",
+      "kind": "REJECT",
+      "reason": "FILL_stop_too_wide"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 0.8347091420085915,
+      "entry_ms": 1652058060000,
+      "entry_price": 2522.6580400000003,
+      "exit_fee_usd": 0.7589290653877911,
+      "exit_ms": 1652115959999,
+      "exit_price": 2293.6354859888334,
+      "gap": false,
+      "gross_pnl_usd": 84.20008513422232,
+      "holding_ms": 57899999,
+      "intent_id": "245cccb5f16dd818d74117d8940d62e5a6a1c53dc4ed4cc288635b5246c6d921",
+      "net_pnl_usd": 82.77676237876226,
+      "quantity": 0.3676497517799789,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TP",
+      "regime": null,
+      "reserved_risk_usd": 24.99675332894309,
+      "side": "SHORT",
+      "signed_funding_cost_usd": -0.17031545193632447,
+      "sleeve_id": "regime_aligned_right_tail_v1",
+      "symbol": "ETHUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

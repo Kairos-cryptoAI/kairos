@@ -1,0 +1,96 @@
+{
+  "sources": {
+    "aligned_transitive_base_source_sha256": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+    "installed_replay_context": {
+      "adaptive_identity": {
+        "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+        "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+        "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+        "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+      },
+      "dependency_projection": "EXPLICIT_DEVELOPMENT_OVERRIDES_NOT_FROZEN_CAMPAIGN_ENVIRONMENT",
+      "installed_dependencies": {
+        "kairos-backtest": {
+          "revision": "da1237854066fde381542e43c106d0de727448be",
+          "version": "0.1.0"
+        },
+        "kairos-core": {
+          "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+          "version": "0.3.0"
+        },
+        "kairos-persistence": {
+          "revision": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+          "version": "0.1.0"
+        },
+        "kairos-quant-scouts": {
+          "revision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+          "version": "0.1.0"
+        },
+        "kairos-strategy-engine": {
+          "revision": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+          "version": "0.2.12"
+        }
+      },
+      "plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+      "replay_modules_sha256": {
+        "__init__.py": "219b779856cfe5d816a818cbf6ee4c6f73685b7208de533d6ec4f9ea2f152909",
+        "baselines.py": "9c6e3d98775a957c5b2d02e9ccb6f5bd62ff376cfa1c58f898c1f73cf4e5e9dc",
+        "compare.py": "ea3e6087db4dfc400bdce5a2c12eb4aea4ff5ab9644b9fc57e48fcd75ff58ada",
+        "engine.py": "112891680ab1e2b8d8202588fa6ddc68d21adff6e1e0b3c99f895e853eede4a3",
+        "inputs.py": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+        "matched.py": "6d3838b584ef20f49d23a7cbfe4e4e9b2fe6e1c62d1606e7172c03354b5124ec",
+        "observations.py": "754163114a42ebd661d63ecdf1a601e4f385538c35d46a7c43342e666feab14a",
+        "right_tail.py": "1ba36e791d1051939a0da656e4fa142f7759bd36419882210505cbae96450226",
+        "runner.py": "a986321af7d641e85d46a7d51143acd532c9da03022d9d293afbea2c4f16a2e4",
+        "selection.py": "1a4c0afb152fb9d2689519a5f97fc9a531ebf2d534fa36d4230918a27aa5dd4d",
+        "system.py": "2c40260c8cd2e161c7e10a6cbe81d541ea9e3e71ecc513ed498068ae7d911b91"
+      },
+      "reused_backtest_modules_sha256": {
+        "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+        "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+        "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+        "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+      },
+      "uv_lock_sha256": "267f52f7c066b1b636ac6b076715099cef825ec0004073cb70db275d5851a082"
+    },
+    "native_pair": {
+      "regime_aligned_right_tail_v1": {
+        "config": {
+          "atr_period_hours": 24,
+          "decision_interval_hours": 24,
+          "intent_valid_hours": 1,
+          "max_hold_hours": 72,
+          "minimum_trend_score": 1.0,
+          "regime_sma_bars": 200,
+          "stop_atr_multiple": 2.0,
+          "target_reward_to_risk": 4.0,
+          "trend_lookback_hours": 24
+        },
+        "fingerprint": "ae4ff7d7c54353a544be045903b64d5c0be9d6ca8d22ec6158e4942a36a59efe",
+        "registry_source_sha256": "f795c8f01d58666c5f215e5c98eabf7368e25d1ac83ff3bc7ae27332e0966b84",
+        "registry_status": "forward_frozen",
+        "revision": "1"
+      },
+      "right_tail_trend_v1": {
+        "config": {
+          "atr_period_hours": 24,
+          "decision_interval_hours": 24,
+          "intent_valid_hours": 1,
+          "max_hold_hours": 72,
+          "minimum_trend_score": 1.0,
+          "stop_atr_multiple": 2.0,
+          "target_reward_to_risk": 4.0,
+          "trend_lookback_hours": 24
+        },
+        "fingerprint": "c36879cc052ccad8f126be29eb6cc8bd70c8274598e8a98fbae2e3ed69805253",
+        "registry_source_sha256": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+        "registry_status": "rejected",
+        "revision": "1"
+      }
+    },
+    "pair_plan_sha256": "dafd2c69b431878af1f5c509d2cf8ffd1fa25a976eb6ee992d7e91392e45aeb6",
+    "plan_file_sha256": "0fb2961f01d98e323fda79b76da30ae7cfb38ea77d7d4e320bf8ce4b1455fe7f"
+  },
+  "started_utc": "2026-10-07T02:32:11.974891+00:00",
+  "state": "RUNNING"
+}

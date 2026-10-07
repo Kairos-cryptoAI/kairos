@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from dataclasses import asdict, replace
@@ -238,3 +239,70 @@ def test_run_rejects_overlapping_cache_before_any_output(tmp_path: Path) -> None
     with pytest.raises(ValueError, match="overlap"):
         pair.run(PROJECT / "right-tail-plan.json", tmp_path, tmp_path / "factors", tmp_path / "output")
     assert not (tmp_path / "output").exists()
+
+
+def test_published_result_and_independent_calculator_preserve_exact_bytes() -> None:
+    root = PROJECT / "evidence" / "right-tail-2026-10-07"
+    result_bytes = (root / "result.json").read_bytes()
+    audit_bytes = (root / "independent-ledger-audit.json").read_bytes()
+    result_sha = hashlib.sha256(result_bytes).hexdigest()
+    audit = json.loads(audit_bytes)
+    assert result_sha == "0caaec779e2e4172484ebb9ab9c4830b946da29d62f31358291185f2113eb1d3"
+    assert (
+        hashlib.sha256(audit_bytes).hexdigest()
+        == "8ef189863b30b305954cae7f87f363b4b32fd249005bdc272aa03d6320b04e08"
+    )
+    assert audit["result_sha256"] == result_sha
+    assert (
+        audit["calculator_sha256"] == hashlib.sha256((root / "Test-PairLedgers.ps1").read_bytes()).hexdigest()
+    )
+    assert audit["state"] == "PASSED_SCOPED_ARITHMETIC"
+    assert audit["complete_venue_or_alpha_validation"] is False
+
+
+def test_published_cells_tapes_ledgers_and_finite_selection_boundary_are_bound() -> None:
+    root = PROJECT / "evidence" / "right-tail-2026-10-07"
+    result = json.loads((root / "result.json").read_bytes())
+    audit = json.loads((root / "independent-ledger-audit.json").read_bytes())
+    assert result["qualified_winner"] is None and result["strategy_selected_for_live"] is None
+    assert result["compound_return_across_windows"] is None
+    assert result["blind_results_read"] is False and result["blind_campaign_days_added"] == 0
+    assert result["paid_calls"] == 0
+    assert result["readiness"]["STRATEGY_POLICY"] == "REJECT_ALL"
+    assert all(value is False for key, value in result["readiness"].items() if key != "STRATEGY_POLICY")
+    assert len(audit["cells"]) == 16
+    counts = {arm: {"candidates": 0, "closes_per_cost": {"base": 0, "stress": 0}} for arm in pair.ARMS}
+    for window in result["windows"]:
+        for arm in window["arms"]:
+            arm_root = root / window["window"]["id"] / arm["arm_id"]
+            assert (
+                hashlib.sha256((arm_root / "decisions.jsonl").read_bytes()).hexdigest()
+                == arm["counts"]["tape_sha256"]
+            )
+            assert arm["counts"]["native_daily_slots"] == 15
+            counts[arm["arm_id"]]["candidates"] += arm["counts"]["candidates"]
+            for report in arm["economic_results"]:
+                cost = report["cost_scenario"]["id"]
+                recorded = next(
+                    cell
+                    for cell in audit["cells"]
+                    if (
+                        cell["window"] == window["window"]["id"]
+                        and cell["arm"] == arm["arm_id"]
+                        and cell["cost"] == cost
+                    )
+                )
+                ledger_bytes = (arm_root / f"{cost}-ledger.json").read_bytes()
+                assert hashlib.sha256(ledger_bytes).hexdigest() == recorded["ledger_sha256"]
+                assert (
+                    len(json.loads(ledger_bytes)["trades"]) == report["closed_trades"] == recorded["closed"]
+                )
+                assert recorded["return_pct"] == report["net_return_pct"]
+                assert report["terminal_unresolved_positions"] == []
+                assert report["complete_all_in_net_economics"] is False
+                assert report["execution_qualification"] is False
+                counts[arm["arm_id"]]["closes_per_cost"][cost] += report["closed_trades"]
+    assert counts == {
+        pair.ARMS[0]: {"candidates": 25, "closes_per_cost": {"base": 9, "stress": 9}},
+        pair.ARMS[1]: {"candidates": 22, "closes_per_cost": {"base": 8, "stress": 8}},
+    }

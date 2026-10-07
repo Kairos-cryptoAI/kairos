@@ -1,0 +1,67 @@
+{
+  "admission_policy": "COMMON_COST_RISK_V1",
+  "admission_rejections": {
+    "SYMBOL_POSITION_ALREADY_OPEN": 2
+  },
+  "adverse_envelope_bound_pct": 1.559572059040868,
+  "ambiguous_barrier_minutes": 0,
+  "closed_minute_mtm_drawdown_pct": 1.4813298868029745,
+  "closed_trade_net_usd": -6.696851592960382,
+  "closed_trades": 4,
+  "closed_trades_by_family": {
+    "right_tail_trend_v1": 4
+  },
+  "common_maximum_stop_distance_bps": 300.0,
+  "complete_all_in_net_economics": false,
+  "cost_scenario": {
+    "admission_adverse_carry_bps": 3,
+    "fee_bps_per_side": 9,
+    "id": "stress",
+    "latency_bps_round_trip": 2,
+    "slippage_bps_per_side": 2,
+    "spread_bps": 4,
+    "uncertainty_bps": 2
+  },
+  "entries_each_utc_day": {
+    "2021-11-07": 0,
+    "2021-11-08": 3,
+    "2021-11-09": 1
+  },
+  "entry_mode": "STRICT_MINUTE_OPEN",
+  "execution_qualification": false,
+  "final_equity_usd": 9993.303148407038,
+  "forced_settlements": 0,
+  "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+  "gross_ceiling_mark_overrun": false,
+  "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+  "ledger_reconciliation_error_usd": -1.666222715357435e-12,
+  "long_net_usd": -6.696851592960382,
+  "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+  "market_feed_cost_usd": null,
+  "max_observed_mark_gross_leverage": 0.4788737284893076,
+  "max_observed_mark_open_risk_fraction": 0.009985665895488226,
+  "mean_holding_minutes": 2615.749983333333,
+  "model_calls": 0,
+  "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+  "model_cost_usd": null,
+  "natural_exit_counts": {
+    "SL": 3,
+    "TP": 1
+  },
+  "net_return_pct": -0.06696851592962183,
+  "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+  "planning_round_trip_bps": 33.0,
+  "profit_factor": 0.9122415127704994,
+  "profit_factor_status": "FINITE",
+  "realized_loss_over_reservation_count": 2,
+  "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+  "risk_ceiling_mark_overrun": false,
+  "short_net_usd": 0.0,
+  "signed_funding_cost_usd": 9.407889253857258,
+  "suppressed_deadline_minute_targets": 0,
+  "suppressed_entry_minute_targets": 0,
+  "terminal_unresolved_positions": [],
+  "total_entry_fees_usd": 4.252483392977006,
+  "total_exit_fees_usd": 4.262586890126606,
+  "zero_entry_days": 1
+}

@@ -1,0 +1,1306 @@
+{
+  "authority": "SEEN_COMPATIBILITY_ONLY_NOT_ALPHA_OR_FULL_SYSTEM_QUALIFICATION",
+  "blind_campaign_days_added": 0,
+  "blind_results_read": false,
+  "compound_return_across_windows": null,
+  "elapsed_seconds": 105.03099999998813,
+  "finished_utc": "2026-10-07T02:33:56.998613+00:00",
+  "paid_calls": 0,
+  "qualified_winner": null,
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "schema": "kairos.strategy.right-tail-pair-result.v1",
+  "sources": {
+    "aligned_transitive_base_source_sha256": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+    "installed_replay_context": {
+      "adaptive_identity": {
+        "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+        "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+        "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+        "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+      },
+      "dependency_projection": "EXPLICIT_DEVELOPMENT_OVERRIDES_NOT_FROZEN_CAMPAIGN_ENVIRONMENT",
+      "installed_dependencies": {
+        "kairos-backtest": {
+          "revision": "da1237854066fde381542e43c106d0de727448be",
+          "version": "0.1.0"
+        },
+        "kairos-core": {
+          "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+          "version": "0.3.0"
+        },
+        "kairos-persistence": {
+          "revision": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+          "version": "0.1.0"
+        },
+        "kairos-quant-scouts": {
+          "revision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+          "version": "0.1.0"
+        },
+        "kairos-strategy-engine": {
+          "revision": "cde8e9c00af0cc19848e800ee76472a800a5fd5d",
+          "version": "0.2.12"
+        }
+      },
+      "plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+      "replay_modules_sha256": {
+        "__init__.py": "219b779856cfe5d816a818cbf6ee4c6f73685b7208de533d6ec4f9ea2f152909",
+        "baselines.py": "9c6e3d98775a957c5b2d02e9ccb6f5bd62ff376cfa1c58f898c1f73cf4e5e9dc",
+        "compare.py": "ea3e6087db4dfc400bdce5a2c12eb4aea4ff5ab9644b9fc57e48fcd75ff58ada",
+        "engine.py": "112891680ab1e2b8d8202588fa6ddc68d21adff6e1e0b3c99f895e853eede4a3",
+        "inputs.py": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+        "matched.py": "6d3838b584ef20f49d23a7cbfe4e4e9b2fe6e1c62d1606e7172c03354b5124ec",
+        "observations.py": "754163114a42ebd661d63ecdf1a601e4f385538c35d46a7c43342e666feab14a",
+        "right_tail.py": "1ba36e791d1051939a0da656e4fa142f7759bd36419882210505cbae96450226",
+        "runner.py": "a986321af7d641e85d46a7d51143acd532c9da03022d9d293afbea2c4f16a2e4",
+        "selection.py": "1a4c0afb152fb9d2689519a5f97fc9a531ebf2d534fa36d4230918a27aa5dd4d",
+        "system.py": "2c40260c8cd2e161c7e10a6cbe81d541ea9e3e71ecc513ed498068ae7d911b91"
+      },
+      "reused_backtest_modules_sha256": {
+        "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+        "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+        "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+        "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+      },
+      "uv_lock_sha256": "267f52f7c066b1b636ac6b076715099cef825ec0004073cb70db275d5851a082"
+    },
+    "native_pair": {
+      "regime_aligned_right_tail_v1": {
+        "config": {
+          "atr_period_hours": 24,
+          "decision_interval_hours": 24,
+          "intent_valid_hours": 1,
+          "max_hold_hours": 72,
+          "minimum_trend_score": 1.0,
+          "regime_sma_bars": 200,
+          "stop_atr_multiple": 2.0,
+          "target_reward_to_risk": 4.0,
+          "trend_lookback_hours": 24
+        },
+        "fingerprint": "ae4ff7d7c54353a544be045903b64d5c0be9d6ca8d22ec6158e4942a36a59efe",
+        "registry_source_sha256": "f795c8f01d58666c5f215e5c98eabf7368e25d1ac83ff3bc7ae27332e0966b84",
+        "registry_status": "forward_frozen",
+        "revision": "1"
+      },
+      "right_tail_trend_v1": {
+        "config": {
+          "atr_period_hours": 24,
+          "decision_interval_hours": 24,
+          "intent_valid_hours": 1,
+          "max_hold_hours": 72,
+          "minimum_trend_score": 1.0,
+          "stop_atr_multiple": 2.0,
+          "target_reward_to_risk": 4.0,
+          "trend_lookback_hours": 24
+        },
+        "fingerprint": "c36879cc052ccad8f126be29eb6cc8bd70c8274598e8a98fbae2e3ed69805253",
+        "registry_source_sha256": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+        "registry_status": "rejected",
+        "revision": "1"
+      }
+    },
+    "pair_plan_sha256": "dafd2c69b431878af1f5c509d2cf8ffd1fa25a976eb6ee992d7e91392e45aeb6",
+    "plan_file_sha256": "0fb2961f01d98e323fda79b76da30ae7cfb38ea77d7d4e320bf8ce4b1455fe7f"
+  },
+  "state": "COMPLETED",
+  "strategy_selected_for_live": null,
+  "windows": [
+    {
+      "arms": [
+        {
+          "arm_id": "right_tail_trend_v1",
+          "counts": {
+            "candidates": 6,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "d7f08b2908e4627f453e05587f26a4b7cf9d8a2f5748796234f8d2ac6485ab16"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "SYMBOL_POSITION_ALREADY_OPEN": 2
+              },
+              "adverse_envelope_bound_pct": 1.6569657211901412,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 1.5720866612193154,
+              "closed_trade_net_usd": 0.46724924324445993,
+              "closed_trades": 4,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 4
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2021-11-07": 0,
+                "2021-11-08": 3,
+                "2021-11-09": 1
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10000.46724924325,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 4.710898338089464e-12,
+              "long_net_usd": 0.46724924324445993,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.5160204285185621,
+              "max_observed_mark_open_risk_fraction": 0.00998251425673541,
+              "mean_holding_minutes": 2615.749983333333,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "SL": 3,
+                "TP": 1
+              },
+              "net_return_pct": 0.004672492432500341,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": 1.0060521198383032,
+              "profit_factor_status": "FINITE",
+              "realized_loss_over_reservation_count": 2,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 10.175124863317691,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 2.293162950123759,
+              "total_exit_fees_usd": 2.3000189503269146,
+              "zero_entry_days": 1
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "SYMBOL_POSITION_ALREADY_OPEN": 2
+              },
+              "adverse_envelope_bound_pct": 1.559572059040868,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 1.4813298868029745,
+              "closed_trade_net_usd": -6.696851592960382,
+              "closed_trades": 4,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 4
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2021-11-07": 0,
+                "2021-11-08": 3,
+                "2021-11-09": 1
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 9993.303148407038,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -1.666222715357435e-12,
+              "long_net_usd": -6.696851592960382,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.4788737284893076,
+              "max_observed_mark_open_risk_fraction": 0.009985665895488226,
+              "mean_holding_minutes": 2615.749983333333,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "SL": 3,
+                "TP": 1
+              },
+              "net_return_pct": -0.06696851592962183,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": 0.9122415127704994,
+              "profit_factor_status": "FINITE",
+              "realized_loss_over_reservation_count": 2,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 9.407889253857258,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 4.252483392977006,
+              "total_exit_fees_usd": 4.262586890126606,
+              "zero_entry_days": 1
+            }
+          ]
+        },
+        {
+          "arm_id": "regime_aligned_right_tail_v1",
+          "counts": {
+            "candidates": 6,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "f9263363df5c0478a66d0856b9d10e9a941a6cd2db5b8492f35e37896894e227"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "SYMBOL_POSITION_ALREADY_OPEN": 2
+              },
+              "adverse_envelope_bound_pct": 1.6569657211901412,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 1.5720866612193154,
+              "closed_trade_net_usd": 0.46724924324445993,
+              "closed_trades": 4,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 4
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2021-11-07": 0,
+                "2021-11-08": 3,
+                "2021-11-09": 1
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10000.46724924325,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 4.710898338089464e-12,
+              "long_net_usd": 0.46724924324445993,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.5160204285185621,
+              "max_observed_mark_open_risk_fraction": 0.00998251425673541,
+              "mean_holding_minutes": 2615.749983333333,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "SL": 3,
+                "TP": 1
+              },
+              "net_return_pct": 0.004672492432500341,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": 1.0060521198383032,
+              "profit_factor_status": "FINITE",
+              "realized_loss_over_reservation_count": 2,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 10.175124863317691,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 2.293162950123759,
+              "total_exit_fees_usd": 2.3000189503269146,
+              "zero_entry_days": 1
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "SYMBOL_POSITION_ALREADY_OPEN": 2
+              },
+              "adverse_envelope_bound_pct": 1.559572059040868,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 1.4813298868029745,
+              "closed_trade_net_usd": -6.696851592960382,
+              "closed_trades": 4,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 4
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2021-11-07": 0,
+                "2021-11-08": 3,
+                "2021-11-09": 1
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 9993.303148407038,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -1.666222715357435e-12,
+              "long_net_usd": -6.696851592960382,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.4788737284893076,
+              "max_observed_mark_open_risk_fraction": 0.009985665895488226,
+              "mean_holding_minutes": 2615.749983333333,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "SL": 3,
+                "TP": 1
+              },
+              "net_return_pct": -0.06696851592962183,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": 0.9122415127704994,
+              "profit_factor_status": "FINITE",
+              "realized_loss_over_reservation_count": 2,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 9.407889253857258,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 4.252483392977006,
+              "total_exit_fees_usd": 4.262586890126606,
+              "zero_entry_days": 1
+            }
+          ]
+        }
+      ],
+      "window": {
+        "end_exclusive": "2021-11-10",
+        "id": "late_2021",
+        "start": "2021-11-07"
+      }
+    },
+    {
+      "arms": [
+        {
+          "arm_id": "right_tail_trend_v1",
+          "counts": {
+            "candidates": 5,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "f520c3f714d13a17d526b35e07892f308cbe5915ba653aa11f49fb4ff2cb6980"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "AGGREGATE_OPEN_RISK_CAP": 1,
+                "FILL_stop_too_wide": 1
+              },
+              "adverse_envelope_bound_pct": 1.0192740837199095,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.9628964928846672,
+              "closed_trade_net_usd": 183.3997438420069,
+              "closed_trades": 3,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 3
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-02-05": 3,
+                "2022-02-06": 0,
+                "2022-02-07": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10183.399743842008,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 1.4210854715202004e-12,
+              "long_net_usd": 183.3997438420069,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.3042163659283042,
+              "max_observed_mark_open_risk_fraction": 0.007511661951938142,
+              "mean_holding_minutes": 4086.666661111111,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TIMEOUT": 2,
+                "TP": 1
+              },
+              "net_return_pct": 1.8339974384200763,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 0.3094168895219205,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 1.3214790710372444,
+              "total_exit_fees_usd": 1.4053752778234196,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "AGGREGATE_OPEN_RISK_CAP": 1,
+                "FILL_stop_too_wide": 1
+              },
+              "adverse_envelope_bound_pct": 0.959693831948421,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.9062835238838295,
+              "closed_trade_net_usd": 169.03007208819272,
+              "closed_trades": 3,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 3
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-02-05": 3,
+                "2022-02-06": 0,
+                "2022-02-07": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10169.03007208819,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -3.097966327914037e-12,
+              "long_net_usd": 169.03007208819272,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.28729286988923314,
+              "max_observed_mark_open_risk_fraction": 0.007511484901687245,
+              "mean_holding_minutes": 4086.666661111111,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TIMEOUT": 2,
+                "TP": 1
+              },
+              "net_return_pct": 1.6903007208818988,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 0.3031268072059791,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 2.4941345301951863,
+              "total_exit_fees_usd": 2.6511651789392667,
+              "zero_entry_days": 2
+            }
+          ]
+        },
+        {
+          "arm_id": "regime_aligned_right_tail_v1",
+          "counts": {
+            "candidates": 2,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "b7be2faf8a3863caa56bc31a67bf4b96af298a64dfa8771ba1e6af908755ad80"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {},
+              "adverse_envelope_bound_pct": 0.4987975630074324,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.4582004991141355,
+              "closed_trade_net_usd": 91.34363595530603,
+              "closed_trades": 2,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 2
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-02-05": 2,
+                "2022-02-06": 0,
+                "2022-02-07": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10091.343635955309,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 2.8279600883251987e-12,
+              "long_net_usd": 91.34363595530603,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.18993092007168735,
+              "max_observed_mark_open_risk_fraction": 0.005008047161095589,
+              "mean_holding_minutes": 4320.0,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TIMEOUT": 2
+              },
+              "net_return_pct": 0.9134363595530992,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 1.0689526324487266,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.8089245417862121,
+              "total_exit_fees_usd": 0.8512572884743189,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {},
+              "adverse_envelope_bound_pct": 0.4733696896262644,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.4347987809539456,
+              "closed_trade_net_usd": 84.32244477116308,
+              "closed_trades": 2,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 2
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-02-05": 2,
+                "2022-02-06": 0,
+                "2022-02-07": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10084.322444771164,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 5.684341886080801e-13,
+              "long_net_usd": 84.32244477116308,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.18025526505488462,
+              "max_observed_mark_open_risk_fraction": 0.005007745107404601,
+              "mean_holding_minutes": 4320.0,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TIMEOUT": 2
+              },
+              "net_return_pct": 0.8432244477116324,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 0.0,
+              "signed_funding_cost_usd": 1.013928417405802,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 1.5346077899085642,
+              "total_exit_fees_usd": 1.6142444928327435,
+              "zero_entry_days": 2
+            }
+          ]
+        }
+      ],
+      "window": {
+        "end_exclusive": "2022-02-08",
+        "id": "early_2022",
+        "start": "2022-02-05"
+      }
+    },
+    {
+      "arms": [
+        {
+          "arm_id": "right_tail_trend_v1",
+          "counts": {
+            "candidates": 6,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "6d548d96c9db802bce6ad015bd68e82b67df6ca316a723acdad917e39aaa20ca"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 5
+              },
+              "adverse_envelope_bound_pct": 0.32207798684559547,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.27229208367026686,
+              "closed_trade_net_usd": 88.98644341292878,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-05-09": 1,
+                "2022-05-10": 0,
+                "2022-05-11": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10088.986443412929,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -2.1316282072803006e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.09861610923923393,
+              "max_observed_mark_open_risk_fraction": 0.0025005098177760528,
+              "mean_holding_minutes": 964.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8898644341292838,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 88.98644341292878,
+              "signed_funding_cost_usd": -0.18058116645335504,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.44259904321680144,
+              "total_exit_fees_usd": 0.4022562203372881,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 5
+              },
+              "adverse_envelope_bound_pct": 0.3038917111493385,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.25691699097287196,
+              "closed_trade_net_usd": 82.77676237876226,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-05-09": 1,
+                "2022-05-10": 0,
+                "2022-05-11": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10082.77676237876,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -1.8616219676914625e-12,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.09301410124672557,
+              "max_observed_mark_open_risk_fraction": 0.002500480856957397,
+              "mean_holding_minutes": 964.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8277676237876008,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 82.77676237876226,
+              "signed_funding_cost_usd": -0.17031545193632447,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.8347091420085915,
+              "total_exit_fees_usd": 0.7589290653877911,
+              "zero_entry_days": 2
+            }
+          ]
+        },
+        {
+          "arm_id": "regime_aligned_right_tail_v1",
+          "counts": {
+            "candidates": 6,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "5c3ffde2e21d58a5769f8b7756d8133d37275419341848c531fd1df68df26bf1"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 5
+              },
+              "adverse_envelope_bound_pct": 0.32207798684559547,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.27229208367026686,
+              "closed_trade_net_usd": 88.98644341292878,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-05-09": 1,
+                "2022-05-10": 0,
+                "2022-05-11": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10088.986443412929,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -2.1316282072803006e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.09861610923923393,
+              "max_observed_mark_open_risk_fraction": 0.0025005098177760528,
+              "mean_holding_minutes": 964.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8898644341292838,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 88.98644341292878,
+              "signed_funding_cost_usd": -0.18058116645335504,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.44259904321680144,
+              "total_exit_fees_usd": 0.4022562203372881,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 5
+              },
+              "adverse_envelope_bound_pct": 0.3038917111493385,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.25691699097287196,
+              "closed_trade_net_usd": 82.77676237876226,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-05-09": 1,
+                "2022-05-10": 0,
+                "2022-05-11": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10082.77676237876,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -1.8616219676914625e-12,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.09301410124672557,
+              "max_observed_mark_open_risk_fraction": 0.002500480856957397,
+              "mean_holding_minutes": 964.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8277676237876008,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 82.77676237876226,
+              "signed_funding_cost_usd": -0.17031545193632447,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.8347091420085915,
+              "total_exit_fees_usd": 0.7589290653877911,
+              "zero_entry_days": 2
+            }
+          ]
+        }
+      ],
+      "window": {
+        "end_exclusive": "2022-05-12",
+        "id": "may_2022",
+        "start": "2022-05-09"
+      }
+    },
+    {
+      "arms": [
+        {
+          "arm_id": "right_tail_trend_v1",
+          "counts": {
+            "candidates": 8,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "2a756562b2afe7d43917b790982147cc06b390bb31d3449deaa38a22f16a2157"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 7
+              },
+              "adverse_envelope_bound_pct": 0.41339222691563376,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.4086398489257644,
+              "closed_trade_net_usd": 91.9514930665633,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-06-13": 1,
+                "2022-06-14": 0,
+                "2022-06-15": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10091.951493066563,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -5.400124791776761e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.08583717333102134,
+              "max_observed_mark_open_risk_fraction": 0.002501028077628021,
+              "mean_holding_minutes": 738.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.9195149306656214,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 91.9514930665633,
+              "signed_funding_cost_usd": 0.02562223125678259,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.38411884778347954,
+              "total_exit_fees_usd": 0.3424022114228177,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 7
+              },
+              "adverse_envelope_bound_pct": 0.39288238842996853,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.38836579258269843,
+              "closed_trade_net_usd": 86.36924601962093,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "right_tail_trend_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-06-13": 1,
+                "2022-06-14": 0,
+                "2022-06-15": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10086.369246019622,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 7.105427357601002e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.08155926442525423,
+              "max_observed_mark_open_risk_fraction": 0.002500976840823848,
+              "mean_holding_minutes": 738.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8636924601962193,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 86.36924601962093,
+              "signed_funding_cost_usd": 0.024344576875390198,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.7297834386122374,
+              "total_exit_fees_usd": 0.6507866939560792,
+              "zero_entry_days": 2
+            }
+          ]
+        },
+        {
+          "arm_id": "regime_aligned_right_tail_v1",
+          "counts": {
+            "candidates": 8,
+            "complete_source_outcomes": false,
+            "decisions_in_exit_tail": 0,
+            "native_daily_slots": 15,
+            "tape_sha256": "648485efb501e7d918e0f547261a2ca895e517e2bdefd303dd2cd3e761039d90"
+          },
+          "economic_results": [
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 7
+              },
+              "adverse_envelope_bound_pct": 0.41339222691563376,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.4086398489257644,
+              "closed_trade_net_usd": 91.9514930665633,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 4.5,
+                "id": "base",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 1,
+                "spread_bps": 2,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-06-13": 1,
+                "2022-06-14": 0,
+                "2022-06-15": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10091.951493066563,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": -5.400124791776761e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.08583717333102134,
+              "max_observed_mark_open_risk_fraction": 0.002501028077628021,
+              "mean_holding_minutes": 738.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.9195149306656214,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 20.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 91.9514930665633,
+              "signed_funding_cost_usd": 0.02562223125678259,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.38411884778347954,
+              "total_exit_fees_usd": 0.3424022114228177,
+              "zero_entry_days": 2
+            },
+            {
+              "admission_policy": "COMMON_COST_RISK_V1",
+              "admission_rejections": {
+                "FILL_stop_too_wide": 7
+              },
+              "adverse_envelope_bound_pct": 0.39288238842996853,
+              "ambiguous_barrier_minutes": 0,
+              "closed_minute_mtm_drawdown_pct": 0.38836579258269843,
+              "closed_trade_net_usd": 86.36924601962093,
+              "closed_trades": 1,
+              "closed_trades_by_family": {
+                "regime_aligned_right_tail_v1": 1
+              },
+              "common_maximum_stop_distance_bps": 300.0,
+              "complete_all_in_net_economics": false,
+              "cost_scenario": {
+                "admission_adverse_carry_bps": 3,
+                "fee_bps_per_side": 9,
+                "id": "stress",
+                "latency_bps_round_trip": 2,
+                "slippage_bps_per_side": 2,
+                "spread_bps": 4,
+                "uncertainty_bps": 2
+              },
+              "entries_each_utc_day": {
+                "2022-06-13": 1,
+                "2022-06-14": 0,
+                "2022-06-15": 0
+              },
+              "entry_mode": "STRICT_MINUTE_OPEN",
+              "execution_qualification": false,
+              "final_equity_usd": 10086.369246019622,
+              "forced_settlements": 0,
+              "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+              "gross_ceiling_mark_overrun": false,
+              "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+              "ledger_reconciliation_error_usd": 7.105427357601002e-13,
+              "long_net_usd": 0.0,
+              "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+              "market_feed_cost_usd": null,
+              "max_observed_mark_gross_leverage": 0.08155926442525423,
+              "max_observed_mark_open_risk_fraction": 0.002500976840823848,
+              "mean_holding_minutes": 738.9999833333334,
+              "model_calls": 0,
+              "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+              "model_cost_usd": null,
+              "natural_exit_counts": {
+                "TP": 1
+              },
+              "net_return_pct": 0.8636924601962193,
+              "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+              "planning_round_trip_bps": 33.0,
+              "profit_factor": null,
+              "profit_factor_status": "NO_LOSSES",
+              "realized_loss_over_reservation_count": 0,
+              "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+              "risk_ceiling_mark_overrun": false,
+              "short_net_usd": 86.36924601962093,
+              "signed_funding_cost_usd": 0.024344576875390198,
+              "suppressed_deadline_minute_targets": 0,
+              "suppressed_entry_minute_targets": 0,
+              "terminal_unresolved_positions": [],
+              "total_entry_fees_usd": 0.7297834386122374,
+              "total_exit_fees_usd": 0.6507866939560792,
+              "zero_entry_days": 2
+            }
+          ]
+        }
+      ],
+      "window": {
+        "end_exclusive": "2022-06-16",
+        "id": "june_2022",
+        "start": "2022-06-13"
+      }
+    }
+  ]
+}

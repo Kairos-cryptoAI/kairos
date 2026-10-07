@@ -1,6 +1,6 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-06 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-07 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
@@ -16,6 +16,14 @@ control, and the existing event-driven adaptive challenger. The
 [selection receipt](STRATEGY-SELECTION-2026-10-06.md) records the evidence,
 reference-geometry incompatibilities, excluded paths and next bounded research
 question. No family is enrolled or allowed to trade by this selection work.
+
+The [completed October 7 paired diagnostic](STRATEGY-SELECTION-2026-10-07.md)
+keeps this shortlist provisional: nine/eight natural closes per cost scenario
+cannot select a final champion, and slow alignment trades off return/drawdown
+in one slice without improving the other three. The finite experiment is
+complete; final strategy selection still needs broader predefined coverage
+and observable event-driven entries. Do not integrate an unproved winner,
+rescue these returns with extra tuning, or assume future LLM profitability.
 
 ## Objective and decision path
 

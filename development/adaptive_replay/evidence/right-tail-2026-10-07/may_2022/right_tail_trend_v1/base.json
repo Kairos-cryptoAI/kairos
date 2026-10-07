@@ -1,0 +1,66 @@
+{
+  "admission_policy": "COMMON_COST_RISK_V1",
+  "admission_rejections": {
+    "FILL_stop_too_wide": 5
+  },
+  "adverse_envelope_bound_pct": 0.32207798684559547,
+  "ambiguous_barrier_minutes": 0,
+  "closed_minute_mtm_drawdown_pct": 0.27229208367026686,
+  "closed_trade_net_usd": 88.98644341292878,
+  "closed_trades": 1,
+  "closed_trades_by_family": {
+    "right_tail_trend_v1": 1
+  },
+  "common_maximum_stop_distance_bps": 300.0,
+  "complete_all_in_net_economics": false,
+  "cost_scenario": {
+    "admission_adverse_carry_bps": 3,
+    "fee_bps_per_side": 4.5,
+    "id": "base",
+    "latency_bps_round_trip": 2,
+    "slippage_bps_per_side": 1,
+    "spread_bps": 2,
+    "uncertainty_bps": 2
+  },
+  "entries_each_utc_day": {
+    "2022-05-09": 1,
+    "2022-05-10": 0,
+    "2022-05-11": 0
+  },
+  "entry_mode": "STRICT_MINUTE_OPEN",
+  "execution_qualification": false,
+  "final_equity_usd": 10088.986443412929,
+  "forced_settlements": 0,
+  "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+  "gross_ceiling_mark_overrun": false,
+  "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+  "ledger_reconciliation_error_usd": -2.1316282072803006e-13,
+  "long_net_usd": 0.0,
+  "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+  "market_feed_cost_usd": null,
+  "max_observed_mark_gross_leverage": 0.09861610923923393,
+  "max_observed_mark_open_risk_fraction": 0.0025005098177760528,
+  "mean_holding_minutes": 964.9999833333334,
+  "model_calls": 0,
+  "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+  "model_cost_usd": null,
+  "natural_exit_counts": {
+    "TP": 1
+  },
+  "net_return_pct": 0.8898644341292838,
+  "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+  "planning_round_trip_bps": 20.0,
+  "profit_factor": null,
+  "profit_factor_status": "NO_LOSSES",
+  "realized_loss_over_reservation_count": 0,
+  "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+  "risk_ceiling_mark_overrun": false,
+  "short_net_usd": 88.98644341292878,
+  "signed_funding_cost_usd": -0.18058116645335504,
+  "suppressed_deadline_minute_targets": 0,
+  "suppressed_entry_minute_targets": 0,
+  "terminal_unresolved_positions": [],
+  "total_entry_fees_usd": 0.44259904321680144,
+  "total_exit_fees_usd": 0.4022562203372881,
+  "zero_entry_days": 2
+}

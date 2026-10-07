@@ -1,6 +1,21 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-06_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
+
+## Completed finite strategy-only comparison — 2026-10-07
+
+The [unchanged native right-tail pair](STRATEGY-SELECTION-2026-10-07.md) completes
+its signed predeclared four-window/two-arm/two-cost experiment. All 16 cells
+pass scoped source/input/causal/accounting checks and independent ledger
+arithmetic. Native base/aligned close nine/eight trades per cost scenario;
+three slices are identical, while February alignment reduces return and
+drawdown. Twelve seen entry days are insufficient for a qualified champion.
+Two November modeled losses exceed initial risk reservations; do not turn
+admission or observed aggregate-risk checks into continuous-loss guarantees.
+Strategy selection is not fully solved: broader predefined coverage and
+observable event-driven entries are still missing. No parameter rescue,
+new campaign freeze, integration, paid call or trading authority follows.
+All four readiness flags remain false and policy stays `REJECT_ALL`.
 
 ## Current strategy-only selection — 2026-10-06
 

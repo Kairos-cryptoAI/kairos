@@ -1,0 +1,462 @@
+{
+  "schema": "kairos.strategy.independent-ledger-audit.v1",
+  "state": "PASSED_SCOPED_ARITHMETIC",
+  "result_sha256": "0caaec779e2e4172484ebb9ab9c4830b946da29d62f31358291185f2113eb1d3",
+  "calculator_sha256": "4fb89fd3e3e5027b00bf73cc3f771063352bb54933e9abecc7dd7b96de83e139",
+  "scope": "Independent PowerShell recomputation from retained prices/quantities/fees/carry, not a second economic replay",
+  "complete_venue_or_alpha_validation": false,
+  "cells": [
+    {
+      "window": "late_2021",
+      "arm": "right_tail_trend_v1",
+      "cost": "base",
+      "candidates": 6,
+      "entries": 4,
+      "closed": 4,
+      "net_usd": 0.46724924324445993,
+      "return_pct": 0.004672492432500341,
+      "profit_factor": 1.0060521198383032,
+      "mtm_drawdown_pct": 1.5720866612193154,
+      "max_mark_risk": 0.00998251425673541,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 2,
+      "zero_entry_days": 1,
+      "rejections": {
+        "SYMBOL_POSITION_ALREADY_OPEN": 2
+      },
+      "natural_exits": {
+        "SL": 3,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2021-11-07": 0,
+        "2021-11-08": 3,
+        "2021-11-09": 1
+      },
+      "ledger_sha256": "172938ceb5e063c41754b0bb860facbef6a98891534e33070064158271e5a824"
+    },
+    {
+      "window": "late_2021",
+      "arm": "right_tail_trend_v1",
+      "cost": "stress",
+      "candidates": 6,
+      "entries": 4,
+      "closed": 4,
+      "net_usd": -6.696851592960378,
+      "return_pct": -0.06696851592962183,
+      "profit_factor": 0.9122415127704994,
+      "mtm_drawdown_pct": 1.4813298868029745,
+      "max_mark_risk": 0.009985665895488226,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 2,
+      "zero_entry_days": 1,
+      "rejections": {
+        "SYMBOL_POSITION_ALREADY_OPEN": 2
+      },
+      "natural_exits": {
+        "SL": 3,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2021-11-07": 0,
+        "2021-11-08": 3,
+        "2021-11-09": 1
+      },
+      "ledger_sha256": "ffe4c28384003f1a58f9ec0b8ff21df8ae1d9b11aec822ad60e2e2464fc08d63"
+    },
+    {
+      "window": "late_2021",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "base",
+      "candidates": 6,
+      "entries": 4,
+      "closed": 4,
+      "net_usd": 0.46724924324445993,
+      "return_pct": 0.004672492432500341,
+      "profit_factor": 1.0060521198383032,
+      "mtm_drawdown_pct": 1.5720866612193154,
+      "max_mark_risk": 0.00998251425673541,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 2,
+      "zero_entry_days": 1,
+      "rejections": {
+        "SYMBOL_POSITION_ALREADY_OPEN": 2
+      },
+      "natural_exits": {
+        "SL": 3,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2021-11-07": 0,
+        "2021-11-08": 3,
+        "2021-11-09": 1
+      },
+      "ledger_sha256": "ead1ca34533eef98e56cb312aec63971996032253c53e48ff4dde9af3e0d8848"
+    },
+    {
+      "window": "late_2021",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "stress",
+      "candidates": 6,
+      "entries": 4,
+      "closed": 4,
+      "net_usd": -6.696851592960378,
+      "return_pct": -0.06696851592962183,
+      "profit_factor": 0.9122415127704994,
+      "mtm_drawdown_pct": 1.4813298868029745,
+      "max_mark_risk": 0.009985665895488226,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 2,
+      "zero_entry_days": 1,
+      "rejections": {
+        "SYMBOL_POSITION_ALREADY_OPEN": 2
+      },
+      "natural_exits": {
+        "SL": 3,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2021-11-07": 0,
+        "2021-11-08": 3,
+        "2021-11-09": 1
+      },
+      "ledger_sha256": "bec97abcb3e18d7a9da370d0244928f9a9497781097518604aa7995ed0b0acbd"
+    },
+    {
+      "window": "early_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "base",
+      "candidates": 5,
+      "entries": 3,
+      "closed": 3,
+      "net_usd": 183.3997438420069,
+      "return_pct": 1.8339974384200763,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.9628964928846672,
+      "max_mark_risk": 0.007511661951938142,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "AGGREGATE_OPEN_RISK_CAP": 1,
+        "FILL_stop_too_wide": 1
+      },
+      "natural_exits": {
+        "TIMEOUT": 2,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-02-05": 3,
+        "2022-02-06": 0,
+        "2022-02-07": 0
+      },
+      "ledger_sha256": "f8478a6c5195ef7360916710f7a4981b84bbd806659f7f21ed72612e4e6c9931"
+    },
+    {
+      "window": "early_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "stress",
+      "candidates": 5,
+      "entries": 3,
+      "closed": 3,
+      "net_usd": 169.03007208819272,
+      "return_pct": 1.6903007208818988,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.9062835238838295,
+      "max_mark_risk": 0.007511484901687245,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "AGGREGATE_OPEN_RISK_CAP": 1,
+        "FILL_stop_too_wide": 1
+      },
+      "natural_exits": {
+        "TIMEOUT": 2,
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-02-05": 3,
+        "2022-02-06": 0,
+        "2022-02-07": 0
+      },
+      "ledger_sha256": "914b15f0a5f912830d45b8c542d64e10145dbba69a4966cd0ec7d32eb091cf8b"
+    },
+    {
+      "window": "early_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "base",
+      "candidates": 2,
+      "entries": 2,
+      "closed": 2,
+      "net_usd": 91.34363595530603,
+      "return_pct": 0.9134363595530992,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.4582004991141355,
+      "max_mark_risk": 0.005008047161095589,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {},
+      "natural_exits": {
+        "TIMEOUT": 2
+      },
+      "entries_each_utc_day": {
+        "2022-02-05": 2,
+        "2022-02-06": 0,
+        "2022-02-07": 0
+      },
+      "ledger_sha256": "23af750822e0fb9dbdf5ed5c867bb0f9be252832561a09121d94010d18d27b3c"
+    },
+    {
+      "window": "early_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "stress",
+      "candidates": 2,
+      "entries": 2,
+      "closed": 2,
+      "net_usd": 84.32244477116308,
+      "return_pct": 0.8432244477116324,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.4347987809539456,
+      "max_mark_risk": 0.005007745107404601,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {},
+      "natural_exits": {
+        "TIMEOUT": 2
+      },
+      "entries_each_utc_day": {
+        "2022-02-05": 2,
+        "2022-02-06": 0,
+        "2022-02-07": 0
+      },
+      "ledger_sha256": "39cd63982a7e8f12885c6da6a12dd39d12b69a94437ebe5c66301f997b3fa612"
+    },
+    {
+      "window": "may_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "base",
+      "candidates": 6,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 88.98644341292878,
+      "return_pct": 0.8898644341292838,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.27229208367026686,
+      "max_mark_risk": 0.0025005098177760528,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 5
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-05-09": 1,
+        "2022-05-10": 0,
+        "2022-05-11": 0
+      },
+      "ledger_sha256": "2499174f5970b3515ce0c34c2d698be6abb5774b8f9acd714b09061809cf8ef0"
+    },
+    {
+      "window": "may_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "stress",
+      "candidates": 6,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 82.77676237876226,
+      "return_pct": 0.8277676237876008,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.25691699097287196,
+      "max_mark_risk": 0.002500480856957397,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 5
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-05-09": 1,
+        "2022-05-10": 0,
+        "2022-05-11": 0
+      },
+      "ledger_sha256": "aff8c3b20b2c5cdca39c2f2f7abdd89193af15b6e84aa329bb0cbe155d2723a4"
+    },
+    {
+      "window": "may_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "base",
+      "candidates": 6,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 88.98644341292878,
+      "return_pct": 0.8898644341292838,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.27229208367026686,
+      "max_mark_risk": 0.0025005098177760528,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 5
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-05-09": 1,
+        "2022-05-10": 0,
+        "2022-05-11": 0
+      },
+      "ledger_sha256": "a285db56a478a000f141bed12c12590fe3624e429605913209b3630c19f30eb9"
+    },
+    {
+      "window": "may_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "stress",
+      "candidates": 6,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 82.77676237876226,
+      "return_pct": 0.8277676237876008,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.25691699097287196,
+      "max_mark_risk": 0.002500480856957397,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 5
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-05-09": 1,
+        "2022-05-10": 0,
+        "2022-05-11": 0
+      },
+      "ledger_sha256": "8851e4a2500a2f003949482373e9c74876b1609e700f4ff03d3cba65d0a5e679"
+    },
+    {
+      "window": "june_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "base",
+      "candidates": 8,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 91.9514930665633,
+      "return_pct": 0.9195149306656214,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.4086398489257644,
+      "max_mark_risk": 0.002501028077628021,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 7
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 1,
+        "2022-06-14": 0,
+        "2022-06-15": 0
+      },
+      "ledger_sha256": "2d7a52bcbd37d52e0b1522536c7008021e771b0f3683cf22f3a1218fde935eb5"
+    },
+    {
+      "window": "june_2022",
+      "arm": "right_tail_trend_v1",
+      "cost": "stress",
+      "candidates": 8,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 86.36924601962093,
+      "return_pct": 0.8636924601962193,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.38836579258269843,
+      "max_mark_risk": 0.002500976840823848,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 7
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 1,
+        "2022-06-14": 0,
+        "2022-06-15": 0
+      },
+      "ledger_sha256": "c9fb5a27f97056edef281bdcdfdfb96c32967a998a65eb3f77c521bc3fb1af84"
+    },
+    {
+      "window": "june_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "base",
+      "candidates": 8,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 91.9514930665633,
+      "return_pct": 0.9195149306656214,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.4086398489257644,
+      "max_mark_risk": 0.002501028077628021,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 7
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 1,
+        "2022-06-14": 0,
+        "2022-06-15": 0
+      },
+      "ledger_sha256": "da6328d446eb0852cfc739c3313f7ae6361c4f0d95877d359d7ca85f75192ae7"
+    },
+    {
+      "window": "june_2022",
+      "arm": "regime_aligned_right_tail_v1",
+      "cost": "stress",
+      "candidates": 8,
+      "entries": 1,
+      "closed": 1,
+      "net_usd": 86.36924601962093,
+      "return_pct": 0.8636924601962193,
+      "profit_factor": null,
+      "mtm_drawdown_pct": 0.38836579258269843,
+      "max_mark_risk": 0.002500976840823848,
+      "risk_mark_overrun": false,
+      "realized_loss_over_reservation_count": 0,
+      "zero_entry_days": 2,
+      "rejections": {
+        "FILL_stop_too_wide": 7
+      },
+      "natural_exits": {
+        "TP": 1
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 1,
+        "2022-06-14": 0,
+        "2022-06-15": 0
+      },
+      "ledger_sha256": "bf23b3037bc1b9666264153441a00b2bdc0beca7a1c435de5c6389de2c5c4d3f"
+    }
+  ]
+}
