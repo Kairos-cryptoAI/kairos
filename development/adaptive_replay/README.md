@@ -5,6 +5,24 @@ source/configuration. It neither searches thresholds nor enrolls/promotes a
 campaign. All trading readiness remains false and policy remains `REJECT_ALL`.
 Trial 15, V4/V5, the frozen Backtest repository and evaluator are never edited.
 
+## Separate frozen-level retest research
+
+`frozen_retest.py` adds one unregistered research hypothesis, not a replacement
+of the native strategies or the compact-context complex. It freezes a breakout
+level, waits for a distinct retest/reclaim, consumes each structural event once,
+and retains the pinned native crash defense. `frozen_retest_entry.py` checks only
+the first strict minute-open against unchanged barriers/costs. It grants no
+source authentication, real fill, allocation, or trading authority.
+
+The [pre-run protocol](../../docs/STRATEGY-SELECTION-FROZEN-RETEST-PROTOCOL-2026-10-07.md)
+declares one cache-only 300-second census over every 5m slot of the already seen
+May 2021/January 2024 episodes. Run a refreshed non-editable wheel's
+`python -m adaptive_replay.frozen_retest_census --workspace-root D:\Kairos
+--output-root D:\Kairos\runtime\frozen-retest-census-YYYYMMDD-unique` once,
+from a runtime directory; existing attempts are never overwritten or retried.
+No economics or model API runs; required NEWS/MACRO and later model-test admission
+remain separate prerequisites.
+
 ## Fixed protocol
 
 [plan.json](plan.json) fixes four disjoint three-day UTC calendar windows,
