@@ -15,6 +15,7 @@ on:
       - docs/STRATEGY-FILTER-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
+      - docs/HISTORICAL-CONTEXT-*.md
   pull_request:
     paths:
       - development/adaptive_replay/**
@@ -28,6 +29,7 @@ on:
       - docs/STRATEGY-FILTER-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
+      - docs/HISTORICAL-CONTEXT-*.md
 
 permissions:
   contents: read

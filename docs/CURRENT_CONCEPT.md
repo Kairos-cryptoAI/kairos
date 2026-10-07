@@ -12,6 +12,14 @@ result is not automatic research exclusion; it is not presumed rescued by LLM.
 The additive [selection controls and all-candidate audit](STRATEGY-FILTER-EVALUATION-2026-10-07.md)
 extend only the isolated offline evaluator, not production integration or frozen
 campaigns. Existing news/Macro/Router/review/economic transport is preserved.
+The separate [historical context/review bridge](HISTORICAL-CONTEXT-REPLAY-2026-10-07.md)
+now connects caller-supplied exact-version archives and verified closed-bar
+prefixes to a complete 1m reconstructed review comparison. Actual modern call
+clocks and projected historical delay/cost remain distinct. No accepted source
+corpus, real model invocation, historical economic result or unseen-alpha proof
+is inferred; key-episode selection is source preparation only. Modern-model
+training contamination remains explicitly unexcluded. Native observed campaign
+receipts are not rewritten into this separate adapter.
 The previous adaptive
 implementation is a provisional research challenger, not a proven selected
 champion. Keep a small shortlist of aligned right-tail with its exact base as a
@@ -128,7 +136,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 | Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
-| Matched research economics | observation journal, immutable native-window transport and separate offline four-path accounting plus opt-in causal-source/review-timing controls and all-candidate audit; no accepted full-system economics | native clock/cadence economics bridge, qualified source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
+| Matched research economics | observation journal, immutable native-window transport, separate offline four-path controls/audit and a 1m reconstructed historical review bridge with distinct modern/projection clocks; no accepted full-system economics | independently qualified native observed-clock economics bridge, source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
 | Current release | engineering-only source identity | exact matching Windows, integration and CI evidence; no inheritance from historical green runs |
 | Production | LIVE startup blocked | security, custody, backup/restore, alerts, limits and manual arming after all gates |
 

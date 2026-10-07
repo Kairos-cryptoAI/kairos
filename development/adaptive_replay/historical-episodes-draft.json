@@ -1,0 +1,66 @@
+{
+  "schema": "kairos.development.historical-episode-roster.v1",
+  "status": "SOURCE_PREPARATION_NOT_EXECUTABLE_ECONOMIC_PROTOCOL",
+  "created_on": "2026-10-07",
+  "universe": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT"],
+  "event_labels_are_audit_only": true,
+  "episodes": [
+    {
+      "id": "episode_a",
+      "audit_label": "May 2021 crypto policy and BTC stress",
+      "candidate_start_utc": "2021-05-17T00:00:00Z",
+      "candidate_end_exclusive_utc": "2021-05-22T00:00:00Z",
+      "source_leads": ["https://china-cba.net/Index/show/catid/15/id/39462.html"],
+      "source_state": "EXACT_VERSION_AVAILABILITY_UNQUALIFIED"
+    },
+    {
+      "id": "episode_b",
+      "audit_label": "Terra depeg and chain halts",
+      "candidate_start_utc": "2022-05-07T00:00:00Z",
+      "candidate_end_exclusive_utc": "2022-05-14T00:00:00Z",
+      "source_leads": [
+        "https://x.com/terra_money/status/1524785058296778752",
+        "https://x.com/terra_money/status/1524935730308456448"
+      ],
+      "source_state": "SOURCE_ACCESS_AND_EXACT_VERSION_TIME_UNQUALIFIED"
+    },
+    {
+      "id": "episode_c",
+      "audit_label": "FTX rescue headlines, withdrawal and filing",
+      "candidate_start_utc": "2022-11-07T00:00:00Z",
+      "candidate_end_exclusive_utc": "2022-11-12T00:00:00Z",
+      "source_leads": ["https://restructuring.ra.kroll.com/FTX/Home-DocketInfo"],
+      "source_state": "CONTEMPORANEOUS_FULL_SOURCE_COVERAGE_UNQUALIFIED"
+    },
+    {
+      "id": "episode_d",
+      "audit_label": "SEC spot BTC ETP approval including false-headline confounder",
+      "candidate_start_utc": "2024-01-08T00:00:00Z",
+      "candidate_end_exclusive_utc": "2024-01-13T00:00:00Z",
+      "source_leads": [
+        "https://www.sec.gov/files/rules/sro/nysearca/2024/34-99306.pdf",
+        "https://www.sec.gov/newsroom/speeches-statements/gensler-statement-spot-bitcoin-011023"
+      ],
+      "source_state": "EXACT_VERSION_AND_FIRST_AVAILABLE_CLOCK_UNQUALIFIED"
+    }
+  ],
+  "comparison_controls": {
+    "status": "NOT_QUALIFIED",
+    "predeclared_calendar_offsets_days": [-14, 14],
+    "rule": "Same UTC hours and duration at both fixed offsets; preserve overlaps, gaps and eventful controls explicitly. No replacement after economic results; controls are not labelled quiet without independent coverage."
+  },
+  "execution_prerequisites": [
+    "One separately fixed strategy/configuration and economic protocol; no parameter grid",
+    "Complete exact-version source archive and declared source coverage, including macro vintages",
+    "Qualified full five-symbol bars/funding with original gap failures preserved",
+    "Budget-admitted actual OpenAI calls with real clocks and costs, never backdated",
+    "Explicit delay/base/stress execution scenarios and bounded one-worker schedule",
+    "No future ledger/outcome/episode labels or full-window funding in model prompts"
+  ],
+  "representative_sample": false,
+  "training_contamination_excluded": false,
+  "blind_campaign_enrolled": false,
+  "economics_executed": false,
+  "LIVE_READY": false,
+  "STRATEGY_POLICY": "REJECT_ALL"
+}

@@ -142,6 +142,18 @@ does not run the existing sealed matched A/B campaign or qualify any model route
 
 ## Reproduction
 
+### Causal historical episode reconstruction
+
+The additive [historical bridge](../../docs/HISTORICAL-CONTEXT-REPLAY-2026-10-07.md)
+connects bounded exact-version NEWS/MACRO archives and closed-bar prefixes to a
+separate complete 1m/five-symbol review replay. Modern model clocks remain modern;
+historical delay/cost projections are explicit, never native observed receipts.
+It reuses common risk, retains refusals/failures/unknown costs and never supplies
+future bars, funding, episode labels or ledgers to prompts. The
+[episode roster](historical-episodes-draft.json) is source preparation only, not
+an executable economic protocol. No actual model/economic run is claimed.
+Training contamination remains unexcluded; frozen campaigns are unchanged.
+
 ### Additive full-system accounting
 
 The [system.py](adaptive_replay/system.py) API accepts a complete five-minute,
