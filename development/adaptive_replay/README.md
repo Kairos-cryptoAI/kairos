@@ -156,12 +156,32 @@ Training contamination remains unexcluded; frozen campaigns are unchanged.
 
 The roster's `low_cost_pilot` defers the broader event/control set: two episodes,
 two preregistered cuts each, at most 20 total paid requests and no automatic
-retry/model grid. A proposed cumulative $1 pilot ceiling intersects the existing
-shared OpenAI $12 cap; it neither adopts nor resets a budget. Exact cuts, accepted
-sources and budget/dispatch gates are still prerequisites. Full five-symbol
+retry/model grid. The approved cumulative $1 pilot ceiling intersects the existing
+shared OpenAI $12 cap; it neither adopts nor resets a budget. The four UTC cuts
+are now fixed, but accepted sources, one fixed strategy/route identity and
+budget/dispatch gates are still prerequisites. Full five-symbol
 minute rosters retain explicit scheduled no-call observations. This sparse pilot
-is not continuous historical trading or full-system qualification; no paid calls
-are authorized or executed by the draft.
+is not continuous historical trading or full-system qualification. User approval
+of the key reuse and expense limits is not source admission; no paid calls have
+been executed and the draft remains non-executable. See the
+[source-only preflight receipt](../../docs/HISTORICAL-CONTEXT-PREFLIGHT-2026-10-07.md).
+
+The separate `adaptive_replay.historical_acquisition` helper prepares only the
+five-symbol May 2021 monthly bar/funding roster into a **new direct child** of
+`D:\Kairos\runtime`. It requires explicit absolute `--workspace-root D:\Kairos`
+and `--output-root` arguments; without `--fetch` there is no download or directory
+creation. It cannot write into the original Backtest cache or source evidence.
+With `--fetch` it permits only twenty fixed official HTTPS archive/checksum GETs,
+no redirects/retries, one worker, 10 MiB per ZIP, 2 KiB per checksum, 32 MiB total
+downloaded bodies, 16 MiB per decompressed member and one 180-second deadline.
+After official SHA/ZIP and the unchanged full input validation, it writes a
+create-only `source-summary.json` with counts/hashes and false trading/economic
+authority. A failure retains completed verified pairs and has no success
+summary. No source gap is filled, retried, resumed or silently relaxed.
+This acquisition validates market inputs only, not historical NEWS/MACRO,
+model costs, archive authenticity beyond the recorded official-byte checks, or
+venue execution. The dated receipt records the single actual attempt; do not
+repeat it automatically.
 
 ### Additive full-system accounting
 

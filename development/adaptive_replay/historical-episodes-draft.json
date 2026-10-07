@@ -50,28 +50,41 @@
     "rule": "Same UTC hours and duration at both fixed offsets; preserve overlaps, gaps and eventful controls explicitly. No replacement after economic results; controls are not labelled quiet without independent coverage."
   },
   "low_cost_pilot": {
-    "status": "DRAFT_NO_PAID_CALL_AUTHORITY",
+    "status": "USER_APPROVED_LIMITS_SOURCE_GATED_NOT_EXECUTABLE",
     "selected_episode_ids": ["episode_a", "episode_d"],
     "selection_basis": "One downside policy-stress episode and one false-headline/announcement episode, chosen for distinct failure modes before any model/economic results. Other episodes remain deferred source leads, not extra paid runs.",
     "decision_cuts_per_episode": 2,
-    "utc_decision_cuts": null,
+    "utc_decision_cuts": {
+      "episode_a": ["2021-05-19T00:00:00Z", "2021-05-19T08:00:00Z"],
+      "episode_d": ["2024-01-09T21:15:00Z", "2024-01-09T21:30:00Z"]
+    },
+    "cut_semantics": "UTC minute-open entry eligibility; the unchanged native five-minute decision and HistoricalFrame last_closed clock are cut minus 1 ms. Do not move a previous candidate to this cut.",
+    "cut_selection_basis": "A uses fixed UTC midnight and 08:00 calendar anchors. D rounds the audit-only SEC Jan 9 21:11/21:26 UTC event anchors upward to the native five-minute grid. Cuts were fixed before generating or inspecting this pilot's candidates, model responses or economics; the Jan 12 account is not a Jan 9 model input.",
     "maximum_paid_requests_total": 20,
     "automatic_retries": 0,
     "additional_model_or_effort_comparisons": false,
-    "proposed_cumulative_pilot_ceiling_usd": 1.0,
-    "budget_rule": "No budget is adopted or reset here. Before any request, historical shared committed spend plus outstanding reservations plus the new reservation must fit the existing OpenAI 12 USD limit. Separately, all pilot-attributed committed spend plus outstanding reservations plus the new reservation must fit the proposed cumulative 1 USD pilot ceiling. Unknown spend, attribution or headroom blocks dispatch. Count each underlying paid request once, including failed/ambiguous attempts and upstream model calls, against the same pilot limits.",
+    "approved_cumulative_pilot_ceiling_usd": 1.0,
+    "credential_choice": "REUSE_EXISTING_OPENAI_KEY_NO_NEW_KEY_OR_PERSISTENT_COPY; credential contents not loaded during source-only preflight",
+    "budget_rule": "No budget is adopted or reset here. Before any request, historical shared committed spend plus outstanding reservations plus the new reservation must fit the existing OpenAI 12 USD limit. Separately, all pilot-attributed committed spend plus outstanding reservations plus the new reservation must fit the approved cumulative 1 USD pilot ceiling. Unknown spend, attribution or headroom blocks dispatch. Count each underlying paid request once, including failed/ambiguous attempts and upstream model calls, against the same pilot limits.",
     "scheduling_rule": "Freeze exactly two UTC cuts per selected episode, source roster, strategy/configuration and one admitted model route before any paid invocation or economic outcome. At each cut, at most one review per symbol, only for an existing candidate and ready sources. No moving cuts or replacing episodes after outcomes or an empty candidate cut.",
     "denominator_rule": "Retain every original 1m slot for all five symbols throughout each full window. Record every unscheduled slot explicitly as NOT_CALLED/SCHEDULED_POLICY_ABSTAIN at zero call cost; unavailable sources and budget denials keep their distinct reasons. No omitted candidate rows.",
     "control_rule": "No additional paid calendar-control windows in this pilot. Timing/cost controls reuse the same recorded responses without another provider call. Calendar-offset controls remain deferred and unqualified, never evidence from unpaid model paths.",
     "interpretation": "Sparse conditional context-review diagnostic only, not continuous or production-equivalent historical trading, not a full-system evaluation or alpha proof.",
     "execution_prerequisites": [
-      "Write and freeze the exact UTC decision cuts; null cuts are not executable",
-      "Accept exact-version source and complete five-symbol bar/funding inputs",
+      "The four UTC cuts are fixed; freeze one strategy/configuration identity and one route before generation or paid invocation",
+      "Accept exact-version NEWS/MACRO payloads and independently verified required-source coverage; all-optional or unknown coverage is not admission",
+      "Accept complete five-symbol bar/funding inputs separately from context availability",
       "Admit the existing shared budget ledger and bounded provider dispatch separately",
       "Stop at either cap; no top-up, retry, model escalation or source substitution"
     ],
     "paid_requests_executed": 0,
-    "economics_executed": false
+    "economics_executed": false,
+    "strategy_generation_executed": false,
+    "admitted_strategy_identity": null,
+    "admitted_model_route": null,
+    "required_context_source_roster": null,
+    "paid_dispatch_ready": false,
+    "source_preflight_receipt": "../../docs/HISTORICAL-CONTEXT-PREFLIGHT-2026-10-07.md"
   },
   "execution_prerequisites": [
     "One separately fixed strategy/configuration and economic protocol; no parameter grid",
