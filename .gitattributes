@@ -11,3 +11,5 @@ development/adaptive_replay/evidence/price-calendar-2026-10-07/** -text
 # The source-only intraday protocol is bound to exact preregistered bytes.
 development/adaptive_replay/intraday-source-plan.json -text
 development/adaptive_replay/evidence/intraday-reference-2026-10-07/** -text
+# The historical pilot cap binds this exact draft hash on every platform.
+development/adaptive_replay/historical-episodes-draft.json -text
