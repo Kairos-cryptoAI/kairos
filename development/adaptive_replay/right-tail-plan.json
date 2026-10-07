@@ -1,0 +1,40 @@
+{
+  "schema": "kairos.strategy.right-tail-pair-plan.v1",
+  "purpose": "SEEN_HISTORICAL_COMPATIBILITY_NOT_STRATEGY_SELECTION_OR_QUALIFICATION",
+  "base_development_plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+  "arms": ["right_tail_trend_v1", "regime_aligned_right_tail_v1"],
+  "config_fingerprints": {
+    "right_tail_trend_v1": "c36879cc052ccad8f126be29eb6cc8bd70c8274598e8a98fbae2e3ed69805253",
+    "regime_aligned_right_tail_v1": "ae4ff7d7c54353a544be045903b64d5c0be9d6ca8d22ec6158e4942a36a59efe"
+  },
+  "registry_source_fingerprints": {
+    "right_tail_trend_v1": "c548822cbe971e0580c2fa55e0c25fb55b314103f63cff87ab8d8264391a1a64",
+    "regime_aligned_right_tail_v1": "f795c8f01d58666c5f215e5c98eabf7368e25d1ac83ff3bc7ae27332e0966b84"
+  },
+  "common_admission": {
+    "policy": "COMMON_COST_RISK_V1",
+    "minimum_stop_distance_bps": 10,
+    "maximum_stop_distance_bps": 300,
+    "minimum_net_reward_to_risk": 1.25,
+    "maximum_cost_stop_fraction": 0.5,
+    "adaptive_atr15_fill_filter": false
+  },
+  "warmup_hours": 840,
+  "exit_tail_hours": 72,
+  "entry_modes": ["STRICT_MINUTE_OPEN"],
+  "workers": 1,
+  "max_wall_seconds": 1200,
+  "unchanged_native_defaults": true,
+  "transitive_base_source_binding": true,
+  "no_downloads": true,
+  "no_paid_calls": true,
+  "no_parameter_search": true,
+  "no_blind_campaign_credit": true,
+  "readiness": {
+    "TECHNICAL_PAPER_READY": false,
+    "PAPER_QUALIFIED": false,
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "STRATEGY_POLICY": "REJECT_ALL"
+  }
+}

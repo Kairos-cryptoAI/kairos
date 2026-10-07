@@ -58,6 +58,19 @@ cross-window compounding, forced quota or edits to original evidence.
 
 ## Timing and execution limitations
 
+### Slow native right-tail pair
+
+The separate [right-tail-plan.json](right-tail-plan.json) and
+[October 7 protocol](../../docs/STRATEGY-SELECTION-PROTOCOL-2026-10-07.md)
+compare unchanged base/aligned daily trend generators on the same seen entry
+dates, with a 35-day causal prefix and 72h exit tail. Run the installed wheel's
+`python -m adaptive_replay.right_tail` with `--plan`, `--bar-cache`,
+`--factor-cache` and a fresh `--output` directory. Both strategy trees are sealed,
+including the base sleeve imported by aligned. It is one bounded cache-only
+experiment, not frozen Trial 15 execution, tuning, integration or qualification.
+
+### Intraday observation controls
+
 Adaptive eligibility is next-minute open and expiry is that open+59,999ms.
 At declared 100ms decision-to-completion delay, the next strictly observed minute
 quote is already expired. `STRICT_MINUTE_OPEN` records that no-fill finding without
