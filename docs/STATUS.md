@@ -1,21 +1,27 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-07_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-08_
 
-## One new failed-breakout reversal: fixed before next diagnostic — 2026-10-07
+## Fixed failed-breakout reversal: all six windows complete, not selected — 2026-10-07
 
-The [separate pre-run protocol](STRATEGY-SELECTION-FAILED-REVERSAL-PROTOCOL-2026-10-07.md)
-fixes one false-breakout reversal hypothesis and one unchanged native breakout
-control across six already-seen calendar windows. Pre-excursion channel/ATR,
-first consumed return, event-extreme stop, opposite-edge target and native crash
-defense remain separate from unchanged cost/risk admission. Complete 5m rosters,
-both costs and all zero days/refusals are required. This is candidate research,
-not an income promise, historical model test, parameter search, production
-integration or blind credit. No result exists at the source-seal stage. NEWS/
-MACRO/model/venue admission and all readiness remain false with `REJECT_ALL`.
-Installed non-editable Windows Python3.11/3.14 suites each pass 825 tests (two
-symlink-privilege skips); focused fixtures, lint/format/build and meta static
-also pass. These source-seal tests are not performance or trading qualification.
+The [actual bounded comparison](STRATEGY-SELECTION-FAILED-REVERSAL-RESULT-2026-10-07.md)
+completed once in 206.852557 s after a signed source seal and green CI. Six already
+seen windows / five symbols / both arms retain all 63,360 five-minute slots, costs
+and refusals. The new reversal yields 799 raw candidates, 504/388 geometry-feasible
+first arrivals and 415/318 conditional natural closes at 20/33 bps; unchanged native
+breakout yields 1,057 raw and 221/128 closes. All 24 accounts reconcile, with zero
+forced or unresolved exits. May 2022 is profitable, but May 2021 and June 2022 are
+negative under both costs; maximum reversal MTM drawdown is 8.35/9.27%. Mark-risk
+overruns remain in 4/6 reversal windows at each cost; no limit/target/stop was tuned
+after results. This is a testable candidate source, not a selected main strategy,
+income promise, historical model test, production integration or blind credit.
+All 19 original pipeline/log files are byte-bound and five additional evidence
+tests independently check counters/ledger arithmetic. Final installed
+Python 3.11/3.14 suites pass 830 tests each (two Windows symlink-privilege skips);
+lint, format, build, lock and meta static gates pass.
+Required NEWS/MACRO remain unavailable; model/source/venue admission and all
+readiness stay false with `REJECT_ALL`. The later model test still needs accepted
+causal source/budget evidence and fresh owner confirmation, not an assumed LLM rescue.
 
 ## New frozen retest hypothesis: complete census, not selected — 2026-10-07
 

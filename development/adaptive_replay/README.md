@@ -530,3 +530,13 @@ outer hard 600-second cap, no automatic retry, no downloads, no paid API,
 no new parameter search, no old receipts/ledger/plan modification. Complete
 conditional OHLC reference net, drawdown, mark overruns, natural frequency and
 all refusals are diagnostic, never source/venue/alpha/LLM qualification.
+
+The [single completed comparison](../../docs/STRATEGY-SELECTION-FAILED-REVERSAL-RESULT-2026-10-07.md)
+retains all 63,360 slots and 24 accounts in 19 byte-bound original pipeline/log files.
+It produces 799 raw reversal candidates and 415/318 conditional natural closes at
+base/stress, not a qualified winner: losses in the May 2021/June 2022 windows and
+aggregate mark-risk overruns remain explicit. Do not rerun or tune this attempt,
+splice favorable windows, assume LLM filtering profits or integrate a live sleeve.
+Five evidence tests audit the original bytes/counters/ledgers without another
+historical replay. No paid model test follows without accepted causal sources,
+budget evidence and fresh human confirmation.

@@ -1,0 +1,37 @@
+phase=symbol_complete window=late_2021 symbol=BTCUSDT challenger=16 control=33
+phase=symbol_complete window=late_2021 symbol=ETHUSDT challenger=18 control=27
+phase=symbol_complete window=late_2021 symbol=SOLUSDT challenger=15 control=21
+phase=symbol_complete window=late_2021 symbol=BNBUSDT challenger=15 control=34
+phase=symbol_complete window=late_2021 symbol=XRPUSDT challenger=17 control=29
+phase=window_complete window=late_2021
+phase=symbol_complete window=early_2022 symbol=BTCUSDT challenger=22 control=9
+phase=symbol_complete window=early_2022 symbol=ETHUSDT challenger=18 control=16
+phase=symbol_complete window=early_2022 symbol=SOLUSDT challenger=24 control=27
+phase=symbol_complete window=early_2022 symbol=BNBUSDT challenger=20 control=36
+phase=symbol_complete window=early_2022 symbol=XRPUSDT challenger=14 control=29
+phase=window_complete window=early_2022
+phase=symbol_complete window=may_2022 symbol=BTCUSDT challenger=26 control=23
+phase=symbol_complete window=may_2022 symbol=ETHUSDT challenger=25 control=19
+phase=symbol_complete window=may_2022 symbol=SOLUSDT challenger=23 control=36
+phase=symbol_complete window=may_2022 symbol=BNBUSDT challenger=18 control=34
+phase=symbol_complete window=may_2022 symbol=XRPUSDT challenger=23 control=28
+phase=window_complete window=may_2022
+phase=symbol_complete window=june_2022 symbol=BTCUSDT challenger=28 control=53
+phase=symbol_complete window=june_2022 symbol=ETHUSDT challenger=27 control=31
+phase=symbol_complete window=june_2022 symbol=SOLUSDT challenger=33 control=30
+phase=symbol_complete window=june_2022 symbol=BNBUSDT challenger=32 control=47
+phase=symbol_complete window=june_2022 symbol=XRPUSDT challenger=18 control=21
+phase=window_complete window=june_2022
+phase=symbol_complete window=episode_a symbol=BTCUSDT challenger=45 control=49
+phase=symbol_complete window=episode_a symbol=ETHUSDT challenger=39 control=64
+phase=symbol_complete window=episode_a symbol=SOLUSDT challenger=43 control=41
+phase=symbol_complete window=episode_a symbol=BNBUSDT challenger=37 control=62
+phase=symbol_complete window=episode_a symbol=XRPUSDT challenger=39 control=57
+phase=window_complete window=episode_a
+phase=symbol_complete window=episode_d symbol=BTCUSDT challenger=28 control=37
+phase=symbol_complete window=episode_d symbol=ETHUSDT challenger=43 control=45
+phase=symbol_complete window=episode_d symbol=SOLUSDT challenger=38 control=37
+phase=symbol_complete window=episode_d symbol=BNBUSDT challenger=41 control=43
+phase=symbol_complete window=episode_d symbol=XRPUSDT challenger=14 control=39
+phase=window_complete window=episode_d
+state=OFFLINE_PRICE_ONLY_DIAGNOSTIC_COMPLETED_NOT_QUALIFICATION slots=63360 provider_calls=0

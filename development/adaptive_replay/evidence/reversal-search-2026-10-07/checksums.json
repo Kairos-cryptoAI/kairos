@@ -1,0 +1,37 @@
+{
+  "schema": "kairos.development.reversal-search-original-bytes.v1",
+  "scope": "SHA256_OF_ORIGINAL_PIPELINE_AND_LOG_BYTES_NOT_SOURCE_AUTHENTICITY",
+  "source_seal_commit": "f6ddf7ba7366bb80a0711e955d2ce8eb052a5081",
+  "original_file_count": 19,
+  "files": {
+    "after.json": "800fc466d697c4aeddba5c81e02cc6533dd797da75a71c3e48be7ddda9c7ed33",
+    "before.json": "a166d28e4cee0e9c900077aa6ba7e46e3a3d5e9cd8cd994a355b0367cfbb84a9",
+    "decisions.jsonl.gz": "18365a8ed4f3cd59b8f3e17b600c510454b73b4503cca73caaf417f960f415d5",
+    "early_2022-inputs.json": "2484cecfc98cb5539ba62687597b652dcc88d212a9e1ab5d3cba8a7c92316024",
+    "early_2022-ledgers.json": "ab16f738bdc5ece84f0ae36db07c9343542ed728c178c3b4857665446aadd4b5",
+    "episode_a-inputs.json": "c92979679a1761ea2503bbc5c5ce0cf187e2f68491110f34b12bfb64622b3b1a",
+    "episode_a-ledgers.json": "c231aa946a2d3d13cc16fc88a69387456d552eb81ee0fefbdae5e0cb8f339117",
+    "episode_d-inputs.json": "1c42f06ce3aa5b8268eb387cba18947985b68ac22016df971eae70e0eaa20d09",
+    "episode_d-ledgers.json": "f431edf3e8882d73f8a83d24fdf653002e67148a853b4e1847d39c1ad4f74d61",
+    "june_2022-inputs.json": "65acb00e2c973ed3e55a974762af11e8e281948d1d9de42e5479e8d94ac38da9",
+    "june_2022-ledgers.json": "c1ae144d4ed85f121ce60e486d1d1c01a25fd607f14645bb55c90b3dd34284df",
+    "late_2021-inputs.json": "56d7180cef8fd6998611baa1f7c90b5c4fd7bb81fad24c181c0386b4f2a20e23",
+    "late_2021-ledgers.json": "82e87dc71013d23cdba7a1c4515ecdd1a60b483305f3cb78bde82593a457b3d3",
+    "may_2022-inputs.json": "9405f2e7c39df9360e2b899d19ae3fe56db6afcb6baa454180d73b957bf01c1c",
+    "may_2022-ledgers.json": "75c01f976b401e3f149a331d2fe86a4607f077c223b8ccb655f49ab83aed085a",
+    "protocol.json": "16dbd67d2b8ecb17080801b78e943bce1396db5788b5df255f74d1f0124df210",
+    "result.json": "7c7133e3121610c246234750035fd4ac7ba4ad97e87a00622f8d1b4bf2f3ac48",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.log": "c41f6ad30194fae016af7f73d59667ca29a74a78382843d9efbaffe8a644abea"
+  },
+  "external_supervision": {
+    "authority": "OWNED_PROCESS_OBSERVATION_NOT_VENUE_OR_PERFORMANCE_PROOF",
+    "child_pid": 56000,
+    "started_utc": "2026-10-07T20:55:19.5827168Z",
+    "finished_utc": "2026-10-07T20:58:47.3964826Z",
+    "elapsed_ms": 207808,
+    "hard_wall_ms": 600000,
+    "exit_code": 0,
+    "retry_performed": false
+  }
+}

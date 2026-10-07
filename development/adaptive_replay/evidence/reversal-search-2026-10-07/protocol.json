@@ -1,0 +1,167 @@
+{
+  "accounts": "SEPARATE_SHARED_FIVE_SYMBOL_10000_USD_ACCOUNTS_EACH_ARM_WINDOW_COST_NO_COMPOUND",
+  "assumed_completion_delay_ms": 100,
+  "blind_campaign_credit": false,
+  "causal_prefix_check": "BOTH_ARMS_FULL_VS_EXACT_24H_PREFIX_ALL_SYMBOLS_ALL_PRIOR_CUTS",
+  "challenger": {
+    "atr": "MEAN_14_15M_TRUE_RANGES_WITH_PRIOR_CLOSE_STRICTLY_BEFORE_EXCURSION_OPEN",
+    "candidate_status": "RESEARCH_ONLY_NOT_PRODUCTION_REGISTERED",
+    "channel": "PRIOR_20_COMPLETE_15M_HIGH_LOW_STRICTLY_BEFORE_EXCURSION_OPEN",
+    "confirmation": "STRICT_RETURN_CLOSE_ON_EXCURSION_OR_EXACTLY_NEXT_5M_BAR",
+    "conflict": "BOTH_BOUNDARY_WICKS_OR_SAME_BAR_OPPOSITE_TARGET_TOUCH_ABSTAIN_CONSUME",
+    "crash_short_exception": false,
+    "decision_cadence_ms": 300000,
+    "defense": "PINNED_NATIVE_CRASH_AND_POST_SHOCK_COOLDOWN_CANCEL_OR_ABSTAIN",
+    "entry_lifetime_ms": 300000,
+    "event": "LOWER_ONLY_STRICT_WICK_LONG_OR_UPPER_ONLY_STRICT_WICK_SHORT",
+    "id": "failed_breakout_reversal_v1",
+    "input": "CONTIGUOUS_CLOSED_1M_EXPLICIT_ORIGIN_EXPANDING_PREFIX",
+    "maximum_holding_ms": 7200000,
+    "precursor": "PREVIOUS_COMPLETE_5M_CLOSE_STRICTLY_INSIDE_FROZEN_CHANNEL",
+    "reset": "LATER_CLOSE_STRICTLY_INSIDE_CURRENT_PREBAR_20X15M_CHANNEL_RESET_ONLY",
+    "stop": "EXTREME_OF_ALL_EVENT_BARS_PLUS_OR_MINUS_0_25_FROZEN_ATR15",
+    "target": "OPPOSITE_FROZEN_CHANNEL_BOUNDARY",
+    "warmup_ms": 194400000
+  },
+  "challenger_arrival": "SOURCE_BOUND_EVENT_GEOMETRY_NATIVE_CRASH_GUARD_PRICE_INSIDE_CHANNEL",
+  "common_prearrival_cancellation": "CLOSED_INTERMEDIATE_1M_STOP_OR_TARGET_TOUCH_CANCELS",
+  "complete_system_economics": false,
+  "control": {
+    "config": {
+      "atr_period": 14,
+      "donchian_lookback": 20,
+      "intent_valid_bars": 1,
+      "max_hold_bars": 24,
+      "minimum_abs_hourly_slope": 0.00025,
+      "minimum_breakout_atr": 0.0,
+      "minimum_directional_taker_share": null,
+      "minimum_regime_efficiency": 0.3,
+      "minimum_volume_surprise": null,
+      "regime_lookback_hours": 12,
+      "stop_atr_multiple": 1.25,
+      "target_atr_multiple": 2.0,
+      "trailing_activation_atr_multiple": 1.0,
+      "trailing_distance_atr_multiple": 1.0,
+      "volume_lookback": 20
+    },
+    "id": "trend_breakout_v1",
+    "modified": false
+  },
+  "control_arrival": "NATIVE_INTENT_UNCHANGED_NO_NEW_REVERSAL_CHANNEL_OR_ATR_FILTER",
+  "cost_scenarios": [
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 4.5,
+      "id": "base",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 1,
+      "spread_bps": 2,
+      "uncertainty_bps": 2
+    },
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 9,
+      "id": "stress",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 2,
+      "spread_bps": 4,
+      "uncertainty_bps": 2
+    }
+  ],
+  "entry": "FIRST_STRICT_MINUTE_OPEN_AFTER_COMPLETION_NEVER_RETRY_OR_MOVE_ORIGINAL_BARRIERS",
+  "entry_mode": "STRICT_MINUTE_OPEN",
+  "exit_tail_hours": 3,
+  "expected_slots_each_arm": 31680,
+  "fresh_owner_confirmation_for_model_test": false,
+  "funding": "ARCHIVE_CALC_TIME_ENTITLEMENT_AND_CANDLE_OPEN_PROXY_NOT_VENUE_SETTLEMENT",
+  "geometry": {
+    "atr_multiple_filter_on_independent_or_native_candidate": false,
+    "cost_not_above_gross_stop_fraction": 0.5,
+    "maximum_stop_bps": 300,
+    "minimum_net_reward_risk": 1.25,
+    "minimum_stop_bps": 10,
+    "reference_geometry_account_usd": 10000
+  },
+  "mark_overrun": "REPORT_ACTUAL_MARK_RISK_GROSS_OVERRUN_AND_LOSS_OVER_RESERVATION_NEVER_CLAMP",
+  "max_wall_seconds": 600,
+  "native_compact_trial15_v5_plans_changed": false,
+  "natural_frequency_quota": null,
+  "new_downloads": false,
+  "news_macro_context": "UNAVAILABLE_NOT_SYNTHESIZED",
+  "no_forced_settlement": true,
+  "ohlc_execution": "CONDITIONAL_FULL_FILL_SL_FIRST_AMBIGUITY_ADVERSE_STOP_GAPS_NO_TICK_PATH",
+  "parameter_search": false,
+  "predeclared_interpretation": [
+    "ZERO_GEOMETRY_FEASIBLE_CANDIDATES_CANNOT_TEST_REVIEW_VALUE",
+    "NONZERO_GEOMETRY_ONLY_ESTABLISHES_TESTABLE_CANDIDATES_NOT_ALPHA",
+    "NEGATIVE_REFERENCE_RETURN_IS_REPORTED_NOT_HIDDEN_OR_AUTOMATICALLY_RESCUED_BY_LLM",
+    "NO_RETUNING_AFTER_THIS_RUN_NO_AUTOMATIC_WINNER_OR_STACK_INTEGRATION"
+  ],
+  "provider_calls": 0,
+  "purpose": "ALREADY_SEEN_CALENDAR_OHLC_DIAGNOSTIC_NOT_ALPHA_OR_CHAMPION_SELECTION",
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "risk": {
+    "aggregate_open_fraction": 0.01,
+    "maximum_leverage": 1,
+    "maximum_symbol_notional_fraction": 0.25,
+    "per_trade_fraction": 0.0025
+  },
+  "roster": "EVERY_UTC_5M_CUT_AND_SYMBOL_IN_ALL_HALF_OPEN_WINDOWS_BOTH_ARMS",
+  "schema": "kairos.development.failed-reversal-search.v1",
+  "simultaneous_order": "FIXED_UNIVERSE_ORDER_NO_LONG_SHORT_RISK_NETTING",
+  "source_authenticity_admitted": false,
+  "standalone_positive_pnl_is_not": "NECESSARY_OR_SUFFICIENT_FOR_FUTURE_MATCHED_LLM_REVIEW_VALUE",
+  "state_origin": "EXACT_WINDOW_START_MINUS_54H_EXPANDING_PREFIX_NO_ROLLING_RESET",
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "BNBUSDT",
+    "XRPUSDT"
+  ],
+  "windows": [
+    {
+      "cache_kind": "original",
+      "end_exclusive": "2021-11-10",
+      "id": "late_2021",
+      "start": "2021-11-07"
+    },
+    {
+      "cache_kind": "original",
+      "end_exclusive": "2022-02-08",
+      "id": "early_2022",
+      "start": "2022-02-05"
+    },
+    {
+      "cache_kind": "original",
+      "end_exclusive": "2022-05-12",
+      "id": "may_2022",
+      "start": "2022-05-09"
+    },
+    {
+      "cache_kind": "original",
+      "end_exclusive": "2022-06-16",
+      "id": "june_2022",
+      "start": "2022-06-13"
+    },
+    {
+      "cache_kind": "may",
+      "end_exclusive": "2021-05-22",
+      "id": "episode_a",
+      "start": "2021-05-17"
+    },
+    {
+      "cache_kind": "original",
+      "end_exclusive": "2024-01-13",
+      "id": "episode_d",
+      "start": "2024-01-08"
+    }
+  ],
+  "workers": 1
+}
