@@ -415,3 +415,20 @@ replacement files or hostile filesystem rollback. A later admitted dispatcher
 must bind one externally recorded path/UUID, reserve both caps before each single
 underlying attempt and preserve ambiguous reservations. Source, route and strategy
 admission remain absent; successful helper tests grant no paid/trading authority.
+Git attributes preserve the exact draft bytes across Windows/Linux checkouts;
+newline conversion is not an accepted alternate plan identity.
+
+## Bounded ALFRED raw vintage download
+
+`adaptive_replay.historical_macro_capture` captures one fixed public ALFRED
+download for CPIAUCSL and the day-before vintages May 18, 2021 / January 8, 2024.
+The observed public form uses a read-only data-download POST, no API key or paid
+request. The default CLI does nothing; `--capture` requires a new direct runtime
+child. TLS, exact response URL, no redirects/retries, a cooperative 20-second
+bound, 1 MiB raw limit and 2 MiB expanded ZIP limit apply. ZIP inventory never
+extracts filesystem paths or admits versions/coverage into a prompt.
+
+The [single actual download and fresh archive search](../../docs/HISTORICAL-PILOT-ARCHIVE-2026-10-07.md)
+are retained. Do not rerun that download or the older preflight/capture. Each
+episode must later use only its appropriate vintage column, not the combined
+CSV or modern README narrative. NEWS admission and paid A/B remain blocked.

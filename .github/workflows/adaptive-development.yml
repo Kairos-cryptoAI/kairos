@@ -6,6 +6,7 @@ on:
     paths:
       - development/adaptive_replay/**
       - .github/workflows/adaptive-development.yml
+      - .gitattributes
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
@@ -16,10 +17,12 @@ on:
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
       - docs/HISTORICAL-CONTEXT-*.md
+      - docs/HISTORICAL-PILOT-*.md
   pull_request:
     paths:
       - development/adaptive_replay/**
       - .github/workflows/adaptive-development.yml
+      - .gitattributes
       - docs/ADAPTIVE-DEVELOPMENT-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
@@ -30,6 +33,7 @@ on:
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
       - docs/HISTORICAL-CONTEXT-*.md
+      - docs/HISTORICAL-PILOT-*.md
 
 permissions:
   contents: read
