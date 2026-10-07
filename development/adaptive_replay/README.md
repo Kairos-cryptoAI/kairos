@@ -396,3 +396,22 @@ are retained. Do not rerun them, overwrite evidence, change cuts, infer zero
 candidates, demote required sources to optional or treat these commands as a paid
 dispatcher. The required source/strategy/route and durable budget admits remain
 separate prerequisites. No blind campaign, primary recovery or venue is touched.
+
+## Local companion pilot cap
+
+`adaptive_replay.historical_pilot_budget` is an offline, standard-library SQLite
+helper, not a provider dispatcher. Its fixed USD 1 ceiling and twenty one-shot
+cut/symbol slots bind to the unchanged pilot draft SHA. `BEGIN IMMEDIATE` serializes
+admission across workers; missing or corrupt ledgers, UUID/plan/roster mismatch,
+duplicate slots and exhausted money fail closed. Unknown costs remain reserved.
+Known settlement does not restore a consumed slot. Observed overruns are recorded
+and seal new admissions, while already-held attempts can still settle, including
+multiple overruns, without losing known expenses.
+
+There is no automatic ledger creation, release, reset or retry. No production
+ledger was initialized by this development change. The helper is **not** the
+authoritative PostgreSQL USD 12 campaign budget, nor global protection across
+replacement files or hostile filesystem rollback. A later admitted dispatcher
+must bind one externally recorded path/UUID, reserve both caps before each single
+underlying attempt and preserve ambiguous reservations. Source, route and strategy
+admission remain absent; successful helper tests grant no paid/trading authority.
