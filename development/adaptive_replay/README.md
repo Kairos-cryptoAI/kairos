@@ -77,6 +77,17 @@ Repeated assessments are diagnostics, not repeated fill permission. See
 New modules intentionally change the journal's installed implementation binding;
 old journals are not adopted, migrated or resealed under the new source identity.
 
+The additive `native_book_capture.py` now binds every supplied native V2 frame
+field/level to its retained original combined `depth10@100ms` JSON, before deriving
+the separate research BBO bytes. Legacy and migrated UM profiles are explicit;
+the hypothesis source identity includes the full conversion/profile/TTL policy
+digest. A bounded complete root-to-head prefix check retains missing-symbol
+counts and refuses barriers, epoch joins, skipped frames and clock/update
+regressions. Intact recorded hashes are **not** proof of continuous market
+coverage, authentic receive clocks or actual fills. The existing recorder still
+produces V1 without raw text and is not upgraded or admitted. See
+[native byte-binding boundary](../../docs/NATIVE-BOOK-BINDING-2026-10-09.md).
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement

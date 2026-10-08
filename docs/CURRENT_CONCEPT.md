@@ -34,6 +34,11 @@ now bind supplied BBO bytes and same-snapshot capacity, freshly audited journal
 issuance and unchanged stop/target/trailing/deadlines to one hypothetical fill.
 They are source-consistency and simulated engineering checks, not source
 authentication, real execution, position management or accepted economics.
+The additive [native book byte binding](NATIVE-BOOK-BINDING-2026-10-09.md)
+now checks all fields/levels in supplied V2 combined top-ten messages and derives
+policy-isolated BBO captures. It audits bounded complete recorded prefixes without
+claiming tick completeness or source authentication. The current V1 recorder,
+historical source corpus, runtime and all frozen experiments remain untouched.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary
