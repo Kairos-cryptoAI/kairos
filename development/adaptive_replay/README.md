@@ -88,6 +88,18 @@ coverage, authentic receive clocks or actual fills. The existing recorder still
 produces V1 without raw text and is not upgraded or admitted. See
 [native byte-binding boundary](../../docs/NATIVE-BOOK-BINDING-2026-10-09.md).
 
+The additive `book_bundle.py` exclusively retains a bounded complete supplied
+V2 prefix, exact original raw text and derived binding records in a separate
+`.native-book.research.json` file. Every reopen requires the caller-held seal
+and whole-file retention receipt and freshly audits the full source chain.
+Modern retention time does not replace native clocks or renew quote freshness.
+Exact capture lookup never guesses a replacement. A separate journal-source
+audit binds the quote-only bundle commitment and independently pinned journal
+head/count, rejecting unretained or ambiguous originals without changing the
+old journal schema. It is not full-system source acceptance, a recorder,
+publisher or proof of authentic/continuous historical coverage. See the
+[retention and reconciliation receipt](../../docs/NATIVE-BOOK-RETENTION-2026-10-09.md).
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement

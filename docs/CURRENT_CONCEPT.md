@@ -39,6 +39,12 @@ now checks all fields/levels in supplied V2 combined top-ten messages and derive
 policy-isolated BBO captures. It audits bounded complete recorded prefixes without
 claiming tick completeness or source authentication. The current V1 recorder,
 historical source corpus, runtime and all frozen experiments remain untouched.
+The separate [native source retention](NATIVE-BOOK-RETENTION-2026-10-09.md)
+now keeps supplied V2 originals and derived bindings in create-only offline
+packages. Exact reopen/restore and journal-source reconciliation require
+caller-pinned source/file/journal commitments. Missing quotes are not filled;
+hash consistency is not authenticated origin, continuous market coverage or
+complete-system source acceptance. No real feed or old journal is upgraded.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary
