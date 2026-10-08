@@ -18,8 +18,8 @@ terminal scenarios do not revive after new model answers or more favorable price
 This is a new unqualified research hypothesis. It does not amend the old complex,
 candidate tapes, results or frozen protocols. Closed-minute confirmation can
 expire native 60s candidates before any observation is available: the original
-expiry is deliberately retained. There is no quotation/fill guarantee, economic
-result, production registry entry or paid loop. The explicit `require_review=False`
+expiry is deliberately retained. The implementation alone grants no quotation/fill
+guarantee, economic qualification, production registry entry or paid loop. The explicit `require_review=False`
 mode is only the isolated strategy-only comparison control, never a Risk bypass.
 See [implementation and limits](../../docs/SCENARIO-REWORK-2026-10-08.md).
 
@@ -35,6 +35,11 @@ Unsupported trailing is explicit policy abstention, not silently changed exits.
 Native 60s expiry remains too short for later closed-minute confirmation. An
 all-no-entry arm cannot demonstrate confirmation alpha. Failed/timeout receipts
 invalidate any partial numerical account files; original attempts stay immutable.
+The [single completed result](../../docs/SCENARIO-COMPARISON-RESULT-2026-10-08.md)
+preserves all 36 unchanged breakout candidates but prepares zero supported
+scenario plans (25 UNCERTAIN, 11 trailing-incompatible). It does not qualify a
+confirmation rule: a zero-trade arm misses winners as well as losers. Do not
+retry, retune, extend TTL, pool timing models or promote this v1 on those results.
 
 ## Separate frozen-level retest research
 

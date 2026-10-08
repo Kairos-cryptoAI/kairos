@@ -12,8 +12,13 @@ and risk, and complete trade/no-trade accounting. The prior non-strategy
 closeout remains delivered, with its operational admissions still separate.
 The additive [scenario rework](SCENARIO-REWORK-2026-10-08.md) is an isolated
 offline research implementation, not a replacement of old strategy results,
-a selected profitable champion or production integration. No historical/model
-economic replay, campaign enrollment or frozen-evidence change follows.
+a selected profitable champion or production integration. The separately authorized
+[fixed price-only diagnostic](SCENARIO-COMPARISON-RESULT-2026-10-08.md) is complete:
+all 360 scheduled cells retain 36 native candidates, but scenario v1 supports
+none (25 unsupported regimes, 11 unsupported trailing exits). Its abstaining
+account misses winners as well as losers; it does not qualify confirmation or
+justify integration. No model replay, campaign enrollment or frozen-evidence
+change follows. Old candidate lifetimes and protections remain unchanged.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary
@@ -150,7 +155,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
-| Scenario lifecycle | additive closed-confirmation research layer, source/clock-bound hypothesis, immutable per-observation chain and bridges from native decisions/context directions; no runtime registration | own source/execution feasibility and matched incremental-value evidence; a later closed-minute trigger may not fit a native 60s lifetime, which is not extended |
+| Scenario lifecycle | additive closed-confirmation research layer, source/clock-bound hypothesis, immutable per-observation chain and bridges from native decisions/context directions; fixed price-only diagnostic completed with zero supported plans; no runtime registration or qualification | separately versioned design of hypothesis validity versus executable-candidate lifetime and unchanged trailing protection, then source/execution feasibility and matched incremental value; do not extend old TTLs or retune/rerun the completed attempt |
 | Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened candidate-stream selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | assess source/execution validity and causal full-system incremental value before one own eligible identity/evaluator freeze; no parameter grid or production integration now |
 | Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |
