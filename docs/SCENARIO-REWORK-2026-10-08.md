@@ -104,13 +104,31 @@ Fresh test environments/builds are retained under
 `D:\Kairos\runtime\scenario-rework-20261008`; earlier environments and attempts
 were not replaced. Runtime/development dependency pins and locks are unchanged.
 Strategy and Backtest main checkouts remain clean at their previous identities.
-Exact-source hosted CI acceptance is recorded after it completes below.
+Exact-source hosted CI acceptance is recorded below.
 They are not historical trading, model quality or alpha evidence. The next
 scientific question is whether this separately versioned waiting/confirmation
 path adds **net** value against the unchanged immediate-candidate control,
 including missed winners, avoided losses, all no-trade/unavailable slots and
 actual source/model/execution latency. Do not assume a more persuasive narrative
 or extra layer makes a negative candidate profitable.
+
+## Hosted CI acceptance
+
+The implementation and its scope documentation were verified together at signed
+main revision `94e69564d9913dcaa29929dc7ad1d44e0c8397cc`. GitHub reports that
+revision's commit signature as verified and valid. All corresponding hosted
+workflows completed successfully:
+
+- [Adaptive development fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37775056374):
+  all four Linux/Windows x Python 3.11/3.14 jobs passed, including their full
+  offline fixture suites and pinned dependency/style checks.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37775056267): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37775054471):
+  both Python and Actions analysis passed.
+
+This acceptance confirms engineering checks for that exact source set, not
+trading performance or readiness. This receipt-only update changes no executable
+source, lock, runtime pin, scenario identity or research gate.
 
 No paid API, venue request/order, Docker PAPER/LIVE start, primary DB mutation,
 recovery attempt, budget adoption or new campaign enrollment occurs. Trial 15,
