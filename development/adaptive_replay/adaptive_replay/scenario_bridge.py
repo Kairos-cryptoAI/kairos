@@ -56,6 +56,14 @@ def technical_scenario(
             None,
             decision.expanding_prefix_sha256,
         )
+    if decision.candidate.exit_plan.trailing_activation_price is not None:
+        return decision, ScenarioPreparation(
+            "TECHNICAL",
+            "ABSTAIN",
+            "SCENARIO_V1_UNSUPPORTED_TRAILING",
+            None,
+            decision.expanding_prefix_sha256,
+        )
     plan = ScenarioPlan(
         decision.candidate,
         "TECHNICAL",

@@ -210,3 +210,46 @@ def test_creation_anchor_receipt_does_not_accept_forged_price_bytes():
             sources=bad,
             required_sources=(("MACRO", "macro"), ("MARKET", "bars"), ("NEWS", "news")),
         )
+
+
+def test_native_trailing_is_explicit_policy_abstention_and_parent_survives(monkeypatch):
+    bars = history()
+    parent = SleeveIntent(
+        "trend_breakout_v1",
+        "BTCUSDT",
+        Side.LONG,
+        CUT - 1,
+        CUT,
+        CUT + 299_999,
+        100,
+        1,
+        500,
+        ExitPlan(98, 105, 120_000, 101, 1),
+    )
+    decision = ComplexDecision(
+        "BTCUSDT",
+        CUT,
+        "CANDIDATE",
+        "TECHNICAL_SELECTED",
+        "BULL",
+        "NORMAL",
+        parent,
+        (parent.intent_id,),
+        (),
+        "e" * 64,
+        "f" * 64,
+    )
+    monkeypatch.setattr(bridge, "evaluate_complex", lambda *args, **kwargs: decision)
+    actual, prepared = bridge.technical_scenario(
+        bars,
+        prefix_start_ms=bars[0].open_time_ms,
+        cut_ms=CUT,
+        source_set_sha256=SOURCE_SET,
+        context_sha256=ASSESSMENT,
+        sources=sources(bars[-1]),
+        required_sources=(("MARKET", "bars"),),
+    )
+    assert actual is decision and actual.candidate is parent
+    assert parent.exit_plan.trailing_activation_price == 101
+    assert prepared.plan is None and prepared.state == "ABSTAIN"
+    assert prepared.reason == "SCENARIO_V1_UNSUPPORTED_TRAILING"
