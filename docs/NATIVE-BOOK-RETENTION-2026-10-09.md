@@ -114,3 +114,24 @@ Previously receipted scenario/v2/journal/quote/fill/native binding byte hashes
 remain unchanged. Full regression and signed-main hosted identities are
 recorded separately after their completion; these fixture checks are not
 historical provenance, fill/venue performance or runtime release qualification.
+
+## Verified signed-main acceptance
+
+Implementation and its scoped documentation are GPG-signed main
+`238a5ff2af516448adb09099e1eb38a9f2e98696`. Local signature result is `G`;
+GitHub confirms `verified=true`, `reason=valid`. The complete committed revision passed:
+
+- [Adaptive installed-wheel fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37856817132):
+  **1,322 passed, zero skips, in each** Windows/Linux x Python 3.11/3.14 job,
+  including all 76 new cases and the existing platform-dependent checks.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37856817123): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37856817122): Python/actions passed.
+
+The recorded full local Python 3.11 installed-wheel regression passed with
+1,320 passed and the two existing platform symlink-fixture skips in 222.63 seconds.
+Its JUnit/log are retained under the new verification root as
+`full-py311.xml` / `full-py311.log`. Python 3.14's full committed revision is
+verified by both hosted jobs; its local new-module check passed all 76 cases.
+The final wheel/sdist remain under `accepted-dist`. No preserved source,
+dependency, runtime, old evidence or readiness identity was modified to obtain
+these results. This acceptance is only the stated offline engineering scope.
