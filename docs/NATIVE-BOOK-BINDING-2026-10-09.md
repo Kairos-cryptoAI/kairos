@@ -113,3 +113,22 @@ no new skips. Four final added tail-level mismatch cases then passed as part of
 the full 103-case new-module checks in each environment. Previously receipted
 scenario/v2/journal/quote/fill source byte hashes remain unchanged. Commit/CI
 identities are recorded separately after the complete revision passes.
+
+## Verified main and hosted acceptance
+
+Implementation and scope are GPG-signed main
+`ca52fefd4f5625a7f53a2aab7683d664be35d62e`. Local verification is `G`; GitHub
+confirms `verified=true`, `reason=valid`. The complete committed revision passed:
+
+- [Adaptive installed-wheel fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37853828554):
+  1,246 passed, zero skips, in **each** Windows/Linux x Python 3.11/3.14 job,
+  including all 103 new cases and existing platform-dependent fixtures.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37853828480): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37853826416): both Python/actions passed.
+
+The final wheel/sdist are preserved in the new verification root's
+`accepted-dist` directory. Core main is clean and pinned at its prior identity;
+Quant Scouts retains its pre-existing untracked directory untouched. Native
+producer, contract/dependency/release identities and old frozen evidence did
+not change. This appended verification records completed engineering checks;
+it does not accept real sources, enroll an experiment or grant trading authority.
