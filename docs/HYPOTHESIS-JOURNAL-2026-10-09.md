@@ -125,7 +125,31 @@ capacity, missing/invalid files, competing independent writers, exception rollba
 actual isolated process exit before/after commit, and corruption of schema,
 plan/intent/protection, stored result/candidate, minute key, hash links and head/count.
 These are engineering fixtures, not real market observations or economic results.
-Installed-wheel and hosted acceptance will be recorded after verification.
+The implementation is GPG-signed main
+`48cce97c7eafeaba83ff4b55e0552fad1b1e21c1`; complete scope documentation is
+`c7dc0d674096608219c9f7f2a5f6e74f30529df8`. GitHub confirms both signatures
+as verified/valid.
+
+All 43 new cases pass, without new skips. Complete fresh **non-editable installed
+wheel** suites pass on Python 3.11.15 and 3.14.7: 994 passed and two existing
+platform symlink-fixture skips in each. Ruff lint/format (116 files), unchanged
+lock verification, wheel/sdist build and Meta static/Markdown/checkout-regression
+gates pass. Environments/builds are retained under
+`D:\Kairos\runtime\hypothesis-journal-build-20261008`. Installed journal bytes
+match the checkout in both environments; SHA-256 is
+`ba82877477bc1b0b81c8128361518e52287633e800e02d2d8402a35535b4a21d`.
+The old v1 scenario/bridge/comparator and v2 hypothesis/bridge byte hashes match
+their prior receipts; Strategy and Backtest main remain clean and unchanged.
+Complete source/documentation revision
+`c7dc0d674096608219c9f7f2a5f6e74f30529df8` passed all hosted gates:
+
+- [Adaptive installed-wheel fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37846033803):
+  996 passed, zero skips, in each Windows/Linux x Python 3.11/3.14 job.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37846033717): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37846034031): Python and Actions passed.
+
+This verification-only receipt changes no source/configuration/dependency identity,
+old evidence, research enrollment, runtime pins or trading authority.
 
 Remaining before a new economic/model experiment: authentic causal quote/context
 coverage; independent actual-fill feasibility against unchanged stop/target/trailing
