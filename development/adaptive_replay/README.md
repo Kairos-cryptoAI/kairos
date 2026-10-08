@@ -56,6 +56,15 @@ authenticated quote corpus, observed historical economics or alpha approval.
 Native runtime still refuses trailing, and actual fills need an independent
 activation/protection check; quote geometry is not execution qualification.
 
+The additive `hypothesis_journal.py` provides a create-only bounded SQLite
+research journal around that unchanged v2 fold. Typed replay, atomic first-trigger
+recording, original-parent identity, frozen arms and exact duplicate/conflict
+checks survive process restart; no publisher, runner or runtime integration follows.
+Controls cannot be enrolled after any observation for the same parent. See
+[durability proof and source audit](../../docs/HYPOTHESIS-JOURNAL-2026-10-09.md).
+Accepted kline/PRICE_ONLY/aggTrades evidence is not a causal bid/ask corpus;
+the journal does not fabricate quotes or qualify caller-attested provenance.
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement
