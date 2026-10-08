@@ -122,7 +122,7 @@ quote-priced LONG/SHORT entry, review/source/quote clocks and identities,
 uncertainty/direction/quiet abstention, metadata compatibility, stale context,
 activation/target/stop equality, wide spreads, gaps, duplicate delivery and
 first-trigger-only terminal states. No historical/model/venue result follows.
-Full installed-wheel and hosted acceptance are recorded below once verified.
+Full installed-wheel and hosted acceptance are recorded below.
 
 The implementation is GPG-signed main
 `d1d43f3f154a059a970646b8461d1ab58fa27949`. All 67 added fixture cases pass on
@@ -143,6 +143,25 @@ checkout bytes on both Python 3.11.15 and 3.14.7:
 
 The original v1 scenario/bridge/comparator module hashes and result hash match
 their prior receipts; Strategy and Backtest main remain clean and unchanged.
+
+### Completed installed-wheel and hosted acceptance
+
+The fresh non-editable Python 3.14.7 wheel also passes the complete local suite:
+951 tests, two existing platform symlink-fixture skips. No new case is skipped;
+all 67 new lifecycle/bridge cases pass in each complete installed-wheel suite.
+No historical/economic/provider test attempt was started by these fixture gates.
+
+The complete source and scope-documentation set at GPG-signed main
+`e651239606c7d29501bd14b2622260f0fcb00db2` passed all hosted gates; GitHub confirms
+that revision's signature as verified/valid:
+
+- [Adaptive fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37808634861):
+  953 tests passed, zero skips, in **each** Windows/Linux x Python 3.11/3.14 job.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37808635018): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37808632944): Python and Actions passed.
+
+This verification-only receipt changes no source, policy identity, dependency,
+runtime pin, historical attempt or trading authority. It is not a strategy result.
 
 Before another economic experiment, fix one new identity/policy and a new
 predeclared roster using authentic causal quote/context coverage, all refusal
