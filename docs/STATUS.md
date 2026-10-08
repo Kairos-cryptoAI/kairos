@@ -12,8 +12,14 @@ closed-bar conflicts still quarantine. Release verification now includes
 non-ignored untracked files and exact effective origin identity. Targeted
 dependency patches update only affected multidict/source-map-js versions;
 published Aggregator/LLM/Macro/Text source CI is green, with 548 Windows test
-passes per Python 3.11/3.14 and seven explicit skips per version. New deploy
-integration evidence binds r8; historical green runs are not inherited.
+passes per Python 3.11/3.14 and seven explicit skips per version. Deploy adds
+455 actual unittest passes and three skips per version; all five exact-source
+r8 CI/integration workflows pass, including installed Text/Macro/Router/review/
+Risk composition. The PowerShell 5.1 native-warning handling and CI fixture's
+expected nonzero-exit leakage are fixed and tested. GitHub source-security
+checks pass for all 14 repositories; historical green runs are not inherited.
+Published source/manifest/signatures match, but the stricter local checkout
+gate remains blocked by old untracked test directories in Execution and Quant.
 Strategy work and UI/UX are paused, frozen research evidence is unchanged.
 Runtime recovery, actual Telegram delivery, off-host restore, venue qualification
 and production custody/limits are not declared complete by code/fixture passes.

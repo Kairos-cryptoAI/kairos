@@ -93,6 +93,54 @@ bootstrap or source/test change. Meta static/link and release-checkout fixture
 tests also pass. Hosted r8 integration acceptance is recorded separately after
 the exact-source workflows finish.
 
+All five exact-Deploy workflows subsequently completed successfully:
+
+| Workflow | Exact-Deploy accepted run |
+| --- | --- |
+| Windows/Linux static checks, Compose validation and image builds | [CI 37752263701](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752263701) |
+| Current-source bar-to-REJECT_ALL integration | [37752263543](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752263543) |
+| Isolated full-path synthetic SIM integration | [37752263490](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752263490) |
+| Installed Text/Macro/Router/review/Risk composition | [37752263818](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752263818) |
+| Historical release-gate source, patched tooling only | [37752263651](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752263651) |
+
+Exact-Deploy [CodeQL 37752264414](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/37752264414)
+also completed successfully. Successful analysis is not a global absence-of-
+vulnerabilities claim. No primary database or business runtime service is
+started by these disposable hosted gates, and synthetic SIM is not a strategy
+performance test.
+
+The GitHub read-only source-security gate passes across all **14 repositories**:
+secret scanning/push protection/security updates are enabled, main requires
+signatures and disallows force-push/deletion, and open Dependabot and redacted
+secret-scanning alert counts are zero at this check. No alert was dismissed or
+protection relaxed. This is source/security-setting evidence, not custody or
+production exploit-resistance qualification.
+
+The final Windows PowerShell 5.1 check additionally exposed native stderr being
+treated as a terminating error despite redirection. Signed meta
+`dae02d55beb677c02f6f4ac7b1393c7b768e8f1c` scopes and restores error
+preferences, captures Git exit status explicitly and never echoes arbitrary
+failed-command arguments/stdout. The synthetic native-warning/exit-37 fixture
+passes on 5.1 and 7.6, including preference restoration. Its first hosted
+[validation 37753181744](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37753181744)
+still failed because the deliberately asserted exit 37 remained the shell's
+last native status after all assertions passed. That failure is retained,
+not relabelled. Signed `22d1f38707b20e23898c47030f08eb19469b847a` adds a real
+Git status check after alias restoration; both exact GitHub-style shell-exit
+reproductions pass locally, and its fresh
+[validation 37753663837](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37753663837)
+passes on the published source.
+
+Independent read-only identity inspection verifies all 14 listed main heads,
+local origin/main, current published GitHub main refs, exact manifest pins and
+trusted GPG signatures. However, the full checkout verifier **does not pass**:
+Execution and Quant each contain the old non-ignored untracked directory
+`Kairosruntimepytest-pin-sync-20260923`. Their payloads are not removed, ignored
+or committed by this task. A recoverable move outside the checkouts has been
+offered to the owner, not silently performed. Thus the manifest records the
+verified published source set, but this receipt does not claim fourteen clean
+local checkouts or a fully certified local release.
+
 ## Non-strategy completion boundary
 
 Existing code, isolated test evidence and operational acceptance are different
