@@ -1,10 +1,23 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-07 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-08 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Active work: candidate-stream and causal selection evaluation
+## Active work: engineering closeout; strategy research paused
+
+The owner's latest direction is to finish non-strategy engineering and leave
+strategy selection for a later task. Do not start another strategy search,
+historical/model replay, enrollment or frozen-campaign change under this scope.
+UI/UX remains deferred. Existing reusable composition and risk/execution
+boundaries remain; close only reproducible defects and refresh their exact
+source/dependency evidence. Code and fixture completion are not runtime,
+venue, operational-security or economic qualification. In particular, the
+guarded primary recovery, external backup/custody, actual alert delivery and
+venue acceptance cannot be declared complete merely because strategy work
+is paused. No readiness flag or trading authority follows.
+
+## Preserved strategy work: candidate-stream and causal selection evaluation
 
 The user's latest direction evaluates strategy families as candidate generators
 and tests whether causal selection adds complete-system value. A weak standalone

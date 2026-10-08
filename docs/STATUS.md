@@ -2,6 +2,23 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-08_
 
+## Engineering closeout; strategy selection paused — 2026-10-08
+
+The [current engineering closeout](ENGINEERING-CLOSEOUT-2026-10-08.md) implements
+transactional source admission: rejected sources cannot acquire a successful
+replay identity or evict accepted bounded evidence, and repeated invalid
+deliveries cannot be acknowledged as admitted context. Accepted identity and
+closed-bar conflicts still quarantine. Release verification now includes
+non-ignored untracked files and exact effective origin identity. Targeted
+dependency patches update only affected multidict/source-map-js versions;
+published Aggregator/LLM/Macro/Text source CI is green, with 548 Windows test
+passes per Python 3.11/3.14 and seven explicit skips per version. New deploy
+integration evidence binds r8; historical green runs are not inherited.
+Strategy work and UI/UX are paused, frozen research evidence is unchanged.
+Runtime recovery, actual Telegram delivery, off-host restore, venue qualification
+and production custody/limits are not declared complete by code/fixture passes.
+All four readiness flags stay false; policy remains `REJECT_ALL`.
+
 ## Fixed failed-breakout reversal: all six windows complete, not selected — 2026-10-07
 
 The [actual bounded comparison](STRATEGY-SELECTION-FAILED-REVERSAL-RESULT-2026-10-07.md)
