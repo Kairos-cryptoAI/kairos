@@ -93,8 +93,36 @@ they are not resealed, migrated, deleted or rescued.
 Only synthetic offline fixtures are used. Verification covers exact bytes,
 source/clock boundaries, restart and copied-candidate conflicts, LONG/SHORT
 protection/capacity/deadline boundaries, all refusals/unavailable states and
-read-only journal checks. Installed-wheel and hosted verification evidence will
-be recorded after those gates complete, without another historical replay.
+read-only journal checks. There are 147 new cases: 52 capture cases and 95 fill
+cases. Full fresh non-editable installed-wheel suites passed on Python 3.11.15
+and 3.14.7: 1,138 passed and two existing platform symlink-fixture skips in each.
+The final three added cost/ATR cases then passed separately in both environments
+(three passed, 92 deselected). No new skips or historical rerun occurred.
+
+Ruff lint and format (120 files), unchanged lock verification, wheel/sdist build,
+Meta static/Markdown/checkout-regression gates and git diff checks passed.
+Environments/builds are retained in
+`D:\Kairos\runtime\quote-fill-admission-build-20261009`. Both installed copies
+match checkout bytes:
+
+- `quote_capture.py`: `dfff35796e1d9f0265e8521cd392d4af89df30d6c2d6c90425ea81f3fe0fe365`.
+- `fill_feasibility.py`: `7fe5011e661cc84abb3d0143594c95f8d9797b931163d45ca160d48bcd983c57`.
+
+The implementation and scope are GPG-signed main
+`a24b0e2095b6e7e2a93a324ee179d368d2a00d8e`; local verification and GitHub both
+confirm a valid signature. Original v1 scenario/bridge/comparator, v2 hypothesis/
+bridge and journal byte hashes still match their prior receipts. Strategy and
+Backtest main remain clean and unchanged; release and dependency identities
+were not edited. This verification-only document does not change source or
+grant campaign enrollment, quote authenticity, trading authority or readiness.
+
+The complete implementation/scope revision passed all hosted gates:
+
+- [Adaptive installed-wheel fixtures](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37850318697):
+  1,143 passed, zero skips, in each Windows/Linux x Python 3.11/3.14 job,
+  including all 147 new cases and the existing platform-dependent cases.
+- [Meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37850318707): passed.
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37850317686): passed.
 
 Still required before a new economic/model test: independently accepted causal
 quote/context corpus with source continuity and missing denominators; an
