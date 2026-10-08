@@ -1,0 +1,309 @@
+{
+  "immediate": {
+    "economic_results": {
+      "admission_policy": "COMMON_COST_RISK_V1",
+      "admission_rejections": {
+        "FILL_reward_risk_too_low": 36
+      },
+      "adverse_envelope_bound_pct": 0.0,
+      "ambiguous_barrier_minutes": 0,
+      "closed_minute_mtm_drawdown_pct": 0.0,
+      "closed_trade_net_usd": 0.0,
+      "closed_trades": 0,
+      "closed_trades_by_family": {},
+      "common_maximum_stop_distance_bps": 300.0,
+      "complete_all_in_net_economics": false,
+      "cost_scenario": {
+        "admission_adverse_carry_bps": 3,
+        "fee_bps_per_side": 9,
+        "id": "stress",
+        "latency_bps_round_trip": 2,
+        "slippage_bps_per_side": 2,
+        "spread_bps": 4,
+        "uncertainty_bps": 2
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 0
+      },
+      "entry_mode": "INTRABAR_OPEN_PROXY",
+      "execution_qualification": false,
+      "final_equity_usd": 10000.0,
+      "forced_settlements": 0,
+      "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "gross_ceiling_mark_overrun": false,
+      "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+      "ledger_reconciliation_error_usd": 0.0,
+      "long_net_usd": 0.0,
+      "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+      "market_feed_cost_usd": null,
+      "max_observed_mark_gross_leverage": 0.0,
+      "max_observed_mark_open_risk_fraction": 0.0,
+      "mean_holding_minutes": null,
+      "model_calls": 0,
+      "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+      "model_cost_usd": null,
+      "natural_exit_counts": {},
+      "net_return_pct": 0.0,
+      "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+      "planning_round_trip_bps": 33.0,
+      "profit_factor": null,
+      "profit_factor_status": "NO_TRADES",
+      "realized_loss_over_reservation_count": 0,
+      "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+      "risk_ceiling_mark_overrun": false,
+      "short_net_usd": 0.0,
+      "signed_funding_cost_usd": 0.0,
+      "suppressed_deadline_minute_targets": 0,
+      "suppressed_entry_minute_targets": 0,
+      "terminal_unresolved_positions": [],
+      "total_entry_fees_usd": 0.0,
+      "total_exit_fees_usd": 0.0,
+      "zero_entry_days": 1
+    },
+    "events": [
+      {
+        "intent_id": "88fb0ff0d928ba756833f2939a8ecfe271a0f16b7ec976194a346a1791257f29",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "c4dbd7ad8bb81c6e66eaf232b1033c45d6d121b8e022e9e19ee6f676c224686f",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "adc5614f7273ec480c833cea3c96da77fddac68da7201d63551b4f0f2a09fae0",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "98e204222332ce3ab32bdc4dd07a5dd79244ff16c5d83d8ef4bdee3f9147a622",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "bfe2e5e4e0b57e7fa2267fa965297c63ede518435783dfab0bd0241be573e437",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "e604d7aeeac3b40ce5f3ddd17735b5ccb73a78cda5873c92b43b1ec8fecfe8f2",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "34ff04be7cfa8ee8ea782a52dff7170ef6ded1d856a8146ce23b759e45c95680",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "abfe7dac56d17096262bf1404fa1628322f7fd61f7671784ebb41994769a1422",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "ba285b1bdfbd0c893d4ca6ff1a183ab5e3708c709b71c57855cb6854faec34ed",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "dd6d0f6ed5babeaf0b327bbdd6c4a9eac557dab8aa707f8fd51c0760c4ec8949",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "695439535df1cef41fed615b880b77539d684511fa528915d3241ac5bca5c162",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "6763f60702a74a86b8b42103c24864fc3cb1761069cb092140070fc7a832e801",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "41014c2a2bb550f6bcb5e2240c06c49c03633f1ecdb580efa9b9ca0441e90096",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "b8d4a90ba9e50b512015bed3fbefb20259466dbe4060e5885a21f8fd346d6b3c",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "e9b72887461c94498c7f87cea234a3684b873230a7aa305713cacf3fc0f2975d",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "7874017040ac40ae0dff0f28a347e4ea2685fb79dfd061670582277274564d7a",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "c006cec16863c457732f4a8497ce9fab1465c12907b02504bc5e98526984cd01",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "cc1e97733b343147dddfe4bb00c3d130597409a06af4d3d44fa719b9aa8e52e3",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "86c98e9369a737f00e0b7fad8ab5467c0bfb1c9cb51b48ed7dbbf2e610b7f994",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "e006d7d916c4a5f423c77179cae9a6d09b5ea415eb9d70c69a306c4e84a7605a",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "4dac2bcf9a24c4e649d17be9153c4c76e0a061ab52f38778f2ae588012771d2e",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "25c0c71a36e6aec356831657631fa96d71509e2010cb8a504ff1757947fc5e18",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "d26db173cac097cdadf81422cc9b124f8c2c191a289b1782d9e555a6cf3164c4",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "ccb0dd03189c96bce3e9fc32393c018f7b3da3bd7edd031648f1902bd3c2bae9",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "fbea368f02401b475f94bd376efa18f14025e5d44e580c86730c3cafa0e88228",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "e47309d3d70f49a4b1d50b077eae07cfdb7d09ac4b32fd98a456fcdb29a7687e",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "dfece15350203d90d536d865e17dc85c5a21954b0a448a4bba4222c83f035c7a",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "c8469f145577d58c1224a0886e4840f52582dd5ff89a7ec04d67575abb8aeff4",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "46c089aec0911fb10b358af5bb6e3e8f7a1ba4ec8a37d426218b18f573feaf09",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "d11c5432fdab7c6ae4b8606040aa687d4c62ef21b2e0954dd03f3138608cf644",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "b84783452b4af48212367bfa2ab57ae2b5f9eed3d05a7a07b96542cc1a248414",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "e2bf372698c77133b03ed198a2e4fcf3f5f8960a714f05ada323e0c8fca58f52",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "61aff8f68abe81a92b91434e01d6666f1fe6d720dcd492a35b7467580189ef81",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      },
+      {
+        "intent_id": "04ed90954b19d0d578fe2975c2a5001583c0ab4ad03bc227ec894c9c25a32393",
+        "kind": "REJECT",
+        "reason": "FILL_reward_risk_too_low"
+      }
+    ],
+    "trades": []
+  },
+  "scenario": {
+    "economic_results": {
+      "admission_policy": "COMMON_COST_RISK_V1",
+      "admission_rejections": {},
+      "adverse_envelope_bound_pct": 0.0,
+      "ambiguous_barrier_minutes": 0,
+      "closed_minute_mtm_drawdown_pct": 0.0,
+      "closed_trade_net_usd": 0.0,
+      "closed_trades": 0,
+      "closed_trades_by_family": {},
+      "common_maximum_stop_distance_bps": 300.0,
+      "complete_all_in_net_economics": false,
+      "cost_scenario": {
+        "admission_adverse_carry_bps": 3,
+        "fee_bps_per_side": 9,
+        "id": "stress",
+        "latency_bps_round_trip": 2,
+        "slippage_bps_per_side": 2,
+        "spread_bps": 4,
+        "uncertainty_bps": 2
+      },
+      "entries_each_utc_day": {
+        "2022-06-13": 0
+      },
+      "entry_mode": "INTRABAR_OPEN_PROXY",
+      "execution_qualification": false,
+      "final_equity_usd": 10000.0,
+      "forced_settlements": 0,
+      "funding_clock_authority": "ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY",
+      "gross_ceiling_mark_overrun": false,
+      "intraminute_timeout_reservation": "HELD_UNTIL_BAR_CLOSE_CONSERVATIVE_ADMISSION_NOT_EXACT_EXECUTION",
+      "ledger_reconciliation_error_usd": 0.0,
+      "long_net_usd": 0.0,
+      "market_feed_cost_status": "LOCAL_ARCHIVE_NOT_LIVE_FEED",
+      "market_feed_cost_usd": null,
+      "max_observed_mark_gross_leverage": 0.0,
+      "max_observed_mark_open_risk_fraction": 0.0,
+      "mean_holding_minutes": null,
+      "model_calls": 0,
+      "model_cost_status": "NOT_CALLED_NOT_FREE_SERVICE",
+      "model_cost_usd": null,
+      "natural_exit_counts": {},
+      "net_return_pct": 0.0,
+      "partial_fill_status": "NOT_MODELED_FULL_FILL_CONDITIONAL_APPROXIMATION",
+      "planning_round_trip_bps": 33.0,
+      "profit_factor": null,
+      "profit_factor_status": "NO_TRADES",
+      "realized_loss_over_reservation_count": 0,
+      "return_scope": "TRADING_NET_WITH_CANDLE_FUNDING_PROXY_EXCLUDING_UNAVAILABLE_MODEL_FEED_COSTS",
+      "risk_ceiling_mark_overrun": false,
+      "short_net_usd": 0.0,
+      "signed_funding_cost_usd": 0.0,
+      "suppressed_deadline_minute_targets": 0,
+      "suppressed_entry_minute_targets": 0,
+      "terminal_unresolved_positions": [],
+      "total_entry_fees_usd": 0.0,
+      "total_exit_fees_usd": 0.0,
+      "zero_entry_days": 1
+    },
+    "events": [],
+    "trades": []
+  }
+}

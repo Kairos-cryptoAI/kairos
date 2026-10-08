@@ -1,0 +1,178 @@
+{
+  "admission_policy": "COMMON_COST_RISK_V1",
+  "arms": [
+    "immediate",
+    "scenario"
+  ],
+  "complete_system_economics": null,
+  "complex_policy": {
+    "adaptive_config": {
+      "adverse_carry_bps": 3.0,
+      "atr_period": 14,
+      "crash_bars": 12,
+      "crash_holding_ms": 3600000,
+      "decision_minutes": 5,
+      "efficiency_hours": 24,
+      "entry_lifetime_ms": 60000,
+      "fast_hours": 20,
+      "fee_bps_per_side": 4.5,
+      "history_bars": 3240,
+      "latency_bps": 2.0,
+      "maximum_cost_stop_fraction": 0.5,
+      "maximum_stop_atr": 2.0,
+      "maximum_stop_bps": 300.0,
+      "minimum_net_reward_risk": 1.25,
+      "minimum_stop_atr": 0.5,
+      "policy_version": "adaptive-pullback-range.v1",
+      "range_bars": 16,
+      "range_efficiency": 0.2,
+      "range_holding_ms": 3600000,
+      "range_ma_gap_atr": 0.5,
+      "range_slope_atr": 0.1,
+      "setup_mean_bars": 20,
+      "shock_atr": 2.0,
+      "slippage_bps_per_side": 1.0,
+      "slope_hours": 3,
+      "slow_hours": 50,
+      "spread_bps": 2.0,
+      "target_r": 2.0,
+      "trend_efficiency": 0.3,
+      "trend_holding_ms": 7200000,
+      "trend_slope_atr": 0.25,
+      "uncertainty_buffer_bps": 2.0
+    },
+    "adaptive_history": "EXACT_ROLLING_3240_CLOSED_1M",
+    "breakout_config": {
+      "atr_period": 14,
+      "donchian_lookback": 20,
+      "intent_valid_bars": 1,
+      "max_hold_bars": 24,
+      "minimum_abs_hourly_slope": 0.00025,
+      "minimum_breakout_atr": 0.0,
+      "minimum_directional_taker_share": null,
+      "minimum_regime_efficiency": 0.3,
+      "minimum_volume_surprise": null,
+      "regime_lookback_hours": 12,
+      "stop_atr_multiple": 1.25,
+      "target_atr_multiple": 2.0,
+      "trailing_activation_atr_multiple": 1.0,
+      "trailing_distance_atr_multiple": 1.0,
+      "volume_lookback": 20
+    },
+    "crash_defense": "NATIVE_CRASH_AND_TWO_COMPLETED_POST_SHOCK_HOURS",
+    "daily_trade_quota": null,
+    "decision_cadence_ms": 300000,
+    "families": [
+      "trend_breakout_v1",
+      "adaptive_pullback_range_v1"
+    ],
+    "fixed_income_target": null,
+    "id": "compact_context_complex_v1",
+    "native_history": "EXACT_54H_ORIGIN_EXPANDING_PREFIX",
+    "opposite_side": "ABSTAIN_NO_RESURRECTION",
+    "production_registration": false,
+    "proposal_mapper": {
+      "atr": "FINITE_TRUE_RANGE_MEAN_14_COMPLETED_15M",
+      "crash": "ONLY_UNCHANGED_ADAPTIVE_CONTROLLED_RETEST_SHORT",
+      "entry_lifetime_ms": 300000,
+      "id": "context_atr_proposal_v1",
+      "maximum_cost_stop_fraction": 0.5,
+      "maximum_stop_atr": 2.0,
+      "maximum_stop_bps": 300.0,
+      "minimum_net_reward_risk": 1.25,
+      "minimum_stop_atr": 0.5,
+      "planning_round_trip_bps": 20.0,
+      "post_shock_cooldown": "ABSTAIN",
+      "range_holding_ms": 3600000,
+      "sizing": "COMMON_COST_RISK_V1_NO_MODEL_CONFIDENCE_UPLIFT",
+      "stop_atr": 1.25,
+      "target_r": 2.0,
+      "trend_holding_ms": 7200000
+    },
+    "right_tail_role": "REFERENCE_ONLY_NOT_INTRADAY_ENTRY",
+    "same_side_priority": [
+      "adaptive_pullback_range_v1",
+      "trend_breakout_v1"
+    ]
+  },
+  "cost_scenarios": [
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 4.5,
+      "id": "base",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 1,
+      "spread_bps": 2,
+      "uncertainty_bps": 2
+    },
+    {
+      "admission_adverse_carry_bps": 3,
+      "fee_bps_per_side": 9,
+      "id": "stress",
+      "latency_bps_round_trip": 2,
+      "slippage_bps_per_side": 2,
+      "spread_bps": 4,
+      "uncertainty_bps": 2
+    }
+  ],
+  "creation_market_capture_ms": "CUT",
+  "end_exclusive_ms": 1655100000000,
+  "entry_modes": [
+    "STRICT_MINUTE_OPEN",
+    "INTRABAR_OPEN_PROXY"
+  ],
+  "exit_tail_hours": 3,
+  "full_1m_cells": 1800,
+  "immediate_completion_ms": "CUT+100",
+  "initial_equity_usd_each_arm": 10000,
+  "max_wall_seconds": 600,
+  "model_and_feed_costs": null,
+  "native_expiry_and_exits_unchanged": true,
+  "no_blind_campaign_credit": true,
+  "no_downloads": true,
+  "no_paid_calls": true,
+  "no_parameter_search": true,
+  "observation_ms": "CLOSED_MINUTE_END+1+100",
+  "primary_statistic": "FULL_ACCOUNT_B_MINUS_A_END_EQUITY_NOT_SUM_OF_FILTERED_TRADES",
+  "purpose": "SEEN_PRICE_ONLY_ABSTENTION_CONSEQUENCE_NOT_CONFIRMATION_ALPHA",
+  "readiness": {
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "PAPER_QUALIFIED": false,
+    "STRATEGY_POLICY": "REJECT_ALL",
+    "TECHNICAL_PAPER_READY": false
+  },
+  "receipt_clock_authority": "ARCHIVE_EVENT_TIME_PLUS_ASSUMPTIONS_NOT_LOCAL_HISTORICAL_RECEIPT",
+  "required_sources": [
+    [
+      "MARKET",
+      "archive-bars-1m"
+    ]
+  ],
+  "review_and_context_proposal_arms": "UNAVAILABLE_NOT_CALLED_NOT_ZERO_RETURN",
+  "risk_policy": {
+    "aggregate_open_fraction": 0.01,
+    "gross_leverage": 1,
+    "max_notional_fraction_per_symbol": 0.25,
+    "per_trade_fraction": 0.0025
+  },
+  "roster_selection": "FIRST_SIX_UTC_HOURS_OF_ALREADY_SEEN_JUNE_13_NOT_PNL_SELECTION",
+  "scenario_execution_completion_ms": "OBSERVATION+100",
+  "scenario_policy": "closed-confirmation-scenario.v1",
+  "scenario_requires_review": false,
+  "scenario_reset": "ONE_ATTEMPT_PER_DISTINCT_UNCHANGED_NATIVE_PARENT_NO_RETRY",
+  "scheduled_5m_slots": 360,
+  "schema": "kairos.scenario.price-comparison.v1",
+  "source_plan_sha256": "ad07e992a1440f459acb7b8cdb621a54c70ad1119ee9af7f37aceb6966d69f0c",
+  "start_ms": 1655078400000,
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "BNBUSDT",
+    "XRPUSDT"
+  ],
+  "unsupported_trailing": "EXPLICIT_POLICY_ABSTENTION_PARENT_RETAINED_IN_A",
+  "warmup_hours": 54,
+  "workers": 1
+}

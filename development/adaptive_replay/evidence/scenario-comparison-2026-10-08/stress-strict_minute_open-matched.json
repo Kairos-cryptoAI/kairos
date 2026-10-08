@@ -1,0 +1,372 @@
+{
+  "attribution": "DESCRIPTIVE_MATCHED_A_OUTCOMES_NOT_SUMMABLE_CAUSAL_ACCOUNT_ATTRIBUTION",
+  "complete_system_net_delta_usd": null,
+  "counts": {
+    "AVOIDED_BASELINE_LOSS": 3,
+    "BASELINE_REJECTED": 29,
+    "MISSED_BASELINE_WINNER": 4
+  },
+  "primary_account_delta_usd": 22.29917247184312,
+  "rows": [
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "88fb0ff0d928ba756833f2939a8ecfe271a0f16b7ec976194a346a1791257f29",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "d0b6fe8520b20cfd04d8747f4527f37713899e5886695afe46fbe261e6f614f8",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "c4dbd7ad8bb81c6e66eaf232b1033c45d6d121b8e022e9e19ee6f676c224686f",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "589fcc4195e2bf23befbbb2f3263ac68d592e29dd46e9629738c944491551528",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "adc5614f7273ec480c833cea3c96da77fddac68da7201d63551b4f0f2a09fae0",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "332565c0f1c1b416eb504d437ce7a1de1a407779820b11e3d6775ac1262df4ce",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "98e204222332ce3ab32bdc4dd07a5dd79244ff16c5d83d8ef4bdee3f9147a622",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "0f23602ddf6c89e0eb6957f909c714ff161708ce8d31e78d28334a139cde21df",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": 35.51282552578025,
+      "classification": "MISSED_BASELINE_WINNER",
+      "outside_entry_window": false,
+      "parent_intent_id": "9118e867671b77687a651bb438ee4834de80e0bc5dbf282dc36b061ea9a76908",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "ed8ff5a815b239b244e24bb79d42d5d1e78bb96ea7b202e652c2f54a3b811b19",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "bfe2e5e4e0b57e7fa2267fa965297c63ede518435783dfab0bd0241be573e437",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "31fe4cc4b01f2a2d9a63765669fe91b3b51455e1e1de971234bd2c3bd7321ba4",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": 4.836074229185969,
+      "classification": "MISSED_BASELINE_WINNER",
+      "outside_entry_window": false,
+      "parent_intent_id": "e604d7aeeac3b40ce5f3ddd17735b5ccb73a78cda5873c92b43b1ec8fecfe8f2",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "eec131550f07db78b10d6dcf16bdf36ef2ff06d022f132662f9a435018512341",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "34ff04be7cfa8ee8ea782a52dff7170ef6ded1d856a8146ce23b759e45c95680",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "ca50cceb695b779ed28c38471a996000604775b870d61000af835d6bb3906a61",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": 0.3343455197522194,
+      "classification": "MISSED_BASELINE_WINNER",
+      "outside_entry_window": false,
+      "parent_intent_id": "abfe7dac56d17096262bf1404fa1628322f7fd61f7671784ebb41994769a1422",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "3131350c6ccb6cc2846924bc0a0bc9f83278ebcc0ce43cbfacf8e58b06443b4e",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "ba285b1bdfbd0c893d4ca6ff1a183ab5e3708c709b71c57855cb6854faec34ed",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "d4560d72aebda2ba7cad05af5e100eda8277af96d3d300e612aab16ee9e5cfcb",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "dd6d0f6ed5babeaf0b327bbdd6c4a9eac557dab8aa707f8fd51c0760c4ec8949",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "d8f19047a206ba1b0fb721e388e1620211635832387db0c6b71d31e0918a872a",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "695439535df1cef41fed615b880b77539d684511fa528915d3241ac5bca5c162",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "47f9ec1e410b3eb2f1dafe891901672436824dac3a568b840ab78e84b65e6736",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "6763f60702a74a86b8b42103c24864fc3cb1761069cb092140070fc7a832e801",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "29cfbbe116dd21ad57cbb8388fb096f239b000269aad49904cf0540919874076",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "41014c2a2bb550f6bcb5e2240c06c49c03633f1ecdb580efa9b9ca0441e90096",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "2de706f91b21091e66e1d0dbbcd181e25eec1dc930d891758109b8f7ef88fff4",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "b8d4a90ba9e50b512015bed3fbefb20259466dbe4060e5885a21f8fd346d6b3c",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "ed3d9adc1a2e535bb4b246777ec85397b40ad6becba7f3fdf50fbf85aeffeeb6",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "e9b72887461c94498c7f87cea234a3684b873230a7aa305713cacf3fc0f2975d",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "66f5ce36a2495c82ff234608752039baeb14f2bf61b898b2cf39eb78f36c3147",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": -22.88179777264704,
+      "classification": "AVOIDED_BASELINE_LOSS",
+      "outside_entry_window": false,
+      "parent_intent_id": "7874017040ac40ae0dff0f28a347e4ea2685fb79dfd061670582277274564d7a",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "060d4c5d007a01c5fdd34f8b621bcf7a93f4378c962d3b820338c7bf32c51cea",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "c006cec16863c457732f4a8497ce9fab1465c12907b02504bc5e98526984cd01",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "cb472c52e7b0bed49aad9018058a9a2e9d5e733074daa3b56ccdb57190b47e36",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "cc1e97733b343147dddfe4bb00c3d130597409a06af4d3d44fa719b9aa8e52e3",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "c62c5cf2ddec415fcdc2f787571e439e8a5b99a4bcf74a455995dd114ccabea5",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "86c98e9369a737f00e0b7fad8ab5467c0bfb1c9cb51b48ed7dbbf2e610b7f994",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "90a7b5c90a044717707e63ef4063ae034eee02e819fdc90d1600bee443e2cb2b",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "e006d7d916c4a5f423c77179cae9a6d09b5ea415eb9d70c69a306c4e84a7605a",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "6743edf82a7c686e9c3c16f79e6ebf54d3eb600c1eabe0a7ae3e156c65f9ec45",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "4dac2bcf9a24c4e649d17be9153c4c76e0a061ab52f38778f2ae588012771d2e",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "daaa91e51f1760b34e22022df91489b8a73cbba0e7653df3310ef699dcede949",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "25c0c71a36e6aec356831657631fa96d71509e2010cb8a504ff1757947fc5e18",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "e5f8863406d29ed320aa82a72508224a03a36b5fe3118f4bfe278148ed8da827",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "d26db173cac097cdadf81422cc9b124f8c2c191a289b1782d9e555a6cf3164c4",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "8972adfee9f8cd9b42b54055679db5b1f96f9ea4f9370184c3f843441dc9a1c6",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "ccb0dd03189c96bce3e9fc32393c018f7b3da3bd7edd031648f1902bd3c2bae9",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "91d3d4b9f4ce71dadc662e044f857c806a035fff274aece2e1a482446c646d71",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "fbea368f02401b475f94bd376efa18f14025e5d44e580c86730c3cafa0e88228",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "1c09ea70ade0c7bc52d982459c1a9a0eca6b5ca8ec96605b2ce537ee5de6e524",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "e47309d3d70f49a4b1d50b077eae07cfdb7d09ac4b32fd98a456fcdb29a7687e",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "d16a673fc870046ecdbdca14fbd2db430138ab7e040c0b5a318179ac623620b4",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "dfece15350203d90d536d865e17dc85c5a21954b0a448a4bba4222c83f035c7a",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "7a317845eb889bb65797b85b75295a1fd9238cb76477e55eb21273acd7f2863a",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": 5.86872250668723,
+      "classification": "MISSED_BASELINE_WINNER",
+      "outside_entry_window": false,
+      "parent_intent_id": "4e5fa2f089c22d38ec63e3324f7e83ddc6728e8ba91d8c0c85d6236f730e1b81",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "087bfc61aa326d0db28993a2ec820fedd4c8c879cecb07e700446b74964222c5",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": -23.28267842601865,
+      "classification": "AVOIDED_BASELINE_LOSS",
+      "outside_entry_window": false,
+      "parent_intent_id": "c8469f145577d58c1224a0886e4840f52582dd5ff89a7ec04d67575abb8aeff4",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "f2c89bbc66159fd230bce56debd8d25ee6435f4619417e3a455da05dbe6a1f52",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "46c089aec0911fb10b358af5bb6e3e8f7a1ba4ec8a37d426218b18f573feaf09",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "2f88cb5d1a6e58c25f599efe3afe66f3c1bd10be241b894e633358a7622ddae9",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "d11c5432fdab7c6ae4b8606040aa687d4c62ef21b2e0954dd03f3138608cf644",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "7061fe3d5d22ea162359d0fb795d19a190215b7d38da08e0ae8b6c578c8d7590",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": -22.686664054582536,
+      "classification": "AVOIDED_BASELINE_LOSS",
+      "outside_entry_window": false,
+      "parent_intent_id": "b84783452b4af48212367bfa2ab57ae2b5f9eed3d05a7a07b96542cc1a248414",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_TRAILING",
+      "slot_id": "814b0b4d4221ba12101d25a8d512f59198760e06bb07975d23b338f9ecd53bd3",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "e2bf372698c77133b03ed198a2e4fcf3f5f8960a714f05ada323e0c8fca58f52",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "6840d8c64e1389b31fa6e496f6b30ad016eb34a6e99eecf558d3ac46ad50414b",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "61aff8f68abe81a92b91434e01d6666f1fe6d720dcd492a35b7467580189ef81",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "78da04163eed7a0d734bb790be39f467f1bfb11b747580e4cb6623c526cbd457",
+      "subgroup": "UNSUPPORTED_POLICY"
+    },
+    {
+      "baseline_closed_net_usd": null,
+      "classification": "BASELINE_REJECTED",
+      "outside_entry_window": false,
+      "parent_intent_id": "04ed90954b19d0d578fe2975c2a5001583c0ab4ad03bc227ec894c9c25a32393",
+      "scenario_candidate_id": null,
+      "scenario_reason": "SCENARIO_V1_UNSUPPORTED_REGIME",
+      "slot_id": "aba59ca31f5d8f8f35f77dc87450ef8d8c76c9fed966ff4d469ec675b38e7fff",
+      "subgroup": "UNSUPPORTED_POLICY"
+    }
+  ]
+}
