@@ -23,6 +23,19 @@ result, production registry entry or paid loop. The explicit `require_review=Fal
 mode is only the isolated strategy-only comparison control, never a Risk bypass.
 See [implementation and limits](../../docs/SCENARIO-REWORK-2026-10-08.md).
 
+The separate [fixed price-only comparison protocol](../../docs/SCENARIO-COMPARISON-PROTOCOL-2026-10-08.md)
+compares unchanged compact technical candidates and the waiting layer on all 360
+native cells / 1,800 minute cells in the first six hours of the already-seen
+June 13, 2022 window. `python -m adaptive_replay.scenario_compare` accepts only
+`--workspace-root` and a new specifically named direct runtime `--output-root`.
+It has one worker and cooperative/outer hard 600-second limits, no retry, model,
+download or venue path. Common base/stress accounting and strict/proxy timing
+stay separate; complete-system net and missing model/feed costs stay null.
+Unsupported trailing is explicit policy abstention, not silently changed exits.
+Native 60s expiry remains too short for later closed-minute confirmation. An
+all-no-entry arm cannot demonstrate confirmation alpha. Failed/timeout receipts
+invalidate any partial numerical account files; original attempts stay immutable.
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement
