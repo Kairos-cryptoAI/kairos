@@ -91,6 +91,15 @@ without replaying prices. Together with the comparator and bridge tests, all
 suites each passed 880 tests plus two existing symlink-fixture skips; no new
 historical or model attempt follows from this evidence-only verification.
 
+The complete published code/test/evidence set at GPG-signed main
+`df79934be5855d79503e5b8749a5c03d48bc520f` subsequently passed
+[hosted fixture CI](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37781002202):
+**886 tests passed in each** Windows/Linux x Python 3.11/3.14 job, with no skips.
+[Meta CI](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37781002110) and
+[CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/37781001644) also
+passed on that exact revision. This later receipt records verification only;
+it changes neither the preregistered protocol nor the original attempt's bytes.
+
 ## Decision and next question
 
 **Do not integrate or qualify closed-confirmation scenario v1 on this evidence.**
