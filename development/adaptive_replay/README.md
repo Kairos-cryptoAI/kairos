@@ -5,6 +5,24 @@ source/configuration. It neither searches thresholds nor enrolls/promotes a
 campaign. All trading readiness remains false and policy remains `REJECT_ALL`.
 Trial 15, V4/V5, the frozen Backtest repository and evaluator are never edited.
 
+## Scenario-based trading research rework
+
+`scenarios.py` separates a source-bound hypothesis from subsequent closed-price
+confirmation, immutable stop/target/expiry, directional review and downstream
+Risk. `scenario_bridge.py` uses the actual unchanged compact technical decision
+and context-direction mapper, but produces a **waiting scenario**, not entry
+permission. Quiet slots remain quiet; unavailable data never becomes valid
+no-trade evidence. The first structural trigger is consumed even if refused;
+terminal scenarios do not revive after new model answers or more favorable prices.
+
+This is a new unqualified research hypothesis. It does not amend the old complex,
+candidate tapes, results or frozen protocols. Closed-minute confirmation can
+expire native 60s candidates before any observation is available: the original
+expiry is deliberately retained. There is no quotation/fill guarantee, economic
+result, production registry entry or paid loop. The explicit `require_review=False`
+mode is only the isolated strategy-only comparison control, never a Risk bypass.
+See [implementation and limits](../../docs/SCENARIO-REWORK-2026-10-08.md).
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement

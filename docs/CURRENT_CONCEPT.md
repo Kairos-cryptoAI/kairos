@@ -4,18 +4,21 @@ Updated: 2026-10-08 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Active work: engineering closeout; strategy research paused
+## Active work: scenario-based research rework after engineering closeout
 
-The owner's latest direction is to finish non-strategy engineering and leave
-strategy selection for a later task. Do not start another strategy search,
-historical/model replay, enrollment or frozen-campaign change under this scope.
-UI/UX remains deferred. Existing reusable composition and risk/execution
-boundaries remain; close only reproducible defects and refresh their exact
-source/dependency evidence. Code and fixture completion are not runtime,
-venue, operational-security or economic qualification. In particular, the
-guarded primary recovery, external backup/custody, actual alert delivery and
-venue acceptance cannot be declared complete merely because strategy work
-is paused. No readiness flag or trading authority follows.
+The owner has reopened the trading-logic task around specialized hypotheses,
+explicit market confirmation, fixed invalidation and expiry, independent review
+and risk, and complete trade/no-trade accounting. The prior non-strategy
+closeout remains delivered, with its operational admissions still separate.
+The additive [scenario rework](SCENARIO-REWORK-2026-10-08.md) is an isolated
+offline research implementation, not a replacement of old strategy results,
+a selected profitable champion or production integration. No historical/model
+economic replay, campaign enrollment or frozen-evidence change follows.
+UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
+pins and default rejection are unchanged. Code and fixture completion are not
+runtime, venue, operational-security or economic qualification. Guarded primary
+recovery, external backup/custody, actual alert delivery and venue acceptance
+remain required. No readiness flag or trading authority follows.
 
 ## Preserved strategy work: candidate-stream and causal selection evaluation
 
@@ -102,6 +105,11 @@ The target is:
    Save candidates and explicit no-action/unavailable outcomes; do not infer an evaluation from
    silence. A candidate fixes entry eligibility/expiry, side, stop, target and
    timeout. Trade count is an outcome, never a quota.
+   A structural hypothesis is distinct from its confirming market observation.
+   It may wait, expire, invalidate or become unavailable without any entry.
+   The new research layer keeps the original barriers and lifetime and consumes
+   the first confirming structure even if review, costs or execution refuse it.
+   A later model answer cannot revive that same spent opportunity.
 3. Router selects the review workload. Review returns only `ALLOW/VETO/DEFER`;
    it cannot change the candidate. Independent LLM hypotheses are a distinct
    research arm even when there is no quant intent, not direct orders.
@@ -142,6 +150,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
+| Scenario lifecycle | additive closed-confirmation research layer, source/clock-bound hypothesis, immutable per-observation chain and bridges from native decisions/context directions; no runtime registration | own source/execution feasibility and matched incremental-value evidence; a later closed-minute trigger may not fit a native 60s lifetime, which is not extended |
 | Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened candidate-stream selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | assess source/execution validity and causal full-system incremental value before one own eligible identity/evaluator freeze; no parameter grid or production integration now |
 | Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |
