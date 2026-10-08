@@ -101,6 +101,14 @@ try {
         }
     }
 
+    # Confirm the real Git command is restored after the expected native failure.
+    # This also leaves a successful native exit for GitHub Actions' shell wrapper;
+    # the deliberately asserted exit 37 must not become the whole step's result.
+    $restoredStatus = Invoke-TestGit -Arguments @("status", "--porcelain=v1", "--untracked-files=normal")
+    if (-not [string]::IsNullOrWhiteSpace(($restoredStatus | Out-String))) {
+        throw "Native Git alias restoration changed the disposable checkout"
+    }
+
     Write-Host "Release checkout identity regression tests passed."
 }
 finally {
