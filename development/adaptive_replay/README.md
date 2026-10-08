@@ -65,6 +65,18 @@ Controls cannot be enrolled after any observation for the same parent. See
 Accepted kline/PRICE_ONLY/aggTrades evidence is not a causal bid/ask corpus;
 the journal does not fabricate quotes or qualify caller-attested provenance.
 
+The separate `quote_capture.py` parses retained exact-byte caller-supplied BBO
+captures, including same-snapshot base-asset quantities. Its explicit Kairos
+research wire format is not an official exchange protocol or authenticated feed.
+`fill_feasibility.py` freshly audits the original journal and checks one supplied
+simulated fill against exact issuance, original expiry/protection, causal quote
+clocks, executable-side capacity and unchanged planning assumptions. It does not
+invoke Portfolio.admit, size risk, create positions/orders or record executions.
+Repeated assessments are diagnostics, not repeated fill permission. See
+[source and execution-feasibility boundary](../../docs/QUOTE-FILL-FEASIBILITY-2026-10-09.md).
+New modules intentionally change the journal's installed implementation binding;
+old journals are not adopted, migrated or resealed under the new source identity.
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement

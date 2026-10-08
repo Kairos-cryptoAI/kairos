@@ -29,6 +29,11 @@ first-trigger evidence, typed replay and restart/conflict guards around unchange
 v2. It is not an outbox or trading publisher. Authentic source/fill admission,
 continuous campaign/runtime integration and separately fixed economic evidence
 remain open; accepted historical sources are not a causal bid/ask corpus.
+The additive [quote/fill feasibility checks](QUOTE-FILL-FEASIBILITY-2026-10-09.md)
+now bind supplied BBO bytes and same-snapshot capacity, freshly audited journal
+issuance and unchanged stop/target/trailing/deadlines to one hypothetical fill.
+They are source-consistency and simulated engineering checks, not source
+authentication, real execution, position management or accepted economics.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary
