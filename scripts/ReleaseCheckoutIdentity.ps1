@@ -7,9 +7,30 @@ function Invoke-ReleaseGit {
     # Git can emit benign warnings for ignored, inaccessible cache directories. The
     # release decision is based on its exit status and stdout, so do not let an
     # external-program stderr record become a PowerShell terminating error.
-    $result = & git -C $RepositoryPath @Arguments 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        throw "git -C $RepositoryPath $($Arguments -join ' ') failed: $($result -join [Environment]::NewLine)"
+    $previousErrorActionPreference = $ErrorActionPreference
+    $nativeErrorPreference = Get-Variable -Name "PSNativeCommandUseErrorActionPreference" -ErrorAction SilentlyContinue
+    $hasNativeErrorPreference = $null -ne $nativeErrorPreference
+    if ($hasNativeErrorPreference) {
+        $previousNativeErrorPreference = $nativeErrorPreference.Value
+    }
+    try {
+        $ErrorActionPreference = "Continue"
+        if ($hasNativeErrorPreference) {
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $false -Scope Local
+        }
+        $result = & git -C $RepositoryPath @Arguments 2>$null
+        $gitExitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+        if ($hasNativeErrorPreference) {
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $previousNativeErrorPreference -Scope Local
+        }
+    }
+    if ($gitExitCode -ne 0) {
+        # Never echo arbitrary Git stdout/arguments: failed remote commands can
+        # include credential-bearing URLs. The caller has the scoped identity.
+        throw "Git source-identity command failed with exit code $gitExitCode in $RepositoryPath"
     }
     return ($result | Out-String).Trim()
 }

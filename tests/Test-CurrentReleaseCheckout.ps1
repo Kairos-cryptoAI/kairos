@@ -65,6 +65,42 @@ try {
         Assert-ReleaseRepositoryCheckout -RepositoryPath $repositoryPath -RepositoryName "fixture" -ExpectedOrigin $expectedOrigin
     }
 
+    # Exercise real native stderr under Windows PowerShell 5.1 as well as pwsh.
+    # Only this script's Git alias is replaced; the fixture never mutates files.
+    $priorGitAlias = Get-Alias -Name git -ErrorAction SilentlyContinue
+    $priorNativeErrorPreference = Get-Variable -Name "PSNativeCommandUseErrorActionPreference" -ErrorAction SilentlyContinue
+    try {
+        if ($null -ne $priorNativeErrorPreference) {
+            $savedNativeErrorPreference = $priorNativeErrorPreference.Value
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $true -Scope Script
+        }
+        Set-Alias -Name git -Value (Join-Path $PSScriptRoot "fixtures\release-git-warning.cmd") -Scope Script
+        $output = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("warning")
+        if ($output -cne "synthetic release Git output") {
+            throw "A successful Git command with stderr lost its exact stdout"
+        }
+        Assert-ThrowsContaining -ExpectedText "exit code 37" -Action {
+            Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("nonzero")
+        }
+        if ($ErrorActionPreference -ne "Stop") {
+            throw "Git verification leaked its temporary error preference"
+        }
+        if ($null -ne $priorNativeErrorPreference -and $PSNativeCommandUseErrorActionPreference -ne $true) {
+            throw "Git verification leaked its temporary native error preference"
+        }
+    }
+    finally {
+        if ($null -ne $priorNativeErrorPreference) {
+            Set-Variable -Name "PSNativeCommandUseErrorActionPreference" -Value $savedNativeErrorPreference -Scope Script
+        }
+        if ($null -eq $priorGitAlias) {
+            Remove-Item -LiteralPath Alias:\git
+        }
+        else {
+            Set-Alias -Name git -Value $priorGitAlias.Definition -Scope Script
+        }
+    }
+
     Write-Host "Release checkout identity regression tests passed."
 }
 finally {
