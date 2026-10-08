@@ -27,7 +27,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-CurrentRe
 ```
 
 The gate requires all listed repositories to be clean, on `main`, and exactly equal to
-their local `origin/main`. It also verifies that the two `kairos-deploy` deterministic
+their local `origin/main`. Non-ignored untracked files also block certification;
+ignored local build/cache files are outside this source identity. Before trusting
+`origin/main`, the verifier requires the effective `origin` URL to match the
+manifest's canonical repository URL. A failed check never prints that URL.
+It also verifies that the two `kairos-deploy` deterministic
 gate locks are exact projections of the eight runtime repository revisions in this
 manifest; historical gate evidence therefore cannot silently carry forward across a
 dependency change. Before certifying the source identity, it also checks each tracked

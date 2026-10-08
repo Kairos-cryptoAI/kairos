@@ -7,28 +7,14 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+. (Join-Path $PSScriptRoot "ReleaseCheckoutIdentity.ps1")
+
 $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
     $ManifestPath = Join-Path $repositoryRoot "config\current-release.json"
 }
 if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     $WorkspaceRoot = Split-Path -Parent $repositoryRoot
-}
-
-function Invoke-ReleaseGit {
-    param(
-        [Parameter(Mandatory = $true)][string]$RepositoryPath,
-        [Parameter(Mandatory = $true)][string[]]$Arguments
-    )
-
-    # Git can emit benign warnings for ignored, inaccessible cache directories.  The
-    # release decision is based on its exit status and stdout, so do not let an
-    # external-program stderr record become a PowerShell terminating error.
-    $result = & git -C $RepositoryPath @Arguments 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        throw "git -C $RepositoryPath $($Arguments -join ' ') failed: $($result -join [Environment]::NewLine)"
-    }
-    return ($result | Out-String).Trim()
 }
 
 function Find-TrackedCredentialPatternPaths {
@@ -230,8 +216,10 @@ foreach ($entry in $entries) {
 
     $branch = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("branch", "--show-current")
     if ($branch -ne "main") { throw "$($entry.name) is not on main (found '$branch')" }
-    $dirty = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("status", "--porcelain=v1", "--untracked-files=no")
-    if (-not [string]::IsNullOrWhiteSpace($dirty)) { throw "$($entry.name) has uncommitted changes" }
+    Assert-ReleaseRepositoryCheckout `
+        -RepositoryPath $repositoryPath `
+        -RepositoryName $entry.name `
+        -ExpectedOrigin $entry.origin
 
     $head = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("rev-parse", "HEAD")
     $originMain = Invoke-ReleaseGit -RepositoryPath $repositoryPath -Arguments @("rev-parse", "origin/main")

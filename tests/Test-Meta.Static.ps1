@@ -9,6 +9,8 @@ $runnerPath = Join-Path $repoRoot "scripts\Test-Kairos.ps1"
 $manifestPath = Join-Path $repoRoot "config\repositories.json"
 $currentReleasePath = Join-Path $repoRoot "config\current-release.json"
 $currentReleaseVerifierPath = Join-Path $repoRoot "scripts\Test-CurrentRelease.ps1"
+$releaseCheckoutIdentityPath = Join-Path $repoRoot "scripts\ReleaseCheckoutIdentity.ps1"
+$releaseCheckoutTestPath = Join-Path $PSScriptRoot "Test-CurrentReleaseCheckout.ps1"
 $githubSecurityVerifierPath = Join-Path $repoRoot "scripts\Test-GitHubSourceSecurity.ps1"
 
 $tokens = $null
@@ -31,6 +33,28 @@ $releaseParseErrors = $null
 ) | Out-Null
 if ($releaseParseErrors.Count -gt 0) {
     throw "Current-release verifier parse errors: $($releaseParseErrors -join '; ')"
+}
+
+$checkoutIdentityTokens = $null
+$checkoutIdentityParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $releaseCheckoutIdentityPath,
+    [ref]$checkoutIdentityTokens,
+    [ref]$checkoutIdentityParseErrors
+) | Out-Null
+if ($checkoutIdentityParseErrors.Count -gt 0) {
+    throw "Release checkout identity helper parse errors: $($checkoutIdentityParseErrors -join '; ')"
+}
+
+$checkoutTestTokens = $null
+$checkoutTestParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $releaseCheckoutTestPath,
+    [ref]$checkoutTestTokens,
+    [ref]$checkoutTestParseErrors
+) | Out-Null
+if ($checkoutTestParseErrors.Count -gt 0) {
+    throw "Release checkout identity test parse errors: $($checkoutTestParseErrors -join '; ')"
 }
 
 $githubSecurityTokens = $null
@@ -64,6 +88,7 @@ if ($LASTEXITCODE -ne 0) { throw "Runner default manifest path failed" }
 
 $runnerText = Get-Content -LiteralPath $runnerPath -Raw
 $currentReleaseVerifierText = Get-Content -LiteralPath $currentReleaseVerifierPath -Raw
+$releaseCheckoutIdentityText = Get-Content -LiteralPath $releaseCheckoutIdentityPath -Raw
 foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--check", "mypy", "bandit", "pytest", "build", "--no-sources", "Out-Host", "--no-sync")) {
     if (-not $runnerText.Contains($requiredFragment)) {
         throw "Runner is missing required command fragment: $requiredFragment"
@@ -141,9 +166,19 @@ foreach ($forbiddenFragment in @("reset --hard", "checkout --", "clean -", "Get-
         throw "Runner contains forbidden mutation or secret access: $forbiddenFragment"
     }
 }
-foreach ($requiredFragment in @("current-release-gate.sources.lock.json", "sim-full-path.sources.lock.json", "runtimeGateNames")) {
+foreach ($requiredFragment in @("current-release-gate.sources.lock.json", "sim-full-path.sources.lock.json", "runtimeGateNames", "ReleaseCheckoutIdentity.ps1", "Assert-ReleaseRepositoryCheckout")) {
     if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
         throw "Current-release verifier is missing required source-projection check: $requiredFragment"
+    }
+}
+$checkoutAssertionIndex = $currentReleaseVerifierText.IndexOf("Assert-ReleaseRepositoryCheckout", [System.StringComparison]::Ordinal)
+$originMainLookupIndex = $currentReleaseVerifierText.IndexOf('Arguments @("rev-parse", "origin/main")', [System.StringComparison]::Ordinal)
+if ($checkoutAssertionIndex -lt 0 -or $originMainLookupIndex -lt 0 -or $checkoutAssertionIndex -ge $originMainLookupIndex) {
+    throw "Current-release verifier must validate checkout origin and cleanliness before trusting origin/main"
+}
+foreach ($requiredFragment in @("Assert-ReleaseRepositoryCheckout", "remote", "get-url", "--untracked-files=normal")) {
+    if (-not $releaseCheckoutIdentityText.Contains($requiredFragment)) {
+        throw "Release checkout identity helper is missing required validation: $requiredFragment"
     }
 }
 foreach ($requiredFragment in @("Find-TrackedCredentialPatternPaths", "openai-style-secret", "private-key-pem", 'git -C $RepositoryPath grep -I -l -E')) {
@@ -194,3 +229,4 @@ foreach ($file in $markdownFiles) {
 }
 
 Write-Host "Static runner, manifest, and local Markdown-link validation passed."
+& $releaseCheckoutTestPath
