@@ -19,6 +19,12 @@ none (25 unsupported regimes, 11 unsupported trailing exits). Its abstaining
 account misses winners as well as losers; it does not qualify confirmation or
 justify integration. No model replay, campaign enrollment or frozen-evidence
 change follows. Old candidate lifetimes and protections remain unchanged.
+The separate [hypothesis / fresh-entry v2](HYPOTHESIS-LIFECYCLE-V2-2026-10-08.md)
+now implements explicit independent validity, quote/context-bound review and a
+distinct bounded entry envelope with the complete original trailing protection.
+It does not renew the parent, admit uncertain regimes, rerun the v1 diagnostic,
+select a profitable duration or integrate with runtime. Authentic source/fill
+admission, durable lifecycle and separately fixed economic evidence remain open.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary
@@ -155,7 +161,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 
 | component/path | current boundary | work needed for the target |
 | --- | --- | --- |
-| Scenario lifecycle | additive closed-confirmation research layer, source/clock-bound hypothesis, immutable per-observation chain and bridges from native decisions/context directions; fixed price-only diagnostic completed with zero supported plans; no runtime registration or qualification | separately versioned design of hypothesis validity versus executable-candidate lifetime and unchanged trailing protection, then source/execution feasibility and matched incremental value; do not extend old TTLs or retune/rerun the completed attempt |
+| Scenario lifecycle | v1 fixed price-only diagnostic completed with zero supported plans; separate v2 library/fixtures implement explicit validity and quote-bound fresh entry with full original protections; no runtime registration or qualification | authentic causal quote/context coverage, actual-fill/trailing feasibility, durable first-trigger lifecycle and separately fixed matched incremental-value evidence; do not extend old TTLs, broaden uncertainty or retune/rerun the completed attempt |
 | Adaptive strategy | existing `adaptive_pullback_range_v1` generator is a provisional challenger during reopened candidate-stream selection; exact finite policy, isolated RESEARCH only; not economically qualified or campaign-frozen | assess source/execution validity and causal full-system incremental value before one own eligible identity/evaluator freeze; no parameter grid or production integration now |
 | Strategy evaluation | new opt-in adapter emits source-bound candidate/evaluation/regime evidence with actual clocks; legacy fingerprints and runtime allow-lists unchanged | durable publisher/enrollment for only the selected new identity; unsupported generators do not acquire adaptive eligibility |
 | Market and news context | immutable source receipts and exact declared bar tail; compact messages do not prove full warmup/raw-news availability | production history resolver, durable point-in-time source archive and source-specific qualification |

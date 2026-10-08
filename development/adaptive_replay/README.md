@@ -41,6 +41,21 @@ scenario plans (25 UNCERTAIN, 11 trailing-incompatible). It does not qualify a
 confirmation rule: a zero-trade arm misses winners as well as losers. Do not
 retry, retune, extend TTL, pool timing models or promote this v1 on those results.
 
+## Separately versioned hypothesis / fresh-entry v2
+
+`hypothesis_v2.py` and `hypothesis_bridge_v2.py` separate explicitly sealed
+hypothesis validity from the original native executable candidate lifetime.
+The exact parent is not renewed. One later structural trigger can issue one
+different quote-priced research candidate with bounded fresh clocks, unchanged
+full ExitPlan/trailing and preserved metadata. Review binds both source context
+and the separate quote; price-only mode has another frozen policy identity.
+No default lifetime is selected and no v1 comparator/attempt is rerun.
+See [contracts, guards and integration limits](../../docs/HYPOTHESIS-LIFECYCLE-V2-2026-10-08.md).
+This is library/fixture engineering only: no runner or runtime registration,
+authenticated quote corpus, observed historical economics or alpha approval.
+Native runtime still refuses trailing, and actual fills need an independent
+activation/protection check; quote geometry is not execution qualification.
+
 ## Separate frozen-level retest research
 
 `frozen_retest.py` adds one unregistered research hypothesis, not a replacement
