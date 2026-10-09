@@ -2,6 +2,19 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Complete original BTC-day block index — 2026-10-09
+
+The [bounded source-only derivation](HISTORICAL-BTC-BBO-BLOCK-INDEX-2026-10-09.md)
+indexed all 19,245,805 original January-8 BTC BBO rows into 27,672 blocks,
+without resampling: 15,060,526 index bytes, 1,338.203 seconds and 62,427,136
+peak working-set bytes. Original 27 segments and ZIP/CSV bytes remain intact.
+The first-batch/last-row inspection uses explicit modeled 100/100-ms delays,
+not historical receiving clocks or frozen financial-campaign assumptions.
+This byte-bound tool-clone run is neither an installed release gate nor a
+financial replay. Complete accepted sources, continuous five-symbol/five-day
+financial accounts and fixed four-arm economics remain open; readiness remains
+false with `REJECT_ALL`.
+
 ## Original five-symbol window objects collected — 2026-10-09
 
 The [January 9–13 acquisition](HISTORICAL-BBO-WINDOW-ACQUISITION-2026-10-09.md)

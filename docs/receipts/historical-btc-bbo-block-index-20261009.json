@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "kind": "COMPLETE_ORIGINAL_BTC_DAY_BLOCK_INDEX_NOT_FINANCIAL_REPLAY",
+  "scope": "BTCUSDT_2024_01_08_ONE_DAY_SOURCE_ONLY",
+  "source": {
+    "archiveSha256": "87716a48513fd29a49d32dab5b78ab0788dd58259a307bf5224f9a4a4c59b4ec",
+    "csvSha256": "799529f78e6d4463e9af24bd6e93a8ac13eb93044ac6cbbb88eecaf1537f6a05",
+    "manifestSha256": "68ae631229c428e14c7140f244f91adb3c38eb0ab3d4aec4d84feae8902a99aa",
+    "originalRows": 19245805,
+    "originalCsvBytes": 1811753894,
+    "retainedSegments": 27,
+    "lastOriginalEventTimeMs": 1704758400005
+  },
+  "derivation": {
+    "state": "COMPLETED_FULL_ORIGINAL_BLOCK_INDEX_NOT_FINANCIAL_REPLAY",
+    "nativeExitCode": 0,
+    "startedAtUtc": "2026-10-09T04:58:22.065012+00:00",
+    "completedAtUtc": "2026-10-09T05:20:40.175058+00:00",
+    "elapsedSeconds": 1338.203,
+    "peakWorkingSetBytes": 62427136,
+    "blocks": 27672,
+    "indexBytes": 15060526,
+    "indexManifestSha256": "a82b48d828c1a06b7b3c9d0fb245b04eac6a40e64ad298e0310f3c5aa88ee3fc",
+    "blocksSha256": "23edeb2be86bff2d2ef5b149621327fff29d9df63bef705f63b265fae0ce2d70",
+    "finalSourcePrefixSha256": "37acbbb1f4be38a41fd05382fd24a94b33be7c129509ef2bc9a99dc984f03a1f",
+    "wholeAttemptTimeoutSeconds": 2700,
+    "builderRemainingTimeoutSeconds": 2468,
+    "maxBlockBytes": 65536,
+    "maxBlocks": 100000,
+    "maxIndexBytes": 67108864,
+    "maxBatchRows": 500,
+    "maxBatchBytes": 2097152,
+    "firstFunctionalBatchRows": 500,
+    "firstFunctionalBatchSha256": "df88695605876a1eaeaa7d7d378c7669c344d01b32cec0a6fed57cd0577b7f16"
+  },
+  "clockInspection": {
+    "classification": "MODELED_REFERENCE_ONLY_NOT_FROZEN_FINANCIAL_CAMPAIGN",
+    "exchangeClockField": "EVENT_E",
+    "feedLatencyMs": 100,
+    "processingLatencyMs": 100,
+    "clockPolicySha256": "3cf6b216dca3af621925e586da48691a5d433c430f01c67565275471b3543b01",
+    "historicalReceivedAtMs": null
+  },
+  "provenance": {
+    "classification": "BYTE_BOUND_TOOL_CLONE_NOT_INSTALLED_WHEEL_GATE",
+    "resultSha256": "17de512f497e0426912a5f1e8e08c930525c88a3a86efd639ce318f320019b1d",
+    "intentSha256": "286a6cb052c06fe1d17c58711220f14899ebed0bcf935fa4a868c60e87472cb8",
+    "workerSha256": "f996622ac78c007d9330b5617b78f75a4c514265d47997afa48d72b04c3b102d",
+    "toolModules": {
+      "bookticker_archive_stream_v3.py": "32369e4f2ddff907b62c9e4e264549e378aa27cc1cf06c3967ee39b58694a51c",
+      "archive_market_clock_v3.py": "31186166e3de17bc73c8f50672f2de6bed2e119f31ab076212c78f6a850c3896",
+      "archive_batch_cursor_v3.py": "a3a97f066e18ae4836bb96a9f4f98a5f54b6eb15ca734814297cc051ee6f2f29"
+    }
+  },
+  "authority": {
+    "allOriginalBtcDayRowsIndexed": true,
+    "fullFinancialReplay": false,
+    "continuousFiveSymbolFiveDayReplay": false,
+    "historicalLocalReceiveClock": false,
+    "sourceAdmission": false,
+    "modelExecution": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}
