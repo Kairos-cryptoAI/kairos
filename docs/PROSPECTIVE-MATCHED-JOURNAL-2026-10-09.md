@@ -92,9 +92,11 @@ must keep the price origin separate from actual knowledge/materialization,
 filter future-captured context versions and coverage before selecting them,
 and never turn an origin-frame response into a review of later quotes.
 
-The current continuous portfolio has a 1,440-minute denominator limit and exact
-V2 intake. That is not the fixed five-day episode or indefinite five-symbol SIM.
-The remaining V3 intake and sealed horizon/rollover must preserve the same
+At the G journal stage the continuous portfolio had exact V2 intake. The later
+[separate V3 intake](PROSPECTIVE-PORTFOLIO-INTAKE-2026-10-09.md) connects original
+receipts and normalized candle provenance, while retaining the 1,440-minute
+denominator limit. It is not the fixed five-day episode or indefinite SIM.
+The remaining sealed horizon/rollover must preserve the same
 account, exposures, liquidity, natural exits, funding, expenses, source cursor
 and complete denominator; new daily accounts are not an acceptable substitute.
 Native 200-bar default buffers / 1,500-row REST pages also do not supply the

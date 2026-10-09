@@ -766,5 +766,27 @@ grant strategy-only routing to model-originated proposals.
 
 The [journal acceptance and remaining integration boundaries](../../docs/PROSPECTIVE-MATCHED-JOURNAL-2026-10-09.md)
 record actual gates separately from missing raw REST/finality evidence,
-prospective frame/provider receipts, V3 intake, full five-day continuous horizon
+prospective frame/provider receipts, full five-day continuous horizon
 and the fixed four-arm economic comparison. No paid calls or trading follow.
+
+## Original V3 intake into the bounded portfolio
+
+`ContinuousSimPortfolio.intake_v3` now accepts the original matched V3 journal
+and exact first-trigger receipt under its separately sealed producer/origin
+configuration. It does not cast V3 into V2. Full normalized candle originals
+bind the anchor and complete prefix through the trigger at each original
+shared availability clock; context-anchor readiness is checked at the actual
+proposal request. A context-proposal counterfactual cannot enter strategy-only.
+
+The common financial fold retains original stops/targets, partial fills,
+liquidity, risk, natural exits and restart. Consumed decisions with unavailable
+data poison coverage and keep net results null, including through restart;
+known source-complete veto remains a known refusal. The immutable B installed
+Python 3.11/3.14 suites each pass 1,627 tests with four platform skips, and all
+67 installed adaptive sources match their retained wheel.
+
+See [the scoped implementation and receipt](../../docs/PROSPECTIVE-PORTFOLIO-INTAKE-2026-10-09.md).
+The existing one-day/full-state/input caps are not silently enlarged. Accepted
+historical sources, full five-day non-resetting storage/source segments,
+prospective frames and the fixed four-arm economic driver remain open. No
+historical model run, winner, admission, paid call or trading authority follows.

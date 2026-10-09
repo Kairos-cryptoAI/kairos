@@ -29,8 +29,16 @@ The immutable G installed-wheel suites each pass 1,603 tests with four explicit
 platform skips on Python 3.11/3.14; all 66 installed adaptive Python sources
 match the retained wheel. These checks do not supply source/model authentication
 or physical entry.
+The [V3 portfolio intake](PROSPECTIVE-PORTFOLIO-INTAKE-2026-10-09.md) now binds
+exact originals, the full pre-trigger source prefix, actual proposal request/
+shared decision clocks and explicit origin routing to the unchanged account
+fold. Unavailable first decisions remain UNRESOLVED/null through restart, not
+complete zero-return observations. The separate immutable B installed-wheel
+suites pass 1,627 tests each with four platform skips on Python 3.11/3.14;
+all 67 installed sources match their retained wheel. Those checks exclude the
+unfinished additive delta-storage/raw-REST modules and do not admit history.
 Full accepted causal inputs, raw closed-bar/finality evidence, prospective
-frame/review clocks, V3 portfolio intake, a non-resetting five-day horizon and
+frame/review clocks, a non-resetting five-day horizon and
 a fixed continuous four-arm economic comparison remain open. An origin-cut assessment cannot be retimed
 into a later quote-bound review. No winner, new blind enrollment, paid model
 test or trading permission follows. UI stays deferred; Trial 15 and V2/V4/V5

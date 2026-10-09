@@ -31,3 +31,6 @@ development/adaptive_replay/scripts/export_legacy_public_book_tape.py -text
 development/adaptive_replay/adaptive_replay/public_book_transfer.py -text
 development/adaptive_replay/adaptive_replay/hypothesis_v3.py -text
 development/adaptive_replay/adaptive_replay/hypothesis_journal_v3.py -text
+# V3 portfolio gates retain these exact implementation bytes in their wheel.
+development/adaptive_replay/adaptive_replay/continuous_sim.py -text
+development/adaptive_replay/adaptive_replay/candle_originals_v3.py -text

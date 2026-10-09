@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "kind": "PROSPECTIVE_V3_PORTFOLIO_INTAKE_ENGINEERING_GATES",
+  "scope": "IMMUTABLE_B_INSTALLED_WHEEL_AND_EXACT_SNAPSHOT_TEST_ROSTER",
+  "sources": {
+    "continuousSimSha256": "0f3b89c5db48e7176800030d82f11f54ce1021268af8763b7c9652827a5d7b05",
+    "candleOriginalsSha256": "8b164c79fbaa13665abee0d9bb71fa72beb2b57ec5701836c022fce7db689817",
+    "v3PortfolioTestsSha256": "1c55862b919f130595a92cc7faa456e93a4c84214d9fb9706889ea54618b69ec"
+  },
+  "wheelSha256": "9404770bda60492103d884e0913b0f5963bde508d94487f8a6fe84d58be975a5",
+  "sdistSha256": "d42f7d1e27183c650cb7506ed2dfcd8545014660aab7a3b7657d515c6868a194",
+  "sourceRoster": {
+    "adaptivePythonFiles": 67,
+    "testPythonFiles": 82,
+    "py311ExactWheelMatch": true,
+    "py314ExactWheelMatch": true,
+    "excludedUnfinishedAdditiveWork": ["sim_delta_journal_v3", "rest_candle_receipts_v3"]
+  },
+  "full": [
+    { "python": "3.11.15", "passed": 1627, "skipped": 4, "failures": 0, "errors": 0, "nativeExitCode": 0, "secondsConsole": 340.03, "secondsJunit": 339.984, "junitSha256": "896a21871ca47ceae4c5617dbd3af7953a5e83f5045e060c6de783ca008e22c8" },
+    { "python": "3.14.7", "passed": 1627, "skipped": 4, "failures": 0, "errors": 0, "nativeExitCode": 0, "secondsConsole": 266.79, "secondsJunit": 266.765, "junitSha256": "ad0e196d659000858920b970754f87a6fa805616a802dfa887b621c1b2c4af34" }
+  ],
+  "testOptions": ["-I", "--import-mode=importlib", "-W error"],
+  "additionalGates": { "ruffCheck": true, "ruffFormatCheck": true, "offlineLockCheck55Packages": true, "metaStatic": true, "releaseCheckoutRegression": true },
+  "preservedFailures": [
+    "First A V3 focused run: 13 passed, 2 fixture-assumption failures (candidate metadata projection and unequal pending-entry advancement).",
+    "Next A V3 focused run: 14 passed, 1 fixture-assumption failure (whole parent receipts intentionally differ by arm).",
+    "Final A V3 focused run: 15 passed, native exit zero; no warning filters or failing-case skips."
+  ],
+  "authority": {
+    "normalizedCandleConsistencyOnly": true,
+    "rawRestFinality": false,
+    "historicalSourceAdmission": false,
+    "sourceAuthentication": false,
+    "providerAuthentication": false,
+    "fullFiveDayHorizon": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}

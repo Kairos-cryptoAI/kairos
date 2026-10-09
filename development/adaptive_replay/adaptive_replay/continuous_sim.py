@@ -27,10 +27,15 @@ from kairos_execution.simulation.models import (
     LiquidityState,
 )
 from kairos_strategy.models import SleeveIntent
+from kairos_strategy.provenance import candle_payload
 
 from . import adaptive_sim_account as account_api
+from .candle_originals_v3 import CandleOriginalsV3
 from .historical_context import digest
 from .hypothesis_journal import HypothesisJournal, JournalReceipt
+from .hypothesis_journal_v3 import HypothesisJournalV3, JournalReceiptV3
+from .hypothesis_v3 import POLICY_ID as V3_POLICY_ID
+from .hypothesis_v3 import HypothesisPlan as V3HypothesisPlan
 from .sim_account_codec import decode_account, encode_account
 from .sim_book_tape import PublicBookTape
 from .sim_state_journal import JournalIdentity, SimStateJournal
@@ -306,6 +311,9 @@ def _implementation():
         Path(SimStateJournal.create.__func__.__code__.co_filename),
         Path(encode_account.__code__.co_filename),
         Path(HypothesisJournal.snapshot.__code__.co_filename),
+        Path(HypothesisJournalV3.snapshot.__code__.co_filename),
+        Path(sys.modules[V3HypothesisPlan.__module__].__file__),
+        Path(sys.modules[CandleOriginalsV3.__module__].__file__),
         Path(sys.modules[SleeveIntent.__module__].__file__),
     ]
     return digest([[str(p.absolute()), hashlib.sha256(p.read_bytes()).hexdigest()] for p in paths])
@@ -344,15 +352,16 @@ def _no_book_outcome(command, model, arrival):
 
 
 class ContinuousSimPortfolio:
-    """Finite shared-arm portfolio; intake is an exact durable v2 issuance, not a generator."""
+    """Finite shared-arm portfolio; intake consumes an exact sealed V2 or V3 issuance."""
 
-    def __init__(self, journal, binding, models, rules, funding, config, path):
+    def __init__(self, journal, binding, models, rules, funding, config, path, candle_originals=None):
         self.journal, self.binding, self.funding = journal, binding, funding
         self._sealed_binding, self._sealed_funding = binding, funding
         self.models, self.rules = MappingProxyType(dict(models)), MappingProxyType(dict(rules))
         self.config = json.loads(_json(config))
         self._sealed_config = json.loads(_json(config))
         self.path = Path(path).absolute()
+        self.candle_originals = self._sealed_candle_originals = candle_originals
 
     @staticmethod
     def _config(
@@ -365,9 +374,27 @@ class ContinuousSimPortfolio:
         initial_equity,
         maximum_exit_attempts,
         hypothesis_seal_sha256,
+        hypothesis_contract="V2",
+        candle_originals=None,
+        allowed_origins=(),
     ):
         _id(arm_id)
         _sha(hypothesis_seal_sha256)
+        if hypothesis_contract == "V2":
+            if candle_originals is not None or allowed_origins != ():
+                raise SimInputError("V2 cannot adopt prospective originals or routing")
+        elif hypothesis_contract == "V3":
+            if (
+                type(candle_originals) is not CandleOriginalsV3
+                or type(allowed_origins) is not tuple
+                or not allowed_origins
+                or allowed_origins != tuple(sorted(set(allowed_origins)))
+                or not set(allowed_origins) <= {"TECHNICAL", "CONTEXT_PROPOSAL"}
+            ):
+                raise SimInputError("V3 requires exact candle originals and presealed origin routing")
+            candle_originals.validate_binding(binding)
+        else:
+            raise SimInputError("explicit V2 or V3 producer contract required")
         if set(models) != set(UNIVERSE) or set(rules) != set(UNIVERSE):
             raise SimInputError("all five sealed symbol models/rules required")
         for s in UNIVERSE:
@@ -408,6 +435,9 @@ class ContinuousSimPortfolio:
         return {
             "arm": arm_id,
             "hypothesis_seal_sha256": hypothesis_seal_sha256,
+            "hypothesis_contract": hypothesis_contract,
+            "candle_originals_sha256": None if candle_originals is None else candle_originals.sha256,
+            "allowed_origins": list(allowed_origins),
             "tape": binding.mapping_sha256,
             "models": {s: models[s].fingerprint() for s in UNIVERSE},
             "rules": _plain({s: asdict(rules[s]) for s in UNIVERSE}),
@@ -435,6 +465,9 @@ class ContinuousSimPortfolio:
         initial_equity,
         hypothesis_seal_sha256,
         maximum_exit_attempts=3,
+        hypothesis_contract="V2",
+        candle_originals=None,
+        allowed_origins=(),
     ):
         _id(campaign_id)
         config = cls._config(
@@ -447,6 +480,9 @@ class ContinuousSimPortfolio:
             initial_equity,
             maximum_exit_attempts,
             hypothesis_seal_sha256,
+            hypothesis_contract,
+            candle_originals,
+            allowed_origins,
         )
         model = models[UNIVERSE[0]]
         policy = account_api.AccountPolicy(
@@ -486,10 +522,22 @@ class ContinuousSimPortfolio:
             max_event_rows=MAX_EVENTS,
             max_event_bytes=2 * 1024 * 1024,
         )
-        return cls(journal, binding, models, rules, funding_schedule, config, path)
+        return cls(journal, binding, models, rules, funding_schedule, config, path, candle_originals)
 
     @classmethod
-    def open(cls, path, *, identity, binding, models, rules, funding_schedule, config, expected_head_sha256):
+    def open(
+        cls,
+        path,
+        *,
+        identity,
+        binding,
+        models,
+        rules,
+        funding_schedule,
+        config,
+        expected_head_sha256,
+        candle_originals=None,
+    ):
         _sha(expected_head_sha256)
         rebuilt = cls._config(
             binding,
@@ -501,6 +549,9 @@ class ContinuousSimPortfolio:
             D(config["initial_equity"]),
             config["maximum_exit_attempts"],
             config["hypothesis_seal_sha256"],
+            config["hypothesis_contract"],
+            candle_originals,
+            tuple(config["allowed_origins"]),
         )
         if rebuilt != config:
             raise SimInputError("frozen configuration/implementation drift")
@@ -511,7 +562,7 @@ class ContinuousSimPortfolio:
         if snap.head_hash != expected_head_sha256 or snap.state["config"] != config:
             journal.close()
             raise SimInputError("independent head/config conflict")
-        return cls(journal, binding, models, rules, funding_schedule, config, path)
+        return cls(journal, binding, models, rules, funding_schedule, config, path, candle_originals)
 
     def close(self):
         self.journal.close()
@@ -530,6 +581,7 @@ class ContinuousSimPortfolio:
         if (
             self.binding is not self._sealed_binding
             or self.funding is not self._sealed_funding
+            or self.candle_originals is not self._sealed_candle_originals
             or self.config != self._sealed_config
             or {s: m.fingerprint() for s, m in self.models.items()} != self._sealed_config["models"]
             or _plain({s: asdict(r) for s, r in self.rules.items()}) != self._sealed_config["rules"]
@@ -603,10 +655,36 @@ class ContinuousSimPortfolio:
         return self._event(f"cost:{cost_id}", {"amount": str(amount), "at": at_ms}, at_ms, fold)
 
     def intake(self, *, hypothesis_journal, receipt, expected_hypothesis_head_sha256, at_ms):
-        """Consume exact issued parent even if shared risk/clock/capacity refuses it."""
+        """Consume exact V2 issued parent; never cast a prospective receipt to V2."""
+        if self.config["hypothesis_contract"] != "V2":
+            raise SimInputError("V2 intake cannot adopt a V3 producer configuration")
+        return self._intake(
+            hypothesis_journal=hypothesis_journal,
+            receipt=receipt,
+            expected_hypothesis_head_sha256=expected_hypothesis_head_sha256,
+            at_ms=at_ms,
+            prospective=False,
+        )
+
+    def intake_v3(self, *, hypothesis_journal, receipt, expected_hypothesis_head_sha256, at_ms):
+        """Consume original V3 evidence on its actual clock with explicit routing."""
+        if self.config["hypothesis_contract"] != "V3":
+            raise SimInputError("V3 intake requires its own presealed producer configuration")
+        return self._intake(
+            hypothesis_journal=hypothesis_journal,
+            receipt=receipt,
+            expected_hypothesis_head_sha256=expected_hypothesis_head_sha256,
+            at_ms=at_ms,
+            prospective=True,
+        )
+
+    def _intake(self, *, hypothesis_journal, receipt, expected_hypothesis_head_sha256, at_ms, prospective):
+        """Shared execution fold after version-specific original evidence validation."""
         _sha(expected_hypothesis_head_sha256)
-        if type(hypothesis_journal) is not HypothesisJournal or type(receipt) is not JournalReceipt:
-            raise SimInputError("original typed v2 evidence required")
+        journal_type = HypothesisJournalV3 if prospective else HypothesisJournal
+        receipt_type = JournalReceiptV3 if prospective else JournalReceipt
+        if type(hypothesis_journal) is not journal_type or type(receipt) is not receipt_type:
+            raise SimInputError("original typed evidence for the exact sealed producer required")
         hs = hypothesis_journal.snapshot()
         if hs.seal_sha256 != self.config["hypothesis_seal_sha256"]:
             raise SimInputError("producer journal differs from presealed hypothesis roster")
@@ -632,15 +710,30 @@ class ContinuousSimPortfolio:
         first_consumed = next((r for r in group.receipts if r.evaluation.state == "CONSUMED"), None)
         if replace(receipt, new_event=False) != first_consumed:
             raise SimInputError("terminal redelivery is not a new first trigger")
+        if digest(asdict(replace(receipt, new_event=False))) != digest(asdict(first_consumed)):
+            raise SimInputError("unchanged full original receipt bytes required")
         c = receipt.evaluation.candidate
         obs = next(
             (o for o in group.observations if o.observation_id == receipt.evaluation.observation_id), None
         )
         if obs is None or at_ms < receipt.evaluation.observed_ms:
             raise SimInputError("causal original first-trigger observation required")
+        if prospective:
+            index = next(i for i, o in enumerate(group.observations) if o is obs)
+            prefix = tuple(
+                zip(group.observations[: index + 1], group.review_receipts[: index + 1], strict=True)
+            )
+            self._validate_v3_originals(group.plan, receipt, prefix, c)
 
         def commit(payload, reducer):
-            event_id = f"intake:{receipt.parent_id}"
+            event_id = f"{'v3-intake' if prospective else 'intake'}:{receipt.parent_id}"
+            if prospective:
+                payload = payload | {
+                    "producer_contract": "V3",
+                    "producer_seal": hs.seal_sha256,
+                    "receipt_sequence": receipt.sequence,
+                    "parent_plan": digest(asdict(group.plan)),
+                }
             prior = self.journal.lookup(event_id=event_id, payload=payload)
             if prior is None and hs.head_sha256 != expected_hypothesis_head_sha256:
                 raise SimInputError("fresh external hypothesis head mismatch")
@@ -671,9 +764,18 @@ class ContinuousSimPortfolio:
                 slot = st["slots"].get(key)
                 if slot is not None and slot["status"] != "CANDIDATE":
                     raise SimInputError("first trigger cannot overwrite quiet/unavailable")
-                st["slots"].setdefault(
-                    key, {"status": "CANDIDATE", "source": expected_hypothesis_head_sha256, "parents": []}
-                )["parents"].append(receipt.parent_id)
+                slot = st["slots"].setdefault(
+                    key,
+                    {
+                        "status": "CANDIDATE",
+                        "source": expected_hypothesis_head_sha256,
+                        "parents": [],
+                        "coverage": "AVAILABLE",
+                    },
+                )
+                slot["parents"].append(receipt.parent_id)
+                if receipt.evaluation.coverage != "AVAILABLE":
+                    slot["coverage"] = "UNAVAILABLE"
                 st["parents"][receipt.parent_id] = {
                     "candidate": doc,
                     "issue": payload,
@@ -689,8 +791,8 @@ class ContinuousSimPortfolio:
                 return {"status": "REFUSED", "reason": receipt.evaluation.reason, "parent": receipt.parent_id}
 
             return commit(payload, refused)
-        if type(c) is not SleeveIntent:
-            raise SimInputError("typed original V2 candidate required")
+        if type(c) is not SleeveIntent or type(c.side) is not Side:
+            raise SimInputError("typed original candidate required")
         meta = dict(c.metadata)
         if (
             c.exit_plan != group.plan.template.exit_plan
@@ -742,7 +844,13 @@ class ContinuousSimPortfolio:
             if slot is not None and slot["status"] != "CANDIDATE":
                 raise SimInputError("issued candidate cannot overwrite quiet/unavailable")
             st["slots"].setdefault(
-                key, {"status": "CANDIDATE", "source": expected_hypothesis_head_sha256, "parents": []}
+                key,
+                {
+                    "status": "CANDIDATE",
+                    "source": expected_hypothesis_head_sha256,
+                    "parents": [],
+                    "coverage": "AVAILABLE",
+                },
             )["parents"].append(receipt.parent_id)
             parent = {
                 "candidate": doc,
@@ -821,6 +929,73 @@ class ContinuousSimPortfolio:
             return {"status": parent["entry"], "reason": reason, "parent": receipt.parent_id}
 
         return commit(payload, fold)
+
+    def _validate_v3_originals(self, plan, receipt, prefix, candidate):
+        """Full normalized-candle membership, not raw REST/source authentication."""
+        if (
+            type(self.candle_originals) is not CandleOriginalsV3
+            or self.candle_originals.sha256 != self.config["candle_originals_sha256"]
+        ):
+            raise SimInputError("retained full candle originals differ from the sealed V3 portfolio")
+        if plan.origin not in self.config["allowed_origins"]:
+            raise SimInputError("counterfactual journal enrollment is not sealed arm routing permission")
+        creation_ready_at = (
+            plan.created_ms
+            if plan.creation_assessment is None
+            else plan.creation_assessment.actual_requested_ms
+        )
+        checks = [(plan.anchor, plan.creation_evidence, creation_ready_at)]
+        checks.extend(
+            (o.market.candle, o.market.sources, completion.shared_observed_ms) for o, completion in prefix
+        )
+        obs = prefix[-1][0]
+        for candle, sources, ready_at in checks:
+            originals = [
+                e
+                for e in sources
+                if e.kind == "MARKET" and e.payload_sha256 == digest(candle_payload(candle))
+            ]
+            if not originals:
+                if (
+                    candidate is None
+                    and candle is not plan.anchor
+                    and receipt.evaluation.coverage == "UNAVAILABLE"
+                ):
+                    continue  # explicitly missing source poisons coverage, never authenticates a candle
+                raise SimInputError("exact original MARKET receipt required for the full V3 candle")
+            for original in originals:
+                self.candle_originals.find(candle, original, ready_at)
+        if candidate is None:
+            return
+        expected = {
+            "hypothesis_id": plan.scenario_id,
+            "hypothesis_policy_sha256": plan.policy.sha256,
+            "parent_intent_id": plan.template.intent_id,
+            "parent_snapshot_sha256": digest(asdict(plan.template)),
+            "protection_sha256": plan.protection_sha256,
+            "confirmation_observation_id": obs.observation_id,
+            "entry_quote_sha256": None if obs.quote is None else obs.quote.sha256,
+            "source_set_sha256": plan.source_set_sha256,
+            "hypothesis_origin": plan.origin,
+            "evidence_kind": plan.policy.evidence_kind,
+            "hypothesis_origin_cut_ms": str(plan.origin_cut_ms),
+            "hypothesis_actual_created_ms": str(plan.created_ms),
+            "creation_assessment_sha256": (
+                "NONE" if plan.creation_assessment is None else plan.creation_assessment.sha256
+            ),
+            "planning_cost_authority": "ASSUMPTION_NOT_VENUE_MEASUREMENT",
+        }
+        meta = dict(candidate.metadata)
+        if (
+            any(meta.get(k) != v for k, v in expected.items())
+            or candidate.sleeve_id != V3_POLICY_ID
+            or candidate.symbol != plan.template.symbol
+            or candidate.side != plan.template.side
+            or candidate.decision_ts_ms != receipt.evaluation.observed_ms
+            or candidate.decision_ts_ms != obs.market.observed_ms
+            or candidate.exit_plan != plan.template.exit_plan
+        ):
+            raise SimInputError("native V3 candidate, original protection or actual clock conflict")
 
     @staticmethod
     def _tick(price, tick, up):
@@ -1235,7 +1410,11 @@ class ContinuousSimPortfolio:
             a = decode_account(st["account"])
             expected = {f"{s}:{m}" for m in self.config["minutes"] for s in UNIVERSE}
             missing_slots = sorted(expected - set(st["slots"]))
-            unavailable_slots = sorted(k for k, v in st["slots"].items() if v["status"] == "UNAVAILABLE")
+            unavailable_slots = sorted(
+                k
+                for k, v in st["slots"].items()
+                if v["status"] == "UNAVAILABLE" or v.get("coverage") == "UNAVAILABLE"
+            )
             missing_funding = self._missing_funding(st, now_ms)
             missing_protection = self._missing_protection_bars(st, now_ms)
             unresolved = bool(

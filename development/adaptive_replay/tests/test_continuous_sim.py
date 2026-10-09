@@ -427,6 +427,10 @@ def test_missing_quote_first_trigger_is_consumed_without_rescue(tmp_path):
     assert not account(r).positions and not account(r).reservations
     r = reopen(r)
     assert intake(r, h, receipts["arm", p.template.intent_id]).replayed
+    seal_slots(r)
+    result = r.finish(now_ms=START + 2 * MINUTE, event_id="finish").outcome
+    assert result["status"] == "UNRESOLVED" and result["net_return"] is None
+    assert result["unavailable_slots"] == [f"BTCUSDT:{START + MINUTE}"]
     r.close()
 
 
