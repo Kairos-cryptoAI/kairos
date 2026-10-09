@@ -2,6 +2,20 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Actual original funding-price omission: exact refusal — 2026-10-09
+
+The [separate original-response verification](ORIGINAL-FUNDING-SETTLEMENT-GAP-2026-10-09.md)
+binds one public GET for BTCUSDT May 17–22: eighteen original rates/calculation
+times match, but all eighteen settlement price strings are empty. Earlier
+PowerShell coercion to zero is withdrawn. Both isolated Python 3.11/3.14
+analyses verify the unchanged full monthly source and exact loader refusal;
+the remaining nine queries were not attempted. No price proxy, financial
+result or source admission follows. Published loader revision `6359b4a` now
+has all three exact-source hosted workflows green. The unaccepted financial/
+hypothesis/four-arm developments remain separate. All readiness is false
+with `REJECT_ALL`; accepted complete inputs and full continuous economics
+remain unfinished.
+
 ## Lossless original archive loaders: installed engineering gate — 2026-10-09
 
 The [separate installed-loader gate](ORIGINAL-ARCHIVE-LOADERS-2026-10-09.md)
