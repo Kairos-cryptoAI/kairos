@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "kind": "COMPLETE_ORIGINAL_BBO_ARCHIVE_ACQUISITION_NOT_ROW_PROFILE",
+  "scope": "JANUARY_9_THROUGH_13_2024_FIVE_SYMBOL_OBJECTS_ONLY",
+  "objects": [
+    {
+      "day": "2024-01-09",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-09.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2024-01-09.zip",
+      "archiveBytes": 227271577,
+      "archiveSha256": "9f614197d81cee6f93ca7b28d686e43d82a8a7e5f281bc30b521ec6c0c9f37db"
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-09.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2024-01-09.zip",
+      "archiveBytes": 220887319,
+      "archiveSha256": "09cc65ba77a296d4cfc1b9f7f938d4b4c1957224ba12b96100fba73533f5badd"
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-09.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2024-01-09.zip",
+      "archiveBytes": 141643659,
+      "archiveSha256": "ae68b1b0d9faec546b8cee3cdefa6a20d474c7e14af7c670bbc9c87e44c4c5f1"
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-09.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2024-01-09.zip",
+      "archiveBytes": 58543313,
+      "archiveSha256": "24c79ccebbed032bd5e9bf3ed99bcaffe3f523ebcfa3d6e58a30b71d87013a4b"
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-09.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2024-01-09.zip",
+      "archiveBytes": 54861635,
+      "archiveSha256": "8aacfb69431c51d84c552238c61faf84524b98e5803da6615a2dc8b880257e13"
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-10.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2024-01-10.zip",
+      "archiveBytes": 266695896,
+      "archiveSha256": "91e94d62cf7a457a0a6e0cc0b7d0eeee7d7acf990d2b5b6aba45776de8fd3698"
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-10.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2024-01-10.zip",
+      "archiveBytes": 328992260,
+      "archiveSha256": "448ddef5459936c1a16cd4ccec07b2e9e87e3a6bc068e8f43836e1ce0bae323e"
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-10.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2024-01-10.zip",
+      "archiveBytes": 138059321,
+      "archiveSha256": "100ee25e7d9ea0837dbec69b531514c51b9f6e917b2ee5c100fbaa026ade0288"
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-10.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2024-01-10.zip",
+      "archiveBytes": 41689117,
+      "archiveSha256": "2bcd2c04a66d8bbf4533fe46e317db8a84eaaee9fa5ba6e3078d8a1d5d4dc37f"
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-10.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2024-01-10.zip",
+      "archiveBytes": 63857942,
+      "archiveSha256": "2a35c0190c6e54faee9294f639fb454f07f64ea0ba16030fef1fcce6afbe1b1d"
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-11.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2024-01-11.zip",
+      "archiveBytes": 304541155,
+      "archiveSha256": "b3c79a54ebcebb126061eb3cd634fff1cb20603e61837441d706febe824656f4"
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-11.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2024-01-11.zip",
+      "archiveBytes": 332878475,
+      "archiveSha256": "b7b43d32c99ee8bfcf7db6826f6c491398f46627a011b290c626b34e0459b1ca"
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-11.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2024-01-11.zip",
+      "archiveBytes": 119371564,
+      "archiveSha256": "d3be71b952f49fa9ee152a59ec637a34db8b9d9e35f01cee13a63ce598dec4a1"
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-11.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2024-01-11.zip",
+      "archiveBytes": 45961277,
+      "archiveSha256": "87411656ffdc404cd0d4981bda791d4a53ad162e28a1df2b3bf68456143c6a12"
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-11.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2024-01-11.zip",
+      "archiveBytes": 66831480,
+      "archiveSha256": "79b9f71d4ada8f7fbe84a77faad3cfeae7ae098994c96c56e47c0b33ecc7c3ca"
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-12.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2024-01-12.zip",
+      "archiveBytes": 310974221,
+      "archiveSha256": "fc57ba62c691870dec044f5ba345205e2cfab1cf1661ee3908a8ca0f7911ed54"
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-12.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2024-01-12.zip",
+      "archiveBytes": 324166247,
+      "archiveSha256": "457e34933f014f0ed310d5cdf6b49c1ba4cd107d99e66b1428410786255e0f0a"
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-12.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2024-01-12.zip",
+      "archiveBytes": 131550876,
+      "archiveSha256": "7df4011b9632b8ebb64933141503b9ef6101090769cf0288c5f2d3026b646a4b"
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-12.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2024-01-12.zip",
+      "archiveBytes": 52114290,
+      "archiveSha256": "b7fde8bef374f5acccc3bcdf68de4bcab56176fa1b6b607549f2cd1ad68be151"
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-12.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2024-01-12.zip",
+      "archiveBytes": 62596574,
+      "archiveSha256": "16068cba33acd057beff00a025149e2dbd06b8c1a17770d59e3909780d3f4bad"
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-13.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2024-01-13.zip",
+      "archiveBytes": 218756532,
+      "archiveSha256": "a379614ce9ae0d680e7c3fa760df1cc9abbcc995f501746a24204b261e39c555"
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-13.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2024-01-13.zip",
+      "archiveBytes": 221099531,
+      "archiveSha256": "0e844aeb206b0a2dedd02dda83886ab2cd874d27b4b4fd6d8a7eb2e68a5ecac0"
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-13.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2024-01-13.zip",
+      "archiveBytes": 126207418,
+      "archiveSha256": "564bccb44f08df2280ca57bdcacd67b393190ae2a9713c01cd2b96855517fadd"
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-13.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2024-01-13.zip",
+      "archiveBytes": 30513996,
+      "archiveSha256": "1e9c77353e0dad65d8a9e63fe11d7cf4cc0dc6b37a805f0ffa060b4ef3dff32e"
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-13.zip",
+      "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2024-01-13.zip",
+      "archiveBytes": 42549384,
+      "archiveSha256": "fb2270161ce78b68647a2046d800cc7f8ec72a7e4046451f407b520456c6afcd"
+    }
+  ],
+  "totals": {
+    "objects": 25,
+    "symbols": 5,
+    "days": 5,
+    "archiveBytes": 3932615059
+  },
+  "acquisition": {
+    "startedAtUtc": "2026-10-09T04:30:47.440161Z",
+    "completedAtUtc": "2026-10-09T04:36:15.576805Z",
+    "elapsedWallSeconds": 326.625,
+    "requests": 25,
+    "retries": 0,
+    "redirects": 0,
+    "nativeExitCode": 0,
+    "summarySha256": "4f7602e975d68f794087dcac8a8c2072d905e124aeacb06f5735c287b69697af",
+    "receiptSha256": "14d014bad0e809debd8a2ebd9c661e7e8b99ebcce6805ef87023309cfa45f413",
+    "intentPlanSha256": "3581f90d8ce7de4e3b11c7a532293d9218d77d1345088e255320e17e17231dc3",
+    "scriptSha256": "b0e32968a41af83f6a39cb7feb29632901068d4bd77ea4a3b55892305c5c3194"
+  },
+  "authority": {
+    "fullArchiveChecksumMatch": true,
+    "zipCrcValidated": false,
+    "fullRowProfile": false,
+    "historicalLocalReceiveClock": false,
+    "sourceCoverageAccepted": false,
+    "newsMacroFundingCoverageAccepted": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}
+

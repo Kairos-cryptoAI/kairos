@@ -2,6 +2,17 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Original five-symbol window objects collected — 2026-10-09
+
+The [January 9–13 acquisition](HISTORICAL-BBO-WINDOW-ACQUISITION-2026-10-09.md)
+completed once: 25 public GETs, 25 original ZIPs, 3,932,615,059 bytes and exact
+official SHA-256/size matches, with no retry or redirect. Together with the
+separately profiled January 8 objects, all thirty window/tail daily objects
+are retained. The new objects still need full row/CRC checks; this is not
+accepted feed/NEWS/MACRO/funding coverage or historical local receive clocks.
+The lossless financial SIM and matched four-arm comparison remain unfinished;
+all four readiness flags remain false and policy stays `REJECT_ALL`.
+
 ## Raw receipts, delta storage and closed-bar fold — 2026-10-09
 
 The [storage foundations](PROSPECTIVE-STORAGE-2026-10-09.md) retain raw REST
