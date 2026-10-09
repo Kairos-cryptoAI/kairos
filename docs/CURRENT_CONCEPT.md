@@ -45,6 +45,11 @@ packages. Exact reopen/restore and journal-source reconciliation require
 caller-pinned source/file/journal commitments. Missing quotes are not filled;
 hash consistency is not authenticated origin, continuous market coverage or
 complete-system source acceptance. No real feed or old journal is upgraded.
+The additive [public source producer](PUBLIC-BOOK-CAPTURE-2026-10-09.md) now
+preserves original delivered native text with actual local delivery/persistence
+clocks, bounded segment/global reconciliation and an exclusive one-connection
+owner. It is opt-in, public and research-only; the implementation alone does not
+prove an actual capture, news/macro/bar coverage, continuous SIM or economics.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Guarded primary

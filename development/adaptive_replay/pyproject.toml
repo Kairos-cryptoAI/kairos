@@ -8,12 +8,14 @@ version = "0.1.0"
 description = "Offline, bounded, non-qualifying replay of one fixed Kairos candidate"
 requires-python = ">=3.11"
 dependencies = [
+  "aiohttp>=3.14.4,<4",
   "kairos-backtest==0.1.0",
   "kairos-strategy-engine==0.2.12",
   "kairos-core",
   "kairos-quant-scouts",
   "kairos-persistence",
   "kairos-llm",
+  "kairos-execution-engine==0.1.0",
 ]
 
 [project.scripts]
@@ -32,6 +34,7 @@ override-dependencies = [
   "kairos-strategy-engine @ git+https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git@cde8e9c00af0cc19848e800ee76472a800a5fd5d",
   "kairos-persistence @ git+https://github.com/Kairos-cryptoAI/kairos-persistence.git@fd2966761e84b32688c9aee73e00604965f5d7f2",
   "kairos-llm @ git+https://github.com/Kairos-cryptoAI/kairos-llm.git@f1e25893f9078a467eba584e233ac9129e9ff9b1",
+  "kairos-execution-engine @ git+https://github.com/Kairos-cryptoAI/kairos-execution-engine.git@ef91f99c3e1cec6a1e5f825f031c649a79656783",
 ]
 
 [tool.uv.sources]
@@ -41,6 +44,7 @@ kairos-core = { git = "https://github.com/Kairos-cryptoAI/kairos-core.git", rev 
 kairos-quant-scouts = { git = "https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git", rev = "927f5730d09383736c1dfc7dc5c400b06851019f" }
 kairos-persistence = { git = "https://github.com/Kairos-cryptoAI/kairos-persistence.git", rev = "fd2966761e84b32688c9aee73e00604965f5d7f2" }
 kairos-llm = { git = "https://github.com/Kairos-cryptoAI/kairos-llm.git", rev = "f1e25893f9078a467eba584e233ac9129e9ff9b1" }
+kairos-execution-engine = { git = "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", rev = "ef91f99c3e1cec6a1e5f825f031c649a79656783" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["adaptive_replay"]

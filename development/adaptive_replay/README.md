@@ -5,6 +5,19 @@ source/configuration. It neither searches thresholds nor enrolls/promotes a
 campaign. All trading readiness remains false and policy remains `REJECT_ALL`.
 Trial 15, V4/V5, the frozen Backtest repository and evaluator are never edited.
 
+## Separate opt-in public source producer
+
+`python -m adaptive_replay.public_book_capture` is a no-op by default. Its separate
+`--capture --workspace-root D:\Kairos --output-root <new-public-book-capture-child>
+--seconds 60` mode makes exactly one credential-free public Binance UM connection
+for all five top-ten streams, preserving original delivered text and actual local
+delivery/persistence clocks. Bounded immutable segments and the full raw-message
+denominator can be reopened under an independently held terminal receipt SHA.
+No redirects, retries, reconnect, old V1 adoption, provider, DB or trading calls.
+Observed source consistency is not continuous tick completeness, historical BBO,
+accepted full-system inputs or strategy economics. See the
+[producer contract](../../docs/PUBLIC-BOOK-CAPTURE-2026-10-09.md).
+
 ## Scenario-based trading research rework
 
 `scenarios.py` separates a source-bound hypothesis from subsequent closed-price
