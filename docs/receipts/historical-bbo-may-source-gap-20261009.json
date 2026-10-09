@@ -1,0 +1,405 @@
+{
+  "schemaVersion": 1,
+  "kind": "FIXED_ORIGINAL_MAY_BBO_METADATA_GAP_NOT_GLOBAL_ABSENCE_PROOF",
+  "observations": [
+    {
+      "scope": "DAILY",
+      "objects": [
+        {
+          "day": "2021-05-17",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-17.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:22.32005+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-17",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-17.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:22.891733+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-17",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-17.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:23.47859+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-17",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-17.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:24.023498+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-17",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-17.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:24.68361+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-18",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-18.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:25.761792+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-18",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-18.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:26.325032+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-18",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-18.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:26.902021+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-18",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-18.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:27.485311+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-18",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-18.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:28.07375+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-19",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-19.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:28.657612+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-19",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-19.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:29.398999+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-19",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-19.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:29.981155+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-19",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-19.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:30.732599+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-19",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-19.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:31.296056+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-20",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-20.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:31.862038+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-20",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-20.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:32.420406+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-20",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-20.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:32.975546+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-20",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-20.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:34.026205+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-20",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-20.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:35.070309+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-21",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-21.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:35.645838+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-21",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-21.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:36.213862+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-21",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-21.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:36.81919+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-21",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-21.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:37.385229+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-21",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-21.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:37.954659+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-22",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05-22.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:38.507578+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-22",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05-22.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:39.062567+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-22",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05-22.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:39.755259+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-22",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05-22.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:40.32226+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05-22",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05-22.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:42:40.890676+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        }
+      ],
+      "run": {
+        "completedAtUtc": "2026-10-09T08:42:40.925376+03:00",
+        "elapsedWallSeconds": 19.282,
+        "requests": 30,
+        "retries": 0,
+        "redirects": 0,
+        "resultSha256": "f6ceb7b3dbda4aedeeff50efa7f46b4b07b625bf6ed35035caf2cd0ee0a2779f",
+        "intentSha256": "0f5ad750ecc12cfdecb53f81533e535e4c2a5a46548029a4169595e9206e5bb3",
+        "headsSha256": "199b054e1e604867dd53b8a2f9f4ba419ed07d384c13a60b732d35e1f8626dcb",
+        "workerSha256": "d79e02921600d2b9b44efa78cd50d819a028aa76f8f900b38a0ec0081de3e259"
+      }
+    },
+    {
+      "scope": "MONTHLY",
+      "objects": [
+        {
+          "day": "2021-05",
+          "symbol": "BTCUSDT",
+          "url": "https://data.binance.vision/data/futures/um/monthly/bookTicker/BTCUSDT/BTCUSDT-bookTicker-2021-05.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:49:08.938132+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05",
+          "symbol": "ETHUSDT",
+          "url": "https://data.binance.vision/data/futures/um/monthly/bookTicker/ETHUSDT/ETHUSDT-bookTicker-2021-05.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:49:09.926111+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/monthly/bookTicker/SOLUSDT/SOLUSDT-bookTicker-2021-05.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:49:10.544289+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05",
+          "symbol": "BNBUSDT",
+          "url": "https://data.binance.vision/data/futures/um/monthly/bookTicker/BNBUSDT/BNBUSDT-bookTicker-2021-05.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:49:11.117052+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        },
+        {
+          "day": "2021-05",
+          "symbol": "XRPUSDT",
+          "url": "https://data.binance.vision/data/futures/um/monthly/bookTicker/XRPUSDT/XRPUSDT-bookTicker-2021-05.zip",
+          "method": "HEAD",
+          "status": 404,
+          "bodyBytesRead": 0,
+          "completedAtUtc": "2026-10-09T08:49:11.672138+03:00",
+          "classification": "OBJECT_NOT_FOUND_AT_OBSERVATION_ONLY"
+        }
+      ],
+      "run": {
+        "completedAtUtc": "2026-10-09T08:49:11.708171+03:00",
+        "elapsedWallSeconds": 3.39,
+        "requests": 5,
+        "retries": 0,
+        "redirects": 0,
+        "resultSha256": "3ddc25d9ea71cd39279b09ff9072407617db4aaf64e5428f4802f9b2bfd3e18a",
+        "intentSha256": "34fb5c6d4db59c91eb8f8d1c568be8884d48b91673c2fe13c6685fb95f7a7915",
+        "headsSha256": "784d349c7db060e80f8c842b59966ba2efdf1e1c3d17c4232e61ffd3d533b2e8",
+        "workerSha256": "2a72202dd4c00b651df3755053fc701e75bbef35e98308fba6b114746c393e94"
+      }
+    }
+  ],
+  "authority": {
+    "observedOfficialZip404": true,
+    "globalHistoricalAbsenceProven": false,
+    "archiveBodiesDownloaded": false,
+    "originalBboAccepted": false,
+    "sourceCoverageAccepted": false,
+    "financialReplayComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}

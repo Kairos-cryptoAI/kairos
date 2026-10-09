@@ -2,6 +2,16 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Exact May original BBO metadata gap — 2026-10-09
+
+The [fixed public metadata observation](HISTORICAL-BBO-MAY-SOURCE-GAP-2026-10-09.md)
+records 404 for all thirty May 17–22 daily ZIP URLs and all five May monthly
+ZIP URLs, rather than only checksum sidecars. These observations do not prove
+global historical absence. No archive body, paid source or alternative date
+was substituted; original May BBO and complete causal NEWS/MACRO remain open.
+Financial/storage implementation continues without source admission or
+trading permission. All readiness stays false and policy `REJECT_ALL`.
+
 ## Complete original January window row/CRC profile — 2026-10-09
 
 The [separate full-object profile](HISTORICAL-BBO-WINDOW-PROFILE-2026-10-09.md)
