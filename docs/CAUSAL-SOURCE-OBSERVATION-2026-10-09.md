@@ -131,6 +131,31 @@ platform symlink-privilege skips. Account/journal/codec/mapping fixtures passed
 67 tests. These are synthetic engineering checks, separate from the actual
 read-only capture audits and from final full-suite/CI evidence.
 
+The later immutable component wheel under
+`D:\Kairos\runtime\public-components-gates-20261009-c\dist` has SHA-256
+`7fc20561f04c4b9f082fd4eaef568ef5845b8150d1f04b76d0d1dd76e58c035f`.
+With `--import-mode=importlib -W error`, each complete non-portfolio component
+suite passed 1,468 tests with four platform skips on Python 3.11 and Python 3.14.
+JUnit files are retained as `public-components-py311.junit.xml` and
+`public-components-py314.junit.xml` in that gate directory. This suite explicitly
+excluded `test_continuous_sim.py`; it is not the final portfolio SIM gate.
+The preceding Python 3.14 failures exposed unclosed HTTP error responses and
+fixture SQLite handles; deterministic closure was fixed, not warning-filtered.
+New account checks reject non-boolean safety flags and reserve known immediate
+spread/fee losses against current-equity limits. These engineering corrections
+do not alter production Risk Manager, frozen strategies or old source receipts.
+
+The final isolated portfolio snapshot under
+`D:\Kairos\runtime\continuous-sim-gates-20261009-d\dist` has wheel SHA-256
+`1c9e4dbd1e4642700a366f23dccccce2d8682d3cd13b4536bf5c24ac4c9e6143`.
+Its complete installed-wheel suite, including the 22 portfolio tests, passed
+1,490 tests with four explicit platform skips on each Windows Python 3.11 and
+Python 3.14. Both used `--import-mode=importlib -W error`; actual terminal times
+were 289.82 and 230.07 seconds. The retained `full-py311.junit.xml` and
+`full-py314.junit.xml` are local fixture evidence, not hosted CI or an observed
+continuous historical trading result. No warning filters or source/exit/risk
+threshold relaxation was used to obtain these passes.
+
 The development lock adds an explicit already locked aiohttp dependency and
 pins the execution simulation kernel at immutable main SHA
 `ef91f99c3e1cec6a1e5f825f031c649a79656783`. It does not change a native service
@@ -142,12 +167,25 @@ projection, production manifest pin, frozen research lock or readiness flag.
   original bytes and explicit missingness, including the selected historical
   scenarios. A sampled book capture and partial current Fed feed do not supply
   the historical corpus.
-- Durable multi-hypothesis, five-symbol SIM per isolated matched arm: original
-  risk/protection lifecycle, partial fills, shared liquidity, restarts,
-  exposure-time funding and complete candidate/quiet/unavailable denominators.
+- Real-source integration of the durable multi-hypothesis, five-symbol SIM per
+  isolated matched arm. Fixture mechanics now cover the original risk/protection
+  lifecycle, partial fills, shared liquidity, restarts, exposure-time funding
+  and complete candidate/quiet/unavailable denominators; this does not supply
+  accepted continuous inputs or a completed historical run.
 - One fixed full-system matched economic comparison and defensible final
   strategy identity. No model was called and no LLM profit result exists here.
 
 No synthetic PASS, local source audit or unmeasured LLM-filter assumption closes
 these three points. No new blind campaign starts from this receipt; its own
 sealed identity and 365-day/500-natural-close gates remain separate.
+
+The bounded portfolio runner now has 22 passing full-path synthetic tests,
+including sequential hypotheses on one shared account, isolated arm liquidity,
+partial fills, all original exits, target-to-stop escalation, first-fill timeout,
+closed-candle trailing, late funding after natural flat, restart/dedup and
+unavailable denominator cells. This closes these stated fixture mechanics, not
+the real-source integration or the full continuous historical SIM requirement.
+An older captured bundle remains bound to its original package: the new runner
+must consume it through a reviewed, pinned exact-byte/version bridge or its
+original reader snapshot, never by rewriting its seal/fingerprint. No such
+integration or paid matched model run is claimed here.

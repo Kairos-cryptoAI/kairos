@@ -77,5 +77,5 @@ jobs:
           $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
           $testPath = Join-Path $project 'tests'
           Set-Location $env:RUNNER_TEMP
-          uv run --no-sync --project $project python -m pytest --import-mode=importlib $testPath -q
+          uv run --no-sync --project $project python -m pytest --import-mode=importlib $testPath -q -W error
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }

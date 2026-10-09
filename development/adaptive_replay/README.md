@@ -48,6 +48,29 @@ Derived kernel coordinates are explicit mappings, not new vendor originals.
 These primitives and synthetic tests are not a complete continuous campaign,
 accepted historical corpus, model comparison, strategy winner or trading permit.
 
+`continuous_sim.ContinuousSimPortfolio` composes those primitives with the pinned
+execution IOC kernel. Each matched arm owns one separate durable account and
+per-symbol session liquidity across multiple original V2 hypotheses. Creation
+pins the producer hypothesis seal, whole tape, funding schedule, contiguous
+minute/five-symbol denominator, rules and implementation before intake. A first
+trigger remains consumed after veto, risk refusal or no fill. Source availability
+orders intraminute arrivals; equal-time source records precede commands.
+Original partial-fill protection, close-only trailing without a target clamp,
+first-fill timeout and exposure-time funding survive restart and redelivery.
+No unavailable cell, missing held protection bar, missing funding liability,
+open exposure or command can be relabelled as a complete net result. No position
+is force-closed to finish a window. Resource bounds fail closed without eviction.
+
+Twenty-two full-path tests are synthetic mechanical checks, not historical or
+LLM evidence. The final immutable installed-wheel full suite passed 1,490 tests
+on each Windows Python 3.11/3.14 with four explicit platform skips and warnings
+treated as errors. The runner has no model/network/trading CLI. Real input assembly,
+source admission and the matched economic driver remain separate. Captures
+bind their original whole-package implementation: reopening an older bundle
+under new code is correctly refused. Preserve its wheel and originals; a later
+exact-byte/version bridge must retain the old pinned audit identity rather than
+resealing old bundles under the new implementation.
+
 ## Scenario-based trading research rework
 
 `scenarios.py` separates a source-bound hypothesis from subsequent closed-price
