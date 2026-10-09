@@ -1,0 +1,115 @@
+{
+  "schema": "kairos.hypothesis-child-isolation-receipt.v1",
+  "recorded_utc": "2026-10-09T06:30:47Z",
+  "scope": "focused child-process provenance regression only",
+  "source": {
+    "path": "development/adaptive_replay/tests/test_hypothesis_journal_integrity.py",
+    "sha256": "802ead1fe1d43ccf0e56a595959e3f8df129cf0a5ef3f822c8265da7b85ff785",
+    "prior_k_snapshot_sha256": "c0e3edd57c2a045b4eb988f11f8f0d6d62c860c6da57a2e004a287111acceaaa",
+    "change_summary": [
+      "Child Python processes run with -I -W error.",
+      "Parent passes the exact installed journal module absolute path and SHA-256; child verifies both before opening a journal.",
+      "The installed module must resolve under the active interpreter's purelib, not a cwd/source shadow.",
+      "Hostile cwd and PYTHONPATH shadow-package trap cases verify isolated import behavior."
+    ]
+  },
+  "package_binding": {
+    "wheel_sha256": "c80082b0c7b7702de75db5bc48c6c69cbf3b3726215f8831a025acf0c19df91c",
+    "installed_python_file_count": 82,
+    "installed_python_files_exactly_match_wheel": true,
+    "hypothesis_journal_module_sha256": "ba82877477bc1b0b81c8128361518e52287633e800e02d2d8402a35535b4a21d",
+    "k_source_manifest_sha256": "406a192688a86a1f7c115a6e1d1184de106cfbb2a673ba71bc53d6e4a1afb7d4"
+  },
+  "retained_full_suite_baseline": {
+    "py311": {
+      "python": "3.11.15",
+      "junit_timestamp": "2026-10-09T08:15:23.668996+03:00",
+      "tests": 1935,
+      "passed": 1930,
+      "failed": 0,
+      "skipped": 5,
+      "duration_seconds": 2900.595,
+      "junit_sha256": "60fe5299679cd4a8776498b199c96f08f545aa3adf22da5dfbd1ae413157990a",
+      "log_sha256": "f98f141090791f9a83c1abdf85610d515510f1b052db567cb97ac4c8620a3bab",
+      "result_sha256": "bbdff24dbb267b5d02e0d751ff512e7d11bc417cccb37fcb4eef4805bf0c0622"
+    },
+    "py314": {
+      "python": "3.14.7",
+      "junit_timestamp": "2026-10-09T08:15:35.045372+03:00",
+      "tests": 1935,
+      "passed": 1928,
+      "failed": 2,
+      "skipped": 5,
+      "duration_seconds": 2398.581,
+      "junit_sha256": "b59e2dfd5be947e9252970a160b6320810b519ded495fd45b3f56c5e6c94ba64",
+      "log_sha256": "45a3ab0cc6d794a618ccfd5211bd11c4945ebe4445e175ed3849b59c65d4c3f2",
+      "result_sha256": "848181d2b60945c94f621edff3d4f66cc9d47b500801d660ed3536d5fe839b70"
+    },
+    "py314_failure_evidence": {
+      "cases": [
+        "test_actual_process_exit_restores_atomic_transaction_and_duplicate_semantics[False]",
+        "test_actual_process_exit_restores_atomic_transaction_and_duplicate_semantics[True]"
+      ],
+      "observed_failure": "subprocess.TimeoutExpired after 20 seconds",
+      "pre_fix_child_invocation": "python -c without -I, -W error, or parent module path/SHA binding",
+      "cause": "not established; no causal diagnosis is claimed"
+    }
+  },
+  "focused_post_fix_runs": {
+    "command_parameters": ["-I", "-W", "error", "-m", "pytest", "-q", "tests/test_hypothesis_journal_integrity.py"],
+    "ruff_check": "PASS",
+    "ruff_format_check": "PASS",
+    "pre_format_predecessor_m": {
+      "test_source_sha256": "81f1a0a6cac493a2b0c8b02d7135d079a368a0a76a44592de1dbc25579242c3e",
+      "py311": {
+        "junit_timestamp": "2026-10-09T09:12:57.678572+03:00",
+        "tests": 33,
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0,
+        "junit_sha256": "7a9587638b7c34d60fa0670443abc34ce1359aac5a4586dfff01e004d83a2be5",
+        "log_sha256": "2b3635b84bde2fb4e587ab7beeb93bce506206bf1d06c7aed574efc711e14fa2"
+      },
+      "py314": {
+        "junit_timestamp": "2026-10-09T09:13:18.177254+03:00",
+        "tests": 33,
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0,
+        "junit_sha256": "99a45186d849a2bfc7ebaa4dc2ec93602c144d5475236bf64a4038c4cb3b4122",
+        "log_sha256": "e658429cd4952f3040238da8c82e55c2ba9d03ee2d79366ea416381879c614ab"
+      }
+    },
+    "py311": {
+      "python": "3.11.15",
+      "junit_timestamp": "2026-10-09T09:29:08.439536+03:00",
+      "result_created_utc": "2026-10-09T06:29:52.7194527+00:00",
+      "tests": 33,
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 14.56,
+      "junit_sha256": "000e26f3266b0ccea37b8c79178786e73a4462bdfb1bf00d2b1eefb4f9630494",
+      "log_sha256": "2f78f69469f7495aa17229899a99ca570335efee19fbc371774f37a52b02ced2",
+      "result_sha256": "c330ce17140a70c2dbe8f25f630696867bb1a97edeaa199c24d0b9cc921c94f4"
+    },
+    "py314": {
+      "python": "3.14.7",
+      "junit_timestamp": "2026-10-09T09:29:29.360347+03:00",
+      "result_created_utc": "2026-10-09T06:29:52.7582860+00:00",
+      "tests": 33,
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 10.446,
+      "junit_sha256": "2c8072d93ec38ef987a3b55f7674a3c4ac56713efd3707dc6df15c39c0bedafb",
+      "log_sha256": "1ae39b7e140a5d4d28ff28827c14a458d159f2bf6b3db08e19156ade41389120",
+      "result_sha256": "b0b50b032730331cb7d674707d4f3fdc57df3721f6fd4671cc71ad697b64ded9"
+    }
+  },
+  "limits": [
+    "The post-fix evidence covers one test module only, not the full suite.",
+    "The earlier py314 timeout failures remain preserved; the focused passes do not establish their cause.",
+    "This receipt is not historical-source acceptance, financial admission, or LIVE evidence."
+  ]
+}

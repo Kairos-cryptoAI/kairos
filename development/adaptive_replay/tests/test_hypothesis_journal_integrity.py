@@ -1,12 +1,15 @@
 """Crash, corruption and racing-writer proof on disposable fixture journals."""
 
+import hashlib
 import os
 import sqlite3
 import subprocess
 import sys
+import sysconfig
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import closing
 from dataclasses import asdict, replace
+from pathlib import Path
 from threading import Barrier
 
 import pytest
@@ -209,16 +212,46 @@ def test_exception_after_event_and_head_writes_rolls_back_entire_attempt(recorde
     assert restored.append("control", plan.template.intent_id, fixture_observation()).new_event
 
 
+def _installed_wheel_journal_binding():
+    """Require an installed non-editable wheel, never a cwd/source shadow."""
+    module_path = Path(journal_module.__file__).resolve(strict=True)
+    prefix = Path(sys.prefix).resolve(strict=True)
+    purelib = Path(sysconfig.get_path("purelib")).resolve(strict=True)
+    assert purelib.is_relative_to(prefix)
+    expected_path = (purelib / "adaptive_replay" / "hypothesis_journal.py").resolve(strict=True)
+    assert module_path == expected_path
+    return module_path, hashlib.sha256(module_path.read_bytes()).hexdigest()
+
+
+_CHILD_MODULE_PROVENANCE = r"""
+import hashlib, sys
+from pathlib import Path
+
+expected_path = Path(sys.argv[1]).resolve(strict=True)
+expected_sha256 = sys.argv[2]
+import adaptive_replay.hypothesis_journal as journal_module
+actual_path = Path(journal_module.__file__).resolve(strict=True)
+if actual_path != expected_path:
+    raise SystemExit(f"unexpected journal module path: {actual_path}")
+actual_sha256 = hashlib.sha256(actual_path.read_bytes()).hexdigest()
+if actual_sha256 != expected_sha256:
+    raise SystemExit(f"unexpected journal module SHA256: {actual_sha256}")
+"""
+
+
 @pytest.mark.parametrize("committed", [False, True])
 def test_actual_process_exit_restores_atomic_transaction_and_duplicate_semantics(recorded, committed):
     path, seal, plan, _ = recorded
+    module_path, module_sha256 = _installed_wheel_journal_binding()
     # Two tiny isolated fixture workers, never a market/model/trading runner.
-    script = """
+    script = (
+        _CHILD_MODULE_PROVENANCE
+        + """
 import os, sys
 from adaptive_replay.hypothesis_journal import HypothesisJournal, _seal, _plan, _observation
-j = HypothesisJournal.open(sys.argv[1], _seal(sys.argv[2]))
-p, o = _plan(sys.argv[3]), _observation(sys.argv[4])
-if sys.argv[5] == 'False':
+j = HypothesisJournal.open(sys.argv[3], _seal(sys.argv[4]))
+p, o = _plan(sys.argv[5]), _observation(sys.argv[6])
+if sys.argv[7] == 'False':
     original = j._append_event
     def crash(*args):
         original(*args)
@@ -227,11 +260,17 @@ if sys.argv[5] == 'False':
 j.append('control', p.template.intent_id, o)
 os._exit(73)
 """
+    )
     result = subprocess.run(
         [
             sys.executable,
+            "-I",
+            "-W",
+            "error",
             "-c",
             script,
+            str(module_path),
+            module_sha256,
             str(path),
             canonical(asdict(seal)),
             canonical(asdict(plan)),
@@ -248,6 +287,43 @@ os._exit(73)
     receipt = restored.append("control", plan.template.intent_id, fixture_observation())
     assert receipt.new_event is not committed
     assert restored.snapshot().event_count == 2
+
+
+@pytest.mark.parametrize("shadow_location", ["hostile_cwd", "hostile_pythonpath"])
+def test_process_import_rejects_hostile_cwd_and_source_shadow(tmp_path, shadow_location):
+    module_path, module_sha256 = _installed_wheel_journal_binding()
+    shadow_root = tmp_path / "hostile-source-shadow"
+    shadow_package = shadow_root / "adaptive_replay"
+    shadow_package.mkdir(parents=True)
+    trap = "raise RuntimeError('hostile adaptive_replay shadow was imported')\n"
+    (shadow_package / "__init__.py").write_text(trap, encoding="utf-8")
+    (shadow_package / "hypothesis_journal.py").write_text(trap, encoding="utf-8")
+
+    environment = os.environ.copy()
+    if shadow_location == "hostile_cwd":
+        child_cwd = shadow_root
+    else:
+        child_cwd = Path(__file__).resolve().parents[1]
+        environment["PYTHONPATH"] = str(shadow_root)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-I",
+            "-W",
+            "error",
+            "-c",
+            _CHILD_MODULE_PROVENANCE,
+            str(module_path),
+            module_sha256,
+        ],
+        cwd=child_cwd,
+        env=environment,
+        timeout=20,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_conflicting_racing_writers_commit_one_immutable_winner(recorded):
