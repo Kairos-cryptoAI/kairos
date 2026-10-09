@@ -25,3 +25,9 @@ development/adaptive_replay/evidence/reversal-search-2026-10-07/** -text
 development/adaptive_replay/evidence/reversal-search-2026-10-07/stdout.log whitespace=trailing-space,space-before-tab,cr-at-eol
 # Scenario comparison preserves the exact original completed attempt bytes.
 development/adaptive_replay/evidence/scenario-comparison-2026-10-08/** -text
+# Additive transfer/V3 sources have independently retained byte commitments.
+# Preserve their Git bytes on future Windows checkouts without normalizing old code.
+development/adaptive_replay/scripts/export_legacy_public_book_tape.py -text
+development/adaptive_replay/adaptive_replay/public_book_transfer.py -text
+development/adaptive_replay/adaptive_replay/hypothesis_v3.py -text
+development/adaptive_replay/adaptive_replay/hypothesis_journal_v3.py -text
