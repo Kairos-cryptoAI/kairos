@@ -1,0 +1,38 @@
+{
+  "schema": "kairos.development.public-book-transfer-observation.v1",
+  "scope": "ACTUAL_LEGACY_EXPORT_AND_CURRENT_BYTE_COMPATIBILITY_ONLY",
+  "export_state": "EXPORTED_LEGACY_OBSERVED_CONSISTENCY_ONLY",
+  "import_state": "PASS_LEGACY_EXPORT_BYTE_CONSISTENCY_ONLY",
+  "legacy_wheel_sha256": "20c86e4dbf20f90a622dfb9e6be73b1d37e0de2d660fcde297878fe0d75ad5ca",
+  "legacy_implementation_sha256": "8acf38e26e34c75030497a1b454929e6bdeb56101ccf3542bf5dc28f760409ec",
+  "exporter_script_sha256": "3532f17967da6f57b040d1d7b777cfecab90df411f8e81fcf00926f7a16fc656",
+  "export_sha256": "3ee7883899571862eeae80ff8d9f2d852c8291c060a313cb952b18634469f7bf",
+  "receipt_sha256": "30e524480a58c3acf993e1b94a0b8d05a643dd2dc5ed81b1b8142d9a2ad495fd",
+  "original_raw_sha256": "66a3d8c94694d395653ecaefd71161653bd5d5241ee83e29c91e2616ef7602ff",
+  "target_wheel_sha256": "25f4f642c4c2fccbb4d58ad013a342888895e9a38200a9b1e5484dee462b6b5d",
+  "target_importer_sha256": "4be9cd45f9c206c360d633a22770dbe413f2bc643eac4bce4de6509e6ca19ca1",
+  "producer_sources_sha256": "cdffd16deff854f7dfddabe1c0e110a01aa561c72ea9f4b78828ffa7e9fa628a",
+  "tape_sha256": "5294c07d5e06db6dcb7c8231154b497615e67d80207d2b7d194999ff1b7fd8ff",
+  "portfolio_mapping_sha256": "11f229f33b700ed1a436f47b01de152329a9bbb98b3169d45c72b90232378a18",
+  "frames": 1280,
+  "segments": 5,
+  "symbol_counts": { "BNBUSDT": 228, "BTCUSDT": 261, "ETHUSDT": 270, "SOLUSDT": 259, "XRPUSDT": 262 },
+  "target_audits": [
+    { "python": "3.11.15", "isolated_private_environment": true, "wheel_package_source_files_verified": 65, "receipt_and_raw_unchanged": true },
+    { "python": "3.14.7", "isolated_private_environment": true, "wheel_package_source_files_verified": 65, "receipt_and_raw_unchanged": true, "original_segment_files_verified": 5 }
+  ],
+  "direct_current_reader": "REFUSED_ORIGINAL_IMPLEMENTATION_MISMATCH",
+  "source_authentication": false,
+  "market_tick_completeness": "UNKNOWN_NOT_CLAIMED",
+  "source_set_admitted": false,
+  "risk_authority": "NONE",
+  "trading_authority": "NONE",
+  "economic_replay": false,
+  "qualified_economics": null,
+  "limitations": [
+    "Original legacy auditor owns observed-source audit; current importer owns transport and DTO compatibility only.",
+    "No old source seal, fingerprint, timestamp, frame or receipt was rewritten.",
+    "All five-symbol book inputs bind a current TapeBinding; no complete bars/news/macro source set or hypothesis was admitted.",
+    "No continuous historical SIM, model call, fee performance result, blind credit or readiness promotion follows."
+  ]
+}
