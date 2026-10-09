@@ -2,6 +2,19 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Lossless original archive loaders: installed engineering gate — 2026-10-09
+
+The [separate installed-loader gate](ORIGINAL-ARCHIVE-LOADERS-2026-10-09.md)
+passes 1,737 cases with five explicit Windows symlink-fixture skips on each of
+Python 3.11/3.14. All 72 adaptive modules match the immutable source, retained
+wheel and installed bytes before/after tests. Only original bookTicker streaming
+and monthly funding-rate loaders plus their tests are added to published source;
+other financial/hypothesis/four-arm drafts are excluded from this acceptance.
+Whole-calendar rates do not supply settlement prices. Original historical
+receiving/source admission, May BBO, causal NEWS/MACRO, continuous financial
+accounts and fixed four-arm economics remain open. All readiness stays false
+with `REJECT_ALL`; hosted checks must match the new exact published revision.
+
 ## Exact May original BBO metadata gap — 2026-10-09
 
 The [fixed public metadata observation](HISTORICAL-BBO-MAY-SOURCE-GAP-2026-10-09.md)

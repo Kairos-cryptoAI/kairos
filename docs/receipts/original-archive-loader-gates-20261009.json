@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "kind": "ORIGINAL_ARCHIVE_LOADER_ENGINEERING_NOT_SOURCE_OR_FINANCIAL_ADMISSION",
+  "baseRevision": "0e8c7b593696bb5c6eee5508efceae95b3fafb00",
+  "scope": "Installed published adaptive package plus only the two original archive loaders and their tests",
+  "sourceManifestSha256": "dff47756747f11f19edae0688427a472f42b6f40c91e20b8e1cae036e054a182",
+  "sourceFiles": 616,
+  "packagePythonFiles": 72,
+  "testRunnerSha256": "c67fb61be5b1f42fe18b1cb366767def57455bcab675ee870141fbd35326420d",
+  "retainedWheelSha256": "242c7af46a248d4332dc30120109f4eb0a3a0cb7e70c56105f251da54210189e",
+  "overlays": [
+    {
+      "path": "development/adaptive_replay/adaptive_replay/archive_funding_rate_v3.py",
+      "bytes": 12443,
+      "sha256": "74ce3bd9ab4970409d125ee0d042098741672ad5b36d42fc2695437f0adb47fb"
+    },
+    {
+      "path": "development/adaptive_replay/adaptive_replay/bookticker_archive_stream_v3.py",
+      "bytes": 43984,
+      "sha256": "32369e4f2ddff907b62c9e4e264549e378aa27cc1cf06c3967ee39b58694a51c"
+    },
+    {
+      "path": "development/adaptive_replay/tests/test_archive_funding_rate_v3.py",
+      "bytes": 8519,
+      "sha256": "67c003702bafb1420bb4038a90b2c7489e4cad5942810fa8809aade222104a1b"
+    },
+    {
+      "path": "development/adaptive_replay/tests/test_bookticker_archive_stream_v3.py",
+      "bytes": 11264,
+      "sha256": "3f40fdbde3611061119539aa7ce764ca7a90e673b795484af3ad5b62c5da60e0"
+    }
+  ],
+  "gates": [
+    {
+      "label": "py311",
+      "python": "3.11.15 (main, Aug  7 2026, 02:24:19) [MSC v.1944 64 bit (AMD64)]",
+      "tests": 1742,
+      "passed": 1737,
+      "skipped": 5,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 433.307,
+      "resultSha": "e615c19ebc99218aca64394000b7365beb30ee9a01d6e402e02881ac29e3146d",
+      "junitSha": "126e0d564e98cf43c4331df13a0d3c41568cd60f1c4cc9c3a5a1c42af7b08c0d",
+      "logSha": "2fdf8f922dcff044388c4ee8dc0c7a39bc728abdbf035c5eba348dc782582fb1"
+    },
+    {
+      "label": "py314",
+      "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "tests": 1742,
+      "passed": 1737,
+      "skipped": 5,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 351.369,
+      "resultSha": "6bbc0f74a217dfd087344baa89aada09f81691ead84cce1fd9fc86e01c9f8eae",
+      "junitSha": "3a0ef7d948188b96a69a445adb51b8918d1ae4f85f75c9393078210ec4725a93",
+      "logSha": "2a024477e66c4c79c3327f46ab34725241b3ffcafa2b94aa37dc6054e421342e"
+    }
+  ],
+  "postTestSourceInventoryMatched": true,
+  "postTestInstalledModuleBytesMatched": true,
+  "workingOverlayBytesMatched": true,
+  "isolatedMode": true,
+  "warningsAsErrors": true,
+  "nonEditableInstalledWheel": true,
+  "lockFrozenCheck": true,
+  "ruffCheck": true,
+  "ruffFormatCheck": true,
+  "metaStaticAndLinkChecks": true,
+  "qualification": "ENGINEERING_ONLY",
+  "limitations": [
+    "Five Windows symlink-fixture permission skips per interpreter are explicit, not passing checks.",
+    "The full suite excludes all other unpublished financial, hypothesis, horizon and four-arm modules.",
+    "Original archive checksums and explicit modeled timing do not establish historical local receiving, order-book depth, NEWS/MACRO or source authenticity admission.",
+    "Rate records alone do not supply funding settlement prices or financial-account results.",
+    "No full five-day financial comparison, performance winner, model call, frozen-research mutation, primary recovery or trading permission follows."
+  ],
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}
