@@ -1,0 +1,62 @@
+{
+  "schema": "kairos.fixed-window-archive-alternative-metadata.receipt.v1",
+  "classification": "ADVERTISED_METADATA_ONLY_NOT_HISTORICAL_SOURCE_ADMISSION",
+  "request": {
+    "method": "GET",
+    "url": "https://api.tardis.dev/v1/exchanges/binance-futures",
+    "requests_attempted": 1,
+    "http_status": 200,
+    "response_bytes": 384303,
+    "body_limit_bytes": 1048576,
+    "hard_wall_seconds": 30,
+    "authentication": "NONE",
+    "retries": 0,
+    "redirects": 0,
+    "intent_sha256": "a85a216ad21ccca977562a25bb148faa854845309e197cf33264775bb384e4de",
+    "response_headers_sha256": "47a64654a89474250717017fa2057cbe0ea98895567cf76022894c8e8a5d6566",
+    "response_body_sha256": "8088ca1f23baae2b061b68cf0fd1cdc9123c52896a08f58f3ebf7327ca90cabe"
+  },
+  "metadata": {
+    "exchange": "binance-futures",
+    "enabled": true,
+    "required_types_advertised_for_each": ["book_ticker", "incremental_book_L2", "derivative_ticker"],
+    "instruments": [
+      {"symbol": "BTCUSDT", "available_since": "2019-11-17T00:00:00.000Z", "available_to": "2026-10-09T00:00:00.000Z"},
+      {"symbol": "ETHUSDT", "available_since": "2019-11-27T00:00:00.000Z", "available_to": "2026-10-09T00:00:00.000Z"},
+      {"symbol": "SOLUSDT", "available_since": "2020-09-14T00:00:00.000Z", "available_to": "2026-10-09T00:00:00.000Z"},
+      {"symbol": "BNBUSDT", "available_since": "2020-02-10T00:00:00.000Z", "available_to": "2026-10-09T00:00:00.000Z"},
+      {"symbol": "XRPUSDT", "available_since": "2020-01-06T00:00:00.000Z", "available_to": "2026-10-09T00:00:00.000Z"}
+    ],
+    "incident_reports": 18,
+    "may_interval_utc": ["2021-05-17T00:00:00Z", "2021-05-23T00:00:00Z"],
+    "january_interval_utc": ["2024-01-08T00:00:00Z", "2024-01-14T00:00:00Z"],
+    "reported_incident_overlaps_may": 0,
+    "reported_incident_overlaps_january": 0,
+    "incident_overlap_predicate": "from < window_end AND to >= window_start",
+    "reported_overlap_absence_proves_completeness": false
+  },
+  "offline_verification": {
+    "network_calls": 0,
+    "verification_script_sha256": "32725d3690b1cc3393a28550e9e98c62a23457c9710717dcac76436ae1d0184a",
+    "receipt_sha256": "446f30935248abe92ae5fbd93a6af380a6ad854ff6eafcd4f380b442938d88a0",
+    "exact_original_intent_and_body_unchanged": true,
+    "exactly_one_metadata_entry_per_required_symbol": true,
+    "advertised_ranges_cover_both_fixed_windows": true
+  },
+  "references": [
+    "https://docs.tardis.dev/api/http-api-reference",
+    "https://docs.tardis.dev/historical-data-details/binance-futures",
+    "https://docs.tardis.dev/faq/billing-and-subscriptions"
+  ],
+  "dataset_downloaded": false,
+  "account_created": false,
+  "trial_started": false,
+  "paid_calls": 0,
+  "purchase": false,
+  "access_or_license_qualified": false,
+  "fixed_window_completeness_proved": false,
+  "settlement_price_proof": false,
+  "source_admission": false,
+  "trading_authority": "NONE",
+  "readiness": {"technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL"}
+}

@@ -2,6 +2,17 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Fixed-window alternative: verified advertised metadata only — 2026-10-09
+
+The [separate public metadata observation](HISTORICAL-BBO-ALTERNATIVE-METADATA-2026-10-09.md)
+advertises book-ticker/depth/derivative history spanning both fixed windows
+for all five required instruments. Original metadata bytes and the exact
+offline projection are retained. Historical bodies, exact completeness,
+access/license/budget and causal suitability are not qualified. No dataset,
+account/trial, purchase or credentials were used. This does not close the
+May BBO, NEWS/MACRO or settlement-price gates; all readiness remains false
+with `REJECT_ALL`.
+
 ## Actual original funding-price omission: exact refusal — 2026-10-09
 
 The [separate original-response verification](ORIGINAL-FUNDING-SETTLEMENT-GAP-2026-10-09.md)
