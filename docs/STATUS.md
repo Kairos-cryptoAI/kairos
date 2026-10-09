@@ -2,6 +2,17 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Complete original January window row/CRC profile — 2026-10-09
+
+The [separate full-object profile](HISTORICAL-BBO-WINDOW-PROFILE-2026-10-09.md)
+completed all twenty-five January 9–13 ZIPs: 394,149,722 original rows,
+36,639,819,228 CSV bytes, full EOF/CRC checks and empty recorded anomaly counters.
+The sealed one-worker run took 4,099.031 seconds with unchanged original SHA
+identities. Together with January 8, all thirty source/tail objects now have
+full profiles, totaling 453,788,469 rows. This is source integrity under the
+declared checks, not accepted feed/NEWS/MACRO/funding, financial replay or
+matched four-arm economics. Readiness remains false and policy `REJECT_ALL`.
+
 ## Complete original BTC-day block index — 2026-10-09
 
 The [bounded source-only derivation](HISTORICAL-BTC-BBO-BLOCK-INDEX-2026-10-09.md)

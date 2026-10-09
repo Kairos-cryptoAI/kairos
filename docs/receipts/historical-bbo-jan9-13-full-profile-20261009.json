@@ -1,0 +1,739 @@
+{
+  "schemaVersion": 1,
+  "kind": "COMPLETE_ORIGINAL_BBO_CSV_ROW_AND_CRC_PROFILE_NOT_SOURCE_ADMISSION",
+  "scope": "JANUARY_9_THROUGH_13_2024_FIVE_SYMBOL_ORIGINAL_ARCHIVES",
+  "objects": [
+    {
+      "day": "2024-01-09",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-09.zip",
+      "archiveSha256": "24c79ccebbed032bd5e9bf3ed99bcaffe3f523ebcfa3d6e58a30b71d87013a4b",
+      "uncompressedBytes": 441047153,
+      "uncompressedSha256": "889d2614037b978ba5a18a46ee12b4a49d1365f6881ef849b282610405e4a44e",
+      "rows": 4845233,
+      "profileSha256": "1334f3fd44bd8797593b661240429508743e5fe12e10b3e9e0bb78047642784c",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3412,
+      "extrema": {
+        "event_time": [
+          1704758403494,
+          1704844799979
+        ],
+        "transaction_time": [
+          1704758402590,
+          1704844799973
+        ],
+        "update_id": [
+          3795947820449,
+          3801835903966
+        ]
+      }
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-09.zip",
+      "archiveSha256": "9f614197d81cee6f93ca7b28d686e43d82a8a7e5f281bc30b521ec6c0c9f37db",
+      "uncompressedBytes": 2142946030,
+      "uncompressedSha256": "5ebe1d3289664c45bd838ab0af8b3378325e9c141811ac4f47c82a0e44dc1082",
+      "rows": 22767271,
+      "profileSha256": "35745764357479da563be0e92b08e68406b4cfcb2e668093c3449d076c840306",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2084,
+      "extrema": {
+        "event_time": [
+          1704758400008,
+          1704844800005
+        ],
+        "transaction_time": [
+          1704758400001,
+          1704844799999
+        ],
+        "update_id": [
+          3795945943357,
+          3801835905069
+        ]
+      }
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-09.zip",
+      "archiveSha256": "09cc65ba77a296d4cfc1b9f7f938d4b4c1957224ba12b96100fba73533f5badd",
+      "uncompressedBytes": 1980962629,
+      "uncompressedSha256": "ac831ebb2d5f9b02936a720dd60338e2c6200019c1ef6e6ac6c15d2b17705953",
+      "rows": 21202220,
+      "profileSha256": "a58192536b958b3dc57d098f444e295ac05f350a7aee9d574ea105b38c6e0f67",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3486,
+      "extrema": {
+        "event_time": [
+          1704758400008,
+          1704844799997
+        ],
+        "transaction_time": [
+          1704758400001,
+          1704844799992
+        ],
+        "update_id": [
+          3795945943358,
+          3801835904678
+        ]
+      }
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-09.zip",
+      "archiveSha256": "ae68b1b0d9faec546b8cee3cdefa6a20d474c7e14af7c670bbc9c87e44c4c5f1",
+      "uncompressedBytes": 1164189630,
+      "uncompressedSha256": "ed2587b46728904f06c65af49e5c6c141fbfc0144c5a1352d20fb4c213309122",
+      "rows": 12904988,
+      "profileSha256": "1f75c05b7989c4a67396feb7cc4058c0bfeb491af67d71051e3dfbb228f3d298",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3462,
+      "extrema": {
+        "event_time": [
+          1704758400021,
+          1704844799968
+        ],
+        "transaction_time": [
+          1704758400015,
+          1704844799963
+        ],
+        "update_id": [
+          3795945944537,
+          3801835903602
+        ]
+      }
+    },
+    {
+      "day": "2024-01-09",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-09.zip",
+      "archiveSha256": "8aacfb69431c51d84c552238c61faf84524b98e5803da6615a2dc8b880257e13",
+      "uncompressedBytes": 371398998,
+      "uncompressedSha256": "dc84d6655658c2c948aafa54ca9df30e007180a75f045e270797c6957a28b334",
+      "rows": 3952802,
+      "profileSha256": "14e9770d72cbb9fc8c826bbc8e87751feca3f6735a6dbaeeb79610a70e07f85f",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3461,
+      "extrema": {
+        "event_time": [
+          1704758400027,
+          1704844799765
+        ],
+        "transaction_time": [
+          1704758400020,
+          1704844799759
+        ],
+        "update_id": [
+          3795945944955,
+          3801835887674
+        ]
+      }
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-10.zip",
+      "archiveSha256": "2bcd2c04a66d8bbf4533fe46e317db8a84eaaee9fa5ba6e3078d8a1d5d4dc37f",
+      "uncompressedBytes": 281795872,
+      "uncompressedSha256": "caa56b469d71572a0d3f3195f1f5c4de500fca7b42c111d92d7beeb417ba316f",
+      "rows": 3105678,
+      "profileSha256": "9f875504e68e3324db06b50ed130bddf11a174c7a83133f5853c6d2b35e77cbd",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 4167,
+      "extrema": {
+        "event_time": [
+          1704844800023,
+          1704931199957
+        ],
+        "transaction_time": [
+          1704844800018,
+          1704931199951
+        ],
+        "update_id": [
+          3801835906866,
+          3808426095217
+        ]
+      }
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-10.zip",
+      "archiveSha256": "91e94d62cf7a457a0a6e0cc0b7d0eeee7d7acf990d2b5b6aba45776de8fd3698",
+      "uncompressedBytes": 2567595627,
+      "uncompressedSha256": "31d07f8f547426add58357f4be1626c65968216e74ce8614e6f116b0759ed72a",
+      "rows": 27295396,
+      "profileSha256": "dc1a6851ad0418c19ff64e3d5eb553575c4ec1bc498311d4818563e55e054006",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2293,
+      "extrema": {
+        "event_time": [
+          1704844800005,
+          1704931199899
+        ],
+        "transaction_time": [
+          1704844800000,
+          1704931199893
+        ],
+        "update_id": [
+          3801835905079,
+          3808426092954
+        ]
+      }
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-10.zip",
+      "archiveSha256": "448ddef5459936c1a16cd4ccec07b2e9e87e3a6bc068e8f43836e1ce0bae323e",
+      "uncompressedBytes": 3218339820,
+      "uncompressedSha256": "e3dc6867d1c6f5208fb6bb3c5f3825541e9538968280b7dfd499acc2aa331b70",
+      "rows": 34521911,
+      "profileSha256": "7cdaac58cc9bc1648a6815610dae0946dd12d274d248d542a2a74517455159ae",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3359,
+      "extrema": {
+        "event_time": [
+          1704844800007,
+          1704931199969
+        ],
+        "transaction_time": [
+          1704844800002,
+          1704931199967
+        ],
+        "update_id": [
+          3801835905174,
+          3808426095761
+        ]
+      }
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-10.zip",
+      "archiveSha256": "100ee25e7d9ea0837dbec69b531514c51b9f6e917b2ee5c100fbaa026ade0288",
+      "uncompressedBytes": 1111537998,
+      "uncompressedSha256": "5251c84652b0cfd8b52a2ba678e3dcf5aeb25fdeb052c27a187502a615b73006",
+      "rows": 12434959,
+      "profileSha256": "9e9fdc41d0cb04890ff80093aa9736fe7e53f2bff710d1f38a99b2907e1d513d",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2760,
+      "extrema": {
+        "event_time": [
+          1704844803376,
+          1704931199982
+        ],
+        "transaction_time": [
+          1704844802519,
+          1704931199978
+        ],
+        "update_id": [
+          3801837714504,
+          3808426096003
+        ]
+      }
+    },
+    {
+      "day": "2024-01-10",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-10.zip",
+      "archiveSha256": "2a35c0190c6e54faee9294f639fb454f07f64ea0ba16030fef1fcce6afbe1b1d",
+      "uncompressedBytes": 434765501,
+      "uncompressedSha256": "441416f301db012cf3524b0395d93420db934983c4f9211a7757064bb6ebe561",
+      "rows": 4633519,
+      "profileSha256": "a904a2d3441071b4abc7d5ea95b9c683e48b338ebdff815f3ddb58e250e8c1c4",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3443,
+      "extrema": {
+        "event_time": [
+          1704844801380,
+          1704931199951
+        ],
+        "transaction_time": [
+          1704844801068,
+          1704931199946
+        ],
+        "update_id": [
+          3801836644976,
+          3808426095008
+        ]
+      }
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-11.zip",
+      "archiveSha256": "87411656ffdc404cd0d4981bda791d4a53ad162e28a1df2b3bf68456143c6a12",
+      "uncompressedBytes": 313530271,
+      "uncompressedSha256": "cffdb284da6f3dda872d9c913c2d9e8581e541bbf60abe8c5758c06f269b93fc",
+      "rows": 3453007,
+      "profileSha256": "d4f26b286b460ef7fe6f646046f06a5d58e4b322f4ffa9161d53756344f25852",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3541,
+      "extrema": {
+        "event_time": [
+          1704931200016,
+          1705017599496
+        ],
+        "transaction_time": [
+          1704931200009,
+          1705017599491
+        ],
+        "update_id": [
+          3808426097563,
+          3815029474972
+        ]
+      }
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-11.zip",
+      "archiveSha256": "b3c79a54ebcebb126061eb3cd634fff1cb20603e61837441d706febe824656f4",
+      "uncompressedBytes": 3147201619,
+      "uncompressedSha256": "c2f0f234f37a8559dc44777972505b1f032208d672401e27f97f4bafb60650db",
+      "rows": 33466411,
+      "profileSha256": "61762ed55ac351d9368a92b14b24327ef15c6ed94ed3981c5d9ae35d64f34d88",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3463,
+      "extrema": {
+        "event_time": [
+          1704931200035,
+          1705017599931
+        ],
+        "transaction_time": [
+          1704931200029,
+          1705017599925
+        ],
+        "update_id": [
+          3808426099837,
+          3815029485964
+        ]
+      }
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-11.zip",
+      "archiveSha256": "b7b43d32c99ee8bfcf7db6826f6c491398f46627a011b290c626b34e0459b1ca",
+      "uncompressedBytes": 3481231132,
+      "uncompressedSha256": "cbb7ff1720ff2f6e7dcc266126faafc5b0c26d1f49da3a3be2275a10fd622540",
+      "rows": 37339318,
+      "profileSha256": "a7f6fd8a59bafc90f76204526b2b72b1ad9ffbf95ab548bb43eb79b3a12e6d68",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3466,
+      "extrema": {
+        "event_time": [
+          1704931200020,
+          1705017599985
+        ],
+        "transaction_time": [
+          1704931200013,
+          1705017599980
+        ],
+        "update_id": [
+          3808426098126,
+          3815029487784
+        ]
+      }
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-11.zip",
+      "archiveSha256": "d3be71b952f49fa9ee152a59ec637a34db8b9d9e35f01cee13a63ce598dec4a1",
+      "uncompressedBytes": 956117268,
+      "uncompressedSha256": "c0cff1d6815adfafd64a0d7fdfd9fc58c0676b22c356af20bc2d01d232d792b8",
+      "rows": 10532958,
+      "profileSha256": "acb4dc8f7688c1366b63b8a5ee311ceaa784eb28d5e95f074ef7b7444f7f7541",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3369,
+      "extrema": {
+        "event_time": [
+          1704931200026,
+          1705017600003
+        ],
+        "transaction_time": [
+          1704931200020,
+          1705017599998
+        ],
+        "update_id": [
+          3808426098976,
+          3815029488318
+        ]
+      }
+    },
+    {
+      "day": "2024-01-11",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-11.zip",
+      "archiveSha256": "79b9f71d4ada8f7fbe84a77faad3cfeae7ae098994c96c56e47c0b33ecc7c3ca",
+      "uncompressedBytes": 459908502,
+      "uncompressedSha256": "f192ebacd806d514fd7f92a97c2f35bbe9fffab20824ff65681e27cf50718a72",
+      "rows": 4897111,
+      "profileSha256": "95fae1c221287a67f97838daa73414a7db142c64666eb7f6b674a7a2ab6f1ee5",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2988,
+      "extrema": {
+        "event_time": [
+          1704931200022,
+          1705017599888
+        ],
+        "transaction_time": [
+          1704931200017,
+          1705017599882
+        ],
+        "update_id": [
+          3808426098610,
+          3815029483374
+        ]
+      }
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-12.zip",
+      "archiveSha256": "b7fde8bef374f5acccc3bcdf68de4bcab56176fa1b6b607549f2cd1ad68be151",
+      "uncompressedBytes": 364647351,
+      "uncompressedSha256": "f93cf506798ee8cfd13c6867fb724ff4f63ef88bd853f4dc116065572c6a3804",
+      "rows": 4010971,
+      "profileSha256": "3f1b5d10bbd41321c71da3c5b1291fa2d1324b6113314680b25cc641f6095baf",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2952,
+      "extrema": {
+        "event_time": [
+          1705017600030,
+          1705103999946
+        ],
+        "transaction_time": [
+          1705017600024,
+          1705103999943
+        ],
+        "update_id": [
+          3815029490379,
+          3821852104478
+        ]
+      }
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-12.zip",
+      "archiveSha256": "fc57ba62c691870dec044f5ba345205e2cfab1cf1661ee3908a8ca0f7911ed54",
+      "uncompressedBytes": 3165558265,
+      "uncompressedSha256": "47b87ce554d7072fb7f4be19dc9357e0f02299cb122bde5cf04c8f1b521dd1a3",
+      "rows": 33647896,
+      "profileSha256": "dd76094eee380db306332d5889aed99d7946d631a81e5f8bf12c0750ed12948c",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 1692,
+      "extrema": {
+        "event_time": [
+          1705017600037,
+          1705103999982
+        ],
+        "transaction_time": [
+          1705017600030,
+          1705103999976
+        ],
+        "update_id": [
+          3815029490933,
+          3821852106238
+        ]
+      }
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-12.zip",
+      "archiveSha256": "457e34933f014f0ed310d5cdf6b49c1ba4cd107d99e66b1428410786255e0f0a",
+      "uncompressedBytes": 3187724608,
+      "uncompressedSha256": "5dd071a987dd33fdfd37d6a5bd63897dc678d44d11bf24f7bbf4b493c6931c3d",
+      "rows": 34193424,
+      "profileSha256": "90134802674a0359f5f17662b58056cab43931e3f3f05bebb642ffa004cbbe69",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 1687,
+      "extrema": {
+        "event_time": [
+          1705017600011,
+          1705103999957
+        ],
+        "transaction_time": [
+          1705017600003,
+          1705103999952
+        ],
+        "update_id": [
+          3815029488559,
+          3821852105151
+        ]
+      }
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-12.zip",
+      "archiveSha256": "7df4011b9632b8ebb64933141503b9ef6101090769cf0288c5f2d3026b646a4b",
+      "uncompressedBytes": 1149938956,
+      "uncompressedSha256": "11942ed04a3538bdf58701b11978f20008c46e13b86e7e51a8d10e2a0353fa71",
+      "rows": 12847677,
+      "profileSha256": "2d060fa321a910529b62ff7f797e407c3a6fe6e0429fc3911eb502db7769927c",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3442,
+      "extrema": {
+        "event_time": [
+          1705017600008,
+          1705104000006
+        ],
+        "transaction_time": [
+          1705017600001,
+          1705103999999
+        ],
+        "update_id": [
+          3815029488436,
+          3821852107319
+        ]
+      }
+    },
+    {
+      "day": "2024-01-12",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-12.zip",
+      "archiveSha256": "16068cba33acd057beff00a025149e2dbd06b8c1a17770d59e3909780d3f4bad",
+      "uncompressedBytes": 423980597,
+      "uncompressedSha256": "9811e6af96d8227abc3335d3627db4957a3224f6362be46afc8165822d48c00b",
+      "rows": 4510035,
+      "profileSha256": "b55c29398d132cf01ca416bf20e786714c3af081a604da9d8d841b550adbc84d",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2613,
+      "extrema": {
+        "event_time": [
+          1705017600016,
+          1705104000005
+        ],
+        "transaction_time": [
+          1705017600011,
+          1705103999999
+        ],
+        "update_id": [
+          3815029489032,
+          3821852107308
+        ]
+      }
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "BNBUSDT",
+      "archive": "BNBUSDT-bookTicker-2024-01-13.zip",
+      "archiveSha256": "1e9c77353e0dad65d8a9e63fe11d7cf4cc0dc6b37a805f0ffa060b4ef3dff32e",
+      "uncompressedBytes": 208827867,
+      "uncompressedSha256": "32942d3af0d806edc094aa5a9438d496e6b45ce3fac098cc6d664a88ce7b5102",
+      "rows": 2287100,
+      "profileSha256": "b3472f8ad0225c2e299cfe0e5cca620a972c53deaf4992f730b8231c27461e9e",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3519,
+      "extrema": {
+        "event_time": [
+          1705104003799,
+          1705190399738
+        ],
+        "transaction_time": [
+          1705104002600,
+          1705190399732
+        ],
+        "update_id": [
+          3821854036695,
+          3826725291485
+        ]
+      }
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "BTCUSDT",
+      "archive": "BTCUSDT-bookTicker-2024-01-13.zip",
+      "archiveSha256": "a379614ce9ae0d680e7c3fa760df1cc9abbcc995f501746a24204b261e39c555",
+      "uncompressedBytes": 2341406700,
+      "uncompressedSha256": "d493915ce394e7993dee8544888bd5a11c32ae1598d294d19f18cce37ee4d032",
+      "rows": 24881894,
+      "profileSha256": "b20c5759fbaa000100a4ab67d6afaba03572a76b730c592ec940a6da44c4deee",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 2506,
+      "extrema": {
+        "event_time": [
+          1705104000016,
+          1705190399873
+        ],
+        "transaction_time": [
+          1705104000008,
+          1705190399867
+        ],
+        "update_id": [
+          3821852107957,
+          3826725296985
+        ]
+      }
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "ETHUSDT",
+      "archive": "ETHUSDT-bookTicker-2024-01-13.zip",
+      "archiveSha256": "0e844aeb206b0a2dedd02dda83886ab2cd874d27b4b4fd6d8a7eb2e68a5ecac0",
+      "uncompressedBytes": 2241267422,
+      "uncompressedSha256": "06635a1f2055045b74f5b312ae38d65a0ca12bd8c738dbbd519e68e48ce312c2",
+      "rows": 24022299,
+      "profileSha256": "9f34a973fda6be461de2146177278258e5e173f97424aa469788a6d23fa9425e",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3167,
+      "extrema": {
+        "event_time": [
+          1705104000018,
+          1705190399995
+        ],
+        "transaction_time": [
+          1705104000013,
+          1705190399990
+        ],
+        "update_id": [
+          3821852108511,
+          3826725302492
+        ]
+      }
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "SOLUSDT",
+      "archive": "SOLUSDT-bookTicker-2024-01-13.zip",
+      "archiveSha256": "564bccb44f08df2280ca57bdcacd67b393190ae2a9713c01cd2b96855517fadd",
+      "uncompressedBytes": 1199536094,
+      "uncompressedSha256": "a04dc7a6e219ded2bec62a26ebfdfa168face9bba1753e34d896b7f5506936f4",
+      "rows": 13377057,
+      "profileSha256": "897db59e3b0534c2a2fae81cfc9dd81f732c5e4187c8a9d494d32fbae475b269",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3742,
+      "extrema": {
+        "event_time": [
+          1705104000008,
+          1705190399989
+        ],
+        "transaction_time": [
+          1705104000002,
+          1705190399986
+        ],
+        "update_id": [
+          3821852107478,
+          3826725302303
+        ]
+      }
+    },
+    {
+      "day": "2024-01-13",
+      "symbol": "XRPUSDT",
+      "archive": "XRPUSDT-bookTicker-2024-01-13.zip",
+      "archiveSha256": "fb2270161ce78b68647a2046d800cc7f8ec72a7e4046451f407b520456c6afcd",
+      "uncompressedBytes": 284363318,
+      "uncompressedSha256": "88ed5dc35f5f2e961ce845ff15e985099ac4ac7fe4cc2bf9988a3c35c2209829",
+      "rows": 3018587,
+      "profileSha256": "464ca5785038174a7a656e7fdd3e9bf796b9e3b1a9d87fa3c1060805b9f5b187",
+      "zipCrcValidatedToEof": true,
+      "anomalies": {},
+      "largestAdjacentEventGapMs": 3731,
+      "extrema": {
+        "event_time": [
+          1705104000007,
+          1705190399826
+        ],
+        "transaction_time": [
+          1705104000001,
+          1705190399821
+        ],
+        "update_id": [
+          3821852107413,
+          3826725295540
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "objects": 25,
+    "days": 5,
+    "symbols": 5,
+    "rows": 394149722,
+    "uncompressedBytes": 36639819228
+  },
+  "run": {
+    "completedAtUtc": "2026-10-09T08:57:50.873889+03:00",
+    "elapsedWallSeconds": 4099.031,
+    "nativeExitCode": 0,
+    "workerSha256": "318c9e832d38d5702c5574f3e77323923ba576f59cb3e8ba5d23ca9ece461502",
+    "planSha256": "f80d9b402cc988e75e4feccb2dc2dcec933b81be4900bb19e76f707bc435bb5a",
+    "summarySha256": "36b7acff9c325c501a1de677f49e82ac18d537f2caa9652138ee7970a0e447f4",
+    "intentSha256": "e1e98677d9db49b7223f6e0c1ef563b2115204bc96c6117a8bfc7598834445ac",
+    "limits": {
+      "failure_policy": "CREATE_FAILURE_RECEIPT_AND_STOP_NO_RESUME",
+      "global_seconds": 7200,
+      "max_line_bytes": 4096,
+      "max_open_files": 3,
+      "max_total_csv_bytes": 60000000000,
+      "max_total_zip_bytes": 3932615059,
+      "one_sequential_worker": true,
+      "per_object_seconds": 900
+    },
+    "checks": {
+      "decimal_not_binary_float": true,
+      "event_time_unclipped": true,
+      "exact_native_header_and_7_columns": true,
+      "full_archive_sha_before_and_after": true,
+      "full_member_read_to_eof_crc": true,
+      "full_uncompressed_sha256": true,
+      "record_first_last_raw_rows": true,
+      "semantic_repair": false,
+      "strict_ascii_canonical_numeric_parse": true,
+      "transaction_day_half_open_utc": true
+    }
+  },
+  "authority": {
+    "fullArchiveShaBeforeAndAfter": true,
+    "allRowsProfiled": true,
+    "zipCrcValidatedToEof": true,
+    "historicalLocalReceiveClock": false,
+    "continuousFeedCoverageAccepted": false,
+    "crossDayFeedContinuityAccepted": false,
+    "newsMacroFundingCoverageAccepted": false,
+    "financialReplayComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}
