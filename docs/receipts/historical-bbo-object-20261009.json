@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "kind": "ORIGINAL_HISTORICAL_BBO_OBJECT_AND_COMPLETE_PROFILE",
+  "scope": "BTCUSDT_2024_01_08_ONE_ORIGINAL_OBJECT_NOT_FULL_SOURCE_ADMISSION",
+  "discovery": {
+    "requests": 56,
+    "retries": 0,
+    "redirects": 0,
+    "zipBodiesDownloaded": 0,
+    "fullPrintedRosterTruncated": true,
+    "creditedMay17ChecksumStatus": { "BTCUSDT": 404, "ETHUSDT": 404, "SOLUSDT": 404, "BNBUSDT": 404, "XRPUSDT": 404 },
+    "creditedJan8ZipStatus": { "BTCUSDT": 200, "ETHUSDT": 200, "SOLUSDT": 200, "BNBUSDT": 200, "XRPUSDT": 200 },
+    "creditedJan8CompressedBytes": { "BTCUSDT": 206972981, "ETHUSDT": 201456380, "SOLUSDT": 133780447, "BNBUSDT": 67674558, "XRPUSDT": 56165831 },
+    "uncreditedOtherPathStatuses": "UNKNOWN_OUTPUT_NOT_RETAINED"
+  },
+  "rangeInspection": { "requests": 2, "receivedBytes": 196629, "fullChecksumVerifiedAtThisStage": false, "scriptSha256": "c513480cfd44b486f49d556a6c51608d30c0d1af70a09a0fb73a4f05e84c544d" },
+  "acquisition": {
+    "requests": 2,
+    "nativeExitCode": 0,
+    "archive": "BTCUSDT-bookTicker-2024-01-08.zip",
+    "archiveBytes": 206972981,
+    "archiveSha256": "87716a48513fd29a49d32dab5b78ab0788dd58259a307bf5224f9a4a4c59b4ec",
+    "originalChecksumBodyBytes": 100,
+    "originalChecksumBodySha256": "009f29bece3950251ca2e32600dfe7576e61e851b3e9f76e8a69f1d498606ab9",
+    "receiptSha256": "73ee14d1462ab1671087e4d4fada6e8b971e4af14e21e33664f7b643cd88bd62",
+    "scriptSha256": "90701c19b16d6f91cf4da6c55c7a793b63621deb7b7ba975574f05b2416cdf65",
+    "afterProfileArchiveHashMatch": true
+  },
+  "completeProfile": {
+    "nativeExitCode": 0,
+    "member": "BTCUSDT-bookTicker-2024-01-08.csv",
+    "columns": ["update_id", "best_bid_price", "best_bid_qty", "best_ask_price", "best_ask_qty", "transaction_time", "event_time"],
+    "rows": 19245805,
+    "uncompressedBytes": 1811753894,
+    "uncompressedSha256": "799529f78e6d4463e9af24bd6e93a8ac13eb93044ac6cbbb88eecaf1537f6a05",
+    "zipCrcValidated": true,
+    "transactionMs": [1704672000006, 1704758399998],
+    "eventMs": [1704672000012, 1704758400005],
+    "updateId": [3789688012891, 3795945943163],
+    "largestAdjacentEventGapMs": 1776,
+    "anomalyCounts": {},
+    "seconds": 91.328,
+    "receiptSha256": "908bead6159c994fa6fe3d426cc8b9b9ad93ae086326294cb096375f8400b8d0",
+    "scriptSha256": "a26f553a762b8602c5f095212bea3bb60162b605c5da9336837cf3deb864053a"
+  },
+  "authority": { "completeFiveSymbolWindow": false, "historicalReceiveClock": false, "level2Depth": false, "losslessExchangeFeedAuthenticated": false, "requiredSourceCoverageAccepted": false, "economicComparisonComplete": false, "newBlindCredit": false, "trading": "NONE" },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}
