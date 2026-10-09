@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "kind": "PROSPECTIVE_MATCHED_JOURNAL_ENGINEERING_GATES",
+  "scope": "IMMUTABLE_INSTALLED_WHEEL_ONLY",
+  "sourceModuleSha256": "589cd45f0b5b57a6b6c6f2e08b6ad95bcc6c8204019cb9778ca09443412b100c",
+  "wheelSha256": "821f025ad0231e23415438189c2fb49eb296bcd0bdbec7bc4b0d16b1bf616083",
+  "sourceRoster": {
+    "adaptivePythonFiles": 66,
+    "py311ExactWheelMatch": true,
+    "py314ExactWheelMatch": true
+  },
+  "focused": [
+    { "python": "3.11.15", "passed": 75, "nativeExitCode": 0, "seconds": 11.82, "junitSha256": "b84c76c7fe9e631cc3ed39aea17ce6690e4c7631d229e38a77b3abc30bd418da" },
+    { "python": "3.14.7", "passed": 75, "nativeExitCode": 0, "seconds": 8.99, "junitSha256": "ea8e2fd667d2015e776707ec70f525fcf166d73ab9602518c3880d3e869277e9" }
+  ],
+  "full": [
+    { "python": "3.11.15", "passed": 1603, "skipped": 4, "failures": 0, "errors": 0, "nativeExitCode": 0, "seconds": 329.62, "junitSha256": "a1f1fdd400dd4754099bdd76a1af4534aecc7c98977fbbb4f1c3510ee359f476" },
+    { "python": "3.14.7", "passed": 1603, "skipped": 4, "failures": 0, "errors": 0, "nativeExitCode": 0, "seconds": 259.64, "junitSha256": "fafa2298bc647b12330f5b408550cca223aac5461eb358650a7f41c6b5172fbb" }
+  ],
+  "testOptions": ["-I", "--import-mode=importlib", "-W error"],
+  "preservedFailure": "F Python 3.14 focused assertions passed but native strict shutdown failed on an unclosed test-fixture connection. The separate corrected F process exited zero; F predates the instance-lock correction and is not final G acceptance.",
+  "authority": {
+    "sourceAuthentication": false,
+    "historicalCoverageAccepted": false,
+    "providerAuthentication": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}

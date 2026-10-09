@@ -316,7 +316,10 @@ prospective integration.
 
 Remaining implementation obligations are a separately versioned prospective
 frame with actual knowledge clocks, exact raw closed-bar/finality receipts,
-durable V3 journal and intake, and a fixed four-arm continuous driver. A
+V3 portfolio intake and non-resetting multi-day horizon, and a fixed four-arm continuous driver. The
+[separate matched V3 journal](PROSPECTIVE-MATCHED-JOURNAL-2026-10-09.md) implements
+atomic shared-source evidence with arm-bound reviews and checkpoint restart;
+it does not close these source/intake/driver obligations. A
 strategy-blind response from the origin frame cannot become a review of later
 sources/quotes the model never saw. A separately sealed held-context policy
 or an actually later frame/review must explicitly resolve that difference;

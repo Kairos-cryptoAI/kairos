@@ -743,7 +743,28 @@ protection, quote/review freshness and native planning/risk assumptions remain
 unchanged. A cut-time assessment cannot impersonate a later quote-bound review.
 
 This pure contract passes 53 synthetic clock tests per Python version. It is
-not yet a prospective source/frame producer, durable V3 journal, portfolio
-intake adapter or fixed four-arm driver. Complete immutable source-prefix and
+not itself a prospective source/frame producer, portfolio intake adapter or
+fixed four-arm driver. Complete immutable source-prefix and
 earliest eligible receipt selection remain driver obligations. No historical
 model run, admitted source set, winner or trading authority follows.
+
+## Durable matched V3 research journal
+
+`hypothesis_journal_v3` separately seals static arms/policies/source profile
+before a cut, then enrolls actual post-cut plans without inventing future hashes.
+Its matched batch shares unchanged market/quote receipts, but retains each arm's
+original review identity and actual decision clock. No-review controls do not
+inherit model latency; reviewed arms cannot replace an expired quote. Full arm
+rows commit atomically and exact redelivery returns their original receipts.
+
+Reopen requires the strongest independently retained `JournalCheckpointV3`;
+self-consistency alone cannot detect an older restored database. Instance
+serialization preserves checkpoint handoff, and byte bounds are enforced
+before commit. Caller-attested review/source bytes are not source/model
+authentication or early physical execution. Counterfactual enrollment does not
+grant strategy-only routing to model-originated proposals.
+
+The [journal acceptance and remaining integration boundaries](../../docs/PROSPECTIVE-MATCHED-JOURNAL-2026-10-09.md)
+record actual gates separately from missing raw REST/finality evidence,
+prospective frame/provider receipts, V3 intake, full five-day continuous horizon
+and the fixed four-arm economic comparison. No paid calls or trading follow.

@@ -22,9 +22,16 @@ errors and Python isolation enabled. The first failed E fixture reports are
 retained; only an interpreter-dependent test setup was corrected. These are
 engineering/source-compatibility checks, not a completed historical model run.
 
+The [separate matched V3 journal](PROSPECTIVE-MATCHED-JOURNAL-2026-10-09.md)
+retains shared market/quote bytes with arm-bound actual reviews/decision clocks,
+atomic matched writes, exact redelivery and caller-checkpoint restart guards.
+The immutable G installed-wheel suites each pass 1,603 tests with four explicit
+platform skips on Python 3.11/3.14; all 66 installed adaptive Python sources
+match the retained wheel. These checks do not supply source/model authentication
+or physical entry.
 Full accepted causal inputs, raw closed-bar/finality evidence, prospective
-frame/review clocks, durable V3 journal/intake and a fixed continuous four-arm
-economic comparison remain open. An origin-cut assessment cannot be retimed
+frame/review clocks, V3 portfolio intake, a non-resetting five-day horizon and
+a fixed continuous four-arm economic comparison remain open. An origin-cut assessment cannot be retimed
 into a later quote-bound review. No winner, new blind enrollment, paid model
 test or trading permission follows. UI stays deferred; Trial 15 and V2/V4/V5
 frozen evidence, primary services and production risk ceilings stay unchanged.
