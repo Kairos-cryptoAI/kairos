@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "PROSPECTIVE_V3_STORAGE_FOUNDATIONS_ENGINEERING_GATES",
+  "scope": "IMMUTABLE_D_INSTALLED_WHEEL_AND_84_FROZEN_TEST_PATHS",
+  "sources": {
+    "continuousSimSha256": "ad91597939f118aa390613c22b02077a7f31e03dc470dea12de522962556f188",
+    "restCandleReceiptsSha256": "e581c1c32fe037b987139e13da0bd7823db241b802eb14e29f040f403d288165",
+    "simDeltaJournalSha256": "dd97a173a061d45eaa461e70c335e89151f3c661b2151f228333730d9724452e",
+    "restTestsSha256": "798c70e7e303970705e73887056ec9eba577271e2d07b874c3d074a404fa71a8",
+    "deltaTestsSha256": "25b2de747ba9ede8acdaae3ce63d1fe34b3b1d832e5fa1462288e787efec03c7"
+  },
+  "wheelSha256": "db6de94fa7941dd47630a060dd77b345061dff4445c584d07b58342a1f922066",
+  "sdistSha256": "626bfb176892d18e1b7286d1686f59e8c9ba7687b9d7942e1ee764d1503bb7cb",
+  "sourceRoster": {
+    "adaptivePythonFiles": 69,
+    "testPythonFiles": 84,
+    "py311ExactWheelMatch": true,
+    "py314ExactWheelMatch": true,
+    "testBytesCheckedBeforeAndAfter": true,
+    "excludedUnfinishedAdditiveWork": ["closed_bar_evidence_v3", "continuous_sim_v3_horizon"]
+  },
+  "full": [
+    { "python": "3.11.15", "passed": 1672, "skipped": 5, "failures": 0, "errors": 0, "nativeExitCode": 0, "secondsConsole": 408.86, "secondsJunit": 408.042, "junitSha256": "7c90bb937bde954442edb0d852b60a3af7ecadb64faeb07c7888fcbbb3ab3d0c" },
+    { "python": "3.14.7", "passed": 1672, "skipped": 5, "failures": 0, "errors": 0, "nativeExitCode": 0, "secondsConsole": 328.95, "secondsJunit": 328.463, "junitSha256": "d9b9124dc5e7c08c300ab2711923ade2a47b07d6ededf0f386dacb83280770f9" }
+  ],
+  "focusedC": [
+    { "python": "3.11.15", "passed": 45, "skipped": 1, "nativeExitCode": 0, "junitSha256": "1dbc77feeb8f35cb154794624e57994f4a4ba82d69c4029514670d6445588ddb" },
+    { "python": "3.14.7", "passed": 45, "skipped": 1, "nativeExitCode": 0, "junitSha256": "4be0886f32c80bc4b641c034f621d4f8a094cf692ec17ec40fa8a8b373d57246" }
+  ],
+  "storageFixtureC": { "candles": 36000, "minuteCells": 36000, "deltaEvents": 24, "databaseBytes": 21602304, "deltaBytes": 6010058, "secondsPy311": 59.387, "financialExecutionProof": false },
+  "testOptions": ["-I", "--import-mode=importlib", "-W error"],
+  "additionalGates": { "ruffCheckD": true, "ruffFormatCheckD": true, "lockedDependenciesUnchanged": true, "metaStatic": true, "releaseCheckoutRegression": true },
+  "preservedFailures": [
+    "C full Python 3.11: native exit 2, three collection errors, omitted companion JSON/script assets; JUnit SHA 33e7bbb2992a2555b8966fc4d79909975ea38dd14013747ec3d4e5e325d75c33.",
+    "C full Python 3.14: native exit 2, three collection errors, omitted companion JSON/script assets; JUnit SHA e8f0712f1c40388ed56c134508e656e797c16353f6b08ed3039b0c2c6cd666e8.",
+    "C Ruff check found REST import spacing and a long clock-semantics literal; D fixes formatting without changing its metadata value.",
+    "SQLite fixture connections now use explicit contextlib.closing plus transaction scope; strict Python 3.14 resource warnings are not filtered."
+  ],
+  "authority": {
+    "storageConsistencyOnly": true,
+    "callerAttestedRawReceiptConsistencyOnly": true,
+    "rawRestFinality": false,
+    "historicalSourceAdmission": false,
+    "sourceAuthentication": false,
+    "providerAuthentication": false,
+    "fullFiveDayFinancialRun": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}

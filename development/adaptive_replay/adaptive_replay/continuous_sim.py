@@ -930,13 +930,17 @@ class ContinuousSimPortfolio:
 
         return commit(payload, fold)
 
-    def _validate_v3_originals(self, plan, receipt, prefix, candidate):
-        """Full normalized-candle membership, not raw REST/source authentication."""
+    def _require_v3_originals(self):
+        """Require this path's exact sealed normalized originals container."""
         if (
             type(self.candle_originals) is not CandleOriginalsV3
             or self.candle_originals.sha256 != self.config["candle_originals_sha256"]
         ):
             raise SimInputError("retained full candle originals differ from the sealed V3 portfolio")
+
+    def _validate_v3_originals(self, plan, receipt, prefix, candidate):
+        """Full normalized-candle membership, not raw REST/source authentication."""
+        self._require_v3_originals()
         if plan.origin not in self.config["allowed_origins"]:
             raise SimInputError("counterfactual journal enrollment is not sealed arm routing permission")
         creation_ready_at = (
@@ -1187,10 +1191,33 @@ class ContinuousSimPortfolio:
             ):
                 self._exit(st, pending["parent"], arrival, parent["exit_reason"])
 
+    def _mark_book(self, account, frame, global_sequence, now_ms):
+        """Unchanged account marking; additive horizon paths may specialize storage."""
+        marked, _ = account_api.mark_account(
+            account,
+            mark_id=f"mark:{global_sequence}",
+            marks=((frame.symbol, (frame.bids[0].price + frame.asks[0].price) / 2, frame.exchange_at_ms),),
+            as_of_ms=now_ms,
+        )
+        return marked
+
     def ingest(self, *, global_sequence, now_ms):
         if type(global_sequence) is not int or not 1 <= global_sequence <= len(self.binding.inputs):
             raise SimInputError("input outside complete source denominator")
         item = self.binding.inputs[global_sequence - 1]
+        if now_ms != _available(item.value):
+            raise SimInputError("retained-availability replay clock required; no projected consumer clock")
+
+        return self._event(
+            f"input:{global_sequence}",
+            {"input": _input_doc(item), "at": now_ms},
+            now_ms,
+            lambda state: self._ingest_input(state, item, now_ms),
+        )
+
+    def _ingest_input(self, st, item, now_ms):
+        """Apply one exact retained input in order within the caller's transaction."""
+        global_sequence = item.global_sequence
         if now_ms != _available(item.value):
             raise SimInputError("retained-availability replay clock required; no projected consumer clock")
 
@@ -1209,12 +1236,7 @@ class ContinuousSimPortfolio:
                         a, event_id=f"source-gap:{global_sequence}", reason=f"SOURCE_{v.continuity}"
                     )
                 else:
-                    a, _ = account_api.mark_account(
-                        a,
-                        mark_id=f"mark:{global_sequence}",
-                        marks=((v.symbol, (v.bids[0].price + v.asks[0].price) / 2, v.exchange_at_ms),),
-                        as_of_ms=now_ms,
-                    )
+                    a = self._mark_book(a, v, global_sequence, now_ms)
                 st["account"] = encode_account(a)
                 for pid, p in sorted(st["parents"].items()):
                     pos = next(
@@ -1296,9 +1318,7 @@ class ContinuousSimPortfolio:
                 self._drain(st, now_ms)
             return {"status": "RECORDED", "cursor": global_sequence}
 
-        return self._event(
-            f"input:{global_sequence}", {"input": _input_doc(item), "at": now_ms}, now_ms, fold
-        )
+        return fold(st)
 
     def _funding(self, st, receipt):
         key = f"{receipt.symbol}:{receipt.due_at_ms}"

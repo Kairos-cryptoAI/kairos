@@ -790,3 +790,20 @@ The existing one-day/full-state/input caps are not silently enlarged. Accepted
 historical sources, full five-day non-resetting storage/source segments,
 prospective frames and the fixed four-arm economic driver remain open. No
 historical model run, winner, admission, paid call or trading authority follows.
+
+## Additive raw receipts and delta storage
+
+`rest_candle_receipts_v3` retains exact bounded public REST response bytes and
+all failure attempts with explicit request/receive/body-fsync clocks and an
+independently checkpointed receipt chain. It performs no HTTP request and does
+not authenticate sources or prove native finality. `sim_delta_journal_v3`
+atomically persists canonical deltas and the current projection, with exact
+redelivery, checkpoint fences and full-chain reopen auditing. Existing journals
+and frozen evidence are never migrated or repaired.
+
+The [storage acceptance receipt](../../docs/PROSPECTIVE-STORAGE-2026-10-09.md)
+records the exact 69-module installed wheel: Python 3.11 and 3.14 each pass
+1,672 tests with five explicit skips. The separate storage fixture retains all
+36,000 minute/candle cells, but is not a five-day financial run or arbitrary
+native-feed capacity proof. The unfinished horizon and closed-bar promotion
+fold are explicitly excluded from this gate; full points 1–3 remain open.
