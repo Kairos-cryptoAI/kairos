@@ -1,6 +1,36 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-08_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
+
+## Causal source/SIM foundations; full-system comparison still open — 2026-10-09
+
+The [source observation and explicit legacy transfer](CAUSAL-SOURCE-OBSERVATION-2026-10-09.md)
+retain the failed capture attempts and transfer one successful sampled public
+five-symbol book observation into the new durable portfolio input contract.
+Both private installed target versions preserve all 1,280 canonical frames,
+original timestamps, source/tape identities and the exact complete input hash.
+The direct current reader still refuses the old implementation; no original
+seal or fingerprint was rewritten. Source authenticity, historical coverage
+and a full bars/NEWS/MACRO source set remain unqualified.
+
+A separate V3 hypothesis contract distinguishes the original price cut from
+actual closed-source/proposal materialization, without extending validity or
+altering the original parent/protection. Its pure clock fold and the transfer
+are part of the immutable E source snapshot: complete Python 3.11/3.14 suites
+each pass 1,581 tests with four explicit platform skips, warnings treated as
+errors and Python isolation enabled. The first failed E fixture reports are
+retained; only an interpreter-dependent test setup was corrected. These are
+engineering/source-compatibility checks, not a completed historical model run.
+
+Full accepted causal inputs, raw closed-bar/finality evidence, prospective
+frame/review clocks, durable V3 journal/intake and a fixed continuous four-arm
+economic comparison remain open. An origin-cut assessment cannot be retimed
+into a later quote-bound review. No winner, new blind enrollment, paid model
+test or trading permission follows. UI stays deferred; Trial 15 and V2/V4/V5
+frozen evidence, primary services and production risk ceilings stay unchanged.
+Runtime recovery, actual Telegram/off-host restore, venue qualification and
+production custody/limits remain independently unaccepted. All four readiness
+flags stay false and policy remains `REJECT_ALL`.
 
 ## Engineering closeout; strategy selection paused — 2026-10-08
 

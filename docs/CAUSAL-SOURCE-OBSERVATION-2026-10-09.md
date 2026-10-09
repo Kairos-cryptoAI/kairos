@@ -188,4 +188,141 @@ the real-source integration or the full continuous historical SIM requirement.
 An older captured bundle remains bound to its original package: the new runner
 must consume it through a reviewed, pinned exact-byte/version bridge or its
 original reader snapshot, never by rewriting its seal/fingerprint. No such
-integration or paid matched model run is claimed here.
+continuous historical integration or paid matched model run is claimed here.
+
+## Exact legacy transfer into the current portfolio input contract
+
+The separate create-only export at
+`D:\Kairos\runtime\public-book-transfer-20261009-a\legacy-book-transfer.json`
+ran once with the preserved B Python 3.11 `-I` environment. The exporter checks
+the complete installed adaptive Python source roster against the independently
+pinned B wheel before importing the old reader/auditor, checks actual imported
+paths and kernel bytes, runs the old original-source audit/loader, and rechecks
+sources and original receipt before its exclusive fsync write. It does not
+import the current reader into B or rewrite the original capture.
+
+The immutable E wheel, SHA-256
+`25f4f642c4c2fccbb4d58ad013a342888895e9a38200a9b1e5484dee462b6b5d`,
+is retained under `D:\Kairos\runtime\public-transfer-gates-20261009-e\dist`.
+Actual Python 3.11.15 and 3.14.7 `-I` target checks verified all 65 installed
+adaptive source files against that wheel. Independently supplied export,
+wheel, script, original implementation and receipt commitments admitted exactly
+1,280 canonical frames, all original segment coordinates and the unchanged
+complete tape hash. Both targets created the same five-symbol `TapeBinding`.
+The original receipt and raw-file SHA remained unchanged; the 3.14 check also
+matched all five original segment-file hashes to the original receipt.
+
+The current direct original reader still refuses the B capture with
+`installed implementation changed; never reseal/adopt an old bundle`.
+Only the explicit reviewed transfer path succeeds. Its result remains
+`PASS_LEGACY_EXPORT_BYTE_CONSISTENCY_ONLY`: the B auditor owns the original
+observed-source audit, while the current importer proves byte/DTO compatibility.
+External commitments do not authenticate the publisher or grant source/risk
+admission. No economics or order was executed.
+
+| New artifact | SHA-256 |
+| --- | --- |
+| Exact legacy export | `3ee7883899571862eeae80ff8d9f2d852c8291c060a313cb952b18634469f7bf` |
+| Standalone B exporter | `3532f17967da6f57b040d1d7b777cfecab90df411f8e81fcf00926f7a16fc656` |
+| Complete unchanged book tape | `5294c07d5e06db6dcb7c8231154b497615e67d80207d2b7d194999ff1b7fd8ff` |
+| Current portfolio input mapping | `11f229f33b700ed1a436f47b01de152329a9bbb98b3169d45c72b90232378a18` |
+
+The [portable observation receipt](receipts/public-book-transfer-20261009.json)
+records both actual target checks. Thirty-eight synthetic transfer tests and
+the 69-test transfer/tape/portfolio regression check pass. They cover altered
+commitments, DTO incompatibility, raw/native/mapping conflicts, complete segment
+rollover, duplicate JSON keys, bounds, aliases and shadow source rosters; they
+are not source authentication, full historical coverage or economic evidence.
+
+The complete E installed-wheel suites passed 1,581 tests with four explicit
+platform skips on each Python 3.11 and 3.14. Both used Python `-I`,
+`--import-mode=importlib -W error`. Their separate final JUnit files are
+`full-py311-strict.junit.xml` and `full-py314-strict.junit.xml`, reporting
+314.081 and 244.807 seconds. All 65 installed adaptive Python files match the
+retained E wheel. Development lint, formatting, locked offline resolution and
+meta/static-link gates pass. Hosted CI is a separate published-source check.
+
+The first E full suites are preserved as `full-py311.junit.xml` and
+`full-py314.junit.xml`; each had one failure, 1,579 passes and four skips. The
+failing test assumed the surrounding interpreter was not isolated, whereas the
+stronger gate deliberately uses `-I`. The test now explicitly exercises both
+non-isolated Python and isolated-but-not-private environment refusal. The
+exporter's mandatory isolation check, script SHA, source/clock/coverage limits
+and all implementation bytes are unchanged. No warning filter, skipped failing
+case or relaxed source gate was used. The new V3 journal/driver integration is
+not present in this E wheel and has no inherited gate claim.
+
+## Historical source gap and causal creation boundary
+
+A scoped read-only recheck of the fixed A/D pilot retained the earlier preflight's
+recorded 129,600 one-minute bars and 270 funding rows on the declared archive
+grid. The A ZIP/checksum pairs remain present; D is referenced through the
+previously validated cache, not newly certified by a second full import here.
+Official ZIP/checksum consistency does not supply historical BBO,
+depth quantities, local historical delivery or all-in execution evidence. The
+old incomplete 900-second price attempt is not resumed or replaced by this audit.
+
+The existing CPI vintage extractor is already implemented and tested; it is
+not an additional unfinished coding task. The retained two-vintage ALFRED
+archive and semantic extraction remain narrower than accepted full MACRO
+coverage. Three retained NEWS bodies do not form the required historical roster:
+the current Gensler syndication response lacks independent exact-version
+availability at the January 9 cut, the deleted SEC response is a tombstone, and
+the House letter is after the fixed cuts. Earlier failed/limited source attempts
+are preserved; none is retried merely to produce activity. See the existing
+[preflight](HISTORICAL-CONTEXT-PREFLIGHT-2026-10-07.md),
+[no-call receipt](HISTORICAL-PILOT-NO-CALL-2026-10-07.md) and
+[implemented CPI semantics](HISTORICAL-PILOT-IMPLEMENTATION-2026-10-07.md).
+
+The unchanged V2 hypothesis contract also requires its creation clock to equal
+the native minute cut and all creation evidence to be captured by that cut.
+A genuine closed-bar receipt arriving after the cut cannot be backdated to
+satisfy this check. An old book transfer fixes package compatibility only; it
+does not grant historical NEWS/MACRO admission, invent a contemporaneous candle
+receipt or permit a later modern model response against already expired quotes.
+Any future causal-creation correction must be separately versioned and retain
+the original cut, anchor, parent identity, exits and predeclared validity rather
+than relaxing or resealing an old plan on observed results.
+
+Read-only provider documentation review identified possible external historical
+book sources, not acquired or admitted data. The official
+[Binance public archive schema](https://github.com/binance/binance-public-data)
+describes klines and trades; those records are not executable bid/ask depth.
+[Tardis Binance Futures documentation](https://docs.tardis.dev/historical-data-details/binance-futures)
+describes recorded depth/bookTicker streams and free normalized CSV data for
+the first day of each month. That free-day scope does not match the fixed May 19
+and January 9 cuts. No account, subscription, key, paid endpoint, replacement
+date selection or historical data download was used in this documentation check.
+
+## Separate actual-creation contract V3
+
+The new `hypothesis_v3` preserves the original technical/context parent and
+splits price-origin `origin_cut_ms` from actual materialization `created_ms`.
+An actual post-cut closed-bar receipt no longer needs to be backdated. The
+policy still must be sealed by the original cut; validity stays original-cut
+plus predeclared lifetime, and the original parent/reference/SL/TP/timeout/
+trailing rules are retained. No V2 plan or old ledger is converted or resealed.
+
+Context proposals require a distinct typed actual-creation assessment, binding
+the supplied input, response, model configuration, direction and actual
+requested/completed/captured clocks. No projected historical completion, paid
+call or publisher authentication is inferred from these fields. The minimal
+contract rejects creation at or after the first completed post-anchor minute;
+it cannot silently discard an earlier stop/trigger. Its complete minute fold
+starts at the origin cut, not the rounded actual creation time. Fifty-three
+synthetic V3 checks pass on Python 3.11 and 3.14; 67 unchanged V2/bridge checks
+also pass on Python 3.11. This closes a pure clock-contract defect, not the full
+prospective integration.
+
+Remaining implementation obligations are a separately versioned prospective
+frame with actual knowledge clocks, exact raw closed-bar/finality receipts,
+durable V3 journal and intake, and a fixed four-arm continuous driver. A
+strategy-blind response from the origin frame cannot become a review of later
+sources/quotes the model never saw. A separately sealed held-context policy
+or an actually later frame/review must explicitly resolve that difference;
+retiming the old response is prohibited. The driver must retain the full source
+denominator, select the earliest eligible receipt/quote deterministically and
+account for model/feed expenses even on veto, errors, expiry and no-fill.
+Shared physical spend and each arm's counterfactual costs must remain distinct.
+These are open obligations, not an assertion that the fixed matched economic
+comparison has run or that any source gap has been solved.

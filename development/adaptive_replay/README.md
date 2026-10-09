@@ -701,3 +701,49 @@ splice favorable windows, assume LLM filtering profits or integrate a live sleev
 Five evidence tests audit the original bytes/counters/ledgers without another
 historical replay. No paid model test follows without accepted causal sources,
 budget evidence and fresh human confirmation.
+
+## Exact transfer of a preserved public-book observation
+
+`scripts/export_legacy_public_book_tape.py` must run with the preserved private
+legacy Python `-I`, never the mutable development environment. It requires four
+independently retained complete SHA256 commitments (wheel, exporter, original
+implementation, original receipt), verifies the complete installed source
+roster against the named wheel before importing the original reader, and
+creates one bounded canonical JSON export outside originals and the environment.
+It neither captures again nor rewrites an original seal, receipt or timestamp.
+
+`public_book_transfer.import_public_book_transfer` additionally requires the
+independently recorded export SHA256. One immutable byte snapshot preserves all
+original frames/mappings and admits only unchanged current kernel DTO bytes.
+Incompatibility refuses; normalization, resealing and automatic adoption are
+absent. The returned exact tape can bind all its frames into `continuous_sim`;
+this does not supply bars/news/macro, source authenticity, market completeness,
+fills, economics or authority. The current direct original reader must still
+refuse a legacy implementation mismatch.
+
+The [actual transfer receipt](../../docs/CAUSAL-SOURCE-OBSERVATION-2026-10-09.md)
+records all 1,280 frames and matching current input mapping on two private
+installed-wheel Python versions. Do not repeat the original capture or treat
+this 30-second sampled observation as a historical trading campaign.
+
+## Additive V3 actual-creation clocks
+
+`hypothesis_v3` has separate types and fold, not a migration or backdated V2
+surrogate. `origin_cut_ms` pins the original price slice, parent decision,
+anchor/reference and all exit geometry; `created_ms` records actual materialized
+input/proposal readiness. Policy must be sealed by the origin cut and validity
+remains origin-cut plus predeclared lifetime. Delays never renew it. Typed
+context proposals bind actual OpenAI requested/completed/captured clocks and
+input/response/model-config hashes; supplied hashes remain caller attestations.
+
+The minimal contract refuses creation after the first post-anchor minute has
+completed rather than skipping an earlier possible trigger/stop. Every minute
+observation starts from the origin cut; first-trigger consumption, original
+protection, quote/review freshness and native planning/risk assumptions remain
+unchanged. A cut-time assessment cannot impersonate a later quote-bound review.
+
+This pure contract passes 53 synthetic clock tests per Python version. It is
+not yet a prospective source/frame producer, durable V3 journal, portfolio
+intake adapter or fixed four-arm driver. Complete immutable source-prefix and
+earliest eligible receipt selection remain driver obligations. No historical
+model run, admitted source set, winner or trading authority follows.
