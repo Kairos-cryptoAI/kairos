@@ -5,6 +5,7 @@ import sqlite3
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from dataclasses import asdict, replace
 from threading import Barrier
 
@@ -135,7 +136,7 @@ def test_original_parent_cannot_be_repackaged_to_rescue_outcome(recorded, field,
 def test_corruption_never_restores_or_emits_an_entry(recorded, mutation):
     path, seal, plan, journal = recorded
     journal.append("control", plan.template.intent_id, fixture_observation())
-    with sqlite3.connect(path) as connection:
+    with closing(sqlite3.connect(path)) as connection, connection:
         if mutation in {
             "intent_id",
             "protection",

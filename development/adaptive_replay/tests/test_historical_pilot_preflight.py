@@ -170,22 +170,23 @@ def test_completed_preflight_streams_exact_full_denominator_and_twenty_cuts(
     for episode in ("episode_a", "episode_d"):
         rows_path = output / episode / "source-no-call-rows.jsonl"
         digest = hashlib.sha256()
-        for line in rows_path.open(encoding="utf-8"):
-            digest.update(line.encode("utf-8"))
-            row = json.loads(line)
-            total += 1
-            key = (row["episode"], row["minute_open_ms"], row["symbol"])
-            assert key not in unique
-            unique.add(key)
-            required += row["no_call_reason"] == "REQUIRED_SOURCE_UNAVAILABLE"
-            abstain += row["no_call_reason"] == "SCHEDULED_POLICY_ABSTAIN"
-            assert row["candidate_status"] == "NOT_EVALUATED"
-            assert row["candidate_count"] is None and row["candidate"] is None
-            assert row["model_decision"] is None and row["provider_calls"] == 0
-            assert row["provider_cost_usd"] == 0 and row["history_local_receipt_proven"] is False
-            assert row["required_sources_ready"] is False
-            assert row["required_source_coverage"] == {"NEWS": "UNKNOWN", "MACRO": "UNKNOWN"}
-            assert row["historical_receive_clock_proven"] is False
+        with rows_path.open(encoding="utf-8") as stream:
+            for line in stream:
+                digest.update(line.encode("utf-8"))
+                row = json.loads(line)
+                total += 1
+                key = (row["episode"], row["minute_open_ms"], row["symbol"])
+                assert key not in unique
+                unique.add(key)
+                required += row["no_call_reason"] == "REQUIRED_SOURCE_UNAVAILABLE"
+                abstain += row["no_call_reason"] == "SCHEDULED_POLICY_ABSTAIN"
+                assert row["candidate_status"] == "NOT_EVALUATED"
+                assert row["candidate_count"] is None and row["candidate"] is None
+                assert row["model_decision"] is None and row["provider_calls"] == 0
+                assert row["provider_cost_usd"] == 0 and row["history_local_receipt_proven"] is False
+                assert row["required_sources_ready"] is False
+                assert row["required_source_coverage"] == {"NEWS": "UNKNOWN", "MACRO": "UNKNOWN"}
+                assert row["historical_receive_clock_proven"] is False
         assert digest.hexdigest() == result["episodes"][episode]["row_stream_sha256"]
     assert (total, required, abstain) == (72_000, 20, 71_980)
     assert len(unique) == 72_000

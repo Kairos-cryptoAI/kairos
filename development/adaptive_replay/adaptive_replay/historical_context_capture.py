@@ -107,7 +107,12 @@ def _fetch_public(url: str, byte_limit: int, timeout: float, total_remaining: in
             if length is None and len(body) == limit:
                 raise ValueError("public response reached an uncertain byte bound")
             return CapturedResponse(body, 200, response.headers.get("Content-Type"))
-    except (HTTPError, URLError, TimeoutError, OSError) as exc:
+    except HTTPError as exc:
+        try:
+            raise ValueError(f"public capture HTTP failed ({type(exc).__name__})") from None
+        finally:
+            exc.close()
+    except (URLError, TimeoutError, OSError) as exc:
         raise ValueError(f"public capture HTTP failed ({type(exc).__name__})") from None
 
 

@@ -136,8 +136,10 @@ def test_quiet_slots_are_preserved_and_minute_denominator_is_complete(tmp_path: 
     assert counts["full_minute_cells"] == 25
     assert counts["original_candidates"] == counts["supported_scenarios"] == 0
     assert completions == {"immediate": {}, "scenario": {}}
-    assert sum(1 for _ in (tmp_path / "denominator.jsonl").open(encoding="utf-8")) == 25
-    assert sum(1 for _ in (tmp_path / "pairs.jsonl").open(encoding="utf-8")) == 5
+    with (tmp_path / "denominator.jsonl").open(encoding="utf-8") as stream:
+        assert sum(1 for _ in stream) == 25
+    with (tmp_path / "pairs.jsonl").open(encoding="utf-8") as stream:
+        assert sum(1 for _ in stream) == 5
 
 
 def test_unavailable_native_decision_is_ledgered_and_counted(tmp_path: Path, monkeypatch):
@@ -163,7 +165,8 @@ def test_unavailable_native_decision_is_ledgered_and_counted(tmp_path: Path, mon
     _, _, rows, counts = compare.build_pairs(_inputs(), tmp_path, HASH_A, float("inf"))
     assert counts["unavailable_slots"] == len(UNIVERSE)
     assert all(row["decision"]["state"] == "UNAVAILABLE" for row in rows)
-    assert sum(1 for _ in (tmp_path / "pairs.jsonl").open(encoding="utf-8")) == len(UNIVERSE)
+    with (tmp_path / "pairs.jsonl").open(encoding="utf-8") as stream:
+        assert sum(1 for _ in stream) == len(UNIVERSE)
 
 
 @pytest.mark.parametrize(("lifetime", "expected_b"), [(59_999, False), (299_999, True)])
@@ -191,7 +194,8 @@ def test_observation_clock_respects_original_expiry_and_records_only_confirmed_b
         assert btc["scenario_candidate_id"] is None
         assert not tapes["scenario"] and not completions["scenario"]
     assert counts["scheduled_slots"] == 5
-    assert sum(1 for _ in (tmp_path / "scenarios.jsonl").open(encoding="utf-8")) == 1
+    with (tmp_path / "scenarios.jsonl").open(encoding="utf-8") as stream:
+        assert sum(1 for _ in stream) == 1
 
 
 def _audit_row(candidate: SleeveIntent, *, supported: bool = True) -> dict:

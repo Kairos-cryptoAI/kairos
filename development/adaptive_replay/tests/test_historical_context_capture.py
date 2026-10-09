@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 from pathlib import Path
 from urllib.error import HTTPError
@@ -369,16 +370,32 @@ def test_public_fetch_rejects_nonallowlisted_url_before_opener(monkeypatch: pyte
 def test_public_fetch_rejects_redirect_without_following(monkeypatch: pytest.MonkeyPatch) -> None:
     url = capture.TARGETS[0][2]
     opened: list[str] = []
+    errors: list[HTTPError] = []
+
+    class TrackedHTTPError(HTTPError):
+        close_called = False
+
+        def close(self) -> None:
+            self.close_called = True
+            super().close()
 
     class RedirectingOpener:
         def open(self, request: Request, timeout: float) -> object:
             opened.append(request.full_url)
-            raise HTTPError(request.full_url, 302, "redirect", {}, None)
+            error = TrackedHTTPError(request.full_url, 302, "redirect", {}, io.BytesIO())
+            errors.append(error)
+            raise error
 
     handlers: list[object] = []
     monkeypatch.setattr(capture, "build_opener", lambda *items: handlers.extend(items) or RedirectingOpener())
-    with pytest.raises(ValueError, match="HTTP failed"):
-        capture._fetch_public(url, 100, 2.0, 100)
+    try:
+        with pytest.raises(ValueError, match="HTTP failed"):
+            capture._fetch_public(url, 100, 2.0, 100)
+        assert errors[0].close_called and errors[0].fp.closed
+    finally:
+        for error in errors:
+            if not error.close_called:
+                error.close()
     assert opened == [url]
     assert len(handlers) == 1 and isinstance(handlers[0], capture._NoRedirect)
 

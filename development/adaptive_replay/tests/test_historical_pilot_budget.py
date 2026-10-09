@@ -4,6 +4,7 @@ import hashlib
 import sqlite3
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -282,8 +283,9 @@ def test_duplicate_or_unapproved_slot_cannot_modify_ledger(tmp_path: Path) -> No
         ledger.settle_known_cost(budget.ALLOWED_SLOT_IDS[0], 1)
     assert ledger.snapshot()["slot_admissions"] == 0
     # The schema remains readable after rejected SQL-looking input.
-    with sqlite3.connect(ledger.path) as connection:
-        assert connection.execute("SELECT COUNT(*) FROM attempts").fetchone()[0] == 0
+    with closing(sqlite3.connect(ledger.path)) as connection:
+        with connection:
+            assert connection.execute("SELECT COUNT(*) FROM attempts").fetchone()[0] == 0
 
 
 def test_path_symlink_and_ledger_corruption_fail_closed(tmp_path: Path) -> None:
@@ -339,55 +341,63 @@ def test_corrupted_rows_or_metadata_fail_before_snapshot_admission_or_settlement
     damaged_slot, settlement_slot = budget.ALLOWED_SLOT_IDS[:2]
     ledger.reserve_attempt(damaged_slot, 400_000)
     ledger.reserve_attempt(settlement_slot, 400_000)
-    with sqlite3.connect(ledger.path) as connection:
-        connection.execute("PRAGMA ignore_check_constraints=ON")
-        if corruption == "negative_reservation":
-            connection.execute("UPDATE attempts SET reserved_micro_usd=-1 WHERE slot_id=?", (damaged_slot,))
-        elif corruption == "fractional_reservation":
-            connection.execute("UPDATE attempts SET reserved_micro_usd=1.5 WHERE slot_id=?", (damaged_slot,))
-        elif corruption == "unknown_foreign_slot":
-            connection.execute(
-                "INSERT INTO attempts(slot_id,reserved_micro_usd,actual_micro_usd,state) "
-                "VALUES('foreign-slot',1,NULL,'HELD')"
-            )
-        elif corruption == "held_with_actual":
-            connection.execute("UPDATE attempts SET actual_micro_usd='1' WHERE slot_id=?", (damaged_slot,))
-        elif corruption == "settled_over_reservation":
-            connection.execute(
-                "UPDATE attempts SET actual_micro_usd='400001',state='SETTLED' WHERE slot_id=?",
-                (damaged_slot,),
-            )
-        elif corruption == "noncanonical_actual":
-            connection.execute(
-                "UPDATE attempts SET actual_micro_usd='01',state='SETTLED' WHERE slot_id=?", (damaged_slot,)
-            )
-        elif corruption == "overrun_without_seal":
-            connection.execute(
-                "UPDATE attempts SET actual_micro_usd='400001',state='OVERRUN' WHERE slot_id=?",
-                (damaged_slot,),
-            )
-        elif corruption == "overrun_wrong_reason":
-            connection.execute(
-                "UPDATE attempts SET actual_micro_usd='400001',state='OVERRUN' WHERE slot_id=?",
-                (damaged_slot,),
-            )
-            connection.execute("UPDATE metadata SET value='1' WHERE key='sealed'")
-            connection.execute("UPDATE metadata SET value='wrong' WHERE key='seal_reason'")
-        elif corruption == "invalid_state":
-            connection.execute("UPDATE attempts SET state='UNKNOWN' WHERE slot_id=?", (damaged_slot,))
-        elif corruption == "extra_metadata":
-            connection.execute("INSERT INTO metadata(key,value) VALUES('untrusted','x')")
-        elif corruption == "invalid_ordinal":
-            connection.execute(
-                "UPDATE allowed_slots SET ordinal=99 WHERE slot_id=?", (budget.ALLOWED_SLOT_IDS[0],)
-            )
-        else:
-            connection.execute(
-                "UPDATE attempts SET reserved_micro_usd=600000 WHERE slot_id=?", (damaged_slot,)
-            )
-            connection.execute(
-                "UPDATE attempts SET reserved_micro_usd=600000 WHERE slot_id=?", (settlement_slot,)
-            )
+    with closing(sqlite3.connect(ledger.path)) as connection:
+        with connection:
+            connection.execute("PRAGMA ignore_check_constraints=ON")
+            if corruption == "negative_reservation":
+                connection.execute(
+                    "UPDATE attempts SET reserved_micro_usd=-1 WHERE slot_id=?", (damaged_slot,)
+                )
+            elif corruption == "fractional_reservation":
+                connection.execute(
+                    "UPDATE attempts SET reserved_micro_usd=1.5 WHERE slot_id=?", (damaged_slot,)
+                )
+            elif corruption == "unknown_foreign_slot":
+                connection.execute(
+                    "INSERT INTO attempts(slot_id,reserved_micro_usd,actual_micro_usd,state) "
+                    "VALUES('foreign-slot',1,NULL,'HELD')"
+                )
+            elif corruption == "held_with_actual":
+                connection.execute(
+                    "UPDATE attempts SET actual_micro_usd='1' WHERE slot_id=?", (damaged_slot,)
+                )
+            elif corruption == "settled_over_reservation":
+                connection.execute(
+                    "UPDATE attempts SET actual_micro_usd='400001',state='SETTLED' WHERE slot_id=?",
+                    (damaged_slot,),
+                )
+            elif corruption == "noncanonical_actual":
+                connection.execute(
+                    "UPDATE attempts SET actual_micro_usd='01',state='SETTLED' WHERE slot_id=?",
+                    (damaged_slot,),
+                )
+            elif corruption == "overrun_without_seal":
+                connection.execute(
+                    "UPDATE attempts SET actual_micro_usd='400001',state='OVERRUN' WHERE slot_id=?",
+                    (damaged_slot,),
+                )
+            elif corruption == "overrun_wrong_reason":
+                connection.execute(
+                    "UPDATE attempts SET actual_micro_usd='400001',state='OVERRUN' WHERE slot_id=?",
+                    (damaged_slot,),
+                )
+                connection.execute("UPDATE metadata SET value='1' WHERE key='sealed'")
+                connection.execute("UPDATE metadata SET value='wrong' WHERE key='seal_reason'")
+            elif corruption == "invalid_state":
+                connection.execute("UPDATE attempts SET state='UNKNOWN' WHERE slot_id=?", (damaged_slot,))
+            elif corruption == "extra_metadata":
+                connection.execute("INSERT INTO metadata(key,value) VALUES('untrusted','x')")
+            elif corruption == "invalid_ordinal":
+                connection.execute(
+                    "UPDATE allowed_slots SET ordinal=99 WHERE slot_id=?", (budget.ALLOWED_SLOT_IDS[0],)
+                )
+            else:
+                connection.execute(
+                    "UPDATE attempts SET reserved_micro_usd=600000 WHERE slot_id=?", (damaged_slot,)
+                )
+                connection.execute(
+                    "UPDATE attempts SET reserved_micro_usd=600000 WHERE slot_id=?", (settlement_slot,)
+                )
 
     with pytest.raises(ValueError):
         ledger.snapshot()
@@ -395,10 +405,11 @@ def test_corrupted_rows_or_metadata_fail_before_snapshot_admission_or_settlement
         ledger.reserve_attempt(budget.ALLOWED_SLOT_IDS[2], 1)
     with pytest.raises(ValueError):
         ledger.settle_known_cost(settlement_slot, 1)
-    with sqlite3.connect(ledger.path) as connection:
-        row = connection.execute(
-            "SELECT actual_micro_usd, state FROM attempts WHERE slot_id=?", (settlement_slot,)
-        ).fetchone()
+    with closing(sqlite3.connect(ledger.path)) as connection:
+        with connection:
+            row = connection.execute(
+                "SELECT actual_micro_usd, state FROM attempts WHERE slot_id=?", (settlement_slot,)
+            ).fetchone()
     assert row == (None, "HELD")
 
 

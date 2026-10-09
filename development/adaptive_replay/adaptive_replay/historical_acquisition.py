@@ -96,9 +96,12 @@ def _http_fetch(url: str, byte_limit: int, timeout: float, total_remaining: int)
             if len(payload) == read_limit and content_length is None:
                 raise ValueError("response reached an uncertain hard byte limit")
     except HTTPError as exc:
-        if 300 <= exc.code < 400:
-            raise ValueError("redirects are disabled for archive acquisition") from None
-        raise ValueError(f"official archive request failed with HTTP {exc.code}") from None
+        try:
+            if 300 <= exc.code < 400:
+                raise ValueError("redirects are disabled for archive acquisition") from None
+            raise ValueError(f"official archive request failed with HTTP {exc.code}") from None
+        finally:
+            exc.close()
     except (URLError, TimeoutError, OSError) as exc:
         raise ValueError(f"official archive request failed ({type(exc).__name__})") from None
     return payload

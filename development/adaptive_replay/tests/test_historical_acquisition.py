@@ -305,15 +305,31 @@ def test_deadline_is_shared_and_stops_before_retaining_first_archive(
 def test_http_fetch_refuses_redirect_without_following(monkeypatch: pytest.MonkeyPatch) -> None:
     url = acquisition._targets()[0][2]
     opened: list[str] = []
+    errors: list[HTTPError] = []
+
+    class TrackedHTTPError(HTTPError):
+        close_called = False
+
+        def close(self) -> None:
+            self.close_called = True
+            super().close()
 
     class RedirectingOpener:
         def open(self, request: Request, timeout: float) -> object:
             opened.append(request.full_url)
-            raise HTTPError(url, 302, "redirect", {}, None)
+            error = TrackedHTTPError(url, 302, "redirect", {}, io.BytesIO())
+            errors.append(error)
+            raise error
 
     monkeypatch.setattr(acquisition, "build_opener", lambda *_handlers: RedirectingOpener())
-    with pytest.raises(ValueError, match="redirects are disabled"):
-        acquisition._http_fetch(url, 128, 2.0, 128)
+    try:
+        with pytest.raises(ValueError, match="redirects are disabled"):
+            acquisition._http_fetch(url, 128, 2.0, 128)
+        assert errors[0].close_called and errors[0].fp.closed
+    finally:
+        for error in errors:
+            if not error.close_called:
+                error.close()
     assert opened == [url]
 
 
