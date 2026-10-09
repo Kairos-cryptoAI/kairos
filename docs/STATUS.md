@@ -20,13 +20,13 @@ horizon and fixed continuous four-arm comparison remain open. Source/model
 authentication, operational recovery and trading authority do not follow from
 these checks. All four readiness flags remain false and policy is `REJECT_ALL`.
 
-The [original BTC January-8 BBO object](HISTORICAL-BBO-OBJECT-2026-10-09.md) is
-now retained, public-checksum verified and fully profiled: 19,245,805 original
-rows, exact complete CRC, zero anomalies under the declared checks. Public
-Jan-8 objects exist for all five symbols, but this single complete object is
-not the fixed full source set or historical receive-clock evidence. Its real
-size demonstrates that the unfinished in-memory/opaque-account profile cannot
-admit dense history; a lossless streaming/event-storage path is required.
+The [five original January-8 BBO objects](HISTORICAL-BBO-FIVE-SYMBOLS-2026-10-09.md)
+are now retained, public-checksum verified and fully profiled: 59,638,747 original
+rows, complete CRCs and zero anomalies under the declared checks. These are
+all five symbols for one day, not the fixed full five-day source set or
+historical local receive-clock evidence. Their 5,522,759,182 uncompressed bytes
+demonstrate that the unfinished in-memory/opaque-account profile cannot admit
+dense history; a lossless streaming/event-storage path is required.
 
 ## Causal source/SIM foundations; full-system comparison still open — 2026-10-09
 

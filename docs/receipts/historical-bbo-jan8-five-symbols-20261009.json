@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "COMPLETE_FIXED_DAY_FIVE_SYMBOL_ORIGINAL_BBO_PROFILES",
+  "scope": "2024_01_08_ONE_DAY_NOT_FIVE_DAY_SOURCE_ADMISSION",
+  "objects": [
+    { "symbol": "BTCUSDT", "archiveBytes": 206972981, "archiveSha256": "87716a48513fd29a49d32dab5b78ab0788dd58259a307bf5224f9a4a4c59b4ec", "rows": 19245805, "csvBytes": 1811753894, "csvSha256": "799529f78e6d4463e9af24bd6e93a8ac13eb93044ac6cbbb88eecaf1537f6a05", "zipCrcValidated": true, "anomaliesUnderDeclaredChecks": 0 },
+    { "symbol": "ETHUSDT", "archiveBytes": 201456380, "archiveSha256": "a3eef2bf7bb1d033c0b174f43ad33c7314d45bd5ee85119d767659fcb5f6555f", "rows": 18468747, "csvBytes": 1726038635, "csvSha256": "b3e006f2a65397ec9c8c46c877a6f3dd8c4d9ed56da848ae13de1cff4eb83678", "zipCrcValidated": true, "anomaliesUnderDeclaredChecks": 0 },
+    { "symbol": "SOLUSDT", "archiveBytes": 133780447, "archiveSha256": "5d20fc0bc9cce8a67261fffed1396a64cca8a15598a61383c0f84c054993e870", "rows": 12152615, "csvBytes": 1083546700, "csvSha256": "0e419173c4ee8f916c3d397a59c71848c8a707c8e9d3f6631fe243fa21bbb471", "zipCrcValidated": true, "anomaliesUnderDeclaredChecks": 0 },
+    { "symbol": "BNBUSDT", "archiveBytes": 67674558, "archiveSha256": "0381237b6056ed9fed010a0cb05747d70bd4a322207c6e306cfb4cb01a51e23b", "rows": 5681616, "csvBytes": 517131353, "csvSha256": "232dbf5bc5a0a0abf0df0869423d4e22deeb5a11cd947255699d3663d08a403d", "zipCrcValidated": true, "anomaliesUnderDeclaredChecks": 0 },
+    { "symbol": "XRPUSDT", "archiveBytes": 56165831, "archiveSha256": "53afec61c145ea3443e54a7ea9e419653ca3a6b5cf9083af9ea7a8ac9020cc57", "rows": 4089964, "csvBytes": 384288600, "csvSha256": "d262ece93b7d2c7cc939ef6b525eb7c6ca200432ca18b7e6127e4c4776041ba4", "zipCrcValidated": true, "anomaliesUnderDeclaredChecks": 0 }
+  ],
+  "totals": { "symbols": 5, "days": 1, "rows": 59638747, "archiveBytes": 666050197, "csvBytes": 5522759182 },
+  "fourPeerAcquisition": {
+    "requests": 8,
+    "retries": 0,
+    "redirects": 0,
+    "nativeExitCode": 0,
+    "completedAtUtc": "2026-10-09T03:46:39.6682998+00:00",
+    "receiptSha256": "ea215d60b35754725ce4783c279613a4a1dfab805846acbfb2562f3e47c6b6a6",
+    "scriptSha256": "889e8be65931b88aa1ff1becaf287ca25d14fabfc9ab14ece22f8dcd3c266005"
+  },
+  "fourPeerCompleteProfiles": {
+    "workers": 1,
+    "nativeExitCode": 0,
+    "completedAtUtc": "2026-10-09T03:53:00.121481+00:00",
+    "receiptSha256": "83d4686f46aa8891af52b6e01eeffe3f2ba939e836a5f01719c62fb2b362e334",
+    "scriptSha256": "71b5df820f80aff61a1654a208ce190d09d6af6cc90d2139ad1dabc5de4767ab",
+    "archiveHashesEqualBeforeAndAfter": true,
+    "originalRowsExamined": 40392942,
+    "checks": ["seven columns", "finite numeric fields", "positive bid and ask", "nonnegative quantities", "no crossed or locked book", "no zero top quantity", "strictly increasing update ID", "nonregressing transaction and event times", "event not before transaction", "transaction date", "complete CRC at EOF"]
+  },
+  "btcEvidenceReceipt": "historical-bbo-object-20261009.json",
+  "authority": {
+    "fullFiveSymbolSingleDayObjects": true,
+    "completeFiveDayWindow": false,
+    "historicalLocalReceiveClock": false,
+    "level2Depth": false,
+    "losslessExchangeFeedAuthenticated": false,
+    "newsMacroFundingCoverageAccepted": false,
+    "requiredSourceCoverageAccepted": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}
