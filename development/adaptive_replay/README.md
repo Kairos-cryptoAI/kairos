@@ -18,6 +18,36 @@ Observed source consistency is not continuous tick completeness, historical BBO,
 accepted full-system inputs or strategy economics. See the
 [producer contract](../../docs/PUBLIC-BOOK-CAPTURE-2026-10-09.md).
 
+## Isolated durable SIM accounting primitives
+
+`adaptive_sim_account` is an immutable Decimal account reducer, not the
+production Risk Manager. New reservations retain the unchanged 0.25% trade,
+1% aggregate open-risk and 1x gross ceilings. Original entry-stop risk is not
+released because of favorable marks or trailing stops. Conservative sizing also
+reserves known immediate spread/fee capital loss of pending entries; actual
+unexpected fills, drift and stale marks remain explicit fail-closed observations.
+Known owned stop/target/timeout protection blocks entries while pending; an
+external source or unknown-exposure barrier cannot be cleared merely by going
+flat. The runner must separately prove terminal commands and complete coverage.
+
+`sim_account_codec` requires exact canonical closed-schema state and exact typed
+gates; falsey integers cannot substitute for booleans. `sim_state_journal` keeps
+caller-supplied events, outcomes and full state atomically in a create-only
+isolated SQLite file. It validates the exact schema and externally supplied
+identity, applies byte/row limits without eviction and excludes linked paths.
+Caller redelivery uses `lookup` before reducer execution; append also checks the
+optimistic predecessor. It never repairs a corrupt journal or recreates a
+missing one. Local hash-chain consistency is not hostile-owner authenticity or
+proof that a caller's reducer is economically correct.
+
+`sim_book_tape.load_public_book_tape` consumes only a complete observed capture
+under its separately held terminal receipt SHA. It verifies immutable raw bytes
+before normalization and preserves per-symbol history across rotated segments;
+independent symbols do not share a globally increasing exchange event clock.
+Derived kernel coordinates are explicit mappings, not new vendor originals.
+These primitives and synthetic tests are not a complete continuous campaign,
+accepted historical corpus, model comparison, strategy winner or trading permit.
+
 ## Scenario-based trading research rework
 
 `scenarios.py` separates a source-bound hypothesis from subsequent closed-price
