@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "RETAINED_REST_CLOSED_BAR_EVIDENCE_ENGINEERING_GATES",
+  "scope": "IMMUTABLE_E_INSTALLED_WHEEL_FOCUSED_16_CASES",
+  "sources": {
+    "closedBarEvidenceSha256": "7b19866e97ef5f8c860397c10aceb1cad3b326419fc2e9ceb310794c3e5d1496",
+    "testsSha256": "37cbb488b507884c3b094dced0654ccbe7d7510188f42dfe617ae6c81760c291",
+    "nativeQuantRevision": "927f5730d09383736c1dfc7dc5c400b06851019f",
+    "nativeCollectorSha256": "05198d41b53ef8a1ad1d4f4a0ae8a2ccb674470ba78db02595c48c5ffed678b6"
+  },
+  "wheelSha256": "defdf77ffe561b28fb32915f38b4256f5fc31859570d50bfb13732c8a61379b8",
+  "sdistSha256": "7d934c59d85b2b91884c625329c9df678abcc274d13584324cc0cf68aff785b6",
+  "sourceRoster": {
+    "adaptivePythonFiles": 70,
+    "testPythonFiles": 85,
+    "configurationFiles": 3,
+    "py311ExactWheelMatch": true,
+    "py314ExactWheelMatch": true,
+    "fullSuiteRun": false,
+    "excludedUnfinishedAdditiveWork": ["continuous_sim_v3_horizon", "continuous_four_arm_v3"]
+  },
+  "focused": [
+    { "python": "3.11.15", "passed": 16, "failures": 0, "errors": 0, "skipped": 0, "nativeExitCode": 0, "secondsJunit": 6.230, "junitSha256": "f28e7ecd6cee87ebe666722aa6052bd91c41744e7778cf2a399d041ce6d2993c" },
+    { "python": "3.14.7", "passed": 16, "failures": 0, "errors": 0, "skipped": 0, "nativeExitCode": 0, "secondsJunit": 5.000, "junitSha256": "f3a102a8d0552255b5fdef48a27846cfb470325f80c426013d7ccdf310ac71c83" }
+  ],
+  "testOptions": ["-I", "--import-mode=importlib", "-W error"],
+  "additionalGates": { "ruffCheck": true, "ruffFormatCheck": true, "offlineLockCheck": true, "sourceAndInstalledBytesIndependentlyAudited": true },
+  "preservedFailures": ["The initial focused invocation used a run directory that did not exist and did not execute tests; the directory was then created and both installed suites completed."],
+  "bounds": { "receiptAttempts": 512, "rawPageBytes": 2097152, "pendingBars": 1000, "candidateBars": 10000, "fullWarmupProof": false },
+  "authority": {
+    "callerAttestedReceiptConsistencyOnly": true,
+    "sourceAuthentication": false,
+    "nativeProducerIntegrated": false,
+    "historicalSourceAdmission": false,
+    "fullFiveDayFinancialRun": false,
+    "economicComparisonComplete": false,
+    "newBlindCredit": false,
+    "trading": "NONE"
+  },
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}

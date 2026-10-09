@@ -2,6 +2,24 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
 
+## Raw receipts, delta storage and closed-bar fold — 2026-10-09
+
+The [storage foundations](PROSPECTIVE-STORAGE-2026-10-09.md) retain raw REST
+attempts and atomic state deltas without altering frozen ledgers. The full
+immutable D installed-wheel suites each pass 1,672 tests with five explicit
+skips on Python 3.11/3.14. Published signed `fe63bc2` passes its exact Windows/
+Linux Python 3.11/3.14 CI matrix. The separate
+[closed-bar evidence fold](CLOSED-BAR-EVIDENCE-2026-10-09.md) audits canonical
+receipt clocks, complete pages/attempts and native two-observation/contiguous
+promotion. Its immutable E focused installed suites each pass 16 cases; all
+70 adaptive module bytes match the wheel and retained source. No full E suite
+or native producer integration is claimed.
+
+Accepted historical BBO/NEWS/MACRO, the complete non-resetting five-day financial
+horizon and fixed continuous four-arm comparison remain open. Source/model
+authentication, operational recovery and trading authority do not follow from
+these checks. All four readiness flags remain false and policy is `REJECT_ALL`.
+
 ## Causal source/SIM foundations; full-system comparison still open — 2026-10-09
 
 The [source observation and explicit legacy transfer](CAUSAL-SOURCE-OBSERVATION-2026-10-09.md)

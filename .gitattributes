@@ -37,3 +37,5 @@ development/adaptive_replay/adaptive_replay/candle_originals_v3.py -text
 # Additive raw-receipt/delta implementations retain exact installed-wheel bytes.
 development/adaptive_replay/adaptive_replay/rest_candle_receipts_v3.py -text
 development/adaptive_replay/adaptive_replay/sim_delta_journal_v3.py -text
+# Closed-bar evidence is bound to the independently retained installed wheel.
+development/adaptive_replay/adaptive_replay/closed_bar_evidence_v3.py -text

@@ -807,3 +807,18 @@ records the exact 69-module installed wheel: Python 3.11 and 3.14 each pass
 36,000 minute/candle cells, but is not a five-day financial run or arbitrary
 native-feed capacity proof. The unfinished horizon and closed-bar promotion
 fold are explicitly excluded from this gate; full points 1–3 remain open.
+
+## Retained raw closed-bar promotion
+
+`closed_bar_evidence_v3` is a separate pure fold of a complete independently
+checkpointed REST attempt ledger. It retains failure attempts, exact raw pages,
+native two-observation confirmation, restored-window overlap and contiguous
+promotion clocks. Native equality excludes trade count/ignored REST metadata,
+which remain retained; malformed pages and known final-bar conflicts fail closed.
+It performs no HTTP request and its caller-attested clocks do not authenticate
+historical availability or substitute for full original warmup.
+
+The [closed-bar receipt](../../docs/CLOSED-BAR-EVIDENCE-2026-10-09.md) records
+16 focused installed-wheel passes on each Python 3.11/3.14, with exact 70-module
+source/wheel/installed identity. This is not a full E suite, native producer
+integration, five-day economic run, four-arm result or trading admission.
