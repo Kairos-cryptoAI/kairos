@@ -14,6 +14,29 @@ admissions remain open. The owner now prioritizes launch engineering before
 profit optimization; UI/UX remains deferred. All readiness stays false with
 `REJECT_ALL`, and unfinished adaptive drafts remain unaccepted and untouched.
 
+Exact-source hosted acceptance is green for Deploy
+`93b9d4a448d067ab31cf1c8058ec786975e5ee0f`: the
+[Windows/Linux Python and deployment CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38043712237),
+[installed PG/Redis composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38043712226)
+(one native pass, zero skips),
+[bar-to-REJECT_ALL Docker gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38043800679)
+(eight passes), and
+[full-path SIM/PG/controller gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38043802501)
+(thirty passes). Meta's
+[isolated-checkout validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38043848954)
+passes at `68b3cb0e410a2317325d64b58d5fbd114d9edaca`; the first hosted attempt's
+cross-repository local documentation link was corrected to an immutable GitHub
+source link and separately tested without sibling repositories on PowerShell
+5.1/7. CodeQL is green on both exact revisions. These hosted disposable
+fixtures do not accept primary recovery or any venue/trading authority.
+
+A fresh read-only local snapshot finds all fourteen declared HEADs on `main`,
+matching the manifest and their local `origin/main` refs with good signature
+metadata. This is not fourteen clean checkouts or a claim of freshly fetched
+remote state for every repository. The full current-release checker actually
+refuses the preserved uncommitted/untracked adaptive work in Meta; no release
+acceptance is inferred from the narrower JSON/source-projection pass.
+
 The [market-only historical comparison](MARKET-REVIEW-2026-10-10.md) is complete
 within its stated window/cost/quote assumptions, not complete-system alpha or
 authorization for real trading.
