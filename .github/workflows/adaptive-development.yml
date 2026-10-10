@@ -5,9 +5,11 @@ on:
     branches: [main]
     paths:
       - development/adaptive_replay/**
+      - development/market_review/**
       - .github/workflows/adaptive-development.yml
       - .gitattributes
       - docs/ADAPTIVE-DEVELOPMENT-*.md
+      - docs/MARKET-REVIEW-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
       - docs/STRATEGY-CALENDAR-*.md
@@ -21,9 +23,11 @@ on:
   pull_request:
     paths:
       - development/adaptive_replay/**
+      - development/market_review/**
       - .github/workflows/adaptive-development.yml
       - .gitattributes
       - docs/ADAPTIVE-DEVELOPMENT-*.md
+      - docs/MARKET-REVIEW-*.md
       - docs/STRATEGY-COMPARISON-*.md
       - docs/STRATEGY-SELECTION-*.md
       - docs/STRATEGY-CALENDAR-*.md
@@ -79,3 +83,15 @@ jobs:
           Set-Location $env:RUNNER_TEMP
           uv run --no-sync --project $project python -m pytest --import-mode=importlib $testPath -q -W error
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }
+      - name: Check market-only research code and offline evidence guards (never paid)
+        shell: pwsh
+        run: |
+          $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
+          $research = Join-Path $env:GITHUB_WORKSPACE 'development/market_review'
+          Set-Location $env:RUNNER_TEMP
+          uv run --no-sync --project $project ruff check $research
+          if ($LASTEXITCODE -ne 0) { throw 'Market review style gate failed' }
+          uv run --no-sync --project $project ruff format --check $research
+          if ($LASTEXITCODE -ne 0) { throw 'Market review formatting gate failed' }
+          uv run --no-sync --project $project python -m pytest --rootdir=$research --confcutdir=$research --import-mode=importlib $research -q -W error
+          if ($LASTEXITCODE -ne 0) { throw 'Market review offline evidence gate failed' }

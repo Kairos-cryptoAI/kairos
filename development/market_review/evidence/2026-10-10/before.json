@@ -1,0 +1,136 @@
+{
+  "source_identity": {
+    "backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    },
+    "engine_projection": "CURRENT_TRACKED_COST_AND_COMPLETION_ENGINE_WITH_UNCHANGED_NATIVE_CANDIDATES",
+    "experiment_scripts_sha256": {
+      "model_worker.py": "406377b6e91dd6162054f4ee1f804a4def614c194267124c1e27996cff875db6",
+      "run_comparison.py": "f3a883640a377e6ec6a6f8685962556290e234c2e223b5cff1ae25f57cd69872",
+      "test_comparison.py": "e1dd77527280084c38ad9b5f62079eea1ec238f7bc52b03fc1167d5ebed9cc52"
+    },
+    "input_loader_sha256": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+    "installed_native_revisions": {
+      "kairos-backtest": "da1237854066fde381542e43c106d0de727448be",
+      "kairos-core": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+      "kairos-persistence": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+      "kairos-quant-scouts": "927f5730d09383736c1dfc7dc5c400b06851019f",
+      "kairos-strategy-engine": "cde8e9c00af0cc19848e800ee76472a800a5fd5d"
+    },
+    "native_strategy": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "original_reference_engine_sha256": "cf25940d8117155c7b06aaf97533b464679a77b10f613f99420b3ae00d0db85f",
+    "replay_engine_sha256": "112891680ab1e2b8d8202588fa6ddc68d21adff6e1e0b3c99f895e853eede4a3",
+    "strategy_logic_sha256": "67d22ebe969a372c91381884f1cfae2abeecf143eb0ac2282eaf9b4026aade15"
+  },
+  "started_utc": "2026-10-10T09:04:55.061781+00:00",
+  "strategy_plan": {
+    "cost_scenarios": [
+      {
+        "admission_adverse_carry_bps": 3,
+        "fee_bps_per_side": 4.5,
+        "id": "base",
+        "latency_bps_round_trip": 2,
+        "slippage_bps_per_side": 1,
+        "spread_bps": 2,
+        "uncertainty_bps": 2
+      },
+      {
+        "admission_adverse_carry_bps": 3,
+        "fee_bps_per_side": 9,
+        "id": "stress",
+        "latency_bps_round_trip": 2,
+        "slippage_bps_per_side": 2,
+        "spread_bps": 4,
+        "uncertainty_bps": 2
+      }
+    ],
+    "drawdown_policy": "Closed-minute MTM and conservative within-minute adverse-envelope bound, not tick-level observed equity",
+    "entry_modes": [
+      "STRICT_MINUTE_OPEN",
+      "INTRABAR_OPEN_PROXY"
+    ],
+    "exit_tail_hours": 3,
+    "fill_policy": "Deterministic full-fill conditional approximation; no venue capacity, partial-fill, protective-latency or liquidity qualification",
+    "funding_policy": "Signed archived 8h rates applied at unrounded calc_time as ARCHIVE_CALC_TIME_ENTITLEMENT_PROXY, not proof of venue settlement; candle-open not mark-price proxy; fixed prior allowance for admission, never future-rate admission",
+    "initial_equity_usd_each_window": 10000,
+    "intrabar_policy": "SL-first on ambiguity including entry minute; adverse gap open for stop, no target gap improvement; do not interpolate paths",
+    "llm_arms": {
+      "proposals": "NOT_CALLED",
+      "reason": "No point-in-time news/provider responses or measured historical completion/cost; pretrained future-event contamination",
+      "review": "NOT_CALLED"
+    },
+    "max_wall_seconds": 3600,
+    "no_blind_campaign_credit": true,
+    "no_downloads": true,
+    "no_parameter_search": true,
+    "pipeline_latency_ms_assumed": 100,
+    "purpose": "BOUNDED_HISTORICAL_DEVELOPMENT_NOT_QUALIFICATION",
+    "readiness": {
+      "ALPHA_READY": false,
+      "LIVE_READY": false,
+      "PAPER_QUALIFIED": false,
+      "STRATEGY_POLICY": "REJECT_ALL",
+      "TECHNICAL_PAPER_READY": false
+    },
+    "risk_policy": {
+      "aggregate_open_fraction": 0.01,
+      "gross_leverage": 1,
+      "max_notional_fraction_per_symbol": 0.25,
+      "per_trade_fraction": 0.0025
+    },
+    "schema": "kairos.adaptive.development-plan.v1",
+    "settlement_order": "Funding and entry clocks merged without backdating; funding first on equality; after open gap exit or first-fill deadline no funding charge; intraminute timeout exposure conservatively reserved until bar close",
+    "simultaneous_entry_order": "Fixed universe order; risk never nets across long and short",
+    "source_revisions": {
+      "kairos-backtest": "da1237854066fde381542e43c106d0de727448be",
+      "kairos-core": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+      "kairos-persistence": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+      "kairos-quant-scouts": "927f5730d09383736c1dfc7dc5c400b06851019f",
+      "kairos-strategy-engine": "cde8e9c00af0cc19848e800ee76472a800a5fd5d"
+    },
+    "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+    "strategy_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+    "strategy_id": "adaptive_pullback_range_v1",
+    "universe": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "BNBUSDT",
+      "XRPUSDT"
+    ],
+    "warmup_hours": 54,
+    "window_selection": "Calendar diagnostics chosen before this replay's returns; NOT unseen crash validation or representative annual alpha",
+    "windows": [
+      {
+        "end_exclusive": "2021-11-10",
+        "id": "late_2021",
+        "start": "2021-11-07"
+      },
+      {
+        "end_exclusive": "2022-02-08",
+        "id": "early_2022",
+        "start": "2022-02-05"
+      },
+      {
+        "end_exclusive": "2022-05-12",
+        "id": "may_2022",
+        "start": "2022-05-09"
+      },
+      {
+        "end_exclusive": "2022-06-16",
+        "id": "june_2022",
+        "start": "2022-06-13"
+      }
+    ],
+    "workers": 1
+  },
+  "system_prompt_sha256": "2b8049d0746ec7e7a46a107599648222948c7a606fb5e34eca7149d82c3bd5a5"
+}

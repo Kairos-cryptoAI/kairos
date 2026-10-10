@@ -1,0 +1,126 @@
+{
+  "events": [
+    {
+      "authority": "CONDITIONAL_CANDLE_PRICE_PROXY",
+      "intent_id": "3faa432b8283c583cb29ee094eed7cdc89da6d22f44a94578bbbd9879b5630a8",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9998.789783090899,
+      "price": 27.06646,
+      "quantity": 31.932001278454912,
+      "reserved_risk_usd": 24.996974457727248,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_ms": 1655118600099
+    },
+    {
+      "authority": "CONDITIONAL_CANDLE_PRICE_PROXY",
+      "intent_id": "1059ca3d9779756c26eb70234e8dddcd8767474a6ad636efc16ed71adbc5f75c",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9974.254141476154,
+      "price": 224.717585,
+      "quantity": 5.258704249991223,
+      "reserved_risk_usd": 24.935635353690394,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655122800099
+    },
+    {
+      "intent_id": "ebf9f62d7d9d4f36ea46e3202a8272fb6c99965f3799d93ade2f7b7daeb7da90",
+      "kind": "REJECT",
+      "reason": "SYMBOL_POSITION_ALREADY_OPEN"
+    },
+    {
+      "authority": "CONDITIONAL_CANDLE_PRICE_PROXY",
+      "intent_id": "89809af3d694388d0fd9b3d0322eba0eca5a50b1a48dbe31d1214a6e6ce37cb7",
+      "kind": "ENTRY",
+      "post_entry_equity_usd": 9987.128328289999,
+      "price": 219.87001,
+      "quantity": 6.514039419772982,
+      "reserved_risk_usd": 24.967820820725,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_ms": 1655134200099
+    },
+    {
+      "intent_id": "30ed52604078e55ded05c63c2c250493a4851490f7808fefd1dbf40bb1e5175e",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    },
+    {
+      "intent_id": "f3079dd998e1a90244dffb1fb3bd365f40e7e59c3eabb860c13087196641bc8c",
+      "kind": "REJECT",
+      "reason": "FILL_reward_risk_too_low"
+    }
+  ],
+  "trades": [
+    {
+      "entry_fee_usd": 0.7778576117909238,
+      "entry_ms": 1655118600099,
+      "entry_price": 27.06646,
+      "exit_fee_usd": 0.7981212660692513,
+      "exit_ms": 1655122379999,
+      "exit_price": 27.771557410714284,
+      "gap": false,
+      "gross_pnl_usd": -22.51517142036377,
+      "holding_ms": 3779900,
+      "intent_id": "3faa432b8283c583cb29ee094eed7cdc89da6d22f44a94578bbbd9879b5630a8",
+      "net_pnl_usd": -24.091150298223948,
+      "quantity": 31.932001278454912,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": "BEAR",
+      "reserved_risk_usd": 24.996974457727248,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "SOLUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.0635509873585376,
+      "entry_ms": 1655122800099,
+      "entry_price": 224.717585,
+      "exit_fee_usd": 1.04974654162783,
+      "exit_ms": 1655130000099,
+      "exit_price": 221.80084499999998,
+      "gap": false,
+      "gross_pnl_usd": 15.338273034119572,
+      "holding_ms": 7200000,
+      "intent_id": "1059ca3d9779756c26eb70234e8dddcd8767474a6ad636efc16ed71adbc5f75c",
+      "net_pnl_usd": 13.224975505133205,
+      "quantity": 5.258704249991223,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "TIMEOUT",
+      "regime": "BEAR",
+      "reserved_risk_usd": 24.935635353690394,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    },
+    {
+      "entry_fee_usd": 1.289017721129292,
+      "entry_ms": 1655134200099,
+      "entry_price": 219.87001,
+      "exit_fee_usd": 1.3078286696380725,
+      "exit_ms": 1655134739999,
+      "exit_price": 223.0786264285714,
+      "gap": false,
+      "gross_pnl_usd": -20.90105389864523,
+      "holding_ms": 539900,
+      "intent_id": "89809af3d694388d0fd9b3d0322eba0eca5a50b1a48dbe31d1214a6e6ce37cb7",
+      "net_pnl_usd": -23.497900289412595,
+      "quantity": 6.514039419772982,
+      "realized_loss_exceeds_reservation": false,
+      "reason": "SL",
+      "regime": "BEAR",
+      "reserved_risk_usd": 24.967820820725,
+      "side": "SHORT",
+      "signed_funding_cost_usd": 0.0,
+      "sleeve_id": "adaptive_pullback_range_v1",
+      "symbol": "BNBUSDT",
+      "timestamp_authority": "MINUTE_BOUND_OR_TIMEOUT_PROXY_NOT_TICK_RECEIPT"
+    }
+  ]
+}

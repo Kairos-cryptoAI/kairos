@@ -1,0 +1,370 @@
+"""One-shot, native-budgeted market-only reviews in an immutable isolated image."""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import hashlib
+import json
+import math
+import os
+import time
+from dataclasses import asdict
+from importlib.metadata import distribution
+from pathlib import Path
+from typing import Literal
+from urllib.parse import quote
+
+from kairos_core.enums import ReasoningEffort
+from kairos_llm.budget import BudgetedLLMGateway
+from kairos_llm.config import LLMSettings
+from kairos_llm.gateway import LLMGateway
+from kairos_llm.models import LLMWorkload, ModelChoice, ModelRoute, Provider
+from kairos_persistence.config import PersistenceSettings
+from kairos_persistence.database import Database
+from kairos_persistence.database_target import connect_verified_database
+from kairos_persistence.source_state import SourceStateRepository
+from kairos_persistence.usage_budget import CampaignLLMUsageBudget
+from pydantic import BaseModel, ConfigDict
+
+
+class Review(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    decision: Literal["ALLOW", "VETO", "DEFER"]
+    reason: str
+
+
+class FixedRouter:
+    def resolve(self, effort=None, *, workload=None):
+        if (
+            effort not in (None, ReasoningEffort.MEDIUM)
+            or workload is not LLMWorkload.AGGREGATOR_NORMAL
+        ):
+            raise ValueError("only predeclared Luna medium market review allowed")
+        return ModelRoute(
+            ModelChoice("gpt-6-luna", Provider.OPENAI, "medium"),
+            ReasoningEffort.MEDIUM,
+            LLMWorkload.AGGREGATOR_NORMAL,
+            2048,
+        )
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write(path: Path, value) -> None:
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def append(path: Path, value) -> None:
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(value, sort_keys=True, allow_nan=False) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+class ScopedBudget:
+    """Conservative local one-shot hold AND the existing cumulative PG authority."""
+
+    def __init__(self, shared, journal: Path, limit: int):
+        self.shared, self.journal, self.limit = shared, journal, limit
+        self.held = 0
+        self.pending = {}
+
+    async def reserve(
+        self, *, provider, reservation_id, reserved_microusd, monthly_budget_microusd
+    ):
+        if provider != "openai" or monthly_budget_microusd != 12_000_000:
+            raise ValueError("registered provider ceiling changed")
+        if reservation_id in self.pending or self.held + reserved_microusd > self.limit:
+            raise ValueError("local one-shot envelope exceeded or duplicated")
+        append(
+            self.journal,
+            {
+                "state": "LOCAL_HOLD_BEFORE_SHARED",
+                "reservation_id": reservation_id,
+                "reserved_microusd": reserved_microusd,
+                "observed_at_ms": time.time_ns() // 1_000_000,
+            },
+        )
+        self.held += reserved_microusd
+        self.pending[reservation_id] = reserved_microusd
+        await self.shared.reserve(
+            provider=provider,
+            reservation_id=reservation_id,
+            reserved_microusd=reserved_microusd,
+            monthly_budget_microusd=monthly_budget_microusd,
+        )
+
+    async def commit(self, *, provider, reservation_id, actual_microusd):
+        held = self.pending[reservation_id]
+        if provider != "openai" or not 0 <= actual_microusd <= held:
+            raise ValueError("invalid settlement")
+        await self.shared.commit(
+            provider=provider,
+            reservation_id=reservation_id,
+            actual_microusd=actual_microusd,
+        )
+        append(
+            self.journal,
+            {
+                "state": "COMMITTED",
+                "reservation_id": reservation_id,
+                "actual_microusd": actual_microusd,
+                "observed_at_ms": time.time_ns() // 1_000_000,
+            },
+        )
+        self.held -= held - actual_microusd
+
+
+def verified_inputs(root: Path):
+    plan = json.loads((root / "sealed-plan.json").read_text())
+    seal = json.loads((root / "seal.json").read_text())
+    for name, key in (
+        ("sealed-plan.json", "plan_sha256"),
+        ("requests.json", "requests_sha256"),
+        ("before.json", "before_sha256"),
+    ):
+        if sha(root / name) != seal[key]:
+            raise ValueError("sealed experiment was altered")
+    requests = json.loads((root / "requests.json").read_text())
+    if len(requests) != 12 or len({r["candidate_id"] for r in requests}) != 12:
+        raise ValueError("exact twelve native candidates required")
+    if (
+        plan["model"],
+        plan["effort"],
+        plan["max_attempts"],
+        plan["max_local_reserved_microusd"],
+        plan["shared_openai_cap_microusd"],
+    ) != ("gpt-6-luna", "medium", 12, 1_000_000, 12_000_000):
+        raise ValueError("predeclared route or envelope changed")
+    for row in requests:
+        raw = json.dumps(
+            {"system": row["system"], "user": json.loads(row["user"])},
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode()
+        if hashlib.sha256(raw).hexdigest() != row["prompt_sha256"]:
+            raise ValueError("request prompt identity changed")
+    return plan, requests
+
+
+async def run(args) -> int:
+    plan, requests = verified_inputs(args.evidence)
+    write(
+        args.evidence / "worker-start.json",
+        {
+            "started_at_ms": time.time_ns() // 1_000_000,
+            "gateway_image": plan["gateway_image"],
+            "one_shot": True,
+        },
+    )
+    # Values stay in memory and are never passed in argv, printed or persisted.
+    key = args.openai_key.read_text().strip()
+    password = args.database_password.read_text().strip()
+    if not key or not password:
+        raise ValueError("existing protected credentials unavailable")
+    dsn = "postgresql://kairos:" + quote(password, safe="") + "@timescaledb:5432/kairos"
+    database = Database(
+        PersistenceSettings(database_url=dsn, pool_min_size=1, pool_max_size=2)
+    )
+    gateway = None
+    try:
+        await connect_verified_database(database, "kairos", local_only=True)
+        await (
+            database.verify_schema()
+        )  # Read-only schema proof, never migrate or adopt.
+        repository = SourceStateRepository(
+            database.pool, campaign_id=plan["shared_campaign"]
+        )
+        usage_before = await repository.campaign_usage("openai")
+        adoption = await database.pool.fetchrow(
+            "SELECT * FROM campaign_source_budgets WHERE source='openai'"
+        )
+        if (
+            usage_before.budget_microusd != plan["shared_openai_cap_microusd"]
+            or usage_before.historical_cost_microusd != plan["historical_cost_microusd"]
+            or adoption["historical_evidence_sha256"]
+            != plan["historical_budget_evidence_sha256"]
+        ):
+            raise ValueError(
+                "authoritative campaign adoption differs from approved account evidence"
+            )
+        budget = ScopedBudget(
+            CampaignLLMUsageBudget(repository),
+            args.evidence / "local-budget.jsonl",
+            plan["max_local_reserved_microusd"],
+        )
+        native = LLMGateway(
+            LLMSettings(
+                openai_api_key=key,
+                openai_base_url="https://api.openai.com/v1",
+                max_retries=0,
+                max_output_tokens=2048,
+                request_timeout_s=plan["request_timeout_seconds"],
+            ),
+            router=FixedRouter(),
+        )
+        gateway = BudgetedLLMGateway(native, budget)
+        import kairos_llm.budget as budget_module
+        import kairos_llm.gateway as gateway_module
+        import kairos_llm.pricing as pricing_module
+
+        write(
+            args.evidence / "gateway-source.json",
+            {
+                "image": plan["gateway_image"],
+                "packages": {
+                    name: {
+                        "version": distribution(name).version,
+                        "direct_url": json.loads(
+                            distribution(name).read_text("direct_url.json") or "{}"
+                        ),
+                    }
+                    for name in ("kairos-llm", "kairos-persistence", "openai")
+                },
+                "loaded_source_sha256": {
+                    m.__name__: sha(Path(m.__file__))
+                    for m in (budget_module, gateway_module, pricing_module)
+                },
+                "registered_price": asdict(gateway.prices.for_model("gpt-6-luna")),
+                "cumulative_budget_before": asdict(usage_before),
+            },
+        )
+        failures = 0
+        for number, row in enumerate(requests, 1):
+            receipt = {
+                k: row[k] for k in ("candidate_id", "window_id", "prompt_sha256")
+            }
+            if failures >= plan["stop_after_consecutive_request_failures"]:
+                append(
+                    args.evidence / "reviews.jsonl",
+                    {
+                        **receipt,
+                        "state": "NOT_CALLED_AFTER_FAILURE_LIMIT",
+                        "decision": "DEFER",
+                        "actual_microusd": None,
+                    },
+                )
+                continue
+            append(
+                args.evidence / "attempts.jsonl",
+                {
+                    **receipt,
+                    "state": "ONE_SHOT_ATTEMPT",
+                    "observed_at_ms": time.time_ns() // 1_000_000,
+                },
+            )
+            started = time.monotonic_ns()
+            try:
+                result = await gateway.complete(
+                    system=row["system"],
+                    user=row["user"],
+                    workload=LLMWorkload.AGGREGATOR_NORMAL,
+                    schema=Review,
+                )
+                finished = time.time_ns() // 1_000_000
+                duration = max(
+                    1, math.ceil((time.monotonic_ns() - started) / 1_000_000)
+                )
+                if (
+                    not isinstance(result.parsed, Review)
+                    or result.budget_reservation_id is None
+                ):
+                    raise ValueError("typed committed observation required")
+                append(
+                    args.evidence / "reviews.jsonl",
+                    {
+                        **receipt,
+                        "state": "OBSERVED_COMMITTED",
+                        "decision": result.parsed.decision,
+                        "reason": result.parsed.reason,
+                        "model": result.model,
+                        "effort": result.effort,
+                        "resolved_model": result.resolved_model,
+                        "request_id": result.request_id,
+                        "usage": asdict(result.usage),
+                        "actual_microusd": math.ceil(result.cost_usd * 1_000_000),
+                        "budget_reservation_id": result.budget_reservation_id,
+                        "modern_attempt_started_ms": result.attempt_started_at_ts_ms,
+                        "modern_response_observed_ms": result.response_observed_at_ts_ms,
+                        "modern_adapter_finished_ms": finished,
+                        "measured_pipeline_duration_ms": duration,
+                        "clock_authority": plan["latency_authority"],
+                    },
+                )
+                failures = 0
+                print(
+                    f"phase=real_market_review completed={number}/12 decision={result.parsed.decision}",
+                    flush=True,
+                )
+            except Exception as error:  # noqa: BLE001 - hold ambiguous spend; never expose SDK secrets
+                # No exception message: SDK/DSN diagnostics may contain protected values.
+                failures += 1
+                append(
+                    args.evidence / "reviews.jsonl",
+                    {
+                        **receipt,
+                        "state": "FAILED_CLOSED_COST_UNKNOWN_HELD",
+                        "decision": "DEFER",
+                        "actual_microusd": None,
+                        "error_type": type(error).__name__,
+                    },
+                )
+                print(
+                    f"phase=review_failed_closed attempt={number} error_type={type(error).__name__}",
+                    flush=True,
+                )
+        reviews = [
+            json.loads(line)
+            for line in (args.evidence / "reviews.jsonl").read_text().splitlines()
+        ]
+        verified_inputs(args.evidence)
+        write(
+            args.evidence / "worker-result.json",
+            {
+                "state": "COMPLETED"
+                if all(r["state"] == "OBSERVED_COMMITTED" for r in reviews)
+                else "INCOMPLETE_FAIL_CLOSED",
+                "finished_at_ms": time.time_ns() // 1_000_000,
+                "candidate_count": len(reviews),
+                "local_budgeted_microusd": budget.held,
+                "cumulative_budget_after": asdict(
+                    await repository.campaign_usage("openai")
+                ),
+            },
+        )
+        return 0 if all(r["state"] == "OBSERVED_COMMITTED" for r in reviews) else 2
+    finally:
+        if gateway is not None:
+            await gateway.close()
+        await database.close()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--evidence", type=Path, required=True)
+    parser.add_argument("--openai-key", type=Path, required=True)
+    parser.add_argument("--database-password", type=Path, required=True)
+    args = parser.parse_args()
+    try:
+        return asyncio.run(run(args))
+    except Exception as error:  # noqa: BLE001 - sanitize every top-level credential/SDK failure
+        # Top-level failures likewise cannot disclose credentials in a traceback.
+        if not (args.evidence / "worker-failure.json").exists():
+            write(
+                args.evidence / "worker-failure.json",
+                {"state": "FAILED_CLOSED", "error_type": type(error).__name__},
+            )
+        print(f"state=FAILED_CLOSED error_type={type(error).__name__}", flush=True)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

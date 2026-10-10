@@ -1,0 +1,71 @@
+{
+  "events": [
+    {
+      "amount_usd": 0.000556,
+      "cost_id": "3faa432b8283c583cb29ee094eed7cdc89da6d22f44a94578bbbd9879b5630a8",
+      "kind": "MODEL",
+      "timestamp_ms": 1655118607732
+    },
+    {
+      "intent_id": "3faa432b8283c583cb29ee094eed7cdc89da6d22f44a94578bbbd9879b5630a8",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    },
+    {
+      "amount_usd": 0.000727,
+      "cost_id": "1059ca3d9779756c26eb70234e8dddcd8767474a6ad636efc16ed71adbc5f75c",
+      "kind": "MODEL",
+      "timestamp_ms": 1655122810369
+    },
+    {
+      "intent_id": "1059ca3d9779756c26eb70234e8dddcd8767474a6ad636efc16ed71adbc5f75c",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    },
+    {
+      "amount_usd": 0.000752,
+      "cost_id": "ebf9f62d7d9d4f36ea46e3202a8272fb6c99965f3799d93ade2f7b7daeb7da90",
+      "kind": "MODEL",
+      "timestamp_ms": 1655127610418
+    },
+    {
+      "intent_id": "ebf9f62d7d9d4f36ea46e3202a8272fb6c99965f3799d93ade2f7b7daeb7da90",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    },
+    {
+      "amount_usd": 0.00071,
+      "cost_id": "89809af3d694388d0fd9b3d0322eba0eca5a50b1a48dbe31d1214a6e6ce37cb7",
+      "kind": "MODEL",
+      "timestamp_ms": 1655134210280
+    },
+    {
+      "intent_id": "89809af3d694388d0fd9b3d0322eba0eca5a50b1a48dbe31d1214a6e6ce37cb7",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    },
+    {
+      "amount_usd": 0.000814,
+      "cost_id": "30ed52604078e55ded05c63c2c250493a4851490f7808fefd1dbf40bb1e5175e",
+      "kind": "MODEL",
+      "timestamp_ms": 1655177112824
+    },
+    {
+      "intent_id": "30ed52604078e55ded05c63c2c250493a4851490f7808fefd1dbf40bb1e5175e",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    },
+    {
+      "amount_usd": 0.000685,
+      "cost_id": "f3079dd998e1a90244dffb1fb3bd365f40e7e59c3eabb860c13087196641bc8c",
+      "kind": "MODEL",
+      "timestamp_ms": 1655239208102
+    },
+    {
+      "intent_id": "f3079dd998e1a90244dffb1fb3bd365f40e7e59c3eabb860c13087196641bc8c",
+      "kind": "REJECT",
+      "reason": "NO_OBSERVED_MINUTE_QUOTE_WITHIN_LIFETIME"
+    }
+  ],
+  "trades": []
+}

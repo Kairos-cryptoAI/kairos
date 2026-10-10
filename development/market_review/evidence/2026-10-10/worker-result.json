@@ -1,0 +1,14 @@
+{
+  "candidate_count": 12,
+  "cumulative_budget_after": {
+    "budget_microusd": 12000000,
+    "campaign_id": "kairos-dev-qualification-v1",
+    "committed_cost_microusd": 49374,
+    "historical_cost_microusd": 1984,
+    "reserved_cost_microusd": 154624,
+    "source": "openai"
+  },
+  "finished_at_ms": 1791623319823,
+  "local_budgeted_microusd": 8804,
+  "state": "COMPLETED"
+}

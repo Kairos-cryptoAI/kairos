@@ -1,0 +1,48 @@
+{
+  "cumulative_budget_before": {
+    "budget_microusd": 12000000,
+    "campaign_id": "kairos-dev-qualification-v1",
+    "committed_cost_microusd": 40570,
+    "historical_cost_microusd": 1984,
+    "reserved_cost_microusd": 154624,
+    "source": "openai"
+  },
+  "image": "sha256:fe950a62e0b3c01820d4612c9e0cc322cde625706f0bb7e0337d817960d93e7b",
+  "loaded_source_sha256": {
+    "kairos_llm.budget": "52b0c8476eec20288cc72f70c381d2bcd96529ca7c713be44eca460b26981ce2",
+    "kairos_llm.gateway": "a730abac829d3f665123bf484ec733a75a2b57f5d59bcf5b5ac16c4761781d5b",
+    "kairos_llm.pricing": "6a097ed6366a0420fd183c608cfc84dbe84c4ea372aa86d298b121bd46cba455"
+  },
+  "packages": {
+    "kairos-llm": {
+      "direct_url": {
+        "dir_info": {
+          "editable": false
+        },
+        "url": "file:///app"
+      },
+      "version": "0.1.0"
+    },
+    "kairos-persistence": {
+      "direct_url": {
+        "url": "https://github.com/Kairos-cryptoAI/kairos-persistence.git",
+        "vcs_info": {
+          "commit_id": "600d37694d9da650d3137cff2e24d1a77b4fa413",
+          "requested_revision": "600d37694d9da650d3137cff2e24d1a77b4fa413",
+          "vcs": "git"
+        }
+      },
+      "version": "0.1.0"
+    },
+    "openai": {
+      "direct_url": {},
+      "version": "2.54.0"
+    }
+  },
+  "registered_price": {
+    "cache_write_per_m": 0.125,
+    "cached_input_per_m": 0.01,
+    "input_per_m": 0.1,
+    "output_per_m": 0.5
+  }
+}
