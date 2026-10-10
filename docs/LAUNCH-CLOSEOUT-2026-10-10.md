@@ -42,7 +42,7 @@ Signed implementation commits:
 ### Telegram local operator attestation
 
 Deploy `93b9d4a448d067ab31cf1c8058ec786975e5ee0f` adds `acknowledge` and `verify-ack`
-to [the existing delivery tool](../../kairos-deploy/scripts/alert_delivery.py).
+to [the existing delivery tool](https://github.com/Kairos-cryptoAI/kairos-deploy/blob/93b9d4a448d067ab31cf1c8058ec786975e5ee0f/scripts/alert_delivery.py).
 It requires the explicit `OWNER_SAW_QUALIFICATION_MESSAGE` statement, a pinned
 original journal SHA-256 and the exact accepted message ID. It validates the
 bounded protected test journal, all four successful stages, recipient/message
