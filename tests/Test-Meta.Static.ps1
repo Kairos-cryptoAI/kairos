@@ -11,6 +11,8 @@ $currentReleasePath = Join-Path $repoRoot "config\current-release.json"
 $currentReleaseVerifierPath = Join-Path $repoRoot "scripts\Test-CurrentRelease.ps1"
 $releaseCheckoutIdentityPath = Join-Path $repoRoot "scripts\ReleaseCheckoutIdentity.ps1"
 $releaseCheckoutTestPath = Join-Path $PSScriptRoot "Test-CurrentReleaseCheckout.ps1"
+$releaseSourceProjectionPath = Join-Path $repoRoot "scripts\ReleaseSourceProjection.ps1"
+$releaseSourceProjectionTestPath = Join-Path $PSScriptRoot "Test-CurrentReleaseProjection.ps1"
 $githubSecurityVerifierPath = Join-Path $repoRoot "scripts\Test-GitHubSourceSecurity.ps1"
 
 $tokens = $null
@@ -57,6 +59,28 @@ if ($checkoutTestParseErrors.Count -gt 0) {
     throw "Release checkout identity test parse errors: $($checkoutTestParseErrors -join '; ')"
 }
 
+$projectionTokens = $null
+$projectionParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $releaseSourceProjectionPath,
+    [ref]$projectionTokens,
+    [ref]$projectionParseErrors
+) | Out-Null
+if ($projectionParseErrors.Count -gt 0) {
+    throw "Release source projection helper parse errors: $($projectionParseErrors -join '; ')"
+}
+
+$projectionTestTokens = $null
+$projectionTestParseErrors = $null
+[System.Management.Automation.Language.Parser]::ParseFile(
+    $releaseSourceProjectionTestPath,
+    [ref]$projectionTestTokens,
+    [ref]$projectionTestParseErrors
+) | Out-Null
+if ($projectionTestParseErrors.Count -gt 0) {
+    throw "Release source projection test parse errors: $($projectionTestParseErrors -join '; ')"
+}
+
 $githubSecurityTokens = $null
 $githubSecurityParseErrors = $null
 [System.Management.Automation.Language.Parser]::ParseFile(
@@ -89,6 +113,12 @@ if ($LASTEXITCODE -ne 0) { throw "Runner default manifest path failed" }
 $runnerText = Get-Content -LiteralPath $runnerPath -Raw
 $currentReleaseVerifierText = Get-Content -LiteralPath $currentReleaseVerifierPath -Raw
 $releaseCheckoutIdentityText = Get-Content -LiteralPath $releaseCheckoutIdentityPath -Raw
+$releaseSourceProjectionText = Get-Content -LiteralPath $releaseSourceProjectionPath -Raw
+foreach ($forbiddenFragment in @("Invoke-ReleaseGit", "Invoke-WebRequest", "Invoke-RestMethod", "docker", "gpg", "New-Item", "Remove-Item", "Set-Content", "WriteAllText")) {
+    if ($releaseSourceProjectionText.Contains($forbiddenFragment)) {
+        throw "Release source projection helper must remain JSON-read-only: $forbiddenFragment"
+    }
+}
 foreach ($requiredFragment in @("lock", "--check", "--locked", "format", "--check", "mypy", "bandit", "pytest", "build", "--no-sources", "Out-Host", "--no-sync")) {
     if (-not $runnerText.Contains($requiredFragment)) {
         throw "Runner is missing required command fragment: $requiredFragment"
@@ -166,7 +196,7 @@ foreach ($forbiddenFragment in @("reset --hard", "checkout --", "clean -", "Get-
         throw "Runner contains forbidden mutation or secret access: $forbiddenFragment"
     }
 }
-foreach ($requiredFragment in @("current-release-gate.sources.lock.json", "sim-full-path.sources.lock.json", "runtimeGateNames", "ReleaseCheckoutIdentity.ps1", "Assert-ReleaseRepositoryCheckout")) {
+foreach ($requiredFragment in @("ReleaseSourceProjection.ps1", "Assert-ReleaseSourceProjection", "ReleaseCheckoutIdentity.ps1", "Assert-ReleaseRepositoryCheckout")) {
     if (-not $currentReleaseVerifierText.Contains($requiredFragment)) {
         throw "Current-release verifier is missing required source-projection check: $requiredFragment"
     }
@@ -230,3 +260,4 @@ foreach ($file in $markdownFiles) {
 
 Write-Host "Static runner, manifest, and local Markdown-link validation passed."
 & $releaseCheckoutTestPath
+& $releaseSourceProjectionTestPath

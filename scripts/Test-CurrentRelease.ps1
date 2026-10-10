@@ -8,6 +8,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 . (Join-Path $PSScriptRoot "ReleaseCheckoutIdentity.ps1")
+. (Join-Path $PSScriptRoot "ReleaseSourceProjection.ps1")
 
 $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
@@ -262,60 +263,7 @@ foreach ($entry in $entries) {
     }
 }
 
-# Both deterministic gates are built in kairos-deploy, but their source locks
-# must be a literal projection of the runtime repositories recorded above. This
-# catches a stale gate dependency before a historical green gate can be cited
-# for a newer top-level source identity.
-$runtimeGateNames = @(
-    "kairos-core", "kairos-persistence", "kairos-strategy-engine", "kairos-router",
-    "kairos-llm", "kairos-aggregator", "kairos-risk-manager", "kairos-execution-engine"
-)
 $deployRoot = Join-Path $workspaceFullPath $entryByName["kairos-deploy"].directory
-$gateSpecifications = @(
-    [pscustomobject]@{
-        FileName = "current-release-gate.sources.lock.json"
-        Purpose = "current-release-reject-all-integration-gate"
-        Classification = "ENGINEERING_ONLY"
-    },
-    [pscustomobject]@{
-        FileName = "sim-full-path.sources.lock.json"
-        Purpose = "isolated-full-path-market-data-simulator"
-        Classification = "SIMULATED"
-    }
-)
-foreach ($gate in $gateSpecifications) {
-    $gatePath = Join-Path $deployRoot $gate.FileName
-    if (-not (Test-Path -LiteralPath $gatePath -PathType Leaf)) {
-        throw "Current-release gate source lock is missing: $gatePath"
-    }
-    $gateLock = Get-Content -LiteralPath $gatePath -Raw | ConvertFrom-Json
-    if ($gateLock.purpose -ne $gate.Purpose -or $gateLock.classification -ne $gate.Classification) {
-        throw "Current-release gate source lock has an unexpected identity: $($gate.FileName)"
-    }
-    $readiness = $gateLock.PSObject.Properties["readiness"].Value
-    if ($null -eq $readiness -or $readiness.paper_qualified -or $readiness.alpha_ready -or
-        $readiness.live_ready -or $readiness.strategy_policy -ne "REJECT_ALL") {
-        throw "Current-release gate source lock must remain fail-closed: $($gate.FileName)"
-    }
-    $dependencies = $gateLock.PSObject.Properties["dependencies"].Value
-    if ($null -eq $dependencies) {
-        throw "Current-release gate source lock has no dependencies: $($gate.FileName)"
-    }
-    $dependencyNames = @($dependencies.PSObject.Properties | ForEach-Object { $_.Name })
-    if (Compare-Object -ReferenceObject ($runtimeGateNames | Sort-Object) -DifferenceObject ($dependencyNames | Sort-Object)) {
-        throw "Current-release gate dependency set differs from the runtime projection: $($gate.FileName)"
-    }
-    foreach ($name in $runtimeGateNames) {
-        $dependency = $dependencies.PSObject.Properties[$name].Value
-        $expected = $entryByName[$name]
-        $expectedRepository = $expected.origin
-        if ($expectedRepository.EndsWith(".git", [System.StringComparison]::Ordinal)) {
-            $expectedRepository = $expectedRepository.Substring(0, $expectedRepository.Length - 4)
-        }
-        if ($dependency.repository -ne $expectedRepository -or $dependency.revision -ne $expected.revision) {
-            throw "Current-release gate dependency does not match the manifest: $($gate.FileName) / $name"
-        }
-    }
-}
+Assert-ReleaseSourceProjection -Manifest $manifest -DeployRoot $deployRoot
 
 Write-Host "Current release source identity verified across $($entries.Count) clean main repositories."
