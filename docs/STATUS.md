@@ -2,6 +2,30 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-10_
 
+## Fresh official backup and complete isolated restoration — 2026-10-10
+
+The [fresh recovery receipt](RECOVERY-2026-10-10.md) accepts the owner's requested
+backup/restore-only contour: the unchanged official backup completed all 47
+native calls and produced its original manifest; two separate complete restores
+match all 27 public-table histories, schema, sequences, jobs, migration history,
+five bar prefixes and preserved inbox/outbox/leases. Both whole-database supported
+heap/B-tree integrity checks pass. Full original primary content/metadata and
+container identity are unchanged, and all owned containers/processes are gone.
+Private backup/scratch evidence is retained locally, not uploaded.
+
+Deploy `36acf9b18038648921420c7c598230bb8a00d3b0` is signed and exact-source CI,
+installed composition and CodeQL are green. Its Windows Python 3.11/3.14 suites
+each run 500 tests: 496 pass, four explicit skips, zero failures. The source
+manifest records this revision; other component pins are unchanged. Unfinished
+adaptive drafts remain untouched and still block the full clean-checkout gate.
+
+This acceptance restores legacy schema `001`–`012`, not the separate current
+atomic `013`–`018` migration/outbox workflow. Primary migration, reconciliation,
+lease/cursor/backlog changes, consumers, external publication and trading were
+not performed or authorized. Off-host resilience remains open. A fresh backup
+does not freshen the preserved bars, which still end September 19. All readiness
+remains false, policy `REJECT_ALL`.
+
 ## Controlled-launch engineering: release identity and alert attestation — 2026-10-10
 
 The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md) closes the Text/Macro

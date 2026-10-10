@@ -1,5 +1,11 @@
 # Controlled-launch engineering continuation — 2026-10-10
 
+Follow-up: the [fresh backup and two full isolated restores](RECOVERY-2026-10-10.md)
+are now accepted separately. This document retains the earlier continuation's
+source pins and historical remaining-work snapshot; the missing backup manifest
+and unverified raw restore are closed by the follow-up. Primary/current atomic
+migration, activation and external publication remain guarded and unperformed.
+
 ## Scope and result
 
 The owner prioritizes completion toward a controlled launch before further
