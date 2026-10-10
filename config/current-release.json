@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "kind": "CURRENT_SOURCE_IDENTITY",
-  "releaseId": "engineering-main-20261010T222900Z",
-  "generatedAtUtc": "2026-10-10T22:29:00Z",
+  "releaseId": "engineering-main-20261010T225409Z",
+  "generatedAtUtc": "2026-10-10T22:54:09Z",
   "purpose": "Reproducible source identity for the current Kairos engineering work. This is not a trading, alpha, simulator, PAPER, or LIVE approval.",
   "scope": {
     "classification": "ENGINEERING_ONLY",
@@ -18,7 +18,7 @@
     { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "634b26f04b0dbc9266564083b3870583823caa0d" },
     { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "da1237854066fde381542e43c106d0de727448be" },
     { "name": "kairos-core", "directory": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377" },
-    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "188e23c4bce159b8e6265fef56ce421c2add577a" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "801d97c4b2414fa755e40e63873b2e21f774b002" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "db638c939c42a5bd951c13c0d07406706cfd8a60" },
     { "name": "kairos-llm", "directory": "kairos-llm", "origin": "https://github.com/Kairos-cryptoAI/kairos-llm.git", "revision": "74d0f5c6dceac79f7e4dd03a5cef25c3a38becf0" },
     { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "origin": "https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git", "revision": "33aca067988bb07b6caf9809a612edb870e7c69c" },

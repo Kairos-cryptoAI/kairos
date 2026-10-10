@@ -9,9 +9,9 @@ The [current-runtime continuation](RUNTIME-CONTROLLED-2026-10-10.md) records
 the primary mutation at signed Deploy `889a15e`, current Core/Persistence
 wheels and nine updated service dependency projections. Later restore-only
 and cold-observer fixes bind their own exact source identity. Current Deploy
-is `188e23c4bce159b8e6265fef56ce421c2add577a`; all five exact-source hosted
-gates are green. Windows Python 3.11/3.14 each run 602 tests:
-596 pass, six explicit skips, zero failures.
+is `801d97c4b2414fa755e40e63873b2e21f774b002`; all five exact-source hosted
+gates are green. Windows Python 3.11/3.14 each run 607 tests:
+601 pass, six explicit skips, zero failures.
 
 The ninth complete isolated clone passed and its receipts are signed. The
 primary transaction then committed the current schema and exact expired-row
@@ -29,9 +29,17 @@ containers remain stopped.
 The complete cold Redis persistence clone loads and verifies unchanged source
 hashes. The expanded, complete read-only search examines all 23,976 preserved
 entries / 19,190,730 response bytes and finishes `INCONCLUSIVE_ZERO_MATCH`.
-No exact Redis witness was found; this is not proof of non-publication because
-old entries may have been trimmed/deleted. Its signed receipt is retained and
-all owned resources are removed. The primary row remains outcome-unknown,
+The separately selected historical root-RDB clone also completes its read-only
+23,976-entry / 19,190,730-byte search with
+`HISTORICAL_RDB_INCONCLUSIVE_ZERO_MATCH`. It loads only the exact
+15,782,907-byte `dump.rdb`, with AOF and saves disabled and its copied
+data volume read-only. Its identity is historical, never current Redis
+acceptance. The [signed historical supplement](receipts/runtime-historical-rdb-20261011.json)
+binds its distinct source, root-RDB hash and immutable private receipt.
+No exact Redis witness was found in either observation; this is not proof of
+non-publication because old entries may have been trimmed/deleted. Both signed
+receipts are retained, source hashes are unchanged and all owned resources are
+removed. The primary row remains outcome-unknown,
 without replay, acknowledgement, dead-lettering or a bypass of its FIFO barrier.
 Current cold-Redis acceptance, signed exact-witness reconciliation, current
 FIFO drain, bounded closed-bar catch-up and dispatcher-off consumer admission

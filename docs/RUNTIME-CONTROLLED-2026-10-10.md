@@ -293,6 +293,62 @@ The [curated evidence summary](receipts/runtime-current-transition-20261010.json
 contains only source identities, result/limit/count metadata and exact hashes;
 private dumps, row identities, stream payloads and credentials are not uploaded.
 
+## Separate historical root-RDB observation — 2026-10-11
+
+The root `dump.rdb` is an independently selected historical snapshot, not
+the current multipart-AOF Redis state. The explicit historical-only mode
+binds signed Deploy `801d97c4b2414fa755e40e63873b2e21f774b002` and implementation
+SHA-256 `118dba68690f30a271268c4cceaeeeed3cc8aaba4bf167d003b9f6bfe2956232`.
+It is never a fallback from a failed AOF load or permission to alter the legacy
+queue. It verifies a bounded plain root RDB, its exact file hash and source
+immutability, then loads it only on the owned clone with AOF disabled, saves
+disabled and the copied data volume mounted read-only. No original Redis
+server starts or commands, primary contacts, credential reads or publications
+occur. Even a positive historical observation omits resolver-shaped acceptance
+evidence and cannot automatically acknowledge an original row.
+
+The actual single create-only run finishes
+`HISTORICAL_RDB_INCONCLUSIVE_ZERO_MATCH`: all 23,976 preserved stream entries /
+19,190,730 response bytes are examined, with zero exact matches. The root RDB
+is 15,782,907 bytes with SHA-256
+`0150fe15427e333550f7257611c1f8dc1433deb9a61b7e908206dd5a2507f409`.
+The copied four-file persistence image remains 74,200,674 bytes; all source
+manifest/content/volume hashes are unchanged before and after observation.
+Owned containers and the snapshot volume are removed; both original data
+containers remain stopped. This implementation lease is not retried.
+
+The exact private historical receipt SHA-256 is
+`789186e7a75ff43d8ec21d7418298c06b8b57d08fca04cf9e25585f38878f08b`;
+its detached signature SHA-256 is
+`e58302016f0923ad73c6609cdc7436997b1bef6c6585f90761755b2a05af259b`.
+The exact trusted signer and unchanged bytes are verified. The new
+[curated historical supplement](receipts/runtime-historical-rdb-20261011.json)
+is separately signed; the earlier
+[primary/current-Redis summary](receipts/runtime-current-transition-20261010.json)
+and every failed/successful private receipt remain unchanged.
+
+Windows Python 3.11/3.14 each run 607 tests: 601 pass, six explicit skips,
+zero failures; all 31 focused cold-observer tests and scoped Ruff/format checks
+pass. The exact-source hosted
+[CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38092775830),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38092775813),
+[CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38092775943),
+[current-source Docker gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38092775946)
+and [full-path SIM gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38092777865)
+are green. They qualify this observer engineering source, not legacy FIFO drain,
+catch-up, consumers, a whole clean release or trading.
+
+Both available direct cold persistence observations have now been exhausted.
+Neither proves non-publication, resolves the original `UNKNOWN`, nor permits
+replay/acknowledgement/skipping/dead-lettering. The owner has been asked to
+choose between waiting for new exact evidence and a separately isolated,
+non-trading runtime epoch that preserves the legacy DB/Redis/queue unchanged.
+That new epoch would require a data-only `CLOSED_BAR` history seed, exact
+separate source/target identities, bounded catch-up, a current-schema bounded
+drain and a dispatcher-off consumer-only profile with independent publication
+denial. None of these new-epoch admissions is implied or performed by this
+historical observation.
+
 ## Still separate from a working runtime
 
 The accepted schema/quarantine and separate restore verification do not by
