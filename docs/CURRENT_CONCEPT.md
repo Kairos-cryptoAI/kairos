@@ -1,10 +1,20 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-09 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-10 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Active work: scenario-based research rework after engineering closeout
+## Active priority: controlled-launch engineering before profit optimization
+
+The owner now prioritizes finishing operational launch requirements before
+further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
+fixes release identity and alert acknowledgement engineering while preserving
+the distinct recovery, host/backup, real notification, venue, custody and
+economic admission gates. UI/UX remains deferred. No strategy is promoted or
+integrated; all readiness remains false and policy is `REJECT_ALL`. Finishing
+engineering is not permission to skip safety or unseen-alpha evidence.
+
+## Preserved research: scenario-based rework after engineering closeout
 
 The owner has reopened the trading-logic task around specialized hypotheses,
 explicit market confirmation, fixed invalidation and expiry, independent review

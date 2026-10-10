@@ -2,7 +2,16 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-06
+## Current boundary — 2026-10-10
+
+The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md) adds complete
+runtime-source projection and offline local alert attestation. These are
+engineering improvements, not accepted recovery, real delivery, off-host
+restore, EVEDEX qualification or alpha. The owner defers profit optimization
+and UI/UX while launch admissions remain required. The current manifest keeps
+all four readiness flags false, `REJECT_ALL` and no trading authority.
+
+## Previous boundary — 2026-10-06
 
 The [selected adaptive strategy receipt](ADAPTIVE-STRATEGY-2026-10-06.md)
 records one implemented `adaptive_pullback_range_v1` research candidate, exact

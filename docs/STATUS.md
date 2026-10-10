@@ -1,6 +1,22 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-09_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-10_
+
+## Controlled-launch engineering: release identity and alert attestation — 2026-10-10
+
+The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md) closes the Text/Macro
+source-projection gap and adds a separate immutable local operator alert
+attestation without resend or journal rewriting. Deploy's final local suite
+passes 473 tests with four explicit skips on each Windows Python 3.11/3.14;
+Meta projection fixtures pass PowerShell 5.1/7. Actual Telegram delivery,
+accepted full runtime recovery, off-host backup, venue and production/economic
+admissions remain open. The owner now prioritizes launch engineering before
+profit optimization; UI/UX remains deferred. All readiness stays false with
+`REJECT_ALL`, and unfinished adaptive drafts remain unaccepted and untouched.
+
+The [market-only historical comparison](MARKET-REVIEW-2026-10-10.md) is complete
+within its stated window/cost/quote assumptions, not complete-system alpha or
+authorization for real trading.
 
 ## Fixed-window alternative: verified advertised metadata only — 2026-10-09
 
