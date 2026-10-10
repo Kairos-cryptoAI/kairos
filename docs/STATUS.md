@@ -1,6 +1,52 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-10_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-11_
+
+## Current controlled-runtime transition — 2026-10-10/11
+
+The owner separately authorized technical primary transition without trading.
+The [current-runtime continuation](RUNTIME-CONTROLLED-2026-10-10.md) records
+the primary mutation at signed Deploy `889a15e`, current Core/Persistence
+wheels and nine updated service dependency projections. Later restore-only
+and cold-observer fixes bind their own exact source identity. Current Deploy
+is `188e23c4bce159b8e6265fef56ce421c2add577a`; all five exact-source hosted
+gates are green. Windows Python 3.11/3.14 each run 602 tests:
+596 pass, six explicit skips, zero failures.
+
+The ninth complete isolated clone passed and its receipts are signed. The
+primary transaction then committed the current schema and exact expired-row
+quarantine, and runtime-login permissions passed verification. The final
+controller still failed closed on an attempted create-only plan overwrite
+during backup-after qualification; that failed result remains immutable and
+will not be retried. The separate signed restore-only supplement at Deploy
+`563bdf2` is now `PASS_POSTCOMMIT_ISOLATED_RESTORE`: all 39 current table
+histories match, restored-cluster heap/B-tree integrity verification passes,
+the primary remains stopped/unchanged during the supplement and all owned
+resources are removed. Its receipt is separately accepted; the old failed
+primary receipt is never overwritten or relabelled. Both original data
+containers remain stopped.
+
+The complete cold Redis persistence clone loads and verifies unchanged source
+hashes. The expanded, complete read-only search examines all 23,976 preserved
+entries / 19,190,730 response bytes and finishes `INCONCLUSIVE_ZERO_MATCH`.
+No exact Redis witness was found; this is not proof of non-publication because
+old entries may have been trimmed/deleted. Its signed receipt is retained and
+all owned resources are removed. The primary row remains outcome-unknown,
+without replay, acknowledgement, dead-lettering or a bypass of its FIFO barrier.
+Current cold-Redis acceptance, signed exact-witness reconciliation, current
+FIFO drain, bounded closed-bar catch-up and dispatcher-off consumer admission
+remain open. Ordinary service startup is not an accepted shortcut: it can
+publish the preserved outbox automatically. Existing strategy startup is not a
+passive ingest shortcut even with an empty strategy allowlist; independent
+outbox-write / Redis-`XADD` denial and a non-strategy handler are required.
+
+The following dated sections retain their historical source/evidence scope;
+they are not the current release manifest or whole-runtime admission. All
+readiness remains false, strategy policy `REJECT_ALL`; no trading, venue or
+paid API authority follows from these engineering checks. The adaptive
+working tree remains preserved and unaccepted. The legacy continuity choice
+is now explicit: supply new exact evidence or separately authorize a fresh
+isolated non-trading runtime epoch while retaining the old queue unchanged.
 
 ## Fresh official backup and complete isolated restoration — 2026-10-10
 

@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "kind": "CONTROLLED_RUNTIME_TRANSITION_EVIDENCE_SUMMARY",
+  "classification": "ENGINEERING_ONLY_NOT_WORKING_RUNTIME_ADMISSION",
+  "recordedAtUtc": "2026-10-10T22:33:00Z",
+  "trustedSignerFingerprint": "40AF365C6682B73D056A6A274DBFF6B65BE9F827",
+  "source": {
+    "primaryMutationDeployRevision": "889a15ed2e6af138c7b9634a771f23389b2e4ab4",
+    "restoreSupplementDeployRevision": "563bdf2b0ee5916284f63184531c9034c4045eae",
+    "coldObserverDeployRevision": "188e23c4bce159b8e6265fef56ce421c2add577a",
+    "coreRevision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+    "persistenceRevision": "0f416ee70a451f8d2a32a7dd403d7a02bce071c9",
+    "frozenBacktestRevision": "da1237854066fde381542e43c106d0de727448be",
+    "wheelManifestSha256": "9541970c3c61347d45f2bf790760e80f33c9c05d1e3c01c5324b18e03deb0a66"
+  },
+  "acceptedPrecommitClone": {
+    "result": "PASS_CURRENT_CONTROLLED_CLONE",
+    "receiptSha256": "5ebc3e288762c4b8e94ec2302b7ccf6ce6e20ec3e2892e21748765ecaf48eed8",
+    "detachedSignatureSha256": "8cf4e7bc7a9766776a58b33ebf1754aefd549f9f61c11ed571757c10ae37000a",
+    "supervisorReceiptSha256": "9de9c383ca816678927be991082e3ba61a837cf6fc9a064acddd29775dbffc1e",
+    "officialBackupBytes": 78948828,
+    "rollbackFaultChecks": 9,
+    "isolatedDeliveryScope": "SYNTHETIC_EMPTY_PG_REDIS_FIXTURE_NOT_ORIGINAL_STREAM"
+  },
+  "primaryTransition": {
+    "transaction": "COMMITTED_ACKNOWLEDGED",
+    "currentPublicTableHistoriesVerified": 39,
+    "appliedSchemaProfile": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014",
+      "015",
+      "016",
+      "018",
+      "026"
+    ],
+    "exactExpiredRowsQuarantined": 1,
+    "quarantinedState": "PUBLISH_OUTCOME_UNKNOWN",
+    "runtimeLoginPermissions": "VERIFIED_ON_ACTUAL_PRIMARY",
+    "temporaryRole": "CREATED_AND_DROPPED",
+    "originalControllerResult": "FAILED_CLOSED",
+    "originalControllerFailurePhase": "BACKUP_AFTER_AND_RESTORED_HISTORY_ONLY",
+    "originalFailure": "CREATE_ONLY_PLAN_COLLISION",
+    "originalFailedReceiptRewritten": false,
+    "receiptSha256": "ff272d696f7ebed409950cab705c61183719195af7a98b497bba46284b508e5b",
+    "supervisorReceiptSha256": "a768de1a6bff990d04680412f53c12723d2a5dcdeeb0649838d895685c37fb1a",
+    "planSha256": "42dace7aaf9610fa00f31886d84b7a892461f208e423609f6ade861895bc1316",
+    "nativeApplySha256": "e8f208aac13561f2313f3b8e3e7855fff442fb1d79bbc487071ad769fef780b5",
+    "nativeVerifySha256": "d0ccd3b14574d10877bbc488c35155b4ca602e5b65f13ac122d8f2cca5e03930",
+    "backupAfterBytes": 79126336,
+    "backupAfterSha256": "2408db1335dc856122750e4604f14a436184f54a7f4ffab22bc35eb69747a7bc",
+    "cleanupVerified": true,
+    "consumersStarted": 0,
+    "publisherCalls": 0,
+    "originalRedisCommands": 0
+  },
+  "acceptedRestoreSupplement": {
+    "result": "PASS_POSTCOMMIT_ISOLATED_RESTORE",
+    "phase": "PRIMARY_STILL_STOPPED_AND_CONTENT_UNCHANGED",
+    "receiptSha256": "afda95f2d7b250f3dbc114a8bf07b84e7a62f4fa08c102b1ceb82441b01cf546",
+    "detachedSignatureSha256": "c5daebcf624ebb020eb598ebba8d5d21cc1d57e7bf5fb97ac5d5ec6b1bffe40f",
+    "restoreHelperSha256": "908c08f127bac66a266e4439ccbdb581089922b957023436c635afb1baf861e1",
+    "restoredHistorySha256": "16eb725e0130f93cf276984de23d7be023a78aa2803524de15f364796cd3ce95",
+    "derivedPhasePlanSha256": "7821a0171a4845ac8bd7cc13c6725e8b2a705b7e801b10cc2277a36ca34dac3b",
+    "currentPublicTableHistoriesMatched": 39,
+    "fullRestoredPgAmcheckExitCode": 0,
+    "runtimeCredentialsRecheckedInClone": false,
+    "runtimePermissionEvidence": "PRIOR_SIGNED_ACTUAL_PRIMARY_VERIFICATION",
+    "primaryStarted": false,
+    "primaryUnchangedDuringSupplement": true,
+    "primaryMutations": 0,
+    "redisContacted": false,
+    "credentialsRead": false,
+    "consumersStarted": 0,
+    "publisherCalls": 0,
+    "cleanupVerified": true
+  },
+  "coldRedisObservation": {
+    "result": "INCONCLUSIVE_ZERO_MATCH",
+    "scanComplete": true,
+    "exactMatchCount": 0,
+    "entriesScanned": 23976,
+    "responseBytes": 19190730,
+    "entryLimit": 120000,
+    "responseByteLimit": 134217728,
+    "totalSecondsLimit": 240,
+    "snapshotBytes": 74200674,
+    "snapshotFileCount": 4,
+    "snapshotContentSha256": "6d9241139c34ed115dadbfbd219ec291d19b7ed0e14194e04b83692acc4a04a9",
+    "sourceManifestSha256BeforeAndAfter": "dc9997c7ed640b0f94e011fc494b44433f420b576b8922ac5b643187ea8b4e4d",
+    "implementationSha256": "0faedafab0342f4918e3f574c870df1310caa48ba969749aee6bafff23113431",
+    "receiptSha256": "21f39518dcd37d08ee906fd6ca3563ef0323159e0455b2676c9c23d79f5f185d",
+    "detachedSignatureSha256": "cca13a2cfe40e48d9465dae4e172c86f070b295eaa14b2807bf923b06f2b5b02",
+    "sourceUnchanged": true,
+    "ownedContainersRemoved": true,
+    "ownedSnapshotVolumeRemoved": true,
+    "primaryDatabaseContacted": false,
+    "originalRedisStarted": false,
+    "originalRedisCommands": 0,
+    "credentialsRead": false,
+    "payloadIncluded": false,
+    "publisherCalls": 0,
+    "automaticResolution": false,
+    "absenceIsNeverNonpublicationProof": true,
+    "unknownPrimaryRowReplayedAcknowledgedSkippedOrDeadLettered": false
+  },
+  "verification": {
+    "windowsPythonVersions": [
+      "3.11",
+      "3.14"
+    ],
+    "testsPerWindowsVersion": 602,
+    "passesPerWindowsVersion": 596,
+    "explicitSkipsPerWindowsVersion": 6,
+    "failuresPerWindowsVersion": 0,
+    "exactColdObserverHostedRuns": {
+      "ci": {
+        "runId": 38091405395,
+        "conclusion": "success"
+      },
+      "installedComposition": {
+        "runId": 38091405391,
+        "conclusion": "success"
+      },
+      "codeql": {
+        "runId": 38091404476,
+        "conclusion": "success"
+      },
+      "currentSourceDocker": {
+        "runId": 38091415594,
+        "conclusion": "success"
+      },
+      "fullPathSim": {
+        "runId": 38091417791,
+        "conclusion": "success"
+      }
+    },
+    "wholeCleanReleaseAccepted": false,
+    "unfinishedAdaptiveChangesPreserved": true
+  },
+  "remaining": [
+    "No positive exact Redis acceptance witness; legacy UNKNOWN row and FIFO barrier remain intact.",
+    "New exact evidence or an explicit historical-continuity decision is required before further queue actions.",
+    "Current-profile signed bounded drain remains unqualified; the archived lock must not be reused.",
+    "Closed-bar catch-up requires an independently admitted bounded plan; the existing 150000-bar cap is not widened.",
+    "Consumer-only startup requires independent publication denial and a non-strategy ingest handler; ordinary service startup is not accepted.",
+    "Off-host backup, actual alerts, venue qualification, adaptive economic gates and production arming remain separate."
+  ],
+  "readiness": {
+    "workingRuntimeReady": false,
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL",
+    "liveArmed": false
+  },
+  "privacy": {
+    "privateDumpsUploaded": false,
+    "rowIdentitiesIncluded": false,
+    "streamPayloadsIncluded": false,
+    "secretsIncluded": false
+  }
+}
