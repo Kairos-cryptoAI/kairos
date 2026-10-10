@@ -47,7 +47,9 @@ def main() -> None:
         with (args.destination / name).open("xb") as stream:
             stream.write(payload)
         hashes[name] = hashlib.sha256(payload).hexdigest()
-    with (args.destination / "public-receipt-files.json").open("x", newline="\n") as stream:
+    with (args.destination / "public-receipt-files.json").open(
+        "x", newline="\n"
+    ) as stream:
         json.dump(
             {
                 "schema": "kairos.market-review.public-receipts.v1",
