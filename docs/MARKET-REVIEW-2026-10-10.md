@@ -89,8 +89,8 @@ XRP-кандидат (его baseline net −$12.51), но освободивш�
   малый, уже известный исторический набор, не independent holdout. Нет доказательства
   годовой доходности, распределения месячных результатов или эффективности всех режимов.
 - Все 48 финансовых вариантов сверились с журналами: максимальная абсолютная
-  ledger reconciliation error < $0.00000000001, unresolved open positions проверяются
-  в исходных reports. 24 новых offline/evidence tests и 8 существующих service-cost tests прошли.
+  ledger reconciliation error < $0.00000000001, terminal unresolved positions — 0,
+  mark-risk ceiling overruns — 0. 24 новых offline/evidence tests и 8 существующих service-cost tests прошли.
 
 ## Артефакты и продолжение
 

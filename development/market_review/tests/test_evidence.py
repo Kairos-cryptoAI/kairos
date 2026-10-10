@@ -78,6 +78,8 @@ def test_all_three_arms_all_windows_both_cost_and_timing_modes_retained():
     assert (
         max(abs(r["report"]["ledger_reconciliation_error_usd"]) for r in rows) < 1e-11
     )
+    assert all(r["report"]["terminal_unresolved_positions"] == [] for r in rows)
+    assert not any(r["report"]["risk_ceiling_mark_overrun"] for r in rows)
     assert all(
         r["report"]["closed_trades"] == 0
         for r in rows

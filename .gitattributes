@@ -42,3 +42,5 @@ development/adaptive_replay/adaptive_replay/closed_bar_evidence_v3.py -text
 # Market-only research receipts bind exact API/ledger/source bytes on every OS.
 development/market_review/evidence/** -text
 development/market_review/plan.json -text
+# The original Windows-generated receipt catalogue contains intentional CRLF.
+development/market_review/evidence/2026-10-10/public-receipt-files.json whitespace=trailing-space,space-before-tab,cr-at-eol
