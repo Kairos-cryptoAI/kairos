@@ -18,7 +18,7 @@
     { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "983bcc0a494e901b25d94a87fd1d2f701ff6c07d" },
     { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "da1237854066fde381542e43c106d0de727448be" },
     { "name": "kairos-core", "directory": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377" },
-    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "54c44abd2cb80eda52bede6d495edd152cd086ef" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "ed95ec496d1dff3c591dcb1c0b6feda7e4565909" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "baef82d865d18a4ee2772499b3d8ff0f2480367a" },
     { "name": "kairos-llm", "directory": "kairos-llm", "origin": "https://github.com/Kairos-cryptoAI/kairos-llm.git", "revision": "eb70fa0558463b2bd5a438c1e5a9d9613024f54b" },
     { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "origin": "https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git", "revision": "b34ed2715d2a5f3375ae513b80f88573afe2d253" },
