@@ -2,7 +2,40 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-11_
 
-## Current controlled-runtime transition — 2026-10-10/11
+## Current isolated non-trading bar runtime — 2026-10-11
+
+The owner authorized a separate epoch with verified history only, preserving the
+old database and queue. The [accepted epoch](RUNTIME-EPOCH-2026-10-11.md) is
+`PASS_NONTRADING_RUNTIME_EPOCH_CONTINUATION` at signed Deploy
+`ed95ec496d1dff3c591dcb1c0b6feda7e4565909`; all five exact-source hosted gates
+are green and the manifest pin also passed validation/CodeQL.
+
+The original 173,164-bar audit prefix remains unchanged. Audit-only catch-up
+produced 328,019 contiguous bars across all five symbols. Fresh backups before
+and after catch-up independently restored with all 32 current epoch tables,
+full row digests, sequences and chains matching; supported whole-database
+heap/B-tree checks passed. Only new closed bars enter the separate new queue.
+Actual duplicate/conflict/permission checks and a controlled container restart
+passed, with fresh five-symbol watermark progress and zero unresolved work.
+The subsequent running snapshot has 50 publications / 50 completed inbox rows,
+no pending publications and zero execution orders/effects.
+
+Old PostgreSQL/Redis remain stopped and their identity/volume metadata match
+before/after; no old queue replay/reset/ack/skip/dead-letter was performed.
+Verified disposable restore clones were removed; backups, failed attempts and
+the legacy UNKNOWN/FIFO barrier remain retained. The generated epoch-only
+history credential was rotated, without reading exchange keys.
+
+This accepts only the isolated public CLOSED_BAR non-trading runtime. Host or
+Docker-daemon reboot recovery, prolonged outage/soak, off-host backup, actual
+alerts, full application/venue/economic qualification and production arming
+remain separate. Windows Python 3.11/3.14 each ran 692 tests: 686 pass, six
+explicit skips, zero failures. Adaptive WIP is preserved/unaccepted; whole
+clean-release admission is not waived. All trading readiness flags remain
+false, `REJECT_ALL`, trading OFF. The [signed receipt](receipts/runtime-epoch-20261011.json)
+records the exact acceptance scope and evidence.
+
+## Historical preserved controlled-runtime transition — 2026-10-10/11
 
 The owner separately authorized technical primary transition without trading.
 The [current-runtime continuation](RUNTIME-CONTROLLED-2026-10-10.md) records
