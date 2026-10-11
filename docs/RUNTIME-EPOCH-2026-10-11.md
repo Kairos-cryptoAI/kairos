@@ -126,4 +126,3 @@ economic gates, EVEDEX qualification, production security/limits and separate
 owner arming remain distinct. `TECHNICAL_PAPER_READY`, `PAPER_QUALIFIED`,
 `ALPHA_READY` and `LIVE_READY` remain false. LIVE remains unarmed and no trading
 authority follows from the non-trading runtime receipt.
-
