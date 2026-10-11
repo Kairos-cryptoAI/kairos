@@ -2,7 +2,40 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-11_
 
-## Current isolated non-trading bar runtime — 2026-10-11
+## Current guarded non-trading runtime after PC restart — 2026-10-11
+
+The [actual scheduled-task recovery](RUNTIME-EPOCH-BOOT-2026-10-11.md) is
+`PASS_NONTRADING_EPOCH_BOOT` at signed Deploy
+`70a0ed277ba05a950874c0b85ed8ecb4a8d4d1c8`; all five exact-source hosted gates
+and the manifest pin's validation/CodeQL passed. A real repeat dispatch returned
+`ALREADY_RUNNING_NONTRADING`, task result 0, without replay/restart/duplicates.
+
+Fresh before/after backups independently restore all 32 tables, full digests,
+sequences and bar chains, with supported heap/B-tree integrity checks passing.
+Audit-only gap/tail catch-up appended 620 bars, reaching 332,029 rows before
+serve; none were republished. The original 173,164-row prefix and existing
+2,220/2,220 queue rows stayed unchanged. Redis clone and full original
+read-only SQL/Redis/auth proofs passed; prior failures and latches were
+preserved separately, never relabelled as successful.
+
+The three exact epoch resources now run on a private bridge with no published
+ports and fresh BTC/ETH/SOL/BNB/XRP watermarks. The 17:23 UTC observation has
+2,244 completed inbox rows and zero pending/unresolved work. Old PostgreSQL,
+Redis and their ambiguous queue stay stopped/untouched. Temporary verified
+restore clones were removed; backups and failed attempts remain recoverable.
+The [signed scoped receipt](receipts/runtime-epoch-boot-20261011.json) records
+the evidence. Windows Python 3.11/3.14 each passed 771/778 tests, seven explicit
+skips and no failures; scoped lint/format and validators passed.
+
+This accepts only the CLOSED_BAR runtime. It is current-user guarded logon
+recovery, not a headless service or proof of the next automatic OS-logon
+trigger. Long soak, off-host backup/actual alerts and full application,
+provider, venue and economic qualification remain separate. Adaptive WIP is
+preserved/unaccepted; whole clean-release admission is not waived. Strategy,
+paid models and execution are OFF; all readiness flags remain false,
+`STRATEGY_POLICY=REJECT_ALL`.
+
+## Initial isolated non-trading bar runtime acceptance — 2026-10-11
 
 The owner authorized a separate epoch with verified history only, preserving the
 old database and queue. The [accepted epoch](RUNTIME-EPOCH-2026-10-11.md) is
@@ -41,8 +74,8 @@ The owner separately authorized technical primary transition without trading.
 The [current-runtime continuation](RUNTIME-CONTROLLED-2026-10-10.md) records
 the primary mutation at signed Deploy `889a15e`, current Core/Persistence
 wheels and nine updated service dependency projections. Later restore-only
-and cold-observer fixes bind their own exact source identity. Current Deploy
-is `801d97c4b2414fa755e40e63873b2e21f774b002`; all five exact-source hosted
+and cold-observer fixes bind their own exact source identity. That historical
+acceptance used Deploy `801d97c4b2414fa755e40e63873b2e21f774b002`; all five exact-source hosted
 gates are green. Windows Python 3.11/3.14 each run 607 tests:
 601 pass, six explicit skips, zero failures.
 
