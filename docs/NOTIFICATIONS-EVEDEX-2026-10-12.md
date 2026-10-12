@@ -1,12 +1,18 @@
 # Notifications and EVEDEX handoff - 2026-10-12
 
+**Current update:** the later [technical closeout](NOTIFICATION-CLOSEOUT-2026-10-12.md)
+records the owner's visibility/recipient acceptance, one real deduplicated
+runtime firing, successful Limited task dispatches, and the blocked EVEDEX
+public five-symbol sample. The original scoped receipt below is preserved.
+
 ## Verified result and remaining gate
 
 One marked `[KAIROS QUALIFICATION TEST]` was accepted by Telegram in the
 owner-corrected test group at 09:05:52 UTC. The response identified the exact
 approved group and message 2. This proves transport acceptance, not that a
 person saw it, an operational alert loop, or production notification readiness.
-Owner visibility and the group's role for ongoing technical alerts are pending.
+Owner visibility and ongoing recipient acceptance were pending in that
+original receipt; the later direct reply/attestation above resolves them.
 
 The current credential was imported by a reviewed local program from the
 owner's file into the dedicated private notification contour. It differs from
@@ -80,10 +86,11 @@ timeout; the cause is not established or declared fixed. No restart, database
 mutation, lease reset, queue reconciliation or legacy connection was performed
 in this notification task. The earlier running observations are historical.
 
-## EVEDEX stage has not been started
+## Earlier EVEDEX source preparation, before the later public sample
 
 The requested order remains notifications, then EVEDEX qualification.
-Venue HTTP/auth/signing/order calls in this task are all zero.
+Venue HTTP/auth/signing/order calls were zero at that earlier handoff.
+The later closeout adds only the 12 public GET observations.
 
 Source preparation confirms the fixed DEV trading/auth/WebSocket `.tech`
 origins and chain 16182 against the

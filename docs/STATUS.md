@@ -8,10 +8,21 @@ The [notification handoff](NOTIFICATIONS-EVEDEX-2026-10-12.md) records one
 Telegram-accepted marked test to the owner-corrected test group. No resend,
 paid API call or trading action occurred. New private file ACLs pass native
 Windows and hosted tests; 54 offline tests pass on Python 3.11/3.14.
-Human visibility and the recipient for ongoing technical alerts are pending.
-The status-file-only operational planner is prepared but **unarmed**; no
-notification polling daemon or business monitoring stack has started.
-EVEDEX preparation is source-only: venue/auth/signing/order calls are zero.
+The owner subsequently confirmed seeing the test and selected this temporary
+group for all notification classes. One actual R4 firing was accepted as
+message 3; repeated processes/task dispatches did not resend the same incident.
+The hidden Limited status-file-only task now polls every two minutes and at
+owner logon, using a separate restored-path notification environment.
+Trading signals remain dormant, and no business monitoring stack was started.
+This is not production/off-host or real resolved-delivery qualification.
+The [technical closeout](NOTIFICATION-CLOSEOUT-2026-10-12.md) and its signed
+receipt distinguish the accepted route from the initial launcher refusal.
+
+One EVEDEX DEV public snapshot made 12 GETs, all HTTP 200. BTC/ETH books were
+fresh; SOL/BNB/XRP books were empty, and BNB was hidden. Saved-response review
+corrected a local RecentTrade identity-field assumption without more HTTP.
+The five-symbol gate is blocked: no 24-hour window, auth/signing, order,
+canary or seven-day soak started. Ops suites pass 85 tests on Python 3.11/3.14.
 
 R4 subsequently failed closed at 07:57:50 UTC with a Redis stream-read
 `TimeoutError`, exiting 1 without OOM/restart. Its cause is unconfirmed;
@@ -61,8 +72,9 @@ fresh fourteen-repository remote-main check. Preserved adaptive WIP and old
 untracked service directories remain unaccepted; whole clean-release admission
 is not waived. Core's exact pinned CodeQL pass remains unconfirmed because its
 analyses were cancelled. Full application/provider/venue qualification,
-elapsed soak/economic gates, a selected host/off-host restore, actual Telegram
-delivery, production custody/security/limits and manual arming remain separate.
+elapsed soak/economic gates, a selected host/off-host restore, complete
+notification-source/production delivery qualification, production custody,
+security/limits and manual arming remain separate.
 UI/UX stays deferred. All readiness is false, `REJECT_ALL`; trading and paid
 provider calls remain OFF.
 
