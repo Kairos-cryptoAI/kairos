@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -11,6 +12,7 @@ import re
 import ssl
 import stat
 import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -31,6 +33,9 @@ CONTINUATION_SHA256 = "b308e19753be088966e3fed4d1ddacc47ca3ef8d90089d1c527d1c938
 CONTINUATION_RELATIVE = "development/ops_alerts/telegram_continuation.py"
 PROVISION_RELATIVE = "scripts/provision_secrets.py"
 PROVISION_SHA256 = "c24fd03888b09869eb0110ce9d2ad244ab8f4cf1e307a05a213bf514747223bc"
+DEPLOY_ROOT = Path("D:/Kairos/kairos-deploy")
+DELIVERY_RELATIVE = "scripts/alert_delivery.py"
+DELIVERY_SHA256 = "fa9d58a7c1d7967c5aacf107accfbc72ff61fe5c71e4348a9c75dcf44e976ce5"
 SOURCE_RELATIVE = "development/ops_alerts/evedex_dev_public_preflight.py"
 SCOPED_STATUS_PATHS = (SOURCE_RELATIVE, CONTINUATION_RELATIVE)
 MAX_REQUESTS = 12
@@ -457,10 +462,16 @@ def _verify_pins(
         }
     )
 
-    def git_run(args: list[str], *, capture: bool = True, binary: bool = False) -> Any:
+    def git_run(
+        args: list[str],
+        *,
+        capture: bool = True,
+        binary: bool = False,
+        repository: Path = root,
+    ) -> Any:
         try:
             return run(
-                [str(git), "-C", str(root), *args],
+                [str(git), "-C", str(repository), *args],
                 stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE if capture else subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
@@ -501,6 +512,13 @@ def _verify_pins(
     def regular_file(path: Path) -> bool:
         try:
             info = path.lstat()
+            for item in (path, *path.parents):
+                ancestor = item.lstat()
+                if (
+                    stat.S_ISLNK(ancestor.st_mode)
+                    or getattr(ancestor, "st_file_attributes", 0) & 0x400
+                ):
+                    return False
             return (
                 stat.S_ISREG(info.st_mode)
                 and not stat.S_ISLNK(info.st_mode)
@@ -538,25 +556,147 @@ def _verify_pins(
         or hashlib.sha256(helper.read_bytes()).hexdigest() != CONTINUATION_SHA256
     ):
         raise SamplerError("LOCAL_VALIDATION_FAILED")
-    if str(root) not in os.sys.path:
-        os.sys.path.insert(0, str(root))
-    from development.ops_alerts import telegram_continuation as continuation
-
-    if Path(continuation.__file__).resolve(strict=True) != helper.resolve(strict=True):
-        raise SamplerError("LOCAL_VALIDATION_FAILED")
-    delivery, _diagnostic, _handoff = continuation._load_signed_sources()
-    from scripts import provision_secrets
-
-    provision_source = Path("D:/Kairos/kairos-deploy") / PROVISION_RELATIVE
-    delivery._no_reparse(provision_source)
+    deploy_head = git_run(
+        ["show", "-s", "--format=%H %G? %GF", "HEAD"], repository=DEPLOY_ROOT
+    )
+    deploy_id = git_run(["rev-parse", "HEAD"], repository=DEPLOY_ROOT)
+    deploy_origin = git_run(
+        ["rev-parse", "refs/remotes/origin/main"], repository=DEPLOY_ROOT
+    )
+    deploy_branch = git_run(["branch", "--show-current"], repository=DEPLOY_ROOT)
+    deploy_status = git_run(
+        ["status", "--porcelain", "--untracked-files=all"],
+        repository=DEPLOY_ROOT,
+    )
     if (
-        Path(provision_secrets.__file__).resolve(strict=True)
-        != provision_source.resolve(strict=True)
-        or provision_source.stat().st_size > 128 * 1024
-        or hashlib.sha256(provision_source.read_bytes()).hexdigest() != PROVISION_SHA256
+        deploy_head.returncode
+        or len(deploy_head.stdout.split()) != 3
+        or deploy_head.stdout.split()[1:] != ["G", META_SIGNER]
+        or deploy_id.returncode
+        or not deploy_id.stdout.strip()
+        or deploy_id.stdout.strip() != deploy_head.stdout.split()[0]
+        or deploy_origin.returncode
+        or deploy_origin.stdout.strip() != deploy_id.stdout.strip()
+        or deploy_branch.returncode
+        or deploy_branch.stdout.strip() != "main"
+        or deploy_status.returncode
+        or deploy_status.stdout.strip()
     ):
         raise SamplerError("LOCAL_VALIDATION_FAILED")
-    return continuation, delivery, provision_secrets
+
+    deploy_id_text = deploy_id.stdout.strip()
+    continuation_module = _load_pinned_module(
+        "_kairos_public_sampler_continuation",
+        helper,
+        CONTINUATION_SHA256,
+        maximum=512 * 1024,
+    )
+    delivery_source = DEPLOY_ROOT / DELIVERY_RELATIVE
+    provision_source = DEPLOY_ROOT / PROVISION_RELATIVE
+    expected_helpers = (
+        (delivery_source, DELIVERY_RELATIVE, DELIVERY_SHA256, 512 * 1024),
+        (provision_source, PROVISION_RELATIVE, PROVISION_SHA256, 128 * 1024),
+    )
+    loaded: dict[str, Any] = {}
+    for source_path, relative, digest, maximum in expected_helpers:
+        if not regular_file(source_path):
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        working_bytes = source_path.read_bytes()
+        committed = git_run(
+            ["show", f"HEAD:{relative}"], binary=True, repository=DEPLOY_ROOT
+        )
+        if (
+            committed.returncode
+            or len(working_bytes) > maximum
+            or hashlib.sha256(working_bytes).hexdigest() != digest
+            or working_bytes != committed.stdout
+        ):
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        module_name = (
+            "_kairos_public_sampler_alert_delivery"
+            if relative == DELIVERY_RELATIVE
+            else "_kairos_public_sampler_provision_secrets"
+        )
+        loaded[relative] = _load_pinned_module(
+            module_name, source_path, digest, maximum=maximum
+        )
+
+    delivery = loaded[DELIVERY_RELATIVE]
+    delivery._no_reparse(DEPLOY_ROOT)
+    delivery._no_reparse(delivery_source)
+    delivery._no_reparse(provision_source)
+    if (
+        Path(continuation_module.__file__).resolve(strict=True)
+        != helper.resolve(strict=True)
+        or Path(delivery.__file__).resolve(strict=True)
+        != delivery_source.resolve(strict=True)
+        or Path(loaded[PROVISION_RELATIVE].__file__).resolve(strict=True)
+        != provision_source.resolve(strict=True)
+        or deploy_id_text != deploy_head.stdout.split()[0]
+    ):
+        raise SamplerError("LOCAL_VALIDATION_FAILED")
+    return continuation_module, delivery, loaded[PROVISION_RELATIVE]
+
+
+def _load_pinned_module(name: str, path: Path, digest: str, *, maximum: int) -> Any:
+    """Import only hash-pinned helper source after metadata and byte checks."""
+    try:
+        source_bytes = _read_pinned_source(path, maximum=maximum)
+        if hashlib.sha256(source_bytes).hexdigest() != digest:
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        spec = importlib.util.spec_from_file_location(name, path)
+        if spec is None or spec.loader is None:
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules.pop(name, None)
+        sys.modules[name] = module
+        try:
+            # Execute the exact bytes just authenticated, not a second loader
+            # read that could race the hash check.
+            exec(  # noqa: S102 - execute only the already hash-verified helper bytes.
+                compile(source_bytes, str(path), "exec", dont_inherit=True),
+                module.__dict__,
+            )
+        except Exception:  # noqa: BLE001 - hide import diagnostics from protected helpers.
+            sys.modules.pop(name, None)
+            raise SamplerError("LOCAL_VALIDATION_FAILED") from None
+        if (
+            Path(module.__file__).resolve(strict=True) != path.resolve(strict=True)
+            or hashlib.sha256(_read_pinned_source(path, maximum=maximum)).hexdigest()
+            != digest
+        ):
+            sys.modules.pop(name, None)
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        return module
+    except SamplerError:
+        raise
+    except Exception:  # noqa: BLE001 - collapse path/import errors to fixed local admission failure.
+        sys.modules.pop(name, None)
+        raise SamplerError("LOCAL_VALIDATION_FAILED") from None
+
+
+def _read_pinned_source(path: Path, *, maximum: int) -> bytes:
+    """Read one regular, non-reparse helper source with a strict byte bound."""
+    before = path.lstat()
+    if (
+        not stat.S_ISREG(before.st_mode)
+        or path.is_symlink()
+        or getattr(before, "st_file_attributes", 0) & 0x400
+        or not 0 < before.st_size <= maximum
+    ):
+        raise SamplerError("LOCAL_VALIDATION_FAILED")
+    descriptor = os.open(
+        path,
+        os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0),
+    )
+    with os.fdopen(descriptor, "rb") as stream:
+        opened = os.fstat(stream.fileno())
+        if (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino):
+            raise SamplerError("LOCAL_VALIDATION_FAILED")
+        payload = stream.read(maximum + 1)
+    if len(payload) != before.st_size or len(payload) > maximum:
+        raise SamplerError("LOCAL_VALIDATION_FAILED")
+    return payload
 
 
 def _scoped_status_has_changes(status: str) -> bool:
@@ -810,29 +950,29 @@ def _run_with_dependencies(
     pin_loader: Callable[[Path], tuple[Any, Any, Any]] = _verify_pins,
     writer: Callable[[Path, bytes, Any, Any], None] = _exclusive_write,
 ) -> dict[str, Any]:
-    if authorize is not True:
-        raise SamplerError("LOCAL_VALIDATION_FAILED")
-    continuation, delivery, provisioner = pin_loader(source_root)
-    delivery._no_reparse(root.parent)
-    if root.exists():
-        delivery._no_reparse(root)
-        delivery._private_acl(root)
-    else:
-        root.mkdir()
-        delivery._no_reparse(root)
-        if any(root.iterdir()):
-            raise SamplerError("LOCAL_VALIDATION_FAILED")
-        provisioner.harden_permissions(root)
-        delivery._private_acl(root)
-    now = clock().astimezone(UTC)
-    run_dir = _new_run_directory(root, now=now, make_uuid=make_uuid)
-    if run_dir.exists():
-        raise SamplerError("LOCAL_VALIDATION_FAILED")
-    _write_new_directory(run_dir, delivery=delivery)
-    source = Path(__file__).resolve(strict=True)
-    source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
     http_counter = [0]
     try:
+        if authorize is not True:
+            raise SamplerError("LOCAL_VALIDATION_FAILED", http_calls=0)
+        continuation, delivery, provisioner = pin_loader(source_root)
+        delivery._no_reparse(root.parent)
+        if root.exists():
+            delivery._no_reparse(root)
+            delivery._private_acl(root)
+        else:
+            root.mkdir()
+            delivery._no_reparse(root)
+            if any(root.iterdir()):
+                raise SamplerError("LOCAL_VALIDATION_FAILED", http_calls=0)
+            provisioner.harden_permissions(root)
+            delivery._private_acl(root)
+        now = clock().astimezone(UTC)
+        run_dir = _new_run_directory(root, now=now, make_uuid=make_uuid)
+        if run_dir.exists():
+            raise SamplerError("LOCAL_VALIDATION_FAILED", http_calls=0)
+        _write_new_directory(run_dir, delivery=delivery)
+        source = Path(__file__).resolve(strict=True)
+        source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
         return _probe_all(
             run_dir=run_dir,
             source_hash=source_hash,
@@ -845,7 +985,11 @@ def _run_with_dependencies(
         )
     except SamplerError as error:
         if error.http_calls != http_counter[0]:
-            raise SamplerError(error.category, http_calls=http_counter[0]) from None
+            raise SamplerError(
+                error.category,
+                http_status=error.http_status,
+                http_calls=http_counter[0],
+            ) from None
         raise
     except Exception:  # noqa: BLE001 - preserve attempted-call count without raw details.
         raise SamplerError(

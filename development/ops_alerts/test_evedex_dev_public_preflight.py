@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import datetime as dt
+import hashlib
 import inspect
 import io
 import json
@@ -56,6 +57,55 @@ class PublicSamplerTests(unittest.TestCase):
         bound = inspect.signature(sampler._verify_pins).bind(sampler.KAIROS_ROOT)
         self.assertEqual(bound.arguments["root"], sampler.KAIROS_ROOT)
 
+    def test_newer_signed_deploy_with_unchanged_pinned_helpers_is_admitted(self):
+        source_root, _deploy_root, state, git_runner = self._pinned_repositories()
+        state["deploy_revision"] = "c" * 40
+        continuation, delivery, provisioner = sampler._verify_pins(
+            root=source_root, run=git_runner
+        )
+        self.assertTrue(hasattr(continuation, "_exclusive_fsync"))
+        self.assertTrue(hasattr(delivery, "_no_reparse"))
+        self.assertTrue(hasattr(delivery, "_private_acl"))
+        self.assertTrue(hasattr(provisioner, "harden_permissions"))
+
+    def test_dirty_unsigned_or_changed_deploy_helper_fails_before_any_get(self):
+        for failure in ("dirty", "unsigned", "changed"):
+            with self.subTest(failure=failure):
+                source_root, deploy_root, state, git_runner = (
+                    self._pinned_repositories()
+                )
+                state["deploy_revision"] = "d" * 40
+                if failure == "dirty":
+                    state["deploy_dirty"] = " M scripts/alert_delivery.py\n"
+                elif failure == "unsigned":
+                    state["deploy_signature"] = "N"
+                else:
+                    (deploy_root / sampler.DELIVERY_RELATIVE).write_bytes(
+                        b"# changed pinned helper\n"
+                    )
+                attempted_gets: list[str] = []
+
+                def forbidden_fetch(
+                    path: str, attempted_gets=attempted_gets
+                ) -> sampler.PublicResponse:
+                    attempted_gets.append(path)
+                    raise AssertionError("local admission failure must precede GET")
+
+                output_root = Path(self.temp.name) / f"output-{failure}"
+                with self.assertRaises(sampler.SamplerError) as raised:
+                    sampler._run_with_dependencies(
+                        authorize=True,
+                        root=output_root,
+                        source_root=source_root,
+                        fetcher=forbidden_fetch,
+                        pin_loader=lambda path, runner=git_runner: sampler._verify_pins(
+                            root=path, run=runner
+                        ),
+                    )
+                self.assertEqual(raised.exception.http_calls, 0)
+                self.assertEqual(attempted_gets, [])
+                self.assertFalse(output_root.exists())
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -65,6 +115,112 @@ class PublicSamplerTests(unittest.TestCase):
         self.calls: list[str] = []
         FakeProvisioner.calls = []
         self.payloads = self._valid_payloads()
+
+    def _pinned_repositories(self):
+        source_root = Path(self.temp.name) / "meta"
+        deploy_root = Path(self.temp.name) / "deploy"
+        source_bytes = b"# synthetic pinned sampler source\n"
+        continuation_bytes = (
+            b"def _exclusive_fsync(path, payload):\n"
+            b"    with path.open('xb') as stream: stream.write(payload)\n"
+            b"def _set_exact_file_acl(path):\n"
+            b"    return None\n"
+        )
+        delivery_bytes = (
+            b"def _no_reparse(path):\n"
+            b"    return None\n"
+            b"def _private_acl(path):\n"
+            b"    return None\n"
+        )
+        provision_bytes = b"def harden_permissions(path):\n    return None\n"
+        file_bytes = {
+            sampler.SOURCE_RELATIVE: source_bytes,
+            sampler.CONTINUATION_RELATIVE: continuation_bytes,
+            sampler.DELIVERY_RELATIVE: delivery_bytes,
+            sampler.PROVISION_RELATIVE: provision_bytes,
+        }
+        for repo, files in (
+            (source_root, file_bytes),
+            (
+                deploy_root,
+                {
+                    sampler.DELIVERY_RELATIVE: delivery_bytes,
+                    sampler.PROVISION_RELATIVE: provision_bytes,
+                },
+            ),
+        ):
+            for relative, payload in files.items():
+                path = repo / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+
+        meta_id, deploy_id = "a" * 40, "b" * 40
+        state = {
+            "deploy_dirty": "",
+            "deploy_signature": "G",
+            "deploy_revision": deploy_id,
+        }
+
+        def completed(stdout=b"", returncode=0):
+            return SimpleNamespace(stdout=stdout, returncode=returncode)
+
+        def git_runner(command, **_kwargs):
+            repo, args = Path(command[2]), command[3:]
+            is_deploy = repo == deploy_root
+            revision = state["deploy_revision"] if is_deploy else meta_id
+            if args == ["show", "-s", "--format=%H %G? %GF", "HEAD"]:
+                signature = state["deploy_signature"] if is_deploy else "G"
+                return completed(f"{revision} {signature} {sampler.META_SIGNER}")
+            if args == ["rev-parse", "HEAD"]:
+                return completed(revision)
+            if args == ["rev-parse", "refs/remotes/origin/main"]:
+                return completed(revision)
+            if args == ["branch", "--show-current"]:
+                return completed("main")
+            if args[:2] == ["status", "--porcelain"]:
+                output = state["deploy_dirty"] if is_deploy else ""
+                return completed(output)
+            if len(args) == 2 and args[0] == "show" and args[1].startswith("HEAD:"):
+                relative = args[1][len("HEAD:") :]
+                payload = file_bytes.get(relative)
+                if payload is None:
+                    return completed(b"", 1)
+                return completed(payload)
+            if args == [
+                "show",
+                "-s",
+                "--format=%H %G? %GF",
+                sampler.CONTINUATION_COMMIT,
+            ]:
+                return completed(
+                    f"{sampler.CONTINUATION_COMMIT} G {sampler.META_SIGNER}"
+                )
+            if args == [
+                "merge-base",
+                "--is-ancestor",
+                sampler.CONTINUATION_COMMIT,
+                "HEAD",
+            ]:
+                return completed()
+            if (
+                len(args) == 2
+                and args[0] == "show"
+                and args[1].startswith(f"{sampler.CONTINUATION_COMMIT}:")
+            ):
+                relative = args[1].split(":", 1)[1]
+                return completed(file_bytes[relative])
+            raise AssertionError(f"unexpected git query: {args!r}")
+
+        patcher = mock.patch.multiple(
+            sampler,
+            DEPLOY_ROOT=deploy_root,
+            CONTINUATION_SHA256=hashlib.sha256(continuation_bytes).hexdigest(),
+            DELIVERY_SHA256=hashlib.sha256(delivery_bytes).hexdigest(),
+            PROVISION_SHA256=hashlib.sha256(provision_bytes).hexdigest(),
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return source_root, deploy_root, state, git_runner
 
     def _valid_payloads(self) -> dict[str, object]:
         mapping: dict[str, object] = {
