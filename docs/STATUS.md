@@ -2,11 +2,48 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-12_
 
-## Current working non-trading R5 runtime — 2026-10-12
+## Current R6 non-trading runtime and technical alerts — 2026-10-12
 
-The [R5 stability closeout](RUNTIME-STABILITY-2026-10-12.md) supersedes the
-earlier R4 refusal as the current runtime status. R4 remains failed and retained;
-only the separately accepted R5 process is serving. Fresh before/after dumps
+The [R6 feed closeout](RUNTIME-FEED-CLOSEOUT-2026-10-12.md) supersedes the
+short R5 observations below. R5 later failed closed at 18:36:52 UTC on an
+official closed-bar GET timeout; its container, receipt and failure remain
+retained. A separately reviewed R6 continuation passed fresh before/after full
+32-table isolated restores, exact four-message publication/completion, 511
+audit-only gap bars, and five-symbol advancement before/after a graceful
+same-container restart. Legacy PostgreSQL/Redis and their queue were untouched.
+The 20:34 UTC SQL checkpoint has 340,214 audit rows and 5,880 matched completed
+inbox/outbox rows, with no pending, unresolved, unmatched or trading records.
+
+Final signed Deploy `9e9793470dd218344ea4561a635370361b04603e` passed all five
+exact-source hosted gates. Its distinct Limited R6 boot task actually returned
+`ALREADY_RUNNING_NONTRADING`, result 0, without restart or duplicate. Known
+source-wait/catch-up states remain explicitly non-fresh; failed/unknown states
+are never automatically restarted.
+
+The earlier R5 V2 alarm remains genuinely outcome-unknown; the owner saw no
+message. Its journal/guard were retained, never replayed or labelled no-send.
+A distinct marked R6 route test was Telegram-accepted as message 4. The new
+hidden Limited status-file-only task has passed manual and automatic two-minute
+polls, result 0, with one unchanged healthy baseline and no duplicate send.
+Obsolete R5 schedules are disabled, not removed. Only technical runtime alerts
+are active; trading-signal classes stay dormant.
+
+The corrected EVEDEX public sampler made 12 GETs, all HTTP 200. BTC/ETH books
+were fresh; SOL/BNB/XRP books remain empty and BNB visibility is `none`.
+The five-symbol gate is still blocked; no auth, orders, 24-hour campaign,
+canary or seven-day soak was started. Deploy runs 922 tests per Windows Python
+version (915 pass, seven explicit skips); ops suites pass 115 on both versions.
+This accepts finite CLOSED_BAR engineering evidence, not full application,
+real OS-logon, long-duration, off-host, venue or LIVE qualification.
+Preserved adaptive WIP and old service test artifacts remain unaccepted;
+whole clean-release admission is not waived. All readiness is false,
+`REJECT_ALL`; strategy, execution, PAPER/LIVE and paid providers remain OFF.
+
+## Historical short R5 runtime acceptance — 2026-10-12
+
+The [R5 stability closeout](RUNTIME-STABILITY-2026-10-12.md) was accepted before
+the later 18:36:52 UTC R5 failure recorded above. R4 remains failed and retained;
+R5's short running observations below are historical. Fresh before/after dumps
 passed full isolated restores; exactly five already-published inbox gaps were
 completed without republishing, rewriting history or resetting the queue.
 All five symbols advanced before and after a verified graceful same-container
@@ -18,7 +55,7 @@ journal-count claim without rewriting its signed receipt. The exact historical
 unknown event/guard remain retained and unretried. The distinct repaired R5 V2
 status-only monitor has executed in its real Limited context with result 0;
 its source passes 102 tests on both Python versions and hosted validate/CodeQL.
-Guarded R5 boot remains enabled. Obsolete R4/R5 V1 notification schedules are
+Guarded R5 boot was enabled at that checkpoint. Obsolete R4/R5 V1 schedules were
 disabled, with their definitions and evidence preserved. The 17:51 UTC read-only
 checkpoint has 5,576 matched completions, all five watermarks advanced, no
 unresolved/uncompleted records, no Redis transport errors and no trading rows.
