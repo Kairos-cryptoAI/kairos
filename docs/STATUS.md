@@ -12,9 +12,16 @@ completed without republishing, rewriting history or resetting the queue.
 All five symbols advanced before and after a verified graceful same-container
 restart. The 17:23:08 UTC snapshot has 5,431 completed/matched publications,
 zero pending/unresolved/uncompleted records and zero trading records.
-Guarded R5 boot and status-only technical notification tasks have each executed
-in their real Limited Windows context with result 0. Obsolete R4 schedules are
-disabled; their definitions, acceptance and event journal remain retained.
+The [additive notification correction](RUNTIME-STABILITY-CORRECTION-2026-10-12.md)
+records a later-identified pre-transport import defect and corrects the original
+journal-count claim without rewriting its signed receipt. The exact historical
+unknown event/guard remain retained and unretried. The distinct repaired R5 V2
+status-only monitor has executed in its real Limited context with result 0;
+its source passes 102 tests on both Python versions and hosted validate/CodeQL.
+Guarded R5 boot remains enabled. Obsolete R4/R5 V1 notification schedules are
+disabled, with their definitions and evidence preserved. The 17:51 UTC read-only
+checkpoint has 5,576 matched completions, all five watermarks advanced, no
+unresolved/uncompleted records, no Redis transport errors and no trading rows.
 This is finite engineering evidence, not a month-long uptime, trading or LIVE
 qualification. All project readiness flags remain false and `REJECT_ALL`.
 

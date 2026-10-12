@@ -1,5 +1,10 @@
 # Working non-trading R5 runtime — 2026-10-12
 
+**Read the [additive notifier correction](RUNTIME-STABILITY-CORRECTION-2026-10-12.md)
+for current notification status.** The original signed receipt below is retained;
+its notification journal-count claim is corrected separately. Runtime recovery,
+restore and restart evidence is unchanged.
+
 ## Accepted result
 
 `PASS_NEW_NONTRADING_GENERATION`, recovery kind `R5_EXACT_READ_RECOVERY`.
