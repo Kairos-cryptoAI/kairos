@@ -1,8 +1,54 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-11_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-12_
 
-## Current guarded non-trading runtime after PC restart — 2026-10-11
+## Current repaired non-trading CLOSED_BAR epoch — 2026-10-12
+
+The [native R4 continuation and short engineering closeout](RUNTIME-INCIDENT-2026-10-12.md)
+is `PASS_NEW_NONTRADING_GENERATION`. Fresh backups before and after catch-up
+independently restored all 32 tables, full digests, sequences and five bar
+chains; both supported heap/B-tree integrity checks passed. Audit-only
+catch-up added 185 bars without republishing historical rows or changing the
+existing 4,651/4,651 queue, sequences or original 173,164-row prefix.
+Old PostgreSQL/Redis and their queue stay stopped/untouched. Verified
+disposable clones were removed; backups and failed attempts remain retained.
+
+The final signed Deploy boot source is
+`0427f7cf1e1cd70f2ddd05b80b4d7d6219736412`; all five exact-source hosted gates
+passed. Two actual R4 Windows task dispatches returned
+`ALREADY_RUNNING_NONTRADING`, task result 0, without a restart or duplicate.
+The old task is disabled with its exported definition/signature retained.
+Native serving snapshot `0c0810015f877adaf47a3da2786a0a6fbdefe575` remains
+immutable, distinct from the later boot/test-fixture correction.
+
+The 05:58 UTC observation has 4,740 completed inbox rows, fresh watermarks on
+all five symbols, zero pending/unresolved/uncompleted publications and no
+published ports. Runtime status-file monitoring correctly identifies the
+prior failed process and the current fresh process; pinned offline Promtool
+configuration/alert fixtures pass. This does not prove external alert delivery
+or a live collector. Persistence and all eight service dependency projections
+are current; their 1,940 locked tests plus Persistence's 552 local tests passed.
+Deploy's Windows Python 3.11/3.14 each ran 855 tests: 848 pass, seven explicit
+skips, zero failures. Scope-specific lint/type/config checks passed.
+
+The standby health-timestamp guard refusal was corrected narrowly. The earlier
+generic R2 timeout's underlying cause remains unconfirmed; cleanup preserves
+the primary error and new workers record sanitized traceback locations.
+No previous failed evidence was erased or relabelled. The
+[signed receipt](receipts/runtime-incident-20261012.json) records exact hashes
+and distinguishes these scopes.
+
+The manifest now identifies the actual signed engineering source set, with a
+fresh fourteen-repository remote-main check. Preserved adaptive WIP and old
+untracked service directories remain unaccepted; whole clean-release admission
+is not waived. Core's exact pinned CodeQL pass remains unconfirmed because its
+analyses were cancelled. Full application/provider/venue qualification,
+elapsed soak/economic gates, a selected host/off-host restore, actual Telegram
+delivery, production custody/security/limits and manual arming remain separate.
+UI/UX stays deferred. All readiness is false, `REJECT_ALL`; trading and paid
+provider calls remain OFF.
+
+## Historical guarded non-trading runtime after PC restart — 2026-10-11
 
 The [actual scheduled-task recovery](RUNTIME-EPOCH-BOOT-2026-10-11.md) is
 `PASS_NONTRADING_EPOCH_BOOT` at signed Deploy

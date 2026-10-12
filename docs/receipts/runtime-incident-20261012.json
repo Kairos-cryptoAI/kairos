@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "kind": "NONTRADING_RUNTIME_INCIDENT_SHORT_ENGINEERING_CLOSEOUT",
+  "classification": "ACCEPTED_CLOSED_BAR_DATA_PLANE_NOT_FULL_APPLICATION_OR_TRADING",
+  "recordedAtUtc": "2026-10-12T06:01:55Z",
+  "trustedSignerFingerprint": "40AF365C6682B73D056A6A274DBFF6B65BE9F827",
+  "owner": "69893dc7b7c647f49967387e7efca9fb",
+  "database": "kairos_epoch_69893dc7b7c6",
+  "source": {
+    "deployRevision": "0427f7cf1e1cd70f2ddd05b80b4d7d6219736412",
+    "nativeR4ServingSnapshotRevision": "0c0810015f877adaf47a3da2786a0a6fbdefe575",
+    "persistenceRevision": "ea0c73395352f71da196270fe16659f1f0298a52",
+    "currentReleaseGeneratedAtUtc": "2026-10-12T05:53:56Z",
+    "metaRevisionPolicy": "SELF resolved at verification; no self-referential SHA",
+    "frozenRuntimeWheelBundleSha256": "716d319327ac65eb522cb954442de7c76a879f802b5fd37a0cd80c7f191a55c6",
+    "frozenResearchEvidenceModified": false
+  },
+  "nativeRecovery": {
+    "result": "PASS_NEW_NONTRADING_GENERATION",
+    "run": "97469e3b772b4d00b0b531282ba01b55",
+    "completedAtUtc": "2026-10-12T05:44:35.115940Z",
+    "receiptSha256": "0a7a621991a328d9fedb8c203cc0da53a835e0a3c02f6549bacf4ef650dba03f",
+    "signatureSha256": "7f820c3a15a93acc094938d6d249d347bc249e7f16fd44578bbfea0ca7ca2da0",
+    "newServeId": "1f9da09121bd509c5aa1d1a698c98334bc1e5378ee4978b65d98885cff19e199",
+    "originalR2Cause": "UNCONFIRMED_GENERIC_TIMEOUT",
+    "reviewedR3Cause": "VERIFIED_PASSIVE_HEALTH_TIMESTAMP_GUARD_REFUSAL",
+    "reviewedR3FailureSha256": "4ec59a4d3d57ab35a8c0a6dfe46ad9319c3d8e3de4d784dfece68bf39853f5f1",
+    "priorFailedAttemptsAndLatchesPreserved": true,
+    "automaticRetry": false
+  },
+  "backupAndRestore": {
+    "matchedPublicTables": 32,
+    "fullRowsSequencesAndFiveBarChainsMatched": true,
+    "supportedWholeDatabaseHeapBtreeChecks": 2,
+    "verifiedDisposableClonesRemoved": true,
+    "privateBackupsRetained": true,
+    "offHostQualified": false,
+    "before": {
+      "bytes": 42168654,
+      "dumpSha256": "9e97b3447db4db76dfaea59eb7c33844aaa00cf902bc8e6db9ea6fbba9039756",
+      "restoreReceiptSha256": "869edcda1201224deb3391289d0eef0e7bb6761fd9fde5fb5c899e7b17386706",
+      "result": "PASS_BOOT_ISOLATED_RESTORE"
+    },
+    "after": {
+      "bytes": 42188890,
+      "dumpSha256": "9165e61101b92a26c4ec8681273014f85f2bb0921d9b2ee103270103c6f81858",
+      "restoreReceiptSha256": "19f0fc884492753d9dbc980a9d64e561b0998888a2181b9ff2a0a426254c0e9e",
+      "result": "PASS_BOOT_ISOLATED_RESTORE"
+    }
+  },
+  "preservedHistoryAndNewEpochQueue": {
+    "beforeAuditRows": 335559,
+    "mainAuditOnlyAppends": 165,
+    "postrestoreAuditOnlyAppends": 20,
+    "preServeAuditRows": 335744,
+    "originalAuditPrefixRows": 173164,
+    "originalPrefixUnchanged": true,
+    "preServeOutboxRows": 4651,
+    "preServeCompletedInboxRows": 4651,
+    "pendingOrUnresolved": 0,
+    "tradingRows": 0,
+    "historicalRowsRepublished": 0,
+    "existingQueueAndSequencesUnchangedDuringCatchup": true,
+    "redisFullProofMatchedBeforeAndAfter": true
+  },
+  "windowsTask": {
+    "name": "Kairos-NonTradingEpoch-69893dc7b7c6-Boot-R4",
+    "sourceRevision": "0427f7cf1e1cd70f2ddd05b80b4d7d6219736412",
+    "bindingSha256": "7075097ecdc7a257ea390a0632bb9fa76200402add96ea515a0d15b133935a98",
+    "interactiveLimited": true,
+    "logonDelaySeconds": 30,
+    "overlapPolicy": "IgnoreNew",
+    "automaticRetries": 0,
+    "totalMinutesBound": 75,
+    "firstDispatch": {
+      "run": "599cdb843cb341deb39d983a26af01b4",
+      "result": "ALREADY_RUNNING_NONTRADING",
+      "taskResult": 0,
+      "receiptSha256": "3a3e7f2cd07aa953d4200533674163fdc2706a40c2c567a6f21aa3bbe92612ca",
+      "signatureSha256": "82d87ecf1cd711c7f1989a6f8a4957f6c73cbc056a184a1250c02cee176d2e68"
+    },
+    "repeatDispatch": {
+      "run": "dbeea2141dfb46f096d7de240467ede9",
+      "result": "ALREADY_RUNNING_NONTRADING",
+      "taskResult": 0,
+      "receiptSha256": "ae67bb70be7770bc257b3b861131ca1925d6b749f2a01e9454f0a2755a9372b4",
+      "signatureSha256": "4745f3b895d2b9287e283e7493a843dde2cc219ba8a05da794b66192e3ff1ef2"
+    },
+    "restartReplayOrDuplicate": false,
+    "oldTaskDisabledNotDeleted": true,
+    "oldTaskDefinitionArchiveSha256": "6bd7faff949cb0332730fcf1ad718ad581cdd12780c44924ed161839c86ca03c",
+    "headlessOrNextOsLogonProven": false
+  },
+  "runningObservation": {
+    "observedAtUtc": "2026-10-12T05:58:19.541584Z",
+    "state": "RUNNING_NONTRADING",
+    "watermarkMs": 1791784680000,
+    "completedInbox": 4740,
+    "cycles": 53,
+    "pendingOutbox": 0,
+    "unresolvedInbox": 0,
+    "uncompletedPublications": 0,
+    "allThreeExactResourcesRunning": true,
+    "publishedPorts": 0,
+    "serveStartedAtUtc": "2026-10-12T05:43:08.946877041Z",
+    "serveRestartCount": 0,
+    "countersAreTimedSnapshots": true
+  },
+  "legacyProtection": {
+    "postgresId": "dfe9c96b3307f07c7f88bb6cdae46dba903ebb1e7243c2534199da2843229774",
+    "redisId": "cba271ac26764f553cf8319aff992200226c62d02c9c8ca94db4622afd05147a",
+    "state": "stopped",
+    "metadataMatchedDuringRecovery": true,
+    "connectionsMutationsReplaysOrAcksToLegacy": false,
+    "postgresMetadataSha256": "32259984eda72c12518a5c84658c4ce709318b3c0f7081445851841bb7641951",
+    "redisMetadataSha256": "2137dd1fd15ba7ed96ebaf79c8e4b7c2ed2a643c9d4f0abf19029934f8696d3c"
+  },
+  "verification": {
+    "windowsPython311": {
+      "run": 855,
+      "passed": 848,
+      "skipped": 7
+    },
+    "windowsPython314": {
+      "run": 855,
+      "passed": 848,
+      "skipped": 7
+    },
+    "scopedRuffPassed": true,
+    "consumerLockedTestsPassed": 1940,
+    "persistenceLocalTests": {
+      "passed": 552,
+      "skipped": 1,
+      "deselected": 34
+    },
+    "statusFileProbe": {
+      "failedR2": "failed_closed/stale",
+      "runningR4": "running/fresh",
+      "databaseOrRedisConnected": false
+    },
+    "promtoolPinnedOfflineConfigurationAndFixturesPassed": true,
+    "hostedDeploy": {
+      "revision": "0427f7cf1e1cd70f2ddd05b80b4d7d6219736412",
+      "ci": 38209770308,
+      "codeql": 38209770769,
+      "composition": 38209770263,
+      "currentRelease": 38209835809,
+      "fullPathSim": 38209835729,
+      "allFiveConclusion": "success"
+    },
+    "initialServingSourceCI": {
+      "run": 38208496757,
+      "conclusion": "failure",
+      "reason": "Two host-dependent test fixtures; repaired and all five gates passed on final boot source"
+    },
+    "coreExactCodeql": {
+      "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+      "run": 37371496144,
+      "conclusion": "failure",
+      "analysisJobs": "cancelled",
+      "accepted": false
+    },
+    "freshRemoteMainAndTrustedSignaturesCheckedRepositories": 14,
+    "wholeCleanCheckoutReleaseAccepted": false,
+    "preservedAdaptiveWip": true
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL",
+    "tradingStarted": false,
+    "paidProviderCallsMade": false
+  },
+  "remainingBoundaries": [
+    "Full native application and point-in-time provider qualification",
+    "Elapsed runtime/provider/venue soak and sealed economic gates",
+    "Chosen host/off-host destination and accepted encrypted restore",
+    "Actual alert delivery, protected token rotation and chat access",
+    "EVEDEX identities, liquidity and protected DEV/PROD admission",
+    "Managed production custody, security admission, capital/day-stop and manual arming",
+    "Preserved adaptive WIP and Core exact-source CodeQL still unaccepted",
+    "Execution multidict constraint retained pending compatible dependency maintenance"
+  ]
+}
