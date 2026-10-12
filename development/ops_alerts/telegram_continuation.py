@@ -191,8 +191,23 @@ Write-Output SAFE
     environment = {
         key: value
         for key, value in os.environ.items()
-        if key.upper() in {"SYSTEMROOT", "WINDIR", "PATH", "TEMP", "TMP", "COMSPEC"}
+        if key.upper()
+        in {
+            "SYSTEMROOT",
+            "WINDIR",
+            "PATH",
+            "TEMP",
+            "TMP",
+            "COMSPEC",
+            "USERPROFILE",
+            "APPDATA",
+            "LOCALAPPDATA",
+            "HOMEDRIVE",
+            "HOMEPATH",
+        }
     }
+    # Only inbox PowerShell modules may load; never inherit user module paths.
+    environment["PSModulePath"] = str(executable.parent / "Modules")
     environment["KAIROS_ALERT_ACL_TARGET"] = str(path)
     try:
         completed = subprocess.run(
@@ -201,7 +216,7 @@ Write-Output SAFE
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             text=True,
-            timeout=15,
+            timeout=30,
             check=False,
             env=environment,
             shell=False,
@@ -547,7 +562,9 @@ def _continue_once(
         "schema_version": 1,
         "kind": "kairos.telegram.readonly-continuation.v1",
         "observed_at_utc": datetime.now(UTC).isoformat(),
-        "implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "implementation_sha256": hashlib.sha256(
+            Path(__file__).read_bytes()
+        ).hexdigest(),
         "status": "BLOCKED",
         "error_category": None,
         "http_method_counts": {"getMe": 0, "getChat": 0},
