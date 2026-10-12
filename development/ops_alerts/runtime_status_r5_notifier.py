@@ -19,12 +19,13 @@ from typing import Any
 ROOT = Path(r"D:\Kairos\kairos")
 DEPLOY = Path(r"D:\Kairos\kairos-deploy")
 PERSISTENCE = Path(r"D:\Kairos\kairos-persistence")
-PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261012\operational-r5")
+PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261012\operational-r5-v2")
+PREVIOUS_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261012\operational-r5")
 RUNTIME_ROOT = Path(r"D:\Kairos\runtime\runtime-incident-20261012")
 OWNER = "69893dc7b7c647f49967387e7efca9fb"
-TASK_NAME = "Kairos-R5-TechnicalAlerts-20261012"
+TASK_NAME = "Kairos-R5-TechnicalAlerts-V2-20261012"
 GROUP_ID = -1004475802889
-SCOPE = "kairos-r5-technical-runtime-alerts-v1"
+SCOPE = "kairos-r5-technical-runtime-alerts-v2"
 SIGNER = "40AF365C6682B73D056A6A274DBFF6B65BE9F827"
 GPG = Path(r"C:\Program Files\Git\usr\bin\gpg.exe")
 ROUTE_SHA256 = "6691779312c346c72a2e0e788a7a2827d59b93865f205704b47b41a43eaac5bc"
@@ -39,6 +40,17 @@ HANDOFF_SHA256 = "b308e19753be088966e3fed4d1ddacc47ca3ef8d90089d1c527d1c93813d39
 DELIVERY_SHA256 = "fa9d58a7c1d7967c5aacf107accfbc72ff61fe5c71e4348a9c75dcf44e976ce5"
 PERSISTENCE_COMMIT = "ea0c73395352f71da196270fe16659f1f0298a52"
 OBSERVER_SHA256 = "27b244e7f20f3ae5cae52e1ab23d96db67429bec51d633eae68fe225f3b1af20"
+PREVIOUS_COMMIT = "d000ab1cd07e03e21221ab407f52de7240cbe396"
+PREVIOUS_SOURCE_SHA256 = (
+    "4b5dce84f9832ab32bd48a74db84964e5e08fb52a03e55f1a39d5dbac4bb3e4c"
+)
+PREVIOUS_JOURNAL_SHA256 = (
+    "61b7bbff1adfb67b1b695aaca968f85d097c5f5c2fdddb4898b05de26dcf4791"
+)
+PREVIOUS_BINDING_SHA256 = (
+    "788d58a63d51691e749b64d0c6e1134d6a8e36861edacadf4364e2c0aebd76e6"
+)
+PREVIOUS_EVENT = "dea935887a941fc9ce741358c48425853a04a79235ee42f90172afc3c7ecf5d8"
 MAX_BYTES = 65_536
 MAX_RECORDS = 256
 _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
@@ -100,6 +112,16 @@ def _read(path: Path, maximum: int) -> bytes:
     except R5Error:
         raise
     except Exception:  # noqa: BLE001 - sanitize protected-file failures.
+        raise R5Error("PROTECTED_EVIDENCE_REQUIRED") from None
+
+
+def _read_private(path: Path, *, maximum: int, delivery: Any) -> bytes:
+    """Bounded regular-file read after path and private-ACL admission."""
+    try:
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+        return _read(path, maximum)
+    except Exception:  # noqa: BLE001 - never expose protected path/ACL details.
         raise R5Error("PROTECTED_EVIDENCE_REQUIRED") from None
 
 
@@ -212,6 +234,7 @@ def _verify_binding(binding: dict[str, Any]) -> dict[str, Any]:
         "receipt_source_revision",
         "deploy_revision",
         "notifier_sha256",
+        "predecessor_adjudication_sha256",
         "authorization",
         "trading_started",
     }
@@ -235,6 +258,8 @@ def _verify_binding(binding: dict[str, Any]) -> dict[str, Any]:
         or _HEX40.fullmatch(binding["deploy_revision"]) is None
         or not isinstance(binding.get("notifier_sha256"), str)
         or _HEX64.fullmatch(binding["notifier_sha256"]) is None
+        or not isinstance(binding.get("predecessor_adjudication_sha256"), str)
+        or _HEX64.fullmatch(binding["predecessor_adjudication_sha256"]) is None
         or not isinstance(auth, dict)
         or auth
         != {
@@ -245,6 +270,69 @@ def _verify_binding(binding: dict[str, Any]) -> dict[str, Any]:
     ):
         raise R5Error("BINDING_INVALID")
     return binding
+
+
+def _admit_local_no_send(binding: dict[str, Any], delivery: Any) -> None:
+    """Admit only this exact pre-transport import defect, never a network unknown.
+
+    The predecessor's unknown journal/guard remain immutable. V2 starts a new
+    healthy baseline, does not retry the historical event or claim it delivered.
+    """
+    proof = PRIVATE_ROOT / "predecessor-no-send.json"
+    raw = _read_private(proof, maximum=4096, delivery=delivery)
+    _read_private(proof.with_suffix(".json.asc"), maximum=4096, delivery=delivery)
+    _verify_signature(proof, proof.with_suffix(".json.asc"))
+    expected = {
+        "schema_version": 1,
+        "kind": "kairos.r5.exact-pretransport-import-failure.v1",
+        "previous_source_commit": PREVIOUS_COMMIT,
+        "previous_source_sha256": PREVIOUS_SOURCE_SHA256,
+        "helper_sha256": HANDOFF_SHA256,
+        "previous_journal_sha256": PREVIOUS_JOURNAL_SHA256,
+        "previous_binding_sha256": PREVIOUS_BINDING_SHA256,
+        "event_id": PREVIOUS_EVENT,
+        "journal_records": 4,
+        "failure": "ImportError_before_token_read_and_transport_construction",
+        "wire_attempts": 0,
+        "historical_event_retried": False,
+        "historical_unknown_record_rewritten": False,
+        "new_healthy_baseline_required": True,
+        "trading_authority": False,
+    }
+    if (
+        hashlib.sha256(raw).hexdigest() != binding["predecessor_adjudication_sha256"]
+        or _json(raw) != expected
+    ):
+        raise R5Error("PREDECESSOR_NO_SEND_PROOF_REQUIRED")
+    _signed_blob(
+        ROOT,
+        PREVIOUS_COMMIT,
+        "development/ops_alerts/runtime_status_r5_notifier.py",
+        PREVIOUS_SOURCE_SHA256,
+    )
+    previous = _read_private(
+        PREVIOUS_ROOT / "events.jsonl", maximum=MAX_BYTES, delivery=delivery
+    )
+    guard = _read_private(
+        PREVIOUS_ROOT / f"events.jsonl.{PREVIOUS_EVENT}.guard",
+        maximum=1024,
+        delivery=delivery,
+    )
+    old_binding = _read_private(
+        PREVIOUS_ROOT / "binding.json", maximum=16 * 1024, delivery=delivery
+    )
+    if (
+        hashlib.sha256(previous).hexdigest() != PREVIOUS_JOURNAL_SHA256
+        or len(previous.splitlines()) != 4
+        or hashlib.sha256(old_binding).hexdigest() != PREVIOUS_BINDING_SHA256
+        or _json(guard)
+        != {
+            "event_id": PREVIOUS_EVENT,
+            "transition": "firing",
+            "state": "running_stale",
+        }
+    ):
+        raise R5Error("PREDECESSOR_EVIDENCE_CHANGED")
 
 
 def admit_sources() -> dict[str, Any]:
@@ -288,6 +376,7 @@ def admit_sources() -> dict[str, Any]:
     binding = _verify_binding(_json(binding_raw))
     if hashlib.sha256(blob).hexdigest() != binding["notifier_sha256"]:
         raise R5Error("SOURCE_ADMISSION_FAILED")
+    _admit_local_no_send(binding, delivery)
     deploy_head = _git(DEPLOY, ["rev-parse", "HEAD"]).decode("ascii", "strict").strip()
     deploy_branch = (
         _git(DEPLOY, ["branch", "--show-current"]).decode("ascii", "strict").strip()
@@ -750,6 +839,17 @@ def poll_once(
             elif row["kind"] == "send_outcome":
                 active = row["transition"] == "firing"
         previous = current
+        if state in _ALERTS and not active and previous not in _ALERTS:
+            transition = "firing"
+        elif state == "running_fresh" and active and previous != "running_fresh":
+            transition = "resolved"
+        else:
+            transition = None
+        # Import, ACL, token/handoff and constructor checks precede ANY journal
+        # transition/reservation. A proven pre-wire failure stays retryable;
+        # once sendMessage is invoked, any uncertainty remains fail-closed.
+        if transition is not None and sender is None:
+            sender = _sender_factory(source, c, delivery, root)
         if state != previous:
             journal._append(
                 {
@@ -760,11 +860,7 @@ def poll_once(
                 }
             )
             rows = journal.read()
-        if state in _ALERTS and not active and previous not in _ALERTS:
-            transition = "firing"
-        elif state == "running_fresh" and active and previous != "running_fresh":
-            transition = "resolved"
-        else:
+        if transition is None:
             return {
                 "status": "quiet_baseline_or_unchanged",
                 "state": state,
@@ -795,8 +891,7 @@ def poll_once(
                 else "[Kairos R5] Non-trading runtime status returned to fresh RUNNING. Trading remains disabled."
             ),
         }
-        if sender is None:
-            sender = _sender_factory(source, c, delivery, root)
+        assert sender is not None
         try:
             accepted = sender(alert) is True
         except Exception:  # noqa: BLE001 - transport failure is ambiguous.
@@ -822,23 +917,12 @@ def poll_once(
         }
 
 
-def _sender_factory(source: dict[str, Any], c: Any, delivery: Any, root: Path):
-    def send(alert: dict[str, Any]) -> bool:
-        from development.ops_alerts.telegram_continuation import _read_private
-
-        token_raw = _read_private(
-            TOKEN_PATH,
-            maximum=256,
-            no_reparse=delivery._no_reparse,
-            private_acl=delivery._private_acl,
-        )
+def _prepare_transport(c: Any, delivery: Any) -> Any:
+    """Credential/constructor preflight; TelegramTransport construction is offline."""
+    try:
+        token_raw = _read_private(TOKEN_PATH, maximum=256, delivery=delivery)
         token = c._decode_token(token_raw)
-        handoff_raw = _read_private(
-            c.HANDOFF,
-            maximum=4096,
-            no_reparse=delivery._no_reparse,
-            private_acl=delivery._private_acl,
-        )
+        handoff_raw = _read_private(c.HANDOFF, maximum=4096, delivery=delivery)
         if hashlib.sha256(handoff_raw).hexdigest() != c.HANDOFF_SHA256:
             raise R5Error("TOKEN_INVALID")
         handoff = _json(handoff_raw)
@@ -855,7 +939,15 @@ def _sender_factory(source: dict[str, Any], c: Any, delivery: Any, root: Path):
             or not token.startswith(TOKEN_PREFIX)
         ):
             raise R5Error("TOKEN_INVALID")
-        transport = delivery.TelegramTransport(token)
+        return delivery.TelegramTransport(token)
+    except Exception:  # noqa: BLE001 - pre-send failures cannot leak secrets.
+        raise R5Error("SENDER_PREFLIGHT_FAILED_NO_SEND") from None
+
+
+def _sender_factory(source: dict[str, Any], c: Any, delivery: Any, root: Path):
+    transport = _prepare_transport(c, delivery)
+
+    def send(alert: dict[str, Any]) -> bool:
         response = transport.call(
             "sendMessage",
             {"chat_id": GROUP_ID, "text": alert["text"], "protect_content": True},
@@ -931,6 +1023,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.verify_only:
             source = admit_sources()
+            c, delivery = _continuation()
+            _prepare_transport(c, delivery)
             report = {
                 "status": "ADMITTED_NO_SEND",
                 "binding_sha256": source["binding_sha256"],

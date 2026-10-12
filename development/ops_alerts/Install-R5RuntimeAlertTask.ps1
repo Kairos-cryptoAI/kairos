@@ -3,10 +3,10 @@ param([switch]$Execute)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$taskName = 'Kairos-R5-TechnicalAlerts-20261012'
-$oldTaskName = 'Kairos-R4-TechnicalAlerts-20261012'
+$taskName = 'Kairos-R5-TechnicalAlerts-V2-20261012'
+$oldTaskName = 'Kairos-R5-TechnicalAlerts-20261012'
 $metaRoot = 'D:\Kairos\kairos'
-$privateRoot = 'D:\Kairos\runtime\alert-delivery-20261012\operational-r5'
+$privateRoot = 'D:\Kairos\runtime\alert-delivery-20261012\operational-r5-v2'
 $driverPath = Join-Path $metaRoot 'development\ops_alerts\runtime_status_r5_notifier.py'
 $pythonPath = 'D:\Kairos\runtime\alert-delivery-20261012\operational-r4\notification-env\Scripts\python.exe'
 $gitPath = 'C:\Program Files\Git\cmd\git.exe'
@@ -15,7 +15,7 @@ if (-not $Execute) {
     [ordered]@{ status='PLAN_ONLY'; task=$taskName; interval_seconds=120; database_or_queue_access=$false; trading_authority=$false } | ConvertTo-Json -Compress
     exit 0
 }
-foreach ($path in @($driverPath, $pythonPath, $PSCommandPath, (Join-Path $privateRoot 'binding.json'), (Join-Path $privateRoot 'binding.json.asc'), (Join-Path $privateRoot 'events.jsonl'))) {
+foreach ($path in @($driverPath, $pythonPath, $PSCommandPath, (Join-Path $privateRoot 'binding.json'), (Join-Path $privateRoot 'binding.json.asc'), (Join-Path $privateRoot 'predecessor-no-send.json'), (Join-Path $privateRoot 'predecessor-no-send.json.asc'), (Join-Path $privateRoot 'events.jsonl'))) {
     $item = Get-Item -LiteralPath $path -Force
     if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'REGULAR_LOCAL_FILE_REQUIRED' }
     $parent = $item.Directory
@@ -36,12 +36,12 @@ if ($LASTEXITCODE -ne 0 -or $changes) { throw 'COMMITTED_TASK_SOURCES_REQUIRED' 
 if ($LASTEXITCODE -ne 0) { throw 'R5_SIGNED_BINDING_ADMISSION_REQUIRED' }
 if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) { throw 'NEW_R5_TASK_MUST_BE_ABSENT' }
 $oldTask = Get-ScheduledTask -TaskName $oldTaskName -ErrorAction SilentlyContinue
-if ($oldTask -and ($oldTask.State -eq 'Running' -or
-    $oldTask.Description -ne 'Kairos R4: private status-file-only technical alerts; no trading, DB or queue authority.' -or
+if (-not $oldTask -or $oldTask.State -ne 'Disabled' -or
+    $oldTask.Description -ne 'Kairos R5: private status-file-only technical alerts; no trading, DB or queue authority.' -or
     @($oldTask.Actions).Count -ne 1 -or
     $oldTask.Actions[0].Execute -ne 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -or
-    $oldTask.Actions[0].Arguments -notlike '*operational-r4\notification-env\Scripts\python.exe*runtime_status_notifier.py*--poll-once --armed*' -or
-    $oldTask.Settings.Hidden -ne $true -or $oldTask.Principal.RunLevel.ToString() -ne 'Limited')) { throw 'OLD_R4_TASK_REVIEW_REQUIRED' }
+    $oldTask.Actions[0].Arguments -notlike '*operational-r4\notification-env\Scripts\python.exe*runtime_status_r5_notifier.py*--poll-once --armed*' -or
+    $oldTask.Settings.Hidden -ne $true -or $oldTask.Principal.RunLevel.ToString() -ne 'Limited') { throw 'OLD_R5_DISABLED_TASK_REQUIRED' }
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 $pollCommand = "& '" + $pythonPath + "' -B -E -s '" + $driverPath + "' --poll-once --armed; exit " + '$LASTEXITCODE'
 $action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -Argument ('-NoProfile -NonInteractive -WindowStyle Hidden -Command "' + $pollCommand + '"') -WorkingDirectory $metaRoot
@@ -49,10 +49,10 @@ $timer = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(2)) -Repetiti
 $logon = New-ScheduledTaskTrigger -AtLogOn -User $identity
 $principal = New-ScheduledTaskPrincipal -UserId $identity -LogonType Interactive -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet -Hidden -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::FromMinutes(5)) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
-$definition = New-ScheduledTask -Action $action -Trigger @($timer,$logon) -Principal $principal -Settings $settings -Description 'Kairos R5: private status-file-only technical alerts; no trading, DB or queue authority.'
+$definition = New-ScheduledTask -Action $action -Trigger @($timer,$logon) -Principal $principal -Settings $settings -Description 'Kairos R5 V2: private status-file-only technical alerts; no trading, DB or queue authority.'
 Register-ScheduledTask -TaskName $taskName -InputObject $definition | Out-Null
 if ($oldTask) {
     # Keep its definition, journal and acceptance. Only its obsolete schedule is disabled.
     Disable-ScheduledTask -TaskName $oldTaskName | Out-Null
 }
-[ordered]@{status='REGISTERED_NOT_YET_DISPATCH_VERIFIED'; task=$taskName; obsolete_r4_schedule_disabled=[bool]$oldTask; interval_seconds=120; hidden=$true; run_level='Limited'; trading_authority=$false} | ConvertTo-Json -Compress
+[ordered]@{status='REGISTERED_NOT_YET_DISPATCH_VERIFIED'; task=$taskName; predecessor_r5_schedule_disabled=[bool]$oldTask; interval_seconds=120; hidden=$true; run_level='Limited'; trading_authority=$false} | ConvertTo-Json -Compress
