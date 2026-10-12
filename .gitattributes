@@ -2,6 +2,8 @@
 # Do not let Windows autocrlf alter an immutable receipt after checkout.
 docs/receipts/*.json -text
 docs/receipts/*.json.asc -text
+# This direction records the current direct owner reply and has an exact hash.
+development/ops_alerts/notification-routing-20261012.json -text
 # Published comparison receipts are byte-bound to their original runtime files.
 development/adaptive_replay/evidence/comparison-2026-10-06/** -text
 development/adaptive_replay/evidence/right-tail-2026-10-07/** -text

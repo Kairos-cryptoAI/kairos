@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "kairos.notifications.direct-owner-direction.v1",
+  "basis": "DIRECT_OWNER_REPLY_IN_CURRENT_TASK",
+  "owner_reply": "Да, сообщение видно, все соббощения (обычные сигналы, экстренные и т.д) я планирую писать в одну конечную группу, пока бкдем писать в эту",
+  "qualification_message_seen": true,
+  "qualification_message_id": 2,
+  "qualification_receipt_sha256": "59d102c129f0baf17f548763be1f55587be32673a3be7bfe81b57bb5966d489a",
+  "temporary_chat_id": -1004475802889,
+  "eventual_final_group": "NOT_REDIRECTED_OR_SELECTED_BY_THIS_RECEIPT",
+  "requested_routing": "ALL_NOTIFICATION_CLASSES_TO_ONE_GROUP",
+  "currently_enabled_sources": ["R4_TECHNICAL_RUNTIME_STATUS"],
+  "telegram_user_authenticated": false,
+  "trading_authority": false,
+  "qualification_authority": "NOTIFICATION_ROUTE_ONLY"
+}
