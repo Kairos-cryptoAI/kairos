@@ -368,6 +368,21 @@ class ContinuationTests(unittest.TestCase):
         self.assertFalse(self.guard.exists())
         self.assertIsNone(self.transport)
 
+    def test_previous_importer_without_final_newline_is_supported(self):
+        (self.old_root / "secrets/telegram_bot_token").write_bytes(
+            self.old_token.encode()
+        )
+        self.assertTrue(self._run()["chat_identity_verified"])
+
+    def test_token_terminators_are_bounded_not_arbitrary_whitespace(self):
+        for terminator in (b"", b"\n", b"\r\n"):
+            self.assertEqual(
+                continuation._decode_token(self.token.encode() + terminator), self.token
+            )
+        for suffix in (b"\n\n", b"\r", b" ", b"\nvalue"):
+            with self.assertRaises(continuation.ContinuationError):
+                continuation._decode_token(self.token.encode() + suffix)
+
     def test_any_prior_result_or_continuation_artifact_blocks_without_retry(self):
         (self.reserve_path.with_suffix(".result.json")).write_text("{}\n")
         with self.assertRaises(continuation.ContinuationError):

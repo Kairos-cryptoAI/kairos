@@ -14,6 +14,7 @@ import re
 import subprocess
 import sys
 from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -90,6 +91,21 @@ _SAFE_ERRORS = {
     "TLS",
     "TRANSPORT",
 }
+
+
+def _decode_token(raw: bytes) -> str:
+    """Accept one exact token, with the optional terminator used by importers."""
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeError:
+        raise ContinuationError("INVALID_TOKEN_FILE") from None
+    if text.endswith("\r\n"):
+        text = text[:-2]
+    elif text.endswith("\n"):
+        text = text[:-1]
+    if _TOKEN.fullmatch(text) is None:
+        raise ContinuationError("INVALID_TOKEN_FILE")
+    return text
 
 
 class ContinuationError(Exception):
@@ -490,20 +506,8 @@ def _continue_once(
         raise ContinuationError("LOCAL_VALIDATION_FAILED")
     if not key_source_path.is_file() or key_source_path.stat().st_size > 32768:
         raise ContinuationError("LOCAL_VALIDATION_FAILED")
-    try:
-        current_text = current_raw.decode("utf-8")
-        previous_text = previous_raw.decode("utf-8")
-    except UnicodeError:
-        raise ContinuationError("INVALID_TOKEN_FILE") from None
-    token = current_text.removesuffix("\n")
-    old_token = previous_text.removesuffix("\n")
-    if (
-        current_text != token + "\n"
-        or previous_text != old_token + "\n"
-        or _TOKEN.fullmatch(token) is None
-        or _TOKEN.fullmatch(old_token) is None
-    ):
-        raise ContinuationError("INVALID_TOKEN_FILE")
+    token = _decode_token(current_raw)
+    old_token = _decode_token(previous_raw)
     _validate_handoff(handoff_bytes, token, old_token, handoff_module)
     try:
         if key_source_path.stat().st_size > 32768:
@@ -542,6 +546,8 @@ def _continue_once(
     report: dict[str, Any] = {
         "schema_version": 1,
         "kind": "kairos.telegram.readonly-continuation.v1",
+        "observed_at_utc": datetime.now(UTC).isoformat(),
+        "implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "status": "BLOCKED",
         "error_category": None,
         "http_method_counts": {"getMe": 0, "getChat": 0},
