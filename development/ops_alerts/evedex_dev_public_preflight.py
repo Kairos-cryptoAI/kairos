@@ -426,7 +426,7 @@ def _new_run_directory(
 
 
 def _verify_pins(
-    *, root: Path, run: Callable[..., Any] = subprocess.run
+    root: Path, *, run: Callable[..., Any] = subprocess.run
 ) -> tuple[Any, Any, Any]:
     git = Path("C:/Program Files/Git/cmd/git.exe")
     env = {

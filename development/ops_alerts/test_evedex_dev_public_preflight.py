@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import datetime as dt
+import inspect
 import io
 import json
 import tempfile
@@ -49,6 +50,12 @@ class FakeProvisioner:
 
 
 class PublicSamplerTests(unittest.TestCase):
+    def test_real_pin_loader_accepts_the_production_positional_source_root(
+        self,
+    ) -> None:
+        bound = inspect.signature(sampler._verify_pins).bind(sampler.KAIROS_ROOT)
+        self.assertEqual(bound.arguments["root"], sampler.KAIROS_ROOT)
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
