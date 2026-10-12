@@ -98,7 +98,7 @@ class PublicSamplerTests(unittest.TestCase):
             }
             mapping[f"/api/market/{venue}/recent-trades"] = [
                 {
-                    "id": "t-1",
+                    "executionId": "t-1",
                     "instrument": venue,
                     "fillQuantity": 0.5,
                     "fillPrice": 100.05,
@@ -442,7 +442,7 @@ class PublicSamplerTests(unittest.TestCase):
             with self.assertRaises((ValueError, TypeError)):
                 sampler._number(value)
         trade = {
-            "id": "future-1",
+            "executionId": "future-1",
             "instrument": "BTCUSD:DEV",
             "fillQuantity": "0.1",
             "fillPrice": "10.25",
@@ -452,6 +452,24 @@ class PublicSamplerTests(unittest.TestCase):
             [trade], venue="BTCUSD:DEV", captured_at=self.now
         )
         self.assertEqual(result["state"], "UNVERIFIED")
+
+    def test_official_recent_trade_execution_id_is_required_and_unique(self) -> None:
+        trade = self.payloads["/api/market/BTCUSD:DEV/recent-trades"][0]
+        self.assertEqual(
+            sampler._validate_trades([trade], venue="BTCUSD:DEV", captured_at=self.now)[
+                "state"
+            ],
+            "OBSERVED_RECENT_TRADES",
+        )
+        wrong_identity = dict(trade)
+        wrong_identity["id"] = wrong_identity.pop("executionId")
+        for rows in ([wrong_identity], [trade, dict(trade)]):
+            self.assertEqual(
+                sampler._validate_trades(
+                    rows, venue="BTCUSD:DEV", captured_at=self.now
+                )["reason"],
+                "trade_schema_invalid",
+            )
 
 
 if __name__ == "__main__":

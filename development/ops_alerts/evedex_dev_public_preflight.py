@@ -351,12 +351,11 @@ def _validate_trades(
         for trade in payload:
             if not isinstance(trade, dict):
                 raise TypeError
-            trade_id = trade.get("id")
-            if (
-                isinstance(trade_id, bool)
-                or not isinstance(trade_id, (str, int))
-                or not str(trade_id)
-            ):
+            # The locked official exchange-api RecentTrade DTO uses executionId,
+            # not the account/order object's id. Never infer bad venue data from
+            # an unsupported local field requirement.
+            trade_id = trade.get("executionId")
+            if not isinstance(trade_id, str) or not trade_id or len(trade_id) > 128:
                 raise ValueError
             if str(trade_id) in ids:
                 raise ValueError
