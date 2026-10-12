@@ -7,6 +7,9 @@ development/ops_alerts/notification-routing-20261012.json -text
 development/ops_alerts/runtime_status_notifier.py -text
 development/ops_alerts/test_runtime_status_notifier.py -text
 development/ops_alerts/Install-RuntimeAlertTask.ps1 -text
+development/ops_alerts/runtime_status_r5_notifier.py -text
+development/ops_alerts/test_runtime_status_r5_notifier.py -text
+development/ops_alerts/Install-R5RuntimeAlertTask.ps1 -text
 development/ops_alerts/evedex_dev_public_preflight.py -text
 development/ops_alerts/test_evedex_dev_public_preflight.py -text
 development/ops_alerts/Test-NotificationPythonHost.ps1 -text
