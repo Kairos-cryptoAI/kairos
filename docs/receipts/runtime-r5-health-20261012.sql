@@ -1,0 +1,4 @@
+BEGIN READ ONLY;
+SET LOCAL statement_timeout='15s';
+SELECT jsonb_build_object('database',current_database(),'audit_rows',(SELECT count(*) FROM event_audit),'outbox_rows',(SELECT count(*) FROM message_outbox),'inbox_rows',(SELECT count(*) FROM message_inbox),'completed_inbox',(SELECT count(*) FROM message_inbox WHERE status='COMPLETED'),'pending_outbox',(SELECT count(*) FROM message_outbox WHERE published_at IS NULL),'unresolved_inbox',(SELECT count(*) FROM message_inbox WHERE status<>'COMPLETED'),'uncompleted_publications',(SELECT count(*) FROM message_outbox o WHERE o.published_at IS NOT NULL AND NOT EXISTS(SELECT 1 FROM message_inbox i WHERE i.consumer='kairos-epoch-consumer-69893dc7b7c6:bars' AND i.topic=o.topic AND i.message_id=o.message_id AND i.payload_sha256=o.payload_sha256 AND i.status='COMPLETED')),'trading_rows',(SELECT count(*) FROM execution_orders)+(SELECT count(*) FROM execution_effects));
+COMMIT;

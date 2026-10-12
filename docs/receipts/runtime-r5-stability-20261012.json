@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "KAIROS_WORKING_NONTRADING_RUNTIME_R5",
+  "captured_at_utc": "2026-10-12T17:23:11Z",
+  "result": "PASS_WORKING_NONTRADING_RUNTIME",
+  "owner": "69893dc7b7c647f49967387e7efca9fb",
+  "execution_revision": "807787b1fb6350f1086908bc5a5a2c54278b000b",
+  "boot_revision": "85959a00e650adb07e221f8634544232890fb371",
+  "private_recovery_receipt_sha256": "a0b16bfc3953b39f63767df228fcae43a0afdc1a70a5ba45973ab4dc4a1c06fd",
+  "generation_container_id": "837783acb187510d04f7e33295a6c18e9c31129f4145f434b288c0a88f565d99",
+  "before_backup": {
+    "bytes": 42464672,
+    "sha256": "6d9901b4129c2349899f43fd243ef55dd482b6568fe068aaeb47773ac72f560b",
+    "isolated_restore_equal_tables": 32,
+    "sequences_and_five_chains_equal": true,
+    "heap_btree_checks": "PASS"
+  },
+  "exact_inbox_recovery": {
+    "completed_messages": 5,
+    "publications_added": 0,
+    "stream_entries_added": 0,
+    "publication_receipts_added": 0,
+    "audit_outbox_sequences_and_completed_prefix_unchanged": true,
+    "pending_deliveries_after": 0
+  },
+  "after_backup": {
+    "bytes": 42803448,
+    "sha256": "099b5e49574b8200fbf27f9906023423bac5882dddeaf8221358d61f302017c7",
+    "isolated_restore_equal_tables": 32,
+    "sequences_and_five_chains_equal": true,
+    "heap_btree_checks": "PASS"
+  },
+  "restart": {
+    "same_container": true,
+    "graceful_exit_code": 0,
+    "five_symbols_advanced_after": true,
+    "accepted_status_at_utc": "2026-10-12T17:08:33.410021Z"
+  },
+  "stability_snapshot": {
+    "observed_at_utc": "2026-10-12T17:23:08.460678Z",
+    "audit_rows": 339254,
+    "outbox_rows": 5431,
+    "completed_inbox": 5431,
+    "pending_outbox": 0,
+    "unresolved_inbox": 0,
+    "uncompleted_publications": 0,
+    "trading_rows": 0,
+    "five_watermarks_ms": 1791825720000,
+    "redis_transport_failures": 0,
+    "redis_transport_recoveries": 0,
+    "source_query_file": "docs/receipts/runtime-r5-health-20261012.sql",
+    "source_container_id": "9dbce00f1d682871a177fba9fc4a63caa8ed28b355044598b1bc3718f7058e7e",
+    "source_database": "kairos_epoch_69893dc7b7c6"
+  },
+  "boot": {
+    "task": "Kairos-NonTradingEpoch-69893dc7b7c6-Boot-R5",
+    "binding_sha256": "61d3973f416a6f7b155c1d1b9d653dcd4aa8304b5e7a3c6a10e699f3494f0271",
+    "native_task_exit_code": 0,
+    "result": "ALREADY_RUNNING_NONTRADING",
+    "receipt_sha256": "5e5487895785fcb684324b9b9800eb308c7aa3f0a4e0b712c24c1dba69067b84"
+  },
+  "notifications": {
+    "task": "Kairos-R5-TechnicalAlerts-20261012",
+    "binding_sha256": "788d58a63d51691e749b64d0c6e1134d6a8e36861edacadf4364e2c0aebd76e6",
+    "native_task_exit_code": 0,
+    "enabled_class": "TECHNICAL_RUNTIME_ONLY",
+    "healthy_send_attempts": 0,
+    "journal_records": 1,
+    "journal_sha256": "61b7bbff1adfb67b1b695aaca968f85d097c5f5c2fdddb4898b05de26dcf4791",
+    "r4_journal_unchanged_sha256": "c394e6346934dc07e3463a75d893ad6227e5eae24e43e8f00039ce5a6d6cd550",
+    "r4_schedules_disabled_not_deleted": true
+  },
+  "ci": {
+    "execution_revision_successful_runs": [38280177346, 38280176378, 38280177364, 38280216875, 38280225223],
+    "boot_revision_successful_runs": [38282518885, 38282518907, 38282518858, 38282612219, 38282621032]
+  },
+  "legacy_database_and_queue_untouched": true,
+  "failed_generations_and_receipts_retained": true,
+  "unrelated_adaptive_wip_preserved": true,
+  "limitations": [
+    "The infrastructure cause of the historical R4 Redis read timeout is unconfirmed.",
+    "This is finite post-restart observation, not 24-hour or month-long uptime proof.",
+    "A real OS logon/cold boot and actual resolved Telegram delivery were not exercised.",
+    "Existing producer permissions do not enumerate unknown extra ledger hash fields; the recovery consumer cannot write that ledger.",
+    "Clean-release admission and every trading readiness gate remain unchanged."
+  ],
+  "TECHNICAL_PAPER_READY": false,
+  "PAPER_QUALIFIED": false,
+  "ALPHA_READY": false,
+  "LIVE_READY": false,
+  "STRATEGY_POLICY": "REJECT_ALL",
+  "trading_started": false,
+  "paid_provider_calls": 0
+}

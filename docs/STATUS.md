@@ -2,7 +2,23 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-12_
 
-## Current notification handoff and subsequent runtime refusal — 2026-10-12
+## Current working non-trading R5 runtime — 2026-10-12
+
+The [R5 stability closeout](RUNTIME-STABILITY-2026-10-12.md) supersedes the
+earlier R4 refusal as the current runtime status. R4 remains failed and retained;
+only the separately accepted R5 process is serving. Fresh before/after dumps
+passed full isolated restores; exactly five already-published inbox gaps were
+completed without republishing, rewriting history or resetting the queue.
+All five symbols advanced before and after a verified graceful same-container
+restart. The 17:23:08 UTC snapshot has 5,431 completed/matched publications,
+zero pending/unresolved/uncompleted records and zero trading records.
+Guarded R5 boot and status-only technical notification tasks have each executed
+in their real Limited Windows context with result 0. Obsolete R4 schedules are
+disabled; their definitions, acceptance and event journal remain retained.
+This is finite engineering evidence, not a month-long uptime, trading or LIVE
+qualification. All project readiness flags remain false and `REJECT_ALL`.
+
+## Earlier notification handoff and R4 runtime refusal — 2026-10-12
 
 The [notification handoff](NOTIFICATIONS-EVEDEX-2026-10-12.md) records one
 Telegram-accepted marked test to the owner-corrected test group. No resend,
