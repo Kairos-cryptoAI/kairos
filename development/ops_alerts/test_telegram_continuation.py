@@ -521,36 +521,29 @@ class ContinuationTests(unittest.TestCase):
         self.assertIsNone(self.transport)
 
     @unittest.skipUnless(os.name == "nt", "Windows helper boundary")
-    def test_acl_helper_has_bounded_timeout_and_inbox_modules_only(self):
-        fake = SimpleNamespace(returncode=0, stdout="SAFE\n")
-        with mock.patch.object(
-            continuation.subprocess, "run", return_value=fake
-        ) as run:
-            continuation._set_exact_file_acl(self.guard)
-        arguments = run.call_args.kwargs
-        self.assertEqual(arguments["timeout"], 30)
-        self.assertFalse(arguments["shell"])
-        executable = Path(run.call_args.args[0][0])
-        self.assertEqual(
-            arguments["env"]["PSModulePath"], str(executable.parent / "Modules")
-        )
-        self.assertEqual(arguments["env"]["KAIROS_ALERT_ACL_TARGET"], str(self.guard))
-        command = run.call_args.args[0][-1]
-        self.assertNotIn("@($acl.Access)", command)
-        self.assertIn("$acl.GetAccessRules($true, $true", command)
-
-    @unittest.skipUnless(os.name == "nt", "Windows helper boundary")
-    def test_acl_timeout_retains_guard_and_never_contacts_transport(self):
-        timeout = continuation.subprocess.TimeoutExpired("PRIVATE_UNTRUSTED_DETAIL", 30)
+    def test_native_acl_failure_retains_guard_and_starts_no_helper_process(self):
         with (
-            mock.patch.object(continuation.subprocess, "run", side_effect=timeout),
+            mock.patch.object(continuation.ctypes, "WinDLL", side_effect=OSError),
+            mock.patch.object(continuation.subprocess, "run") as helper_process,
             self.assertRaises(continuation.ContinuationError) as refused,
         ):
             self._run(set_file_acl=continuation._set_exact_file_acl)
         self.assertEqual(refused.exception.category, "ACL_VERIFICATION_FAILED")
+        helper_process.assert_not_called()
         self.assertTrue(self.guard.exists())
         self.assertIsNone(self.transport)
         self.assertFalse(self.result.exists())
+
+    @unittest.skipUnless(os.name == "nt", "Native Windows path checks")
+    def test_native_acl_rejects_unc_path_before_loading_acl_apis(self):
+        unc = Path(r"\\server\share\probe")
+        with (
+            mock.patch.object(continuation.ctypes, "WinDLL") as load_library,
+            self.assertRaises(continuation.ContinuationError) as refused,
+        ):
+            continuation._set_exact_file_acl(unc)
+        self.assertEqual(refused.exception.category, "PROTECTED_ACL_REQUIRED")
+        load_library.assert_not_called()
 
 
 if __name__ == "__main__":

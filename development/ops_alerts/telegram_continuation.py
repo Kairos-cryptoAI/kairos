@@ -7,13 +7,16 @@ the prior handoff and diagnostic; all prior evidence remains immutable.
 from __future__ import annotations
 
 import argparse
+import ctypes
 import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 from collections.abc import Callable
+from ctypes import wintypes
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -153,82 +156,265 @@ def _set_exact_file_acl(path: Path) -> None:
         if path.stat().st_mode & 0o077:
             raise ContinuationError("PROTECTED_ACL_REQUIRED")
         return
-    command = r"""
-$ErrorActionPreference = 'Stop'
-$path = $env:KAIROS_ALERT_ACL_TARGET
-$acl = Get-Acl -LiteralPath $path
-$acl.SetAccessRuleProtection($true, $false)
-# Do not translate old/template/logon SIDs to account names (which can block
-# against an unavailable domain on hosted Windows). Remove rules as SIDs.
-foreach ($rule in @($acl.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier]))) {
-    [void]$acl.RemoveAccessRuleSpecific($rule)
-}
-$user = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
-$expected = @($user, 'S-1-5-18', 'S-1-5-32-544')
-foreach ($sid in $expected) {
-    $identity = [Security.Principal.SecurityIdentifier]::new($sid)
-    $rule = [Security.AccessControl.FileSystemAccessRule]::new(
-        $identity,
-        [Security.AccessControl.FileSystemRights]::FullControl,
-        [Security.AccessControl.AccessControlType]::Allow
-    )
-    [void]$acl.AddAccessRule($rule)
-}
-Set-Acl -LiteralPath $path -AclObject $acl
-$check = Get-Acl -LiteralPath $path
-if (-not $check.AreAccessRulesProtected) { exit 2 }
-$actual = @($check.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier]))
-if ($actual.Count -ne 3) { exit 2 }
-foreach ($entry in $actual) {
-    if ($entry.AccessControlType -ne [Security.AccessControl.AccessControlType]::Allow -or
-        $entry.IdentityReference.Value -notin $expected -or
-        $entry.FileSystemRights -ne [Security.AccessControl.FileSystemRights]::FullControl -or
-        $entry.IsInherited) { exit 3 }
-}
-if (@($actual | Select-Object -ExpandProperty IdentityReference | ForEach-Object Value | Sort-Object -Unique).Count -ne 3) { exit 4 }
-Write-Output SAFE
-"""
-    executable = (
-        Path(os.environ.get("SystemRoot", "C:/Windows"))
-        / "System32/WindowsPowerShell/v1.0/powershell.exe"
-    )
-    environment = {
-        key: value
-        for key, value in os.environ.items()
-        if key.upper()
-        in {
-            "SYSTEMROOT",
-            "WINDIR",
-            "PATH",
-            "TEMP",
-            "TMP",
-            "COMSPEC",
-            "USERPROFILE",
-            "APPDATA",
-            "LOCALAPPDATA",
-            "HOMEDRIVE",
-            "HOMEPATH",
-        }
-    }
-    # Only inbox PowerShell modules may load; never inherit user module paths.
-    environment["PSModulePath"] = str(executable.parent / "Modules")
-    environment["KAIROS_ALERT_ACL_TARGET"] = str(path)
     try:
-        completed = subprocess.run(
-            [str(executable), "-NoProfile", "-NonInteractive", "-Command", command],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            text=True,
-            timeout=30,
-            check=False,
-            env=environment,
-            shell=False,
-        )
-    except (OSError, subprocess.SubprocessError):
+        target = Path(path)
+        if not target.is_absolute() or target.anchor.startswith("\\\\"):
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+        kernel = _kernel32()
+        if kernel.GetDriveTypeW(target.drive + "\\") == 4:
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+        for component in (target, *target.parents):
+            attributes = kernel.GetFileAttributesW(str(component))
+            if attributes == 0xFFFFFFFF or attributes & 0x400:
+                raise ContinuationError("PROTECTED_ACL_REQUIRED")
+        if not stat.S_ISREG(target.stat().st_mode):
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+        advapi = _advapi32()
+        user_sid = _current_user_sid(advapi, kernel)
+        sddl = f"D:P(A;;FA;;;{user_sid})(A;;FA;;;SY)(A;;FA;;;BA)"
+        descriptor = wintypes.LPVOID()
+        descriptor_size = wintypes.DWORD()
+        if not advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            sddl, 1, ctypes.byref(descriptor), ctypes.byref(descriptor_size)
+        ):
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        try:
+            dacl_present = wintypes.BOOL()
+            dacl_defaulted = wintypes.BOOL()
+            dacl = wintypes.LPVOID()
+            if (
+                not advapi.GetSecurityDescriptorDacl(
+                    descriptor,
+                    ctypes.byref(dacl_present),
+                    ctypes.byref(dacl),
+                    ctypes.byref(dacl_defaulted),
+                )
+                or not dacl_present.value
+                or not dacl
+            ):
+                raise ContinuationError("ACL_VERIFICATION_FAILED")
+            status = advapi.SetNamedSecurityInfoW(
+                str(target), 1, 0x00000004 | 0x80000000, None, None, dacl, None
+            )
+            if status:
+                raise ContinuationError("ACL_VERIFICATION_FAILED")
+        finally:
+            kernel.LocalFree(descriptor)
+        _verify_exact_file_acl(target, user_sid, advapi, kernel)
+    except ContinuationError:
+        raise
+    except Exception:  # noqa: BLE001 - native API failures are intentionally opaque.
         raise ContinuationError("ACL_VERIFICATION_FAILED") from None
-    if completed.returncode or completed.stdout.strip() != "SAFE":
-        raise ContinuationError("PROTECTED_ACL_REQUIRED")
+
+
+def _kernel32():
+    kernel = ctypes.WinDLL(r"C:\Windows\System32\kernel32.dll", use_last_error=True)
+    kernel.GetCurrentProcess.argtypes = []
+    kernel.GetCurrentProcess.restype = wintypes.HANDLE
+    kernel.LocalFree.argtypes = [wintypes.HLOCAL]
+    kernel.LocalFree.restype = wintypes.HLOCAL
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.CloseHandle.restype = wintypes.BOOL
+    kernel.GetFileAttributesW.argtypes = [wintypes.LPCWSTR]
+    kernel.GetFileAttributesW.restype = wintypes.DWORD
+    kernel.GetDriveTypeW.argtypes = [wintypes.LPCWSTR]
+    kernel.GetDriveTypeW.restype = wintypes.UINT
+    return kernel
+
+
+def _advapi32():
+    advapi = ctypes.WinDLL(r"C:\Windows\System32\advapi32.dll", use_last_error=True)
+    advapi.OpenProcessToken.argtypes = [
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.HANDLE),
+    ]
+    advapi.OpenProcessToken.restype = wintypes.BOOL
+    advapi.GetTokenInformation.argtypes = [
+        wintypes.HANDLE,
+        ctypes.c_int,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.DWORD),
+    ]
+    advapi.GetTokenInformation.restype = wintypes.BOOL
+    advapi.ConvertSidToStringSidW.argtypes = [
+        wintypes.LPVOID,
+        ctypes.POINTER(wintypes.LPWSTR),
+    ]
+    advapi.ConvertSidToStringSidW.restype = wintypes.BOOL
+    advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.DWORD),
+    ]
+    advapi.ConvertStringSecurityDescriptorToSecurityDescriptorW.restype = wintypes.BOOL
+    advapi.GetSecurityDescriptorDacl.argtypes = [
+        wintypes.LPVOID,
+        ctypes.POINTER(wintypes.BOOL),
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.BOOL),
+    ]
+    advapi.GetSecurityDescriptorDacl.restype = wintypes.BOOL
+    advapi.SetNamedSecurityInfoW.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+    ]
+    advapi.SetNamedSecurityInfoW.restype = wintypes.DWORD
+    advapi.GetNamedSecurityInfoW.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.LPVOID),
+        ctypes.POINTER(wintypes.LPVOID),
+    ]
+    advapi.GetNamedSecurityInfoW.restype = wintypes.DWORD
+    advapi.GetSecurityDescriptorControl.argtypes = [
+        wintypes.LPVOID,
+        ctypes.POINTER(wintypes.WORD),
+        ctypes.POINTER(wintypes.DWORD),
+    ]
+    advapi.GetSecurityDescriptorControl.restype = wintypes.BOOL
+    advapi.GetAclInformation.argtypes = [
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        ctypes.c_int,
+    ]
+    advapi.GetAclInformation.restype = wintypes.BOOL
+    advapi.GetAce.argtypes = [
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.LPVOID),
+    ]
+    advapi.GetAce.restype = wintypes.BOOL
+    return advapi
+
+
+def _current_user_sid(advapi, kernel) -> str:
+    token = wintypes.HANDLE()
+    current_process = kernel.GetCurrentProcess()
+    if not advapi.OpenProcessToken(current_process, 0x0008, ctypes.byref(token)):
+        raise ContinuationError("ACL_VERIFICATION_FAILED")
+    sid_string = wintypes.LPWSTR()
+    try:
+        needed = wintypes.DWORD()
+        advapi.GetTokenInformation(token, 1, None, 0, ctypes.byref(needed))
+        if not 8 <= needed.value <= 1024 * 1024:
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        buffer = ctypes.create_string_buffer(needed.value)
+        if not advapi.GetTokenInformation(
+            token, 1, buffer, needed.value, ctypes.byref(needed)
+        ):
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        sid_address = ctypes.cast(buffer, ctypes.POINTER(ctypes.c_void_p))[0]
+        if not sid_address or not advapi.ConvertSidToStringSidW(
+            sid_address, ctypes.byref(sid_string)
+        ):
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        sid = sid_string.value
+        if not sid or not re.fullmatch(r"S-1-(?:[0-9]+-)*[0-9]+", sid):
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        return sid
+    finally:
+        if sid_string:
+            kernel.LocalFree(ctypes.cast(sid_string, wintypes.HLOCAL))
+        kernel.CloseHandle(token)
+
+
+def _verify_exact_file_acl(path: Path, user_sid: str, advapi, kernel) -> None:
+    owner = wintypes.LPVOID()
+    group = wintypes.LPVOID()
+    dacl = wintypes.LPVOID()
+    sacl = wintypes.LPVOID()
+    descriptor = wintypes.LPVOID()
+    status = advapi.GetNamedSecurityInfoW(
+        str(path),
+        1,
+        0x00000004,
+        ctypes.byref(owner),
+        ctypes.byref(group),
+        ctypes.byref(dacl),
+        ctypes.byref(sacl),
+        ctypes.byref(descriptor),
+    )
+    if status or not descriptor:
+        raise ContinuationError("ACL_VERIFICATION_FAILED")
+    try:
+        control = wintypes.WORD()
+        revision = wintypes.DWORD()
+        if (
+            not advapi.GetSecurityDescriptorControl(
+                descriptor, ctypes.byref(control), ctypes.byref(revision)
+            )
+            or not control.value & 0x1000
+        ):
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+        present = wintypes.BOOL()
+        defaulted = wintypes.BOOL()
+        read_dacl = wintypes.LPVOID()
+        if (
+            not advapi.GetSecurityDescriptorDacl(
+                descriptor,
+                ctypes.byref(present),
+                ctypes.byref(read_dacl),
+                ctypes.byref(defaulted),
+            )
+            or not present.value
+            or not read_dacl
+        ):
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+
+        class ACL_SIZE_INFORMATION(ctypes.Structure):
+            _fields_ = [
+                ("AceCount", wintypes.DWORD),
+                ("AclBytesInUse", wintypes.DWORD),
+                ("AclBytesFree", wintypes.DWORD),
+            ]
+
+        size_info = ACL_SIZE_INFORMATION()
+        if not advapi.GetAclInformation(
+            read_dacl, ctypes.byref(size_info), ctypes.sizeof(size_info), 2
+        ):
+            raise ContinuationError("ACL_VERIFICATION_FAILED")
+        expected = {user_sid, "S-1-5-18", "S-1-5-32-544"}
+        observed: set[str] = set()
+        for index in range(size_info.AceCount):
+            ace = wintypes.LPVOID()
+            if not advapi.GetAce(read_dacl, index, ctypes.byref(ace)) or not ace:
+                raise ContinuationError("ACL_VERIFICATION_FAILED")
+            header = ctypes.cast(ace, ctypes.POINTER(ctypes.c_ubyte * 4)).contents
+            if header[0] != 0 or header[1] != 0:
+                raise ContinuationError("PROTECTED_ACL_REQUIRED")
+            mask = ctypes.cast(
+                ctypes.c_void_p(ace.value + 4), ctypes.POINTER(wintypes.DWORD)
+            ).contents.value
+            sid_ptr = ctypes.c_void_p(ace.value + 8)
+            sid_text = wintypes.LPWSTR()
+            if mask != 0x001F01FF or not advapi.ConvertSidToStringSidW(
+                sid_ptr, ctypes.byref(sid_text)
+            ):
+                raise ContinuationError("PROTECTED_ACL_REQUIRED")
+            try:
+                sid_value = sid_text.value
+            finally:
+                kernel.LocalFree(ctypes.cast(sid_text, wintypes.HLOCAL))
+            if sid_value not in expected or sid_value in observed:
+                raise ContinuationError("PROTECTED_ACL_REQUIRED")
+            observed.add(sid_value)
+        if observed != expected:
+            raise ContinuationError("PROTECTED_ACL_REQUIRED")
+    finally:
+        kernel.LocalFree(descriptor)
 
 
 def _load_signed_sources():
