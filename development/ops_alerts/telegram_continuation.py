@@ -158,7 +158,11 @@ $ErrorActionPreference = 'Stop'
 $path = $env:KAIROS_ALERT_ACL_TARGET
 $acl = Get-Acl -LiteralPath $path
 $acl.SetAccessRuleProtection($true, $false)
-foreach ($rule in @($acl.Access)) { [void]$acl.RemoveAccessRuleSpecific($rule) }
+# Do not translate old/template/logon SIDs to account names (which can block
+# against an unavailable domain on hosted Windows). Remove rules as SIDs.
+foreach ($rule in @($acl.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier]))) {
+    [void]$acl.RemoveAccessRuleSpecific($rule)
+}
 $user = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 $expected = @($user, 'S-1-5-18', 'S-1-5-32-544')
 foreach ($sid in $expected) {

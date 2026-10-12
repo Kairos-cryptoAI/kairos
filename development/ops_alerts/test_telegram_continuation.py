@@ -535,6 +535,9 @@ class ContinuationTests(unittest.TestCase):
             arguments["env"]["PSModulePath"], str(executable.parent / "Modules")
         )
         self.assertEqual(arguments["env"]["KAIROS_ALERT_ACL_TARGET"], str(self.guard))
+        command = run.call_args.args[0][-1]
+        self.assertNotIn("@($acl.Access)", command)
+        self.assertIn("$acl.GetAccessRules($true, $true", command)
 
     @unittest.skipUnless(os.name == "nt", "Windows helper boundary")
     def test_acl_timeout_retains_guard_and_never_contacts_transport(self):
