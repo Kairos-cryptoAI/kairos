@@ -21,3 +21,8 @@ jobs:
       - name: Validate runner, manifest, and documentation links
         shell: pwsh
         run: ./tests/Test-Meta.Static.ps1
+      - name: Verify non-trading Telegram handoff offline
+        shell: pwsh
+        run: |
+          python -m unittest discover -s development/ops_alerts -p 'test_*.py'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
