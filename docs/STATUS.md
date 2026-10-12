@@ -24,7 +24,12 @@ The earlier R5 V2 alarm remains genuinely outcome-unknown; the owner saw no
 message. Its journal/guard were retained, never replayed or labelled no-send.
 A distinct marked R6 route test was Telegram-accepted as message 4. The new
 hidden Limited status-file-only task has passed manual and automatic two-minute
-polls, result 0, with one unchanged healthy baseline and no duplicate send.
+polls, result 0. After its initially unchanged healthy baseline it naturally
+observed catch-up and restored freshness; Telegram accepted distinct messages
+5 and 6, not a replay or another test. The separate 20:47 status snapshot is
+fresh with zero source timeouts; human visibility of the new messages remains
+unconfirmed. The later observation is recorded separately from the first
+signed closeout checkpoint.
 Obsolete R5 schedules are disabled, not removed. Only technical runtime alerts
 are active; trading-signal classes stay dormant.
 

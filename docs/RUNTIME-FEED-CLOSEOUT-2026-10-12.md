@@ -109,3 +109,22 @@ exact hashes and scopes. Full application/provider/venue qualification,
 elapsed availability and economic gates, selected hosting, encrypted off-host
 restore, production custody/security/limits and manual arming remain separate.
 All readiness flags remain false; `STRATEGY_POLICY=REJECT_ALL`.
+
+## Subsequent automatic alert observation
+
+The unchanged healthy baseline above describes the initial 20:35 UTC
+checkpoint, not a promise that the live journal remains static. The scheduled
+monitor subsequently observed `catching_up_nontrading` and `running_fresh`.
+Telegram accepted the corresponding firing message 5 at 20:43:17 UTC and
+resolved message 6 at 20:45:19 UTC; each has a distinct exclusive guard and
+protected transport receipt. The journal now has seven rows. These are two
+different natural state transitions, not a repeat of the historical R5 unknown
+or another qualification test. Human visibility is not yet confirmed.
+
+The [separate observation receipt](receipts/runtime-r6-observation-20261012.json)
+retains both transport receipt hashes. At 20:46:51 UTC read-only SQL found
+5,940 matching completed inbox/outbox rows and zero unfinished/trading rows.
+The separate 20:47:19 status snapshot is `RUNNING_NONTRADING`, fresh across all
+five symbols, with zero source timeouts and Redis transport failures. This
+short observation is neither a simulated outage nor long-duration proof.
+Initial signed receipts and their checkpoint hashes were not rewritten.

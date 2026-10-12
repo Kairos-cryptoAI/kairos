@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "KAIROS_R6_SUBSEQUENT_READONLY_OBSERVATION",
+  "initial_closeout_revision": "afc84ca6d1e137fb00e1981111e459271cb4e225",
+  "initial_closeout_ci": [38306348181, 38306347283],
+  "automatic_notifications": {
+    "journal_rows_observed": 7,
+    "journal_sha256": "559740d15a34b7a1e44a733bdfa58e1bc2eb80e418b27500444292cce4eaf22b",
+    "transitions": [
+      {
+        "state": "catching_up_nontrading",
+        "transition": "firing",
+        "result": "accepted",
+        "message_id": 5,
+        "accepted_at_utc": "2026-10-12T20:43:17.400877Z",
+        "event_id": "e5e5bbf589d5e0cebed210f77502444f7ff77e2c1b60881fb683fd635b8be7cb",
+        "receipt_sha256": "22b00bac608ffeefed9ce85bc2b879aff326287ab24e10b4cbe3e6071ce82634"
+      },
+      {
+        "state": "running_fresh",
+        "transition": "resolved",
+        "result": "accepted",
+        "message_id": 6,
+        "accepted_at_utc": "2026-10-12T20:45:19.815230Z",
+        "event_id": "4b68092605eee84cd70748b9a77fcee8701b9e6d2610e441293be79502038b69",
+        "receipt_sha256": "08970c32ab5679dda7144a1c052f0e071ad73920ee819693c8ed0c2844981987"
+      }
+    ],
+    "new_message_human_visibility": "NOT_RECORDED",
+    "historical_r5_unknown_retried": false,
+    "another_qualification_test_sent": false
+  },
+  "sql_checkpoint": {
+    "collection_completed_at_utc": "2026-10-12T20:46:51.1201809Z",
+    "audit_rows": 340274,
+    "outbox_rows": 5940,
+    "completed_inbox": 5940,
+    "pending_outbox": 0,
+    "unresolved_inbox": 0,
+    "uncompleted_publications": 0,
+    "trading_rows": 0
+  },
+  "separate_status_checkpoint": {
+    "observed_at_utc": "2026-10-12T20:47:19.770343Z",
+    "state": "RUNNING_NONTRADING",
+    "source_fresh": true,
+    "five_watermarks_ms": 1791838020000,
+    "source_timeout_rounds": 0,
+    "redis_transport_failures": 0
+  },
+  "initial_signed_checkpoints_rewritten": false,
+  "legacy_database_and_queue_untouched": true,
+  "native_outage_injected": false,
+  "long_duration_availability_proven": false,
+  "trading_started": false,
+  "TECHNICAL_PAPER_READY": false,
+  "PAPER_QUALIFIED": false,
+  "ALPHA_READY": false,
+  "LIVE_READY": false,
+  "STRATEGY_POLICY": "REJECT_ALL"
+}
