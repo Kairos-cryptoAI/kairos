@@ -4,6 +4,13 @@ docs/receipts/*.json -text
 docs/receipts/*.json.asc -text
 # This direction records the current direct owner reply and has an exact hash.
 development/ops_alerts/notification-routing-20261012.json -text
+development/ops_alerts/runtime_status_notifier.py -text
+development/ops_alerts/test_runtime_status_notifier.py -text
+development/ops_alerts/Install-RuntimeAlertTask.ps1 -text
+development/ops_alerts/evedex_dev_public_preflight.py -text
+development/ops_alerts/test_evedex_dev_public_preflight.py -text
+development/ops_alerts/Test-NotificationPythonHost.ps1 -text
+development/ops_alerts/notification_python_probe.py -text
 # Published comparison receipts are byte-bound to their original runtime files.
 development/adaptive_replay/evidence/comparison-2026-10-06/** -text
 development/adaptive_replay/evidence/right-tail-2026-10-07/** -text

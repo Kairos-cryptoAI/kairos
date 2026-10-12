@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Execute)
+param([switch]$Execute, [switch]$RepairOwnedInterpreter)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 $taskName = 'Kairos-R4-TechnicalAlerts-20261012'
 $metaRoot = 'D:\Kairos\kairos'
 $driverPath = Join-Path $metaRoot 'development\ops_alerts\runtime_status_notifier.py'
-$pythonPath = 'D:\Kairos\kairos-persistence\.venv\Scripts\python.exe'
+$pythonPath = 'D:\Kairos\runtime\alert-delivery-20261012\operational-r4\notification-env\Scripts\python.exe'
 $acceptancePath = 'D:\Kairos\runtime\alert-delivery-20261012\operational-r4\owner-acceptance.json'
 $gitPath = 'C:\Program Files\Git\cmd\git.exe'
 $signer = '40AF365C6682B73D056A6A274DBFF6B65BE9F827'
@@ -60,12 +60,28 @@ if ($acceptance.human_acknowledged -ne $true -or
     throw 'CURRENT_RECIPIENT_ACCEPTANCE_REQUIRED'
 }
 
-if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) {
+$existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+$oldPollCommand = "& 'D:\Kairos\kairos-persistence\.venv\Scripts\python.exe' -B -E -s 'D:\Kairos\kairos\development\ops_alerts\runtime_status_notifier.py' --poll-once --armed; exit " + '$LASTEXITCODE'
+$oldArguments = '-NoProfile -NonInteractive -WindowStyle Hidden -Command "' + $oldPollCommand + '"'
+if ($existingTask -and (-not $RepairOwnedInterpreter -or
+    $existingTask.State -eq 'Running' -or
+    $existingTask.Description -ne 'Kairos R4: private status-file-only technical alerts; no trading, DB or queue authority.' -or
+    @($existingTask.Actions).Count -ne 1 -or
+    $existingTask.Actions[0].Execute -ne 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -or
+    $existingTask.Actions[0].Arguments -ne $oldArguments -or
+    $existingTask.Settings.Hidden -ne $true -or
+    $existingTask.Principal.RunLevel.ToString() -ne 'Limited')) {
     throw 'EXISTING_NOTIFICATION_TASK_REQUIRES_REVIEW'
+}
+if ($RepairOwnedInterpreter -and -not $existingTask) { throw 'OWNED_NOTIFICATION_TASK_REQUIRED' }
+$pythonHomePath = Join-Path (Split-Path (Split-Path $pythonPath -Parent) -Parent) 'pyvenv.cfg'
+$pythonHomeText = Get-Content -LiteralPath $pythonHomePath -Raw
+if ($pythonHomeText -notmatch '(?m)^home = C:\\Users\\loval\\AppData\\Local\\Packages\\OpenAI\.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3\.11\.15-windows-x86_64-none\r?$') {
+    throw 'PHYSICAL_PYTHON_HOME_REQUIRED'
 }
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 $hiddenShell = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
-$pollCommand = "& 'D:\Kairos\kairos-persistence\.venv\Scripts\python.exe' -B -E -s 'D:\Kairos\kairos\development\ops_alerts\runtime_status_notifier.py' --poll-once --armed; exit " + '$LASTEXITCODE'
+$pollCommand = "& 'D:\Kairos\runtime\alert-delivery-20261012\operational-r4\notification-env\Scripts\python.exe' -B -E -s 'D:\Kairos\kairos\development\ops_alerts\runtime_status_notifier.py' --poll-once --armed; exit " + '$LASTEXITCODE'
 $action = New-ScheduledTaskAction -Execute $hiddenShell `
     -Argument ('-NoProfile -NonInteractive -WindowStyle Hidden -Command "' + $pollCommand + '"') `
     -WorkingDirectory $metaRoot
@@ -79,11 +95,16 @@ $settings = New-ScheduledTaskSettingsSet -Hidden -MultipleInstances IgnoreNew `
 $definition = New-ScheduledTask -Action $action -Trigger @($timer, $logon) `
     -Principal $principal -Settings $settings `
     -Description 'Kairos R4: private status-file-only technical alerts; no trading, DB or queue authority.'
-Register-ScheduledTask -TaskName $taskName -InputObject $definition | Out-Null
+if ($RepairOwnedInterpreter) {
+    # Preserve all triggers, principal and settings; only this owned action changes.
+    Set-ScheduledTask -TaskName $taskName -Action $action | Out-Null
+} else {
+    Register-ScheduledTask -TaskName $taskName -InputObject $definition | Out-Null
+}
 
 # Registration only: a separate observed dispatch is required for acceptance.
 [ordered]@{
-    status = 'REGISTERED_NOT_YET_DISPATCH_VERIFIED'
+    status = $(if ($RepairOwnedInterpreter) { 'OWNED_INTERPRETER_REPAIRED_NOT_YET_DISPATCH_VERIFIED' } else { 'REGISTERED_NOT_YET_DISPATCH_VERIFIED' })
     task = $taskName
     interval_seconds = 120
     hidden = $true
