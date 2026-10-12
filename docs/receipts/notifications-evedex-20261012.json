@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "kairos.notifications-evedex.scoped-handoff.v1",
+  "observation_date": "2026-10-12",
+  "scope": "notification engineering and source-only EVEDEX preparation",
+  "sources": {
+    "deploy": "0427f7cf1e1cd70f2ddd05b80b4d7d6219736412",
+    "execution": "a12aa8e66662b212045d2a39a6a9e1d7e785c784",
+    "persistence": "ea0c73395352f71da196270fe16659f1f0298a52",
+    "native_acl_helper_meta": "f7b2f249c028a4a947b7279e677f21ee85bee8fc",
+    "actual_corrected_test_meta": "3432ee81f930887785a5ac5ecd2c4f3cb9bb6c5b",
+    "status_alert_planner_meta": "752f6460e817037de5292f101e27c36c67d5dbc8"
+  },
+  "notification_evidence": {
+    "old_id_result_sha256": "d97b016332038598b46cc1b414b9610ff28ee45b1df1bc8ab76577482f80bd86",
+    "old_id_result": "CHAT_NOT_FOUND",
+    "old_id_http_calls": {"getMe": 1, "getChat": 1, "sendMessage": 0},
+    "corrected_recipient_purpose": "owner-corrected-test-group",
+    "corrected_result_sha256": "59d102c129f0baf17f548763be1f55587be32673a3be7bfe81b57bb5966d489a",
+    "corrected_source_sha256": "eda1ad2f83b1da8e10a0427355a7083f051741220f8b8e9eb5be8279568e0f68",
+    "corrected_http_calls": {"getMe": 1, "getChat": 1, "sendMessage": 1},
+    "accepted_at_utc": "2026-10-12T09:05:52.206195+00:00",
+    "message_id": 2,
+    "transport_accepted": true,
+    "human_acknowledged": false,
+    "automatic_retry": false,
+    "all_prior_evidence_preserved": true,
+    "secret_values_exposed": false,
+    "operational_loop_started": false,
+    "operationally_qualified": false
+  },
+  "local_validation": {
+    "python_versions": ["3.11", "3.14"],
+    "offline_tests_passed_per_version": 54,
+    "native_file_acl_verification": "PASS",
+    "status_file_only_reader": "PASS_FAILED_CLOSED_OBSERVATION",
+    "current_runtime_restarted": false
+  },
+  "runtime_observation": {
+    "state": "FAILED_CLOSED",
+    "observed_at_utc": "2026-10-12T07:57:50.065626+00:00",
+    "error_type": "TimeoutError",
+    "status_sha256": "ebb10dfa1050aea1fd95b473e0834a520959fcbeba8461a2183f90fce96a0593",
+    "serve_exit_code": 1,
+    "root_cause_confirmed": false,
+    "legacy_database_and_queue_touched": false
+  },
+  "evedex": {
+    "source_preparation_only": true,
+    "dev_origin": "https://trading-api.evedex.tech",
+    "dev_chain_id": 16182,
+    "qualification_started": false,
+    "venue_http_calls": 0,
+    "credential_reads": 0,
+    "signing_calls": 0,
+    "orders": 0,
+    "continuous_24h_gate": "NOT_RUN"
+  },
+  "readiness": {
+    "TECHNICAL_PAPER_READY": false,
+    "PAPER_QUALIFIED": false,
+    "ALPHA_READY": false,
+    "LIVE_READY": false,
+    "STRATEGY_POLICY": "REJECT_ALL"
+  },
+  "next_gate": "owner confirms test visibility and ongoing notification recipient; bind and qualify actual status alert delivery before EVEDEX"
+}

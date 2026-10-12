@@ -2,7 +2,25 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-12_
 
-## Current repaired non-trading CLOSED_BAR epoch — 2026-10-12
+## Current notification handoff and subsequent runtime refusal — 2026-10-12
+
+The [notification handoff](NOTIFICATIONS-EVEDEX-2026-10-12.md) records one
+Telegram-accepted marked test to the owner-corrected test group. No resend,
+paid API call or trading action occurred. New private file ACLs pass native
+Windows and hosted tests; 54 offline tests pass on Python 3.11/3.14.
+Human visibility and the recipient for ongoing technical alerts are pending.
+The status-file-only operational planner is prepared but **unarmed**; no
+notification polling daemon or business monitoring stack has started.
+EVEDEX preparation is source-only: venue/auth/signing/order calls are zero.
+
+R4 subsequently failed closed at 07:57:50 UTC with a Redis stream-read
+`TimeoutError`, exiting 1 without OOM/restart. Its cause is unconfirmed;
+the earlier successful backups/restores and running observations remain
+historical evidence, not proof of a currently working serve process.
+The pure file observer now reports `failed_closed`, stale. Old database and
+queue remain stopped/untouched. All readiness stays false, `REJECT_ALL`.
+
+## Earlier accepted non-trading CLOSED_BAR epoch — 2026-10-12
 
 The [native R4 continuation and short engineering closeout](RUNTIME-INCIDENT-2026-10-12.md)
 is `PASS_NEW_NONTRADING_GENERATION`. Fresh backups before and after catch-up

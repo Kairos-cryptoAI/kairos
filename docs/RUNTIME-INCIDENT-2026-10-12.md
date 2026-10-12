@@ -1,5 +1,10 @@
 # Kairos - non-trading runtime incident and short engineering closeout, 2026-10-12
 
+Subsequent observation: the accepted R4 process later stopped with
+`FAILED_CLOSED` / `TimeoutError` at 07:57:50 UTC. The acceptance below describes
+its earlier backup/restore/running snapshots; it is not a current running-state
+claim. See the [notification/runtime follow-up](NOTIFICATIONS-EVEDEX-2026-10-12.md).
+
 ## Accepted scope
 
 The owner requested repair of the failed runtime and completion of independent,
