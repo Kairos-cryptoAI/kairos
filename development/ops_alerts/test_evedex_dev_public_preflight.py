@@ -117,8 +117,11 @@ class PublicSamplerTests(unittest.TestCase):
         self.payloads = self._valid_payloads()
 
     def _pinned_repositories(self):
-        source_root = Path(self.temp.name) / "meta"
-        deploy_root = Path(self.temp.name) / "deploy"
+        # Hosted Windows may expose TEMP through a junction. Fixtures live at
+        # its resolved physical directory; production still rejects reparses.
+        fixture_root = Path(self.temp.name).resolve(strict=True)
+        source_root = fixture_root / "meta"
+        deploy_root = fixture_root / "deploy"
         source_bytes = b"# synthetic pinned sampler source\n"
         continuation_bytes = (
             b"def _exclusive_fsync(path, payload):\n"
