@@ -26,3 +26,5 @@ jobs:
         run: |
           python -m unittest discover -s development/ops_alerts -p 'test_*.py'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s development/adaptive_replay/offline_campaign_bridge_tests -p 'test_*.py'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
