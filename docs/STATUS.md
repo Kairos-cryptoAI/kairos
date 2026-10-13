@@ -2,6 +2,23 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
 
+## Later Demo funding/depth diagnosis — 2026-10-13, 18:03 Moscow
+
+The [funding/depth receipt](EVEDEX-DEMO-FUNDING-DEPTH-2026-10-13.md) clarifies the
+earlier balance observation: the signed-in DEMO UI shows **existing test USDT on
+Smart Account**, but zero Margin/Available Balance. The Transfer form points from
+Smart Account to Trading Account; it was opened only, never submitted or signed.
+No new faucet credit or real-money funding is needed to explain this UI state.
+
+A bounded 24-GET diagnostic preserves the first local balance-DTO rejection and
+adds an independent depth comparison. Default, best-only, SDK-style and
+authenticated SDK-style queries all leave ETH/SOL/BNB/XRP empty; SOL/BNB/XRP have
+`trading=none`, `visibility=none`. BTC remains two-sided at 898.57 bps spread,
+matching the UI. Login and tested query choices do not repair the observed venue.
+The [public support draft](EVEDEX-DEMO-SUPPORT-DRAFT-2026-10-13.md) is prepared but
+not sent. No 24-hour qualification, canary, transfer, order or paid API was started;
+all readiness remains false, `REJECT_ALL`. DEV and DEMO remain separate contours.
+
 ## EVEDEX Demo account verified; venue remains unqualified — 2026-10-13
 
 The owner signed into **DEMO**, not DEV. The separate
