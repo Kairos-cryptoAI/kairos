@@ -2,6 +2,24 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
 
+## EVEDEX Demo account verified; venue remains unqualified — 2026-10-13
+
+The owner signed into **DEMO**, not DEV. The separate
+[Demo preflight](EVEDEX-DEMO-PREFLIGHT-2026-10-13.md) confirms that the explicitly
+labelled Demo API key in the owner file is accepted by `trading-api.evedex.io`.
+The browser public profile matches API `authId` and the visible wallet mask;
+the API exchange account `id` is a different identifier. The initially failed
+local `id` assumption and its receipt were retained, not rewritten as success.
+
+Five account GETs succeeded, with no open positions/orders/protections and no
+positive available test balance. In the separate public snapshot only BTC had
+two-sided depth, at about **898.57 bps spread**; ETH/SOL/BNB/XRP had empty books.
+SOL/BNB/XRP were not fully trading/visible. This is authentication/identity
+evidence, **not** 24-hour venue acceptance, signing-authority qualification,
+canary or soak. No wallet key was used, no funds requested and no order sent.
+Demo credentials were not mounted into the DEV/PAPER deployment. All readiness
+remains false, `REJECT_ALL`; the legacy database/queue and trading stay untouched.
+
 ## Current R7 engineering acceptance — 2026-10-13
 
 The [engineering closeout](ENGINEERING-CLOSEOUT-2026-10-13.md) records the later
