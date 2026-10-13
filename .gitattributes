@@ -17,6 +17,9 @@ development/ops_alerts/evedex_dev_public_preflight.py -text
 development/ops_alerts/test_evedex_dev_public_preflight.py -text
 development/ops_alerts/evedex_dev_depth_diagnostic.py -text
 development/ops_alerts/test_evedex_dev_depth_diagnostic.py -text
+# The independent DEMO diagnostic admits exact signed source bytes on Windows.
+development/ops_alerts/evedex_demo_public_diagnostic.py -text
+development/ops_alerts/test_evedex_demo_public_diagnostic.py -text
 development/ops_alerts/Test-NotificationPythonHost.ps1 -text
 development/ops_alerts/notification_python_probe.py -text
 # Additive notifier signatures bind these exact new source bytes.
