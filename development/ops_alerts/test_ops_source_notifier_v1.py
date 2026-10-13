@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import tempfile
 import threading
 import unittest
@@ -83,10 +84,17 @@ def _intent(
 class SourceNotifierTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from development.ops_alerts import runtime_status_r6_notifier
+        # Exercise the real journal primitives without the workstation-only
+        # native source/key/ACL admission path. Native admission has separate
+        # fail-closed tests; this fixture never prepares a real transport.
+        from development.ops_alerts import runtime_status_r5_notifier
+        from development.ops_alerts.test_runtime_status_r6_notifier import (
+            _C,
+            _Delivery,
+        )
 
-        cls.helpers = runtime_status_r6_notifier._r5_helpers()
-        cls.c, cls.delivery = cls.helpers._continuation()
+        cls.helpers = runtime_status_r5_notifier
+        cls.c, cls.delivery = _C, _Delivery
 
     def make_journal(
         self, root: Path, source: feed.Source = feed.Source.VENUE_OBSERVATION
@@ -123,7 +131,11 @@ class SourceNotifierTests(unittest.TestCase):
         )
         with mock.patch.dict(
             "os.environ",
-            {"KAIROS_TEST_QUANT_SOURCE": str(observer.QUANT_SOURCE)},
+            {
+                "KAIROS_TEST_QUANT_SOURCE": os.environ.get(
+                    "KAIROS_TEST_QUANT_SOURCE", str(observer.QUANT_SOURCE)
+                )
+            },
             clear=False,
         ):
             report = observer._execute_observation(
