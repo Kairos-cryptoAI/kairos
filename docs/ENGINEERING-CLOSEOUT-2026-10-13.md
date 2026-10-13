@@ -23,7 +23,7 @@ and research/trading qualification. It is not a PAPER, alpha, or LIVE approval.
 | Current Text / review qualification | OpenAI-only provider-bound Text qualification and current full `DecisionContext` Aggregator V2 fixtures; stale/future/missing/conflicting/injection cases; 97 tests per repository and green CI. | Paid provider/model quality, profitability, or eligibility of a new blind strategy. |
 | Matched A/B campaign bridge | Separate offline adapter with causal capture/cutoff, missing/late/unknown denominators, provider-call reservation, no-resend restart behavior, and 12 passing tests. | A current native campaign with real provider/Persistence/Risk bindings and accepted immutable campaign identity. The old campaign is not silently rebased. |
 | Public venue observer | Standalone bounded observer independent of PAPER; pinned measurement source, five-symbol denominator, reserve-before-wire ledger, and one native public smoke slot. | DEV account/auth pairing, continuous 24-hour venue qualification, canary or seven-day soak. |
-| Technical notifications | Typed source feed and a signed send-once journal with terminal UNKNOWN outcomes; business signals remain muted. | R7 operational task and native delivery acceptance are recorded below only when actually verified. |
+| Technical notifications | Independent R7 status-only monitor installed and automatically polled successfully; one signed recovery-source notice accepted by Telegram API; terminal UNKNOWN outcomes are not replayed. | Native R7 failure injection was not performed; error paths use real-journal offline tests. Business signals and unadmitted campaign/venue pollers stay muted. |
 | Local encrypted backup | Native Restic snapshot of the two accepted dump files and receipt; full authenticated data check, wrong-password rejection, and exact byte/hash restoration. | Off-host durability, a remotely stored password/recovery key, or a remote restore. No destination was supplied. |
 
 ## Native R7 recovery
@@ -95,6 +95,33 @@ These sparse, client/network-sensitive observations do not pass the intended
 5-second age / 2-second skew requirements or establish any 24-hour percentile.
 The smoke latch is separate from the future 24-hour observer and was retained.
 
+## Native technical notifications
+
+- New `Kairos-R7-TechnicalAlerts-V1-20261013` is installed, Hidden, Limited,
+  IgnoreNew, no automatic restart, with logon/two-minute status-file-only checks.
+  Its distinct private binding/journal do not rewrite the R5/R6 ledgers. The
+  superseded R6 technical alert task is disabled, not removed.
+- Native signed receipt/source admission and initialization passed. Manual
+  healthy polling made zero send attempts; the actual scheduled Limited task
+  subsequently completed with result 0. No false failure was injected into the
+  active runtime just to manufacture an alert.
+- Missing/unreadable/invalid/stale status, accepted inbox/watermark regression,
+  interrupted reservations, corrupt journals, and UNKNOWN sends are covered by
+  offline tests with the real R5 filesystem journal primitives and fake transport.
+  Record/byte capacity is checked before a durable guard, including outcome space.
+- One separately signed recovery-source binding, SHA-256
+  `2b81fd583f250ea59279d63ba9fa8c848c199c1920513a09fd08b8046d61f29d`,
+  emitted one technical notice to the approved test group `-1004475802889`.
+  Telegram API accepted message **84**; event
+  `a61896125b43af6e061fa9136fc97353db223d7d3fc7f0e8d270db82497c26e2`.
+  Send-once journal SHA-256:
+  `89e63d93d8bb76db839e93feb56454e1d862098f8c27a011f2ffcb8eb762f016`.
+  This is API acceptance, not a claim that the owner read the message. No retry
+  or duplicate dispatch was made.
+- The recovery notice and R7 failure monitor share the reviewed protected
+  transport chain, not the old outcome-unknown send reservation. No key value was
+  printed. Trading-signal categories remain disabled.
+
 ## Source/CI evidence and open gates
 
 - Text: `c3804a9e50f341cf35322fabb6967ccc4d8a95a5`; CI `38384462521` and
@@ -107,6 +134,10 @@ The smoke latch is separate from the future 24-hour observer and was retained.
 - Current manifest source projection, runtime/PAPER lock projection, current-source
   `REJECT_ALL` policy, and full-path simulator deployment validators passed.
   Full-path and composition engineering gates do not arm a trading process.
+- Ops: 184 tests passed on each Windows Python version. Meta validation/CodeQL
+  `38402166201`/`38402165644` passed the exact source used for native notification
+  admission (`aae2c51649eb7062952c6815e34722211d33f434`); adaptive-development
+  `38401670374` passed its separately pinned unchanged research source set.
 - All 14 current HEADs are on main, match their local `origin/main`, and have the
   required GPG signer. This does **not** mean every checkout is clean: 43 unrelated
   adaptive WIP paths and old untracked test artifacts in Execution/Quant were

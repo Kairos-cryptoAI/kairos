@@ -2,6 +2,35 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
 
+## Current R7 engineering acceptance — 2026-10-13
+
+The [engineering closeout](ENGINEERING-CLOSEOUT-2026-10-13.md) records the later
+R7 recovery and supersedes the current-state interpretation of the R6 sections
+below. R6 failed closed and remains retained; its historical root cause is not
+declared proven. R7 passed fresh before/after full isolated SQL restores, exact
+non-republishing recovery of ten inbox completions, fresh five-symbol progress,
+and a graceful same-container restart. The final continuation did not drain
+those ten messages a second time. Legacy PostgreSQL/Redis/queue were untouched.
+
+The new R7 boot and status-only technical alert tasks are installed; obsolete R6
+tasks are disabled, not deleted. The actual R7 scheduled alert task completed
+with result 0. One signed recovery notice was Telegram-accepted as message 84;
+there was no duplicate or UNKNOWN resend. Business/trading signals stay muted.
+
+A real local encrypted Restic snapshot of the two accepted dumps and receipt
+passed full authenticated data checking, wrong-password rejection, and exact
+byte/hash restore. It is not off-host protection; no destination or upload exists.
+
+Current Text/OpenAI-only qualification and Aggregator DecisionContext fixtures,
+dependency pins and an offline matched A/B adapter are implemented. Fixtures
+do not establish paid model quality or a new native blind campaign. The bounded
+public EVEDEX smoke again observed empty SOL/BNB/XRP books; five-symbol venue
+qualification was not passed or bypassed. No trading or paid provider call was
+started. All readiness remains false, `REJECT_ALL`. Unrelated adaptive WIP and
+historical test artifacts are preserved, so whole clean-release admission is
+still unaccepted. Signed current-source projections and exact-source hosted
+engineering checks are recorded separately from that gate.
+
 ## EVEDEX DEV public diagnosis — 2026-10-13
 
 The [new diagnosis](EVEDEX-DEV-DIAGNOSIS-2026-10-13.md) records a fresh 12-GET
@@ -23,7 +52,7 @@ Python version. No 24-hour/PAPER/canary/soak service or order was started.
 All readiness remains false, `REJECT_ALL`. R6 details below are dated evidence,
 not a fresh October 13 runtime check.
 
-## Current R6 non-trading runtime and technical alerts — 2026-10-12
+## Historical R6 non-trading runtime and technical alerts — 2026-10-12
 
 The [R6 feed closeout](RUNTIME-FEED-CLOSEOUT-2026-10-12.md) supersedes the
 short R5 observations below. R5 later failed closed at 18:36:52 UTC on an
