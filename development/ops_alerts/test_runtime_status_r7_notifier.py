@@ -122,8 +122,9 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             initializer,
         )
         for invalid in (b"one\r\ntwo\n", b"one\rtwo", b"\xff"):
-            with self.subTest(invalid=invalid), self.assertRaisesRegex(
-                r7.R7Error, "DEPLOY_NAMESPACE_IMPORT_REJECTED"
+            with (
+                self.subTest(invalid=invalid),
+                self.assertRaisesRegex(r7.R7Error, "DEPLOY_NAMESPACE_IMPORT_REJECTED"),
             ):
                 r7._initializer_source_bytes(invalid)
 
