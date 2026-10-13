@@ -81,9 +81,15 @@ class ObservationPlan:
             raise ValueError("observer limits must be positive integers")
         if self.duration_s > MAX_DURATION_S or self.poll_interval_s < 10:
             raise ValueError("observer duration or polling rate exceeds fixed limits")
-        if self.request_timeout_s > REQUEST_TIMEOUT_S or self.slot_deadline_s > SLOT_DEADLINE_S:
+        if (
+            self.request_timeout_s > REQUEST_TIMEOUT_S
+            or self.slot_deadline_s > SLOT_DEADLINE_S
+        ):
             raise ValueError("observer request deadline exceeds fixed limits")
-        if self.max_response_bytes > MAX_RESPONSE_BYTES or self.max_storage_bytes > MAX_STORAGE_BYTES:
+        if (
+            self.max_response_bytes > MAX_RESPONSE_BYTES
+            or self.max_storage_bytes > MAX_STORAGE_BYTES
+        ):
             raise ValueError("observer storage limits exceed fixed limits")
         if self.request_timeout_s * REQUESTS_PER_SLOT > self.slot_deadline_s:
             raise ValueError("request timeouts cannot fit within one slot deadline")
@@ -122,32 +128,54 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def _comparison_logic(*, path: Path | None = None, expected_sha256: str = QUANT_SOURCE_SHA256) -> Any:
-    """Load only the pinned Quant venue-comparison implementation."""
-    path = QUANT_SOURCE if path is None else path
+def _canonical_quant_source(raw: bytes) -> bytes:
+    """Accept only the pinned UTF-8 source with LF or CRLF line endings."""
+    try:
+        text = raw.decode("utf-8", errors="strict")
+    except UnicodeDecodeError:
+        raise ObserverError("MEASUREMENT_SOURCE_CHANGED") from None
+    canonical = text.replace("\r\n", "\n")
+    if "\r" in canonical:
+        raise ObserverError("MEASUREMENT_SOURCE_CHANGED")
+    canonical_bytes = canonical.encode("utf-8")
+    if raw not in (canonical_bytes, canonical_bytes.replace(b"\n", b"\r\n")):
+        raise ObserverError("MEASUREMENT_SOURCE_CHANGED")
+    if hashlib.sha256(canonical_bytes).hexdigest() != QUANT_SOURCE_SHA256:
+        raise ObserverError("MEASUREMENT_SOURCE_CHANGED")
+    return canonical_bytes
+
+
+def _load_comparison_logic(path: Path) -> Any:
+    """Load a candidate source only when it is the exact pinned Quant file."""
     try:
         info = path.lstat()
         if not stat.S_ISREG(info.st_mode):
             raise ObserverError("MEASUREMENT_SOURCE_UNAVAILABLE")
-        source = path.read_bytes()
-        digest = hashlib.sha256(source).hexdigest()
-        if digest != expected_sha256:
-            raise ObserverError("MEASUREMENT_SOURCE_CHANGED")
-        spec = importlib.util.spec_from_file_location("_kairos_pinned_venue_comparison", path)
+        raw_source = path.read_bytes()
+        source = _canonical_quant_source(raw_source)
+        spec = importlib.util.spec_from_file_location(
+            "_kairos_pinned_venue_comparison", path
+        )
         if spec is None or spec.loader is None:
             raise ObserverError("MEASUREMENT_SOURCE_UNAVAILABLE")
         module = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = module
-        exec(  # noqa: S102 -- execute only the exact bytes whose configured digest was verified above.
+        exec(  # noqa: S102 -- execute only exact canonical bytes matching the pinned digest.
             compile(source, str(path), "exec", dont_inherit=True), module.__dict__
         )
-        if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+        after_info = path.lstat()
+        if not stat.S_ISREG(after_info.st_mode) or path.read_bytes() != raw_source:
             raise ObserverError("MEASUREMENT_SOURCE_CHANGED")
         return module
     except ObserverError:
         raise
     except Exception:  # noqa: BLE001 -- hide filesystem and loader details from callers.
         raise ObserverError("MEASUREMENT_SOURCE_UNAVAILABLE") from None
+
+
+def _comparison_logic() -> Any:
+    """Load only the configured production source path."""
+    return _load_comparison_logic(QUANT_SOURCE)
 
 
 def build_plan(plan: ObservationPlan = _DEFAULT_PLAN) -> dict[str, Any]:
@@ -172,14 +200,16 @@ def build_plan(plan: ObservationPlan = _DEFAULT_PLAN) -> dict[str, Any]:
         "database_or_redis": False,
         "readiness_changed": False,
         "qualification_status": "NOT_QUALIFIED_OWNER_REVIEW_REQUIRED",
-        "measurement_source_sha256": hashlib.sha256(QUANT_SOURCE.read_bytes()).hexdigest(),
+        "measurement_source_sha256": QUANT_SOURCE_SHA256,
         "comparison_logic": "kairos_quant.venue_comparison",
         "thresholds_reference": dict(comparison.DEFAULT_THRESHOLDS),
     }
 
 
 def _json_bytes(value: Any) -> bytes:
-    return (json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
+    return (
+        json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n"
+    ).encode("utf-8")
 
 
 def _create_only(path: Path, payload: bytes) -> None:
@@ -211,7 +241,9 @@ def _url(symbol: str, venue: str) -> str:
 def _http_get(url: str, *, timeout_s: float, max_bytes: int) -> PublicResponse:
     parsed = urlsplit(url)
     allowed_urls = {
-        _url(symbol, venue) for symbol, _venue_symbol in INSTRUMENTS for venue in ("evedex", "binance")
+        _url(symbol, venue)
+        for symbol, _venue_symbol in INSTRUMENTS
+        for venue in ("evedex", "binance")
     }
     if (
         url not in allowed_urls
@@ -254,7 +286,11 @@ def _http_get(url: str, *, timeout_s: float, max_bytes: int) -> PublicResponse:
             error.close()
     except (urllib.error.URLError, TimeoutError, ssl.SSLError, OSError):
         return PublicResponse(
-            None, None, (time.monotonic() - started) * 1000, int(time.time() * 1000), "TLS_OR_TRANSPORT_ERROR"
+            None,
+            None,
+            (time.monotonic() - started) * 1000,
+            int(time.time() * 1000),
+            "TLS_OR_TRANSPORT_ERROR",
         )
     try:
         if response.geturl() != url:
@@ -309,7 +345,9 @@ def _endpoint_hash(url: str) -> str:
     return hashlib.sha256(url.encode("utf-8")).hexdigest()
 
 
-def _reserve_slot(run_dir: Path, slot: int, scheduled_at: str, source_hash: str) -> list[dict[str, Any]]:
+def _reserve_slot(
+    run_dir: Path, slot: int, scheduled_at: str, source_hash: str
+) -> list[dict[str, Any]]:
     slot_id = f"slot-{slot:04d}"
     attempts_dir = run_dir / "attempts"
     attempts: list[dict[str, Any]] = []
@@ -337,7 +375,12 @@ def _reserve_slot(run_dir: Path, slot: int, scheduled_at: str, source_hash: str)
 
 
 def _summary_sample(
-    module: Any, binance_symbol: str, evedex_symbol: str, bbook: Any, ebook: Any, captured_at_ms: int
+    module: Any,
+    binance_symbol: str,
+    evedex_symbol: str,
+    bbook: Any,
+    ebook: Any,
+    captured_at_ms: int,
 ) -> Any:
     observed = max(captured_at_ms, bbook.timestamp_ms, ebook.timestamp_ms)
     return module.VenueSample(
@@ -419,7 +462,11 @@ def _collect_slot(
                 timeout_s=min(plan.request_timeout_s, deadline - start),
                 max_bytes=plan.max_response_bytes,
             )
-        raw_hash = hashlib.sha256(response.body).hexdigest() if response.body is not None else None
+        raw_hash = (
+            hashlib.sha256(response.body).hexdigest()
+            if response.body is not None
+            else None
+        )
         raw_name = f"{key}.raw" if response.body is not None else None
         if response.body is not None:
             _create_only(run_dir / "public" / raw_name, response.body)
@@ -429,11 +476,17 @@ def _collect_slot(
             "outcome": (
                 "NOT_SENT"
                 if response.error_category == "NOT_SENT_SLOT_DEADLINE"
-                else ("UNKNOWN_OUTCOME" if response.status is None else "RESPONSE_RECEIVED")
+                else (
+                    "UNKNOWN_OUTCOME"
+                    if response.status is None
+                    else "RESPONSE_RECEIVED"
+                )
             ),
             "http_status": response.status,
             "error_category": response.error_category,
-            "latency_ms": response.latency_ms if math.isfinite(response.latency_ms) else None,
+            "latency_ms": response.latency_ms
+            if math.isfinite(response.latency_ms)
+            else None,
             "captured_at_ms": response.captured_at_ms,
             "response_bytes": len(response.body) if response.body is not None else None,
             "response_sha256": raw_hash,
@@ -475,11 +528,17 @@ def _collect_slot(
             metrics["reason"] = "public_response_unavailable"
         else:
             try:
-                ebook = module.parse_evedex_book(evedex, _decode_json(ev.body), latency_ms=ev.latency_ms)
-                bbook = module.parse_binance_book(binance, _decode_json(br.body), latency_ms=br.latency_ms)
+                ebook = module.parse_evedex_book(
+                    evedex, _decode_json(ev.body), latency_ms=ev.latency_ms
+                )
+                bbook = module.parse_binance_book(
+                    binance, _decode_json(br.body), latency_ms=br.latency_ms
+                )
                 captured = max(ev.captured_at_ms, br.captured_at_ms)
                 observed = max(captured, ebook.timestamp_ms, bbook.timestamp_ms)
-                local_ahead = max(0, max(ebook.timestamp_ms, bbook.timestamp_ms) - captured)
+                local_ahead = max(
+                    0, max(ebook.timestamp_ms, bbook.timestamp_ms) - captured
+                )
                 reference_age = observed - bbook.timestamp_ms
                 book_age = observed - ebook.timestamp_ms
                 skew = abs(ebook.timestamp_ms - bbook.timestamp_ms)
@@ -487,14 +546,17 @@ def _collect_slot(
                     sum(level.price * level.quantity for level in ebook.bids),
                     sum(level.price * level.quantity for level in ebook.asks),
                 )
-                buy_slippage = module.market_slippage_bps(ebook, buy=True, notional_usd=ASSESSED_NOTIONAL_USD)
+                buy_slippage = module.market_slippage_bps(
+                    ebook, buy=True, notional_usd=ASSESSED_NOTIONAL_USD
+                )
                 sell_slippage = module.market_slippage_bps(
                     ebook, buy=False, notional_usd=ASSESSED_NOTIONAL_USD
                 )
                 future_or_stale = (
                     local_ahead > MAX_CLOCK_AHEAD_MS
                     or skew > MAX_TIMESTAMP_SKEW_MS
-                    or abs(ev.captured_at_ms - br.captured_at_ms) > MAX_TIMESTAMP_SKEW_MS
+                    or abs(ev.captured_at_ms - br.captured_at_ms)
+                    > MAX_TIMESTAMP_SKEW_MS
                     or max(reference_age, book_age) > MAX_BOOK_AGE_MS
                 )
                 metrics.update(
@@ -513,23 +575,41 @@ def _collect_slot(
                         "buy_slippage_bps": buy_slippage,
                         "sell_slippage_bps": sell_slippage,
                         "latency_ms": max(ev.latency_ms, br.latency_ms),
-                        "freshness": "STALE_OR_CLOCK_SKEWED" if future_or_stale else "FRESH",
+                        "freshness": "STALE_OR_CLOCK_SKEWED"
+                        if future_or_stale
+                        else "FRESH",
                     }
                 )
-                samples.append((binance, _summary_sample(module, binance, evedex, bbook, ebook, captured)))
+                samples.append(
+                    (
+                        binance,
+                        _summary_sample(
+                            module, binance, evedex, bbook, ebook, captured
+                        ),
+                    )
+                )
             except Exception:  # noqa: BLE001 -- malformed public books stay unavailable, never synthesized.
                 metrics["reason"] = "book_missing_or_invalid"
-        _create_json(run_dir / "slots" / f"{slot_id}-{binance}.measurement.json", metrics)
+        _create_json(
+            run_dir / "slots" / f"{slot_id}-{binance}.measurement.json", metrics
+        )
     slot_result = {
         "schema": "kairos-public-slot-result-v1",
         "slot_id": slot_id,
         "outcome": "COMPLETED",
         "requests_reserved": REQUESTS_PER_SLOT,
-        "requests_attempted": sum(item["result"]["outcome"] != "NOT_SENT" for item in responses.values()),
-        "requests_completed": sum(item["result"]["http_status"] is not None for item in responses.values()),
-        "requests_not_sent": sum(item["result"]["outcome"] == "NOT_SENT" for item in responses.values()),
+        "requests_attempted": sum(
+            item["result"]["outcome"] != "NOT_SENT" for item in responses.values()
+        ),
+        "requests_completed": sum(
+            item["result"]["http_status"] is not None for item in responses.values()
+        ),
+        "requests_not_sent": sum(
+            item["result"]["outcome"] == "NOT_SENT" for item in responses.values()
+        ),
         "unknown_outcomes": sum(
-            item["result"]["outcome"] == "UNKNOWN_OUTCOME" for item in responses.values()
+            item["result"]["outcome"] == "UNKNOWN_OUTCOME"
+            for item in responses.values()
         ),
         "automatic_retry": False,
     }
@@ -547,14 +627,11 @@ def _execute_observation(
     monotonic: Callable[[], float] = time.monotonic,
     wall_clock: Callable[[], datetime] = lambda: datetime.now(UTC),
     make_uuid: Callable[[], str] = lambda: str(uuid.uuid4()),
-    source_path: Path | None = None,
-    expected_source_sha256: str = QUANT_SOURCE_SHA256,
 ) -> dict[str, Any]:
     if authorize is not True:
         raise ObserverError("EXPLICIT_EXECUTION_GATE_REQUIRED")
-    source_path = QUANT_SOURCE if source_path is None else source_path
-    module = _comparison_logic(path=source_path, expected_sha256=expected_source_sha256)
-    source_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
+    module = _comparison_logic()
+    source_hash = QUANT_SOURCE_SHA256
     if output_root.is_symlink():
         raise ObserverError("OUTPUT_ROOT_REPARSE_BLOCKED")
     output_root.mkdir(parents=True, exist_ok=True)
@@ -590,13 +667,17 @@ def _execute_observation(
                 "status": "RUNNING",
                 "run_id": run_id,
                 "started_at_utc": started_wall.isoformat(),
-                "observer_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                "observer_source_sha256": hashlib.sha256(
+                    Path(__file__).read_bytes()
+                ).hexdigest(),
                 "maximum_requests": plan.slots * REQUESTS_PER_SLOT,
                 "scheduled_slots": [
                     {
                         "slot_id": f"slot-{slot:04d}",
                         "scheduled_at_utc": datetime.fromtimestamp(
-                            started_wall.timestamp() + (slot - 1) * plan.poll_interval_s, UTC
+                            started_wall.timestamp()
+                            + (slot - 1) * plan.poll_interval_s,
+                            UTC,
                         ).isoformat(),
                     }
                     for slot in range(1, plan.slots + 1)
@@ -615,14 +696,18 @@ def _execute_observation(
             if monotonic() >= started_mono + plan.duration_s:
                 missed_slots += plan.slots - slot + 1
                 for skipped in range(slot, plan.slots + 1):
-                    stamp = started_wall.timestamp() + (skipped - 1) * plan.poll_interval_s
+                    stamp = (
+                        started_wall.timestamp() + (skipped - 1) * plan.poll_interval_s
+                    )
                     _create_json(
                         run_dir / "slots" / f"slot-{skipped:04d}.missed.json",
                         {
                             "schema": "kairos-public-slot-result-v1",
                             "slot_id": f"slot-{skipped:04d}",
                             "outcome": "MISSED_RUN_DEADLINE",
-                            "scheduled_at_utc": datetime.fromtimestamp(stamp, UTC).isoformat(),
+                            "scheduled_at_utc": datetime.fromtimestamp(
+                                stamp, UTC
+                            ).isoformat(),
                         },
                     )
                 break

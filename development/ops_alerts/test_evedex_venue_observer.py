@@ -24,7 +24,12 @@ class SimulatedCrash(BaseException):
 
 
 def _body(
-    symbol: str, venue: str, *, mid: float = 100.0, timestamp: int = 1_000_000, empty: bool = False
+    symbol: str,
+    venue: str,
+    *,
+    mid: float = 100.0,
+    timestamp: int = 1_000_000,
+    empty: bool = False,
 ) -> bytes:
     if venue == "evedex":
         bids = [] if empty else [{"price": mid - 0.01, "quantity": 100.0}]
@@ -36,7 +41,9 @@ def _body(
 
 
 def _fake_fetcher(
-    *, bad: dict[tuple[str, str], str] | None = None, shift_evedex_after_first_slot: bool = False
+    *,
+    bad: dict[tuple[str, str], str] | None = None,
+    shift_evedex_after_first_slot: bool = False,
 ):
     calls: list[str] = []
     bad = bad or {}
@@ -54,7 +61,9 @@ def _fake_fetcher(
             symbol = parse_qs(parsed.query)["symbol"][0]
         mode = bad.get((symbol, venue))
         if mode == "unknown":
-            return observer.PublicResponse(None, None, 8.0, 1_000_000, "TLS_OR_TRANSPORT_ERROR")
+            return observer.PublicResponse(
+                None, None, 8.0, 1_000_000, "TLS_OR_TRANSPORT_ERROR"
+            )
         timestamp = 1_000_000
         if mode == "stale":
             timestamp -= 10_000
@@ -62,7 +71,11 @@ def _fake_fetcher(
             timestamp += 5_000
         empty = mode == "empty"
         mid = (
-            101.0 if shift_evedex_after_first_slot and venue == "evedex" and (len(calls) - 1) // 10 else 100.0
+            101.0
+            if shift_evedex_after_first_slot
+            and venue == "evedex"
+            and (len(calls) - 1) // 10
+            else 100.0
         )
         body = _body(symbol, venue, mid=mid, timestamp=timestamp, empty=empty)
         return observer.PublicResponse(200, body, 2.0, 1_000_000)
@@ -75,7 +88,9 @@ class ObserverTests(unittest.TestCase):
     def setUpClass(cls):
         test_source = os.environ.get("KAIROS_TEST_QUANT_SOURCE")
         if test_source:
-            cls.quant_source_patch = mock.patch.object(observer, "QUANT_SOURCE", Path(test_source))
+            cls.quant_source_patch = mock.patch.object(
+                observer, "QUANT_SOURCE", Path(test_source)
+            )
             cls.quant_source_patch.start()
             cls.addClassCleanup(cls.quant_source_patch.stop)
         cls.quant_source = observer.QUANT_SOURCE
@@ -102,7 +117,9 @@ class ObserverTests(unittest.TestCase):
         output = io.StringIO()
         with (
             contextlib.redirect_stdout(output),
-            mock.patch.object(observer, "_http_get", side_effect=AssertionError("network called")),
+            mock.patch.object(
+                observer, "_http_get", side_effect=AssertionError("network called")
+            ),
         ):
             self.assertEqual(observer.main([]), 0)
         plan = json.loads(output.getvalue())
@@ -133,7 +150,8 @@ class ObserverTests(unittest.TestCase):
             self.assertEqual(outcome["unknown_outcomes"], 0)
             self.assertEqual(len(calls), 10)
             self.assertEqual(
-                {symbol for symbol, _sample in samples}, {symbol for symbol, _venue in observer.INSTRUMENTS}
+                {symbol for symbol, _sample in samples},
+                {symbol for symbol, _venue in observer.INSTRUMENTS},
             )
             measurements = list((run_dir / "slots").glob("*.measurement.json"))
             self.assertEqual(len(measurements), 5)
@@ -169,12 +187,14 @@ class ObserverTests(unittest.TestCase):
             )
             self.assertEqual(len(samples), 3)
             records = {
-                json.loads(path.read_text(encoding="utf-8"))["binance_symbol"]: json.loads(
-                    path.read_text(encoding="utf-8")
-                )
+                json.loads(path.read_text(encoding="utf-8"))[
+                    "binance_symbol"
+                ]: json.loads(path.read_text(encoding="utf-8"))
                 for path in (run_dir / "slots").glob("*.measurement.json")
             }
-            self.assertEqual(records["BTCUSDT"]["reason"], "public_response_unavailable")
+            self.assertEqual(
+                records["BTCUSDT"]["reason"], "public_response_unavailable"
+            )
             self.assertIsNone(records["BTCUSDT"]["basis_bps"])
             self.assertIsNone(records["BTCUSDT"]["buy_slippage_bps"])
             self.assertEqual(records["SOLUSDT"]["reason"], "book_missing_or_invalid")
@@ -206,10 +226,14 @@ class ObserverTests(unittest.TestCase):
             self.assertEqual(report["planned_slots"], 2)
             self.assertEqual(report["completed_slots"], 2)
             self.assertEqual(report["symbols"]["BTCUSDT"]["sample_count"], 2)
-            self.assertAlmostEqual(report["symbols"]["BTCUSDT"]["p95_abs_basis_bps"], 95.0)
+            self.assertAlmostEqual(
+                report["symbols"]["BTCUSDT"]["p95_abs_basis_bps"], 95.0
+            )
             self.assertFalse(report["sample_is_24h_evidence"])
             self.assertFalse(report["account_prerequisites_attested"])
-            self.assertEqual(report["qualification_status"], "NOT_QUALIFIED_OWNER_REVIEW_REQUIRED")
+            self.assertEqual(
+                report["qualification_status"], "NOT_QUALIFIED_OWNER_REVIEW_REQUIRED"
+            )
             self.assertFalse(report["readiness_changed"])
             self.assertTrue((Path(directory) / "observer.lock").exists())
 
@@ -239,7 +263,9 @@ class ObserverTests(unittest.TestCase):
                 json.loads(path.read_text(encoding="utf-8"))
                 for path in root.glob("run-*/attempts/*.reserved.json")
             ]
-            self.assertTrue(all(item["outcome"] == "UNKNOWN_UNTIL_RESULT" for item in reservations))
+            self.assertTrue(
+                all(item["outcome"] == "UNKNOWN_UNTIL_RESULT" for item in reservations)
+            )
             self.assertTrue((root / "observer.lock").exists())
             self.assertEqual(len(calls), 1)
             with self.assertRaisesRegex(observer.ObserverError, "LATCHED"):
@@ -257,7 +283,47 @@ class ObserverTests(unittest.TestCase):
             changed = Path(directory) / "venue_comparison.py"
             changed.write_bytes(original + b"\n# changed\n")
             with self.assertRaisesRegex(observer.ObserverError, "SOURCE_CHANGED"):
-                observer._comparison_logic(path=changed)
+                observer._load_comparison_logic(changed)
+
+    def test_quant_source_accepts_exact_lf_and_crlf_bytes(self):
+        lf_source = self.quant_source.read_bytes().replace(b"\r\n", b"\n")
+        crlf_source = lf_source.replace(b"\n", b"\r\n")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            lf_path = root / "lf.py"
+            crlf_path = root / "crlf.py"
+            lf_path.write_bytes(lf_source)
+            crlf_path.write_bytes(crlf_source)
+            self.assertEqual(
+                observer._load_comparison_logic(lf_path).DEFAULT_THRESHOLDS,
+                observer._load_comparison_logic(crlf_path).DEFAULT_THRESHOLDS,
+            )
+
+    def test_quant_source_rejects_mixed_line_endings(self):
+        source = self.quant_source.read_bytes().replace(b"\r\n", b"\n")
+        mixed = source.replace(b"\n", b"\r\n", 1)
+        with tempfile.TemporaryDirectory() as directory:
+            changed = Path(directory) / "mixed.py"
+            changed.write_bytes(mixed)
+            with self.assertRaisesRegex(observer.ObserverError, "SOURCE_CHANGED"):
+                observer._load_comparison_logic(changed)
+
+    def test_quant_source_requires_repeated_raw_byte_equality(self):
+        raw_source = self.quant_source.read_bytes()
+        alternate_line_endings = raw_source.replace(b"\n", b"\r\n")
+        with tempfile.TemporaryDirectory() as directory:
+            source_path = Path(directory) / "venue_comparison.py"
+            source_path.write_bytes(raw_source)
+            with (
+                mock.patch.object(
+                    Path,
+                    "read_bytes",
+                    autospec=True,
+                    side_effect=[raw_source, alternate_line_endings],
+                ),
+                self.assertRaisesRegex(observer.ObserverError, "SOURCE_CHANGED"),
+            ):
+                observer._load_comparison_logic(source_path)
 
     def test_slot_deadline_marks_reserved_but_unsent_attempts(self):
         fetcher, calls = _fake_fetcher()
