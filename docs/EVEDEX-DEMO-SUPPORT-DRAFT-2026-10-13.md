@@ -1,6 +1,11 @@
 # EVEDEX Demo support draft — 2026-10-13
 
-**Draft only; not sent.** Recipient: official EVEDEX support. Content is limited
+**Historical prepared draft.** A later message, including a BTC-narrowing caveat,
+was sent in official support ticket 1013-20. Its response and subsequent public
+three-pair results are recorded in
+[the later technical scope receipt](EVEDEX-DEMO-TECHNICAL-SCOPE-2026-10-13.md).
+The draft text below is retained, not represented as the exact dispatched bytes.
+Recipient: official EVEDEX support. Content is limited
 to public market observations; no wallet/account identity, credentials, private
 balance or research performance. This is separate from the earlier DEV draft.
 

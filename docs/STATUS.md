@@ -2,6 +2,33 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
 
+## Later Demo technical scope and restored public books — 2026-10-13, 20:44 Moscow
+
+Official support ticket **1013-20** confirms Demo's three available pairs,
+BTC/ETH/1000PEPE, and its tool-testing purpose with potentially non-real prices.
+The [separate technical scope and signed receipt](EVEDEX-DEMO-TECHNICAL-SCOPE-2026-10-13.md)
+supersede the current-state interpretation of the earlier empty ETH/wide BTC
+snapshots below; those historical receipts remain intact.
+
+One independent, signed-source anonymous diagnostic made **11 GETs, all HTTP 200**.
+All three Demo instruments are trading/visible; each default and best-only book
+was two-sided, uncrossed and snapshot-fresh. Best-only spreads were approximately
+0.22 bps BTC, 1.64 bps ETH and 11.96 bps 1000PEPE. A later UI check also showed
+ETH's populated Order Book. The historical venue cause is unconfirmed; this
+source change is not described as repairing EVEDEX.
+
+The new tool is isolated from DEV/PAPER, has no credential/account/mutation,
+database/queue or provider path, and passes 18 new offline tests and 202 complete
+ops tests on each Python version. Its source passed all three exact-source
+hosted gates. A public-only support update was visibly sent asking for the
+official five-instrument test route; that answer is pending. No attachment or
+private identity/balance/key was forwarded.
+
+1000PEPE is only a Demo diagnostic instrument, not a replacement for SOL/BNB/XRP.
+The required five-symbol gate is unchanged and blocked; no 24-hour observation,
+canary, signing test, order, funding, paid API or legacy/runtime mutation was
+started. All readiness remains false and policy remains `REJECT_ALL`.
+
 ## Later Demo funding/depth diagnosis — 2026-10-13, 18:03 Moscow
 
 The [funding/depth receipt](EVEDEX-DEMO-FUNDING-DEPTH-2026-10-13.md) clarifies the

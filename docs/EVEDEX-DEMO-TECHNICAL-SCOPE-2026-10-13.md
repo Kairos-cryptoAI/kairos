@@ -64,3 +64,45 @@ Until an official usable five-instrument route is accepted, that qualification
 remains blocked. A later manual Demo order/signature would require a separately
 bounded handoff and is not authorized by this anonymous public tool. No trading
 is started here. All readiness remains false and policy remains `REJECT_ALL`.
+
+## Later public snapshot — 17:44:06–17:44:47 UTC
+
+The signed source `6c1af3fd9cceaf4b1dd99bcd79093ede129beaf3` completed its
+one allowed daily diagnostic. All **11 GETs returned HTTP 200**, with zero
+transport/schema errors. Matcher is `active`; all three selected instruments
+are present, `trading=all`, `visibility=all`. Both default and best-only queries
+returned two-sided, uncrossed, snapshot-fresh depth for every selected instrument.
+
+| Instrument | Default bids / asks | Best bid | Best ask | Best-only spread, bps |
+| --- | --- | --- | --- | --- |
+| BTCUSD:DEMO | 18 / 15 | 83,203.10 | 83,204.90 | 0.216336 |
+| ETHUSD:DEMO | 11 / 10 | 2,503.73 | 2,504.14 | 1.637423 |
+| 1000PEPEUSD:DEMO | 10 / 10 | 0.004179 | 0.004184 | 11.957432 |
+
+Each recent-trade response has 36 records. Latest-trade ages were approximately
+0.38 seconds for BTC, 1.08 seconds for ETH and 96.77 seconds for 1000PEPE.
+Default and best-only snapshots were serial; the two ETH ask prices differed.
+Book timestamps were about 1–1.45 seconds ahead of local capture. This is retained
+as a signed negative age, not independent NTP/skew acceptance.
+
+An independent later Demo UI inspection showed both sides of ETH Order Book.
+The earlier 15:03 UTC empty ETH book and wide BTC snapshot are retained unchanged;
+those failures no longer reproduce in this sample. No Kairos change is credited
+with fixing the venue, and its historical internal cause remains unknown.
+
+The [factual signed receipt](receipts/evedex-demo-three-pair-20261013.json) binds
+source, report, numeric depth and protected UI/support evidence hashes. The tool
+has 18 new offline tests; the complete ops suite passes **202 tests on each of
+Windows Python 3.11.15 and 3.14**. Scoped Ruff/format and Meta static checks pass.
+The exact source passed hosted
+[validate](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38440992415),
+[adaptive-development](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38440992066),
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38440991191).
+
+One public-only update was visibly sent in the same official support conversation,
+without attachments or private data, reporting the recovered snapshot and asking
+for an official active five-instrument, no-real-funds test route. That route's
+answer remains pending at this checkpoint. No 24-hour observer, authenticated
+signing test, canary, transfer, order, paid provider, primary/legacy database or
+queue operation was started. This closes the finite public three-pair diagnostic,
+not any trading/readiness gate. Existing runtime and adaptive WIP were untouched.

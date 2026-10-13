@@ -1,0 +1,207 @@
+{
+  "schema": "kairos.evedex-demo-three-pair-snapshot-receipt.v1",
+  "result": "PASS_BOUNDED_PUBLIC_DIAGNOSTIC_NOT_QUALIFICATION",
+  "observation_started_at_utc": "2026-10-13T17:44:06.491278+00:00",
+  "observation_ended_at_utc": "2026-10-13T17:44:47.009885+00:00",
+  "source_revision": "6c1af3fd9cceaf4b1dd99bcd79093ede129beaf3",
+  "source_sha256": "34f521d9c044c4f0ea73626dd0213fc9bfb4bd2580316562cf798a8ec70082ce",
+  "report_sha256": "153529bad023c58c2ece5e061de539400f16330701a9421e5e81c02894e38c48",
+  "support_ticket": "1013-20",
+  "support_report_sent": true,
+  "support_public_update_delivery": "visible sent in the same conversation; no automatic retry",
+  "support_public_update_sha256": "be97f20bbf4effdab333f9d36bd296e4451e5dfc53b5e338294e1fef9f58dee7",
+  "support_public_update_screenshot_sha256": "07e2342de32eb205c48dde2d6b07527898c33301e108d343b1f30cfc5fdc7e42",
+  "support_three_pair_limit_confirmed": true,
+  "support_five_instrument_route_answer": "pending",
+  "origin": "https://trading-api.evedex.io",
+  "symbols": [
+    "BTCUSD:DEMO",
+    "ETHUSD:DEMO",
+    "1000PEPEUSD:DEMO"
+  ],
+  "unchanged_kairos_required_dev_symbols": [
+    "BTCUSD:DEV",
+    "ETHUSD:DEV",
+    "SOLUSD:DEV",
+    "BNBUSD:DEV",
+    "XRPUSD:DEV"
+  ],
+  "matcher": {
+    "matcher_state": "active"
+  },
+  "instruments": {
+    "1000PEPEUSD:DEMO": {
+      "present": true,
+      "trading": "all",
+      "visibility": "all"
+    },
+    "BTCUSD:DEMO": {
+      "present": true,
+      "trading": "all",
+      "visibility": "all"
+    },
+    "ETHUSD:DEMO": {
+      "present": true,
+      "trading": "all",
+      "visibility": "all"
+    }
+  },
+  "http_calls": 11,
+  "all_http_200": true,
+  "diagnostic_errors": 0,
+  "book_snapshots": [
+    {
+      "symbol": "BTCUSD:DEMO",
+      "variant": "default",
+      "captured_at_utc": "2026-10-13T17:44:19.274206+00:00",
+      "body_sha256": "7eb2db1ef02b0a1305dbb68fc0d790e8eed81e75bc84f1aa48a0227a50c35df4",
+      "ask_levels": 15,
+      "best_ask": 83204.9,
+      "best_bid": 83203.1,
+      "bid_levels": 18,
+      "freshness": "FRESH",
+      "signed_age_seconds": -0.974794,
+      "spread_bps": 0.216336,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913460249
+    },
+    {
+      "symbol": "BTCUSD:DEMO",
+      "variant": "best",
+      "captured_at_utc": "2026-10-13T17:44:22.610239+00:00",
+      "body_sha256": "83ade4f27dbfa3ed1c8c465421cec2307512c8c4bdb639e53ac20edc0a9531f8",
+      "ask_levels": 1,
+      "best_ask": 83204.9,
+      "best_bid": 83203.1,
+      "bid_levels": 1,
+      "freshness": "FRESH",
+      "signed_age_seconds": -1.446761,
+      "spread_bps": 0.216336,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913464057
+    },
+    {
+      "symbol": "ETHUSD:DEMO",
+      "variant": "default",
+      "captured_at_utc": "2026-10-13T17:44:28.453230+00:00",
+      "body_sha256": "a76d08ad24daffb646205ac112a08495806c0888a8ce095828adc7902a495091",
+      "ask_levels": 10,
+      "best_ask": 2504.35,
+      "best_bid": 2503.73,
+      "bid_levels": 11,
+      "freshness": "FRESH",
+      "signed_age_seconds": -1.28977,
+      "spread_bps": 2.475999,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913469743
+    },
+    {
+      "symbol": "ETHUSD:DEMO",
+      "variant": "best",
+      "captured_at_utc": "2026-10-13T17:44:32.731584+00:00",
+      "body_sha256": "49fec7306b076f4df5e66026edbd9fa80b036d646891262066e4133d6c1c9e40",
+      "ask_levels": 1,
+      "best_ask": 2504.14,
+      "best_bid": 2503.73,
+      "bid_levels": 1,
+      "freshness": "FRESH",
+      "signed_age_seconds": -1.347416,
+      "spread_bps": 1.637423,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913474079
+    },
+    {
+      "symbol": "1000PEPEUSD:DEMO",
+      "variant": "default",
+      "captured_at_utc": "2026-10-13T17:44:39.492350+00:00",
+      "body_sha256": "521b0b9c3556401c6cd05f9a20ca8080ead9d65281eb8ab0a889fbb04af84f56",
+      "ask_levels": 10,
+      "best_ask": 0.004184,
+      "best_bid": 0.004179,
+      "bid_levels": 10,
+      "freshness": "FRESH",
+      "signed_age_seconds": -1.45965,
+      "spread_bps": 11.957432,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913480952
+    },
+    {
+      "symbol": "1000PEPEUSD:DEMO",
+      "variant": "best",
+      "captured_at_utc": "2026-10-13T17:44:42.393849+00:00",
+      "body_sha256": "d65a238d2b1b04254213ca077aa4c5c764ba3b8b9410c6518b92631b491a0023",
+      "ask_levels": 1,
+      "best_ask": 0.004184,
+      "best_bid": 0.004179,
+      "bid_levels": 1,
+      "freshness": "FRESH",
+      "signed_age_seconds": -1.035151,
+      "spread_bps": 11.957432,
+      "state": "TWO_SIDED_BOOK",
+      "timestamp_ms": 1791913483429
+    }
+  ],
+  "recent_trades": [
+    {
+      "symbol": "BTCUSD:DEMO",
+      "captured_at_utc": "2026-10-13T17:44:26.029394+00:00",
+      "body_sha256": "c1b397d92260044508da3666bdacbdbdf96a39d75a42fed602e701e4e6a9eca6",
+      "count": 36,
+      "freshness": "RECENT",
+      "latest_trade_age_seconds": 0.381394,
+      "state": "TRADES_OBSERVED"
+    },
+    {
+      "symbol": "ETHUSD:DEMO",
+      "captured_at_utc": "2026-10-13T17:44:37.963896+00:00",
+      "body_sha256": "ea30b17bcf5f3de50fa44d02f07c9daea82d1758aee6ba388fb020a63243678f",
+      "count": 36,
+      "freshness": "RECENT",
+      "latest_trade_age_seconds": 1.076896,
+      "state": "TRADES_OBSERVED"
+    },
+    {
+      "symbol": "1000PEPEUSD:DEMO",
+      "captured_at_utc": "2026-10-13T17:44:46.116599+00:00",
+      "body_sha256": "1da13e9d509c91fc50f0def27fac27ce4fe728bbe98e8dc9170c3a3dd57fc8fa",
+      "count": 36,
+      "freshness": "RECENT",
+      "latest_trade_age_seconds": 96.772599,
+      "state": "TRADES_OBSERVED"
+    }
+  ],
+  "eth_browser_book_seen_later": true,
+  "eth_browser_book_screenshot_sha256": "a794826d3a7a7a0d1d9eff7843d330ba4f5ceb51c6ae445a382c104f9316fa14",
+  "support_response_screenshot_sha256": "df2c7b6cf3ac6a103e064be2cf880fcdfbcf28d50e799f2d8decd3c4b251686f",
+  "qualification_limits": [
+    "serial sparse observations, not paired snapshots or 24-hour availability",
+    "DEMO synthetic prices are not production liquidity or alpha evidence",
+    "negative signed ages are not independent clock-synchronization proof",
+    "past failures remain retained; historical ETH empty-book cause unconfirmed",
+    "no five-symbol universe substitution or DEV/DEMO credential interchange"
+  ],
+  "tests": {
+    "new_offline_tests": 18,
+    "full_ops_tests_python311": 202,
+    "full_ops_tests_python314": 202,
+    "meta_static_pass": true,
+    "ruff_check_pass": true,
+    "ruff_format_pass": true
+  },
+  "boundaries": {
+    "authenticated": false,
+    "credentials_read": false,
+    "orders": 0,
+    "transfers": 0,
+    "wallet_signatures": 0,
+    "paid_calls": 0,
+    "primary_or_queue_changed": false,
+    "dev_configuration_changed": false,
+    "technical_paper_ready": false,
+    "paper_qualified": false,
+    "alpha_ready": false,
+    "live_ready": false,
+    "strategy_policy": "REJECT_ALL"
+  },
+  "evidence_root": "D:/Kairos/runtime/evedex-demo-public-diagnostic/20261013"
+}
