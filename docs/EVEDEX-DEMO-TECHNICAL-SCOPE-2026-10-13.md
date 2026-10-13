@@ -1,5 +1,12 @@
 # EVEDEX Demo: separate technical scope after support response
 
+**Later additive checkpoint:** the
+[non-trading closeout](EVEDEX-NONTRADING-CLOSEOUT-2026-10-13.md) resolves the
+wallet coin-ID format, records a fresh GET-only empty account sample, and
+captures Daniel's latest reply: three pairs and one Demo account, without an
+alternate five-symbol route. The pending-answer wording below is preserved as
+an earlier checkpoint, not the current support state. No gate is weakened.
+
 ## Accepted support facts, not trading acceptance
 
 Official EVEDEX Help 24/7 ticket **1013-20** received the owner's approved

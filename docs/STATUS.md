@@ -2,6 +2,31 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
 
+## Later EVEDEX non-trading closeout — 2026-10-13, 21:37–21:51 Moscow
+
+[New signed evidence and remaining boundaries](EVEDEX-NONTRADING-CLOSEOUT-2026-10-13.md)
+close the SDK stale-session/event admission fix, pure Demo account contracts,
+one fresh seven-GET empty-state reconciliation and multidict reference-leak
+exclusion. The existing Demo account matches its prior binding; positions,
+opened orders, TP/SL and reservations are empty. Test wallet USDT is identified
+by the exact public coin ID and is positive, but margin/available balance is zero.
+No order, transfer, wallet signature, real funding or paid model call occurred.
+
+The SDK fix passes 25 offline Node tests on Windows and network-none Docker.
+Execution's corrected dependencies pass 582 tests on each Windows Python version
+and all exact-source hosted CI/CodeQL checks. Ops passes 215 tests per Python
+version; Deploy validators and its 980-test stdlib suite pass locally. Signed
+source pins/locks are synchronized; running runtime packages/containers are not.
+Pre-existing adaptive WIP, old database/queue and all frozen research are untouched.
+
+**The support answer is no longer pending:** Daniel confirms three pairs and
+one Demo account, without providing an alternate active five-symbol test route.
+The earlier public/account receipts below remain historical evidence. This
+three-pair Demo cannot satisfy the unchanged BTC/ETH/SOL/BNB/XRP gate; no symbol
+substitution or readiness promotion is made. Signing authority, the five-symbol
+24-hour gate, canary and soak remain unaccepted. All readiness stays false and
+policy stays `REJECT_ALL`; trading remains off.
+
 ## Later Demo technical scope and restored public books — 2026-10-13, 20:44 Moscow
 
 Official support ticket **1013-20** confirms Demo's three available pairs,
