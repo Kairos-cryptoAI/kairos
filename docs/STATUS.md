@@ -1,6 +1,27 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-12_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
+
+## EVEDEX DEV public diagnosis — 2026-10-13
+
+The [new diagnosis](EVEDEX-DEV-DIAGNOSIS-2026-10-13.md) records a fresh 12-GET
+public preflight and a distinct 17-GET depth comparison, all HTTP 200. Default,
+documented best-only and SDK-style parameters all return empty SOL/BNB/XRP
+books, while BTC/ETH controls return two-sided depth. Nine empty raw replies
+are preserved; no parser or tested query-choice discrepancy explains them.
+BNB remains hidden with zero last/mark prices, XRP's last price is zero, and
+SOL's only recent-trade reply is roughly 156 days old. The internal venue cause
+is unconfirmed, not declared fixed or bypassed.
+
+Browser inspection separates Mainnet `.com`, DEV `.tech` / `:DEV` and Demo
+`.io` / `:DEMO`. The owner cannot currently log into the test interface;
+authenticated account/key pairing is deferred. No key was exported, generated,
+regenerated or forwarded across environments. The
+[public support draft](EVEDEX-DEV-SUPPORT-DRAFT-2026-10-13.md) was not sent.
+The new diagnostic passes 18 focused tests; full ops suites pass 133 on each
+Python version. No 24-hour/PAPER/canary/soak service or order was started.
+All readiness remains false, `REJECT_ALL`. R6 details below are dated evidence,
+not a fresh October 13 runtime check.
 
 ## Current R6 non-trading runtime and technical alerts — 2026-10-12
 
