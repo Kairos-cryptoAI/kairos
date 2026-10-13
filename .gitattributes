@@ -19,6 +19,9 @@ development/ops_alerts/evedex_dev_depth_diagnostic.py -text
 development/ops_alerts/test_evedex_dev_depth_diagnostic.py -text
 development/ops_alerts/Test-NotificationPythonHost.ps1 -text
 development/ops_alerts/notification_python_probe.py -text
+# Additive notifier signatures bind these exact new source bytes.
+development/ops_alerts/ops_source_notifier_v1.py -text
+development/ops_alerts/test_ops_source_notifier_v1.py -text
 # Published comparison receipts are byte-bound to their original runtime files.
 development/adaptive_replay/evidence/comparison-2026-10-06/** -text
 development/adaptive_replay/evidence/right-tail-2026-10-07/** -text
