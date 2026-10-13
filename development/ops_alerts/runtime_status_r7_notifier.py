@@ -1,0 +1,836 @@
+"""Create-only technical status notifier for the accepted R7 shadow epoch.
+
+The default command is a no-I/O plan.  The monitor reads one protected status
+file; it never queries Docker, PostgreSQL, Redis, a provider, or a venue.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import importlib.util
+import json
+import os
+import re
+import sys
+from collections.abc import Callable
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(r"D:\Kairos\kairos")
+DEPLOY_ROOT = Path(r"D:\Kairos\kairos-deploy")
+RUNTIME_ROOT = Path(r"D:\Kairos\runtime\runtime-incident-20261013")
+PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261013\operational-r7")
+WORK = "read-recovery-r7-cb1bc3984d8440aa965af5b928d2b4fa"
+OWNER = "69893dc7b7c647f49967387e7efca9fb"
+TASK_NAME = "Kairos-R7-TechnicalAlerts-V1-20261013"
+SCOPE = "kairos-r7-technical-runtime-alerts-v1"
+GROUP_ID = -1004475802889
+EXPECTED_CONTAINER = "c08f5b667a84febb2dc1639857b44a52208ea29f9836e14c11685d89ccd55ae0"
+RECEIPT_SHA256 = "03b10208edd5d5d7957ceaf2d38a6d73b7acbef03bfd4f2a87e1fa8ef88cacb0"
+SOURCE_REVISION = "98016d0f28fb175ba3a49ad328c2779c000e27d3"
+GENERATION_NAME = "kairos-epoch-69893dc7b7c6-serve-r7"
+R5_RELATIVE_SOURCE = "development/ops_alerts/runtime_status_r5_notifier.py"
+R5_SOURCE_SHA256 = "b53b24d3d97d5d4bb58384e87073e2a3d9ad22f853adec263ec84813553555db"
+HANDOFF_RELATIVE_SOURCE = "development/ops_alerts/telegram_continuation.py"
+HANDOFF_SHA256 = "b308e19753be088966e3fed4d1ddacc47ca3ef8d90089d1c527d1c93813d3930"
+DELIVERY_RELATIVE_SOURCE = "scripts/alert_delivery.py"
+DELIVERY_SHA256 = "fa9d58a7c1d7967c5aacf107accfbc72ff61fe5c71e4348a9c75dcf44e976ce5"
+DEPLOY_INIT_RELATIVE_SOURCE = "scripts/__init__.py"
+SYMBOLS = frozenset({"BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT"})
+MIN_COMPLETED_INBOX = 8070
+MIN_WATERMARK_MS = 1_791_894_180_000
+MAX_STATUS_AGE_SECONDS = 30.0
+MAX_BYTES = 65_536
+MAX_RECEIPT_BYTES = 1_048_576
+MAX_RECORDS = 256
+_HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+_ALERT_STATES = {
+    "failed_closed",
+    "missing",
+    "invalid",
+    "unknown_owner",
+    "running_stale",
+}
+_QUIET_STATES = {
+    "running_fresh",
+    "waiting_source_nontrading",
+    "catching_up_nontrading",
+}
+_KNOWN_STATES = _ALERT_STATES | _QUIET_STATES
+_SOURCE_TIMEOUT = "OFFICIAL_CLOSED_BAR_FETCH_TIMEOUT"
+
+
+class R7Error(RuntimeError):
+    """Redacted, stable failure category for the technical monitor."""
+
+    def __init__(self, category: str):
+        self.category = category
+        super().__init__(category)
+
+
+def _json(raw: bytes) -> Any:
+    def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate key")
+            result[key] = value
+        return result
+
+    return json.loads(raw, object_pairs_hook=unique)
+
+
+def _binding_record() -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "scope": SCOPE,
+        "owner": OWNER,
+        "task_name": TASK_NAME,
+        "work": WORK,
+        "serve_container_id": EXPECTED_CONTAINER,
+        "receipt_sha256": RECEIPT_SHA256,
+        "receipt_source_revision": SOURCE_REVISION,
+        "trading_started": False,
+        "business_signals_muted": True,
+    }
+
+
+def _binding_bytes() -> bytes:
+    return json.dumps(_binding_record(), sort_keys=True, separators=(",", ":")).encode()
+
+
+def _binding_sha256() -> str:
+    return hashlib.sha256(_binding_bytes()).hexdigest()
+
+
+def _load_r5_helpers() -> Any:
+    """Import only the byte-pinned R5 protected-reader/transport helper."""
+    path = ROOT / R5_RELATIVE_SOURCE
+    raw = _bounded_source(path, 256 * 1024)
+    if len(raw) > 256 * 1024 or hashlib.sha256(raw).hexdigest() != R5_SOURCE_SHA256:
+        raise R7Error("PROTECTED_HELPER_MISMATCH")
+    name = "_kairos_pinned_r5_runtime_helpers_for_r7"
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise R7Error("PROTECTED_HELPER_REQUIRED")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception:  # noqa: BLE001 - never disclose helper/import diagnostics.
+        sys.modules.pop(name, None)
+        raise R7Error("PROTECTED_HELPER_REQUIRED") from None
+    if (
+        Path(module.__file__).resolve() != path.resolve()
+        or hashlib.sha256(_bounded_source(path, 256 * 1024)).hexdigest()
+        != R5_SOURCE_SHA256
+    ):
+        sys.modules.pop(name, None)
+        raise R7Error("PROTECTED_HELPER_MISMATCH")
+    return module
+
+
+def _bounded_source(path: Path, maximum: int) -> bytes:
+    try:
+        before = path.lstat()
+        if (
+            path.is_symlink()
+            or getattr(before, "st_file_attributes", 0) & 0x400
+            or not path.is_file()
+            or not 0 < before.st_size <= maximum
+        ):
+            raise R7Error("PROTECTED_HELPER_REQUIRED")
+        fd = os.open(
+            path,
+            os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0),
+        )
+        with os.fdopen(fd, "rb") as stream:
+            opened = os.fstat(stream.fileno())
+            if (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino):
+                raise R7Error("PROTECTED_HELPER_REQUIRED")
+            raw = stream.read(maximum + 1)
+        if len(raw) != before.st_size or len(raw) > maximum:
+            raise R7Error("PROTECTED_HELPER_REQUIRED")
+        return raw
+    except R7Error:
+        raise
+    except Exception:  # noqa: BLE001 - safe path errors remain redacted.
+        raise R7Error("PROTECTED_HELPER_REQUIRED") from None
+
+
+def _verify_signed_source(helpers: Any) -> None:
+    """Require this runner and its installer/tests to be the exact signed main bytes."""
+    try:
+        for namespace_init in (
+            ROOT / "development" / "__init__.py",
+            ROOT / "development" / "ops_alerts" / "__init__.py",
+        ):
+            if namespace_init.exists() or namespace_init.is_symlink():
+                raise R7Error("META_NAMESPACE_IMPORT_REJECTED")
+        head = (
+            helpers._git(ROOT, ["show", "-s", "--format=%H %G? %GF", "HEAD"])
+            .decode("ascii", "strict")
+            .strip()
+            .split()
+        )
+        if (
+            len(head) != 3
+            or head[1:] != ["G", helpers.SIGNER]
+            or helpers._git(ROOT, ["branch", "--show-current"]).decode().strip()
+            != "main"
+            or helpers._git(ROOT, ["rev-parse", "origin/main"]).decode().strip()
+            != head[0]
+        ):
+            raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
+        deploy_source = (
+            helpers._git(
+                DEPLOY_ROOT,
+                ["show", "-s", "--format=%H %G? %GF", SOURCE_REVISION],
+            )
+            .decode("ascii", "strict")
+            .strip()
+            .split()
+        )
+        if deploy_source != [SOURCE_REVISION, "G", helpers.SIGNER]:
+            raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
+        deploy_head = (
+            helpers._git(DEPLOY_ROOT, ["show", "-s", "--format=%H %G? %GF", "HEAD"])
+            .decode("ascii", "strict")
+            .strip()
+            .split()
+        )
+        deploy_head_id = deploy_head[0] if deploy_head else ""
+        if (
+            len(deploy_head) != 3
+            or deploy_head[1:] != ["G", helpers.SIGNER]
+            or helpers._git(DEPLOY_ROOT, ["branch", "--show-current"])
+            .decode("ascii", "strict")
+            .strip()
+            != "main"
+            or helpers._git(DEPLOY_ROOT, ["rev-parse", "origin/main"])
+            .decode("ascii", "strict")
+            .strip()
+            != deploy_head_id
+        ):
+            raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
+        helpers._git(
+            DEPLOY_ROOT,
+            ["merge-base", "--is-ancestor", SOURCE_REVISION, deploy_head_id],
+        )
+        for relative in (
+            "development/ops_alerts/runtime_status_r7_notifier.py",
+            "development/ops_alerts/test_runtime_status_r7_notifier.py",
+            "development/ops_alerts/Install-R7RuntimeAlertTask.ps1",
+            R5_RELATIVE_SOURCE,
+            HANDOFF_RELATIVE_SOURCE,
+        ):
+            committed = helpers._git(ROOT, ["show", f"{head[0]}:{relative}"])
+            local = helpers._read(ROOT / relative, 512 * 1024)
+            if (
+                committed != local
+                or helpers._git(ROOT, ["status", "--porcelain", "--", relative]).strip()
+            ):
+                raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
+        for relative, expected_sha in ((HANDOFF_RELATIVE_SOURCE, HANDOFF_SHA256),):
+            if (
+                hashlib.sha256(helpers._read(ROOT / relative, 256 * 1024)).hexdigest()
+                != expected_sha
+            ):
+                raise R7Error("PINNED_HANDOFF_MISMATCH")
+        for relative, expected_sha in ((DELIVERY_RELATIVE_SOURCE, DELIVERY_SHA256),):
+            committed = helpers._git(
+                DEPLOY_ROOT, ["show", f"{deploy_head_id}:{relative}"]
+            )
+            local = helpers._read(DEPLOY_ROOT / relative, 512 * 1024)
+            if (
+                committed != local
+                or hashlib.sha256(local).hexdigest() != expected_sha
+                or helpers._git(
+                    DEPLOY_ROOT, ["status", "--porcelain", "--", relative]
+                ).strip()
+            ):
+                raise R7Error("PINNED_DELIVERY_MISMATCH")
+        init_committed = helpers._git(
+            DEPLOY_ROOT, ["show", f"{deploy_head_id}:{DEPLOY_INIT_RELATIVE_SOURCE}"]
+        )
+        init_local = helpers._read(DEPLOY_ROOT / DEPLOY_INIT_RELATIVE_SOURCE, 64 * 1024)
+        if (
+            init_committed != init_local
+            or helpers._git(
+                DEPLOY_ROOT,
+                ["status", "--porcelain", "--", DEPLOY_INIT_RELATIVE_SOURCE],
+            ).strip()
+        ):
+            raise R7Error("DEPLOY_NAMESPACE_IMPORT_REJECTED")
+    except R7Error:
+        raise
+    except Exception:  # noqa: BLE001 - signed-source failures remain redacted.
+        raise R7Error("SIGNED_R7_SOURCE_REQUIRED") from None
+
+
+def _protected_read(path: Path, *, helpers: Any, delivery: Any, maximum: int) -> bytes:
+    try:
+        return helpers._read_private(path, maximum=maximum, delivery=delivery)
+    except Exception:  # noqa: BLE001 - collapse filesystem/ACL detail.
+        raise R7Error("PROTECTED_EVIDENCE_REQUIRED") from None
+
+
+def _write_new(path: Path, raw: bytes, continuation: Any, delivery: Any) -> None:
+    try:
+        continuation._exclusive_fsync(path, raw)
+        continuation._set_exact_file_acl(path)
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+    except Exception:  # noqa: BLE001 - create-only protected writes are redacted.
+        raise R7Error("R7_PRIVATE_WRITE_FAILED") from None
+
+
+def admit_r7(*, helpers: Any | None = None) -> dict[str, Any]:
+    """Admit only the immutable accepted R7 receipt and its protected status path."""
+    helpers = helpers or _load_r5_helpers()
+    try:
+        _verify_signed_source(helpers)
+        continuation, delivery = helpers._continuation()
+        work = RUNTIME_ROOT / WORK
+        delivery._no_reparse(work)
+        delivery._private_acl(work)
+        receipt_path = work / "receipt.json"
+        receipt_raw = _protected_read(
+            receipt_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
+        )
+        helpers._verify_signature(receipt_path, work / "receipt.json.asc")
+        if hashlib.sha256(receipt_raw).hexdigest() != RECEIPT_SHA256:
+            raise R7Error("R7_RECEIPT_MISMATCH")
+        receipt = _json(receipt_raw)
+        generation = receipt.get("generation") if isinstance(receipt, dict) else None
+        generation_status = (
+            generation.get("status") if isinstance(generation, dict) else None
+        )
+        if (
+            not isinstance(receipt, dict)
+            or receipt.get("result") != "PASS_NEW_NONTRADING_GENERATION"
+            or receipt.get("owner") != OWNER
+            or receipt.get("source_revision") != SOURCE_REVISION
+            or receipt.get("trading_started") is not False
+            or not isinstance(generation, dict)
+            or generation.get("name") != GENERATION_NAME
+            or generation.get("container_id") != EXPECTED_CONTAINER
+            or not isinstance(generation_status, dict)
+            or generation_status.get("state") != "RUNNING_NONTRADING"
+            or generation_status.get("owner") != OWNER
+            or any(
+                type(generation_status.get(key)) is not int
+                or generation_status[key] != 0
+                for key in (
+                    "pending_outbox",
+                    "unresolved_inbox",
+                    "uncompleted_publications",
+                )
+            )
+            or any(
+                receipt.get(key) is not False
+                for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
+            )
+            or receipt.get("STRATEGY_POLICY") != "REJECT_ALL"
+        ):
+            raise R7Error("R7_RECEIPT_INVALID")
+        return {
+            "helpers": helpers,
+            "continuation": continuation,
+            "delivery": delivery,
+            "binding": _binding_record(),
+            "binding_sha256": _binding_sha256(),
+            "receipt": receipt,
+        }
+    except R7Error:
+        raise
+    except Exception:  # noqa: BLE001 - admission errors are intentionally redacted.
+        raise R7Error("R7_SOURCE_ADMISSION_FAILED") from None
+
+
+def _source_pause_valid(value: dict[str, Any], state: str) -> bool:
+    circuit = value.get("source_transport")
+    keys = {"timeout_rounds", "recoveries", "consecutive_timeout_rounds"}
+    waiting = state == "WAITING_SOURCE_NONTRADING"
+    return (
+        isinstance(circuit, dict)
+        and set(circuit) == keys
+        and all(type(circuit[key]) is int and circuit[key] >= 0 for key in keys)
+        and circuit["recoveries"] <= circuit["timeout_rounds"]
+        and circuit["consecutive_timeout_rounds"] <= circuit["timeout_rounds"]
+        and (
+            (
+                value.get("source_wait_reason") == _SOURCE_TIMEOUT
+                and circuit["consecutive_timeout_rounds"] > 0
+            )
+            if waiting
+            else value.get("source_wait_reason") is None
+            and circuit["consecutive_timeout_rounds"] == 0
+        )
+    )
+
+
+def classify_status(value: Any, *, now: datetime | None = None) -> str:
+    """Validate the R7 status contract and return a quiet or alert state."""
+    if not isinstance(value, dict):
+        return "invalid"
+    state = value.get("state")
+    if not isinstance(state, str) or state not in {
+        "RUNNING_NONTRADING",
+        "WAITING_SOURCE_NONTRADING",
+        "CATCHING_UP_NONTRADING",
+    }:
+        return "failed_closed"
+    try:
+        observed = datetime.fromisoformat(
+            value["observed_at_utc"].replace("Z", "+00:00")
+        )
+    except (KeyError, AttributeError, TypeError, ValueError):
+        return "invalid"
+    current = now or datetime.now(UTC)
+    if (
+        observed.tzinfo is None
+        or observed.utcoffset() is None
+        or current.tzinfo is None
+        or current.utcoffset() is None
+    ):
+        return "invalid"
+    age = (current.astimezone(UTC) - observed.astimezone(UTC)).total_seconds()
+    if age < 0:
+        return "invalid"
+    if age > MAX_STATUS_AGE_SECONDS:
+        return "running_stale"
+    watermarks = value.get("watermarks_ms")
+    circuit_valid = _source_pause_valid(value, state)
+    valid = (
+        value.get("owner") == OWNER
+        and type(value.get("cycles")) is int
+        and value["cycles"] >= 0
+        and type(value.get("completed_inbox")) is int
+        and value["completed_inbox"] >= MIN_COMPLETED_INBOX
+        and value.get("trading_started") is False
+        and value.get("PAPER_QUALIFIED") is False
+        and value.get("ALPHA_READY") is False
+        and value.get("LIVE_READY") is False
+        and value.get("STRATEGY_POLICY") == "REJECT_ALL"
+        and value.get("source_fresh") is (state == "RUNNING_NONTRADING")
+        and all(
+            type(value.get(key)) is int and value[key] == 0
+            for key in (
+                "pending_outbox",
+                "unresolved_inbox",
+                "uncompleted_publications",
+            )
+        )
+        and isinstance(watermarks, dict)
+        and set(watermarks) == SYMBOLS
+        and all(
+            type(mark) is int and mark >= MIN_WATERMARK_MS
+            for mark in watermarks.values()
+        )
+        and circuit_valid
+    )
+    if not valid:
+        return "invalid"
+    if state == "RUNNING_NONTRADING":
+        return "running_fresh"
+    return (
+        "waiting_source_nontrading"
+        if state == "WAITING_SOURCE_NONTRADING"
+        else "catching_up_nontrading"
+    )
+
+
+def read_status(path: Path, *, source: dict[str, Any]) -> str:
+    """Read just the admitted status file using the existing protected helper."""
+    helpers, delivery = source["helpers"], source["delivery"]
+    try:
+        delivery._no_reparse(path)
+        try:
+            path.lstat()
+        except FileNotFoundError:
+            return "missing"
+        except Exception:  # noqa: BLE001 - local path errors become a technical alert.
+            return "invalid"
+        raw = _protected_read(
+            path, helpers=helpers, delivery=delivery, maximum=MAX_BYTES
+        )
+        return classify_status(_json(raw))
+    except R7Error:
+        return "invalid"
+    except Exception:  # noqa: BLE001 - malformed status is a redacted alert.
+        return "invalid"
+
+
+def _status_path(binding: dict[str, Any]) -> Path:
+    if binding != _binding_record():
+        raise R7Error("R7_BINDING_INVALID")
+    return RUNTIME_ROOT / WORK / "output-serve" / "status.json"
+
+
+class R7Journal:
+    """Independent R7 journal; only low-level locked append is borrowed from R5."""
+
+    def __init__(self, path: Path, continuation: Any, delivery: Any, helpers: Any):
+        self.path, self.c, self.delivery = path, continuation, delivery
+        self.lease_path = path.with_name(path.name + ".lock")
+        self._base = helpers.R5Journal
+        self._error = helpers.R5Error
+
+    @contextmanager
+    def locked(self):
+        with self._base.locked(self):
+            yield
+
+    def _append(self, row: dict[str, Any]) -> None:
+        encoded = (
+            json.dumps(row, sort_keys=True, separators=(",", ":")).encode() + b"\n"
+        )
+        rows = self.read(allow_pending=row.get("kind") == "send_outcome")
+        previous = self._verify(self.path) if self.path.exists() else b""
+        # Check before the borrowed primitive creates an irreversible send
+        # guard. A reservation must also leave room for its bounded outcome.
+        reserve_outcome = row.get("kind") == "send_reserved"
+        required_records = 2 if reserve_outcome else 1
+        required_bytes = len(encoded) + (1024 if reserve_outcome else 0)
+        if (
+            len(encoded) > 1024
+            or len(rows) + required_records > MAX_RECORDS
+            or len(previous) + required_bytes > MAX_BYTES
+        ):
+            raise R7Error("R7_JOURNAL_LIMIT_BEFORE_GUARD")
+        self._base._append(self, row)
+
+    def _verify(self, path: Path) -> bytes:
+        return self._base._verify(self, path)
+
+    def read(self, *, allow_pending: bool = False) -> list[dict[str, Any]]:
+        if not self.path.exists():
+            return []
+        raw = self._verify(self.path)
+        if not raw.endswith(b"\n") or len(raw) > MAX_BYTES:
+            raise R7Error("R7_JOURNAL_INVALID")
+        try:
+            rows = [_json(line) for line in raw.splitlines()]
+            if len(rows) > MAX_RECORDS or any(
+                type(row.get("seq")) is not int or row["seq"] != i
+                for i, row in enumerate(rows)
+            ):
+                raise ValueError("sequence")
+            first = rows[0]
+            if (
+                set(first)
+                != {"schema_version", "seq", "kind", "state", "binding_sha256"}
+                or type(first.get("schema_version")) is not int
+                or first["schema_version"] != 1
+                or first.get("kind") != "baseline"
+                or first.get("state") not in _KNOWN_STATES
+                or first.get("binding_sha256") != _binding_sha256()
+            ):
+                raise ValueError("baseline")
+            current, pending = first["state"], None
+            for row in rows[1:]:
+                if (
+                    set(row) == {"schema_version", "seq", "kind", "state"}
+                    and type(row.get("schema_version")) is int
+                    and row["schema_version"] == 1
+                    and row.get("kind") == "observe"
+                    and row.get("state") in _KNOWN_STATES
+                    and pending is None
+                ):
+                    current = row["state"]
+                elif (
+                    set(row)
+                    == {
+                        "schema_version",
+                        "seq",
+                        "kind",
+                        "event_id",
+                        "transition",
+                        "state",
+                    }
+                    and type(row.get("schema_version")) is int
+                    and row["schema_version"] == 1
+                    and row.get("kind") == "send_reserved"
+                    and row.get("state") == current
+                    and row.get("state") in _KNOWN_STATES
+                    and row.get("transition") in {"firing", "resolved"}
+                    and isinstance(row.get("event_id"), str)
+                    and _HEX64.fullmatch(row["event_id"])
+                    and pending is None
+                ):
+                    pending = row
+                elif (
+                    set(row)
+                    == {
+                        "schema_version",
+                        "seq",
+                        "kind",
+                        "event_id",
+                        "transition",
+                        "state",
+                        "result",
+                    }
+                    and type(row.get("schema_version")) is int
+                    and row["schema_version"] == 1
+                    and row.get("kind") == "send_outcome"
+                    and pending is not None
+                    and row.get("event_id") == pending["event_id"]
+                    and row.get("transition") == pending["transition"]
+                    and row.get("state") == pending["state"]
+                    and row.get("result") in {"accepted", "unknown"}
+                ):
+                    if row["result"] == "unknown":
+                        raise R7Error("R7_SEND_OUTCOME_UNKNOWN")
+                    pending = None
+                else:
+                    raise ValueError("event")
+            if pending is not None and not allow_pending:
+                raise R7Error("R7_SEND_OUTCOME_UNKNOWN")
+            return rows
+        except R7Error:
+            raise
+        except Exception:  # noqa: BLE001 - do not leak local journal diagnostics.
+            raise R7Error("R7_JOURNAL_INVALID") from None
+
+
+def initialize(
+    *,
+    source_admitter: Callable[[], dict[str, Any]] = admit_r7,
+    observer: Callable[[Path, dict[str, Any]], str] | None = None,
+    root: Path = PRIVATE_ROOT,
+) -> dict[str, Any]:
+    source = source_admitter()
+    helpers, continuation, delivery = (
+        source["helpers"],
+        source["continuation"],
+        source["delivery"],
+    )
+    delivery._no_reparse(root)
+    delivery._private_acl(root)
+    binding_path = root / "binding.json"
+    binding_bytes = _binding_bytes()
+    if binding_path.exists():
+        if (
+            _protected_read(
+                binding_path, helpers=helpers, delivery=delivery, maximum=4096
+            )
+            != binding_bytes
+        ):
+            raise R7Error("R7_BINDING_CHANGED")
+    else:
+        _write_new(binding_path, binding_bytes, continuation, delivery)
+    journal = R7Journal(root / "events.jsonl", continuation, delivery, helpers)
+    with journal.locked():
+        if journal.read():
+            raise R7Error("R7_BASELINE_ALREADY_EXISTS")
+        state = (
+            observer(_status_path(source["binding"]), source)
+            if observer
+            else read_status(_status_path(source["binding"]), source=source)
+        )
+        if state not in _QUIET_STATES:
+            raise R7Error("R7_QUIET_BASELINE_REQUIRED")
+        journal._append(
+            {
+                "schema_version": 1,
+                "seq": 0,
+                "kind": "baseline",
+                "state": state,
+                "binding_sha256": _binding_sha256(),
+            }
+        )
+    return {"status": "R7_BASELINE_CREATED", "state": state, "trading_authority": False}
+
+
+def _monitor_sender(
+    source: dict[str, Any], root: Path
+) -> Callable[[dict[str, Any]], bool]:
+    helpers, continuation, delivery = (
+        source["helpers"],
+        source["continuation"],
+        source["delivery"],
+    )
+    try:
+        transport = helpers._prepare_transport(continuation, delivery)
+    except Exception:  # noqa: BLE001 - fail before reserving a send attempt.
+        raise R7Error("R7_SENDER_PREFLIGHT_FAILED_NO_SEND") from None
+
+    def send(alert: dict[str, Any]) -> bool:
+        try:
+            response = transport.call(
+                "sendMessage",
+                {"chat_id": GROUP_ID, "text": alert["text"], "protect_content": True},
+            )
+            if (
+                not isinstance(response, dict)
+                or type(response.get("message_id")) is not int
+                or response["message_id"] < 1
+                or not isinstance(response.get("chat"), dict)
+                or type(response["chat"].get("id")) is not int
+                or response["chat"]["id"] != GROUP_ID
+            ):
+                raise R7Error("R7_SEND_OUTCOME_UNKNOWN")
+            receipt = {
+                "schema_version": 1,
+                "kind": "kairos.r7.runtime-alert-receipt.v1",
+                "event_id": alert["event_id"],
+                "transition": alert["transition"],
+                "state": alert["state"],
+                "recipient_chat_id": GROUP_ID,
+                "message_id": response["message_id"],
+                "accepted_at_utc": datetime.now(UTC).isoformat(),
+                "protect_content": True,
+                "binding_sha256": _binding_sha256(),
+                "trading_authority": False,
+            }
+            _write_new(
+                root / f"r7-telegram-{alert['event_id']}.json",
+                json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode(),
+                continuation,
+                delivery,
+            )
+            return True
+        except R7Error:
+            raise
+        except Exception:  # noqa: BLE001 - all send ambiguity is terminal.
+            raise R7Error("R7_SEND_OUTCOME_UNKNOWN") from None
+
+    return send
+
+
+def poll_once(
+    *,
+    source_admitter: Callable[[], dict[str, Any]] = admit_r7,
+    observer: Callable[[Path, dict[str, Any]], str] | None = None,
+    sender: Callable[[dict[str, Any]], bool] | None = None,
+    root: Path = PRIVATE_ROOT,
+    journal_factory: Callable[..., Any] = R7Journal,
+) -> dict[str, Any]:
+    source = source_admitter()
+    helpers, continuation, delivery = (
+        source["helpers"],
+        source["continuation"],
+        source["delivery"],
+    )
+    delivery._no_reparse(root)
+    delivery._private_acl(root)
+    journal = journal_factory(root / "events.jsonl", continuation, delivery, helpers)
+    with journal.locked():
+        rows = journal.read()
+        if not rows or rows[0].get("binding_sha256") != source["binding_sha256"]:
+            raise R7Error("R7_BASELINE_REQUIRED_OR_BINDING_CHANGED")
+        observed_state = (
+            observer(_status_path(source["binding"]), source)
+            if observer
+            else read_status(_status_path(source["binding"]), source=source)
+        )
+        current = rows[0]["state"]
+        active = False
+        for row in rows[1:]:
+            if row["kind"] == "observe":
+                current = row["state"]
+            elif row["kind"] == "send_outcome":
+                active = row["transition"] == "firing"
+        transition = None
+        if (
+            observed_state in _ALERT_STATES
+            and not active
+            and current not in _ALERT_STATES
+        ):
+            transition = "firing"
+        elif observed_state == "running_fresh" and active:
+            transition = "resolved"
+        if transition and sender is None:
+            sender = _monitor_sender(source, root)
+        if observed_state != current:
+            journal._append(
+                {
+                    "schema_version": 1,
+                    "seq": len(rows),
+                    "kind": "observe",
+                    "state": observed_state,
+                }
+            )
+            rows = journal.read()
+        if transition is None:
+            return {
+                "status": "quiet_or_unchanged",
+                "state": observed_state,
+                "send_attempts": 0,
+            }
+        event_id = hashlib.sha256(
+            f"{_binding_sha256()}|{len(rows)}|{transition}|{observed_state}".encode()
+        ).hexdigest()
+        event = {
+            "event_id": event_id,
+            "transition": transition,
+            "state": observed_state,
+            "text": (
+                f"Kairos R7 technical status: {observed_state}. "
+                "Non-trading shadow runtime; technical monitoring only."
+            ),
+        }
+        journal._append(
+            {
+                "schema_version": 1,
+                "seq": len(rows),
+                "kind": "send_reserved",
+                "event_id": event_id,
+                "transition": transition,
+                "state": observed_state,
+            }
+        )
+        try:
+            accepted = bool(sender(event)) if sender else False
+        except Exception:  # noqa: BLE001 - an uncertain send is never replayed.
+            accepted = False
+        journal._append(
+            {
+                "schema_version": 1,
+                "seq": len(journal.read(allow_pending=True)),
+                "kind": "send_outcome",
+                "event_id": event_id,
+                "transition": transition,
+                "state": observed_state,
+                "result": "accepted" if accepted else "unknown",
+            }
+        )
+        if not accepted:
+            raise R7Error("R7_SEND_OUTCOME_UNKNOWN")
+        return {"status": "alert_accepted", "state": observed_state, "send_attempts": 1}
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    actions = parser.add_mutually_exclusive_group()
+    actions.add_argument("--initialize", action="store_true")
+    actions.add_argument("--poll-once", action="store_true")
+    parser.add_argument("--armed", action="store_true")
+    args = parser.parse_args(argv)
+    if not (args.initialize or args.poll_once) or not args.armed:
+        print(
+            json.dumps(
+                {"status": "PLAN_ONLY", "task": TASK_NAME, "trading_authority": False}
+            )
+        )
+        return 0
+    try:
+        result = initialize() if args.initialize else poll_once()
+        print(json.dumps(result, sort_keys=True))
+        return 0
+    except R7Error as error:
+        print(json.dumps({"status": "FAILED_CLOSED", "category": error.category}))
+        return 2
+    except Exception:  # noqa: BLE001 - never surface helper/filesystem tracebacks.
+        print(
+            json.dumps({"status": "FAILED_CLOSED", "category": "R7_UNEXPECTED_FAILURE"})
+        )
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

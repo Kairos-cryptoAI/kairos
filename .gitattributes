@@ -22,6 +22,9 @@ development/ops_alerts/notification_python_probe.py -text
 # Additive notifier signatures bind these exact new source bytes.
 development/ops_alerts/ops_source_notifier_v1.py -text
 development/ops_alerts/test_ops_source_notifier_v1.py -text
+development/ops_alerts/runtime_status_r7_notifier.py -text
+development/ops_alerts/test_runtime_status_r7_notifier.py -text
+development/ops_alerts/Install-R7RuntimeAlertTask.ps1 -text
 # Published comparison receipts are byte-bound to their original runtime files.
 development/adaptive_replay/evidence/comparison-2026-10-06/** -text
 development/adaptive_replay/evidence/right-tail-2026-10-07/** -text

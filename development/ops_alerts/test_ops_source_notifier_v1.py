@@ -132,7 +132,9 @@ class SourceNotifierTests(unittest.TestCase):
         with mock.patch.object(
             observer,
             "QUANT_SOURCE",
-            Path(os.environ.get("KAIROS_TEST_QUANT_SOURCE", str(observer.QUANT_SOURCE))),
+            Path(
+                os.environ.get("KAIROS_TEST_QUANT_SOURCE", str(observer.QUANT_SOURCE))
+            ),
         ):
             report = observer._execute_observation(
                 authorize=True,
