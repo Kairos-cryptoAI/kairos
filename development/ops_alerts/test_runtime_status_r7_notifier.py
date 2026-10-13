@@ -114,6 +114,19 @@ class MemoryJournal:
 
 
 class RuntimeStatusR7NotifierTests(unittest.TestCase):
+    def test_initializer_only_allows_uniform_checkout_line_endings(self) -> None:
+        initializer = b'"""Deployment validation helpers."""\n'
+        self.assertEqual(r7._initializer_source_bytes(initializer), initializer)
+        self.assertEqual(
+            r7._initializer_source_bytes(initializer.replace(b"\n", b"\r\n")),
+            initializer,
+        )
+        for invalid in (b"one\r\ntwo\n", b"one\rtwo", b"\xff"):
+            with self.subTest(invalid=invalid), self.assertRaisesRegex(
+                r7.R7Error, "DEPLOY_NAMESPACE_IMPORT_REJECTED"
+            ):
+                r7._initializer_source_bytes(invalid)
+
     def setUp(self) -> None:
         MemoryJournal.rows = [
             {

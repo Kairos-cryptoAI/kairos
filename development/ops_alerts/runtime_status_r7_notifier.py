@@ -161,6 +161,20 @@ def _bounded_source(path: Path, maximum: int) -> bytes:
         raise R7Error("PROTECTED_HELPER_REQUIRED") from None
 
 
+def _initializer_source_bytes(raw: bytes) -> bytes:
+    """Allow uniform checkout LF/CRLF only for the signed Deploy initializer."""
+    if b"\r" in raw:
+        without_pairs = raw.replace(b"\r\n", b"")
+        if b"\r" in without_pairs or b"\n" in without_pairs:
+            raise R7Error("DEPLOY_NAMESPACE_IMPORT_REJECTED")
+        raw = raw.replace(b"\r\n", b"\n")
+    try:
+        raw.decode("utf-8", "strict")
+    except UnicodeError:
+        raise R7Error("DEPLOY_NAMESPACE_IMPORT_REJECTED") from None
+    return raw
+
+
 def _verify_signed_source(helpers: Any) -> None:
     """Require this runner and its installer/tests to be the exact signed main bytes."""
     try:
@@ -258,7 +272,8 @@ def _verify_signed_source(helpers: Any) -> None:
         )
         init_local = helpers._read(DEPLOY_ROOT / DEPLOY_INIT_RELATIVE_SOURCE, 64 * 1024)
         if (
-            init_committed != init_local
+            _initializer_source_bytes(init_committed)
+            != _initializer_source_bytes(init_local)
             or helpers._git(
                 DEPLOY_ROOT,
                 ["status", "--porcelain", "--", DEPLOY_INIT_RELATIVE_SOURCE],
