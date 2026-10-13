@@ -129,14 +129,10 @@ class SourceNotifierTests(unittest.TestCase):
             max_response_bytes=observer.MAX_RESPONSE_BYTES,
             max_storage_bytes=observer.MAX_STORAGE_BYTES,
         )
-        with mock.patch.dict(
-            "os.environ",
-            {
-                "KAIROS_TEST_QUANT_SOURCE": os.environ.get(
-                    "KAIROS_TEST_QUANT_SOURCE", str(observer.QUANT_SOURCE)
-                )
-            },
-            clear=False,
+        with mock.patch.object(
+            observer,
+            "QUANT_SOURCE",
+            Path(os.environ.get("KAIROS_TEST_QUANT_SOURCE", str(observer.QUANT_SOURCE))),
         ):
             report = observer._execute_observation(
                 authorize=True,
