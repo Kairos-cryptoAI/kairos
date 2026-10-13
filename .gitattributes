@@ -15,6 +15,8 @@ development/ops_alerts/test_runtime_status_r6_notifier.py -text
 development/ops_alerts/Install-R6RuntimeAlertTask.ps1 -text
 development/ops_alerts/evedex_dev_public_preflight.py -text
 development/ops_alerts/test_evedex_dev_public_preflight.py -text
+development/ops_alerts/evedex_dev_depth_diagnostic.py -text
+development/ops_alerts/test_evedex_dev_depth_diagnostic.py -text
 development/ops_alerts/Test-NotificationPythonHost.ps1 -text
 development/ops_alerts/notification_python_probe.py -text
 # Published comparison receipts are byte-bound to their original runtime files.
