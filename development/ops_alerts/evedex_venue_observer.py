@@ -29,6 +29,7 @@ from urllib.parse import urlsplit
 
 KAIROS_ROOT = Path("D:/Kairos/kairos")
 DEFAULT_OUTPUT_ROOT = Path("D:/Kairos/runtime/evedex-venue-observer")
+SMOKE_OUTPUT_ROOT = Path("D:/Kairos/runtime/evedex-venue-observer-smoke")
 QUANT_SOURCE = Path("D:/Kairos/kairos-quant-scouts/kairos_quant/venue_comparison.py")
 QUANT_SOURCE_SHA256 = "edc06b208356058f8df1912e20fdccd1fadb7ecc0ce29054e89fd9711c641aa3"
 EVEDEX_ORIGIN = "https://trading-api.evedex.tech"
@@ -766,6 +767,7 @@ def _execute_observation(
             "unknown_outcomes": sum(item["unknown_outcomes"] for item in outcomes),
             "symbols": summaries,
             "measurement_source_sha256": source_hash,
+            "observer_source_sha256": plan_data["observer_source_sha256"],
             "authenticated": False,
             "orders_enabled": False,
             "database_or_redis": False,
@@ -784,13 +786,23 @@ def _execute_observation(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--execute-public-observation", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--execute-public-observation", action="store_true")
+    modes.add_argument("--smoke-one-slot", action="store_true")
     args = parser.parse_args(argv)
-    if not args.execute_public_observation:
+    if not (args.execute_public_observation or args.smoke_one_slot):
         print(json.dumps(build_plan(), sort_keys=True, allow_nan=False))
         return 0
     try:
-        report = _execute_observation(authorize=True)
+        report = _execute_observation(
+            authorize=True,
+            output_root=SMOKE_OUTPUT_ROOT
+            if args.smoke_one_slot
+            else DEFAULT_OUTPUT_ROOT,
+            plan=ObservationPlan(duration_s=120)
+            if args.smoke_one_slot
+            else _DEFAULT_PLAN,
+        )
     except ObserverError as error:
         print(
             json.dumps(

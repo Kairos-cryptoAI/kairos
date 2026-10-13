@@ -299,6 +299,24 @@ class ObserverTests(unittest.TestCase):
                 observer._load_comparison_logic(crlf_path).DEFAULT_THRESHOLDS,
             )
 
+    def test_smoke_is_one_slot_in_a_separate_latch_namespace(self):
+        import io
+        from contextlib import redirect_stdout
+
+        with (
+            mock.patch.object(
+                observer, "_execute_observation", return_value={}
+            ) as execute,
+            redirect_stdout(io.StringIO()),
+        ):
+            self.assertEqual(observer.main(["--smoke-one-slot"]), 0)
+        invocation = execute.call_args.kwargs
+        self.assertTrue(invocation["authorize"])
+        self.assertEqual(invocation["output_root"], observer.SMOKE_OUTPUT_ROOT)
+        self.assertNotEqual(invocation["output_root"], observer.DEFAULT_OUTPUT_ROOT)
+        self.assertEqual(invocation["plan"].slots, 1)
+        self.assertEqual(invocation["plan"].slots * observer.REQUESTS_PER_SLOT, 10)
+
     def test_quant_source_rejects_mixed_line_endings(self):
         source = self.quant_source.read_bytes().replace(b"\r\n", b"\n")
         mixed = source.replace(b"\n", b"\r\n", 1)
