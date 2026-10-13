@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import os
 import tempfile
 import unittest
 from datetime import UTC, datetime, timedelta
@@ -72,6 +73,12 @@ def _fake_fetcher(
 class ObserverTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        test_source = os.environ.get("KAIROS_TEST_QUANT_SOURCE")
+        if test_source:
+            cls.quant_source_patch = mock.patch.object(observer, "QUANT_SOURCE", Path(test_source))
+            cls.quant_source_patch.start()
+            cls.addClassCleanup(cls.quant_source_patch.stop)
+        cls.quant_source = observer.QUANT_SOURCE
         cls.comparison = observer._comparison_logic()
 
     def small_plan(self, *, duration=10, interval=10):

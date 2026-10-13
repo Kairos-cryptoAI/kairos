@@ -122,8 +122,9 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
-def _comparison_logic(*, path: Path = QUANT_SOURCE, expected_sha256: str = QUANT_SOURCE_SHA256) -> Any:
+def _comparison_logic(*, path: Path | None = None, expected_sha256: str = QUANT_SOURCE_SHA256) -> Any:
     """Load only the pinned Quant venue-comparison implementation."""
+    path = QUANT_SOURCE if path is None else path
     try:
         info = path.lstat()
         if not stat.S_ISREG(info.st_mode):
@@ -546,11 +547,12 @@ def _execute_observation(
     monotonic: Callable[[], float] = time.monotonic,
     wall_clock: Callable[[], datetime] = lambda: datetime.now(UTC),
     make_uuid: Callable[[], str] = lambda: str(uuid.uuid4()),
-    source_path: Path = QUANT_SOURCE,
+    source_path: Path | None = None,
     expected_source_sha256: str = QUANT_SOURCE_SHA256,
 ) -> dict[str, Any]:
     if authorize is not True:
         raise ObserverError("EXPLICIT_EXECUTION_GATE_REQUIRED")
+    source_path = QUANT_SOURCE if source_path is None else source_path
     module = _comparison_logic(path=source_path, expected_sha256=expected_source_sha256)
     source_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
     if output_root.is_symlink():
