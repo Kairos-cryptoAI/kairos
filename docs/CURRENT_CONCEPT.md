@@ -4,6 +4,17 @@ Updated: 2026-10-14 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
+## Canonical target specification — 2026-10-14
+
+The [unified trading specification](CANONICAL-TRADING-SPEC-2026-10-14.md) consolidates
+the existing architecture, two hypothesis origins, V2 lifecycle, distinct V3
+combined semantics and four narrowly grouped owner-policy choices. It is the
+human-readable target, not an executable policy or selected economic champion.
+New hypothesis TTLs, rearming/cooldowns, ranking keys/weights and trading limits
+are not assigned by this documentation. No config, campaign/evaluator, source
+identity, route, budget or runtime changes follow. The pending-choice register
+must be completed and separately reviewed before a new policy freeze/enrollment.
+
 ## Active priority: controlled-launch engineering before profit optimization
 
 The owner now prioritizes finishing operational launch requirements before
@@ -170,8 +181,10 @@ The target is:
    timeout. Trade count is an outcome, never a quota.
    A structural hypothesis is distinct from its confirming market observation.
    It may wait, expire, invalidate or become unavailable without any entry.
-   The new research layer keeps the original barriers and lifetime and consumes
-   the first confirming structure even if review, costs or execution refuse it.
+   The original parent keeps its barriers and entry expiry; it is never renewed.
+   Hypothesis validity is separately pinned, and a fresh entry at its actual issue
+   time remains capped by the native duration and quote/context deadlines.
+   The first confirming structure is consumed even if review, costs or execution refuse it.
    A later model answer cannot revive that same spent opportunity.
 3. Router selects the review workload. Review returns only `ALLOW/VETO/DEFER`;
    it cannot change the candidate. Independent LLM hypotheses are a distinct
@@ -288,6 +301,8 @@ from this document or the separate SQLite research recovery fixtures.
 
 ## Source of truth
 
+- Canonical target and unresolved owner-policy choices, not executable admission:
+  [unified trading specification](CANONICAL-TRADING-SPEC-2026-10-14.md).
 - Readiness and current source identity: [current-release.json](../config/current-release.json).
 - Model defaults and qualification boundary: [ADR 10](adr/0010-openai-only-current-routing.md).
 - Spending authority and historical estimates: [BUDGET.md](BUDGET.md).

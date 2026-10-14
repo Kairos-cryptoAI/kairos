@@ -107,6 +107,13 @@ one-shot `technical-canary@1` is manually armed and proves plumbing, not profita
 
 ## 3 — Candidate review, not candidate invention
 
+This section describes the review path, not a prohibition on a separate
+independent hypothesis origin. The [canonical trading specification](CANONICAL-TRADING-SPEC-2026-10-14.md)
+distinguishes LLM-origin proposals, deterministic mapping and quote-bound review;
+they are not a direct Risk/order path or a production-admitted policy. The
+offline prospective V3 combined rule is also distinct from the historical
+static evaluator. New lifetime/rearming/ranking values remain unselected.
+
 The Router carries the complete intent unchanged and deterministically selects `NORMAL` or
 `CONFLICT` from candidate-specific text evidence. The Aggregator's strict schema contains only
 review decision, priority and reason codes:

@@ -2,6 +2,22 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-14_
 
+## Canonical trading concept consolidated — 2026-10-14
+
+The [unified specification](CANONICAL-TRADING-SPEC-2026-10-14.md) documents the
+complete target flow, independent hypothesis origins, distinct V2 parent/
+hypothesis/fresh-entry clocks, first-trigger consumption, prospective V3
+arbitration and protected execution. Four concrete owner-policy choice groups
+remain explicit: final scenario catalogue, independent proposal schedule,
+continuous rearming/validity and simultaneous-candidate ordering. They are
+human-readable research proposals, not newly assigned trading parameters.
+
+Only documentation changes: no machine-loadable policy/config, executable
+source, lock/pin, frozen plan/evaluator/ledger, campaign enrollment, runtime,
+database/queue, paid API or trading change. The architecture is consolidated;
+no profitable strategy, full-system economics or LIVE qualification is claimed.
+All readiness remains false and policy stays `REJECT_ALL`.
+
 ## Later research accounting and recovery continuation — 2026-10-14
 
 The [accounting acceptance receipt](RESEARCH-ACCOUNTING-ACCEPTANCE-2026-10-14.md)
