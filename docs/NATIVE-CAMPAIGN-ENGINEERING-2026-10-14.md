@@ -78,8 +78,10 @@ The exact implementation commit is
 and CodeQL completed successfully. Each hosted native job enforced an actual
 one-test PASS, not a skipped target.
 
-The narrow LLVM extension hooks preserve the default review schema and original
-scheduler identity for default callers. The separate budget fix classifies the
+The narrow LLVM extension hooks preserve the default review schema and existing
+source-bound scheduler identity calculation for default callers. Module hashes
+necessarily change with source changes: an old enrolled campaign does not
+inherit the new code or identity. The separate budget fix classifies the
 actual Persistence `SourceBudgetExceeded` as known reservation denial, rather
 than ambiguous model spend. Current LLVM is signed
 `c2207a5bd8bbf39e7d5728f95e52c96a47eca344`;
@@ -124,8 +126,9 @@ each of Execution and Quant. The adaptive aggregate hash is unchanged:
 Those files were not adopted, stashed, deleted or committed by this work.
 
 No primary/legacy database, Redis, R7 runtime package, old queue, frozen Trial 15
-or quarter-hour V2/V4/V5 identity/plan/ledger was changed. Existing secrets were
-not read or sent. There were zero paid OpenAI/DeepSeek/X calls, authenticated
+or quarter-hour V2/V4/V5 identity/plan/ledger was changed. No key file was opened
+for this native gate, and no key value was printed or sent. There were zero paid
+OpenAI/DeepSeek/X calls, authenticated
 EVEDEX actions, orders, canaries or readiness promotions.
 
 Remaining research acceptance needs original point-in-time input evidence,
