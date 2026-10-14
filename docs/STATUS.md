@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-14_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-15_
 
 ## Concrete research policy preparation — 2026-10-14
 
@@ -13,6 +13,14 @@ durable publication, trading or campaign enrollment. Production choices remain
 unadmitted. The old V3 economic driver is not silently reused for sparse NO_CALL
 or the independent treatment's required review. No dependency/release/runtime
 or readiness promotion follows.
+
+Hosted acceptance verified 2026-10-15: all eight exact-source jobs pass on
+Windows/Linux Python 3.11.15/3.14.7. Each OS/Python pair preserves the disjoint
+2,318 regular + one full 36,000-cell horizon union, zero skips/failures/errors;
+24 separate market-review cases also pass. Source Meta validation and CodeQL
+are green. This closes engineering acceptance of this preparation profile,
+not source authenticity, a continuous producer, economic evaluation or trading
+admission; see its [scoped receipt](../reports/research-profile/2026-10-14/engineering-receipt.json).
 
 ## Canonical trading concept consolidated — 2026-10-14
 

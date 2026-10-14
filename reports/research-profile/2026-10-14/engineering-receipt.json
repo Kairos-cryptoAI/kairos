@@ -53,13 +53,113 @@
   },
   "full_collection_count": 2319,
   "hosted_acceptance": {
-    "state": "PENDING_NOT_CLAIMED_PASS",
+    "state": "PASS_SCOPED_ENGINEERING_ONLY",
+    "observed_date_moscow": "2026-10-15",
     "exact_source_revision": "77fadff6ef487b2442f4e34a7c7e2eacbfd94026",
     "adaptive_run": 38627985375,
+    "adaptive_run_url": "https://github.com/Kairos-cryptoAI/kairos/actions/runs/38627985375",
+    "adaptive_run_conclusion": "success",
+    "last_job_completed_utc": "2026-10-14T20:52:16Z",
     "validate_run": 38627985174,
+    "validate_conclusion": "success",
     "codeql_run": 38627985435,
+    "codeql_conclusion": "success",
     "regular_partition_expected_tests_per_job": 2318,
-    "full_five_day_partition_expected_tests_per_job": 1
+    "full_five_day_partition_expected_tests_per_job": 1,
+    "adaptive_disjoint_union_tests_per_os_python_pair": 2319,
+    "full_five_day_horizon_cells": 36000,
+    "sampled_or_skipped_horizon": false,
+    "separate_market_review_tests_per_regular_job": 24,
+    "jobs": [
+      {
+        "job_id": 116071945902,
+        "os": "ubuntu-latest",
+        "python": "3.11.15",
+        "partition": "regular",
+        "conclusion": "success",
+        "tests": 2318,
+        "passed": 2318,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946151,
+        "os": "ubuntu-latest",
+        "python": "3.11.15",
+        "partition": "five-day-horizon",
+        "conclusion": "success",
+        "tests": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071945985,
+        "os": "ubuntu-latest",
+        "python": "3.14.7",
+        "partition": "regular",
+        "conclusion": "success",
+        "tests": 2318,
+        "passed": 2318,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946038,
+        "os": "ubuntu-latest",
+        "python": "3.14.7",
+        "partition": "five-day-horizon",
+        "conclusion": "success",
+        "tests": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946209,
+        "os": "windows-latest",
+        "python": "3.11.15",
+        "partition": "regular",
+        "conclusion": "success",
+        "tests": 2318,
+        "passed": 2318,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946042,
+        "os": "windows-latest",
+        "python": "3.11.15",
+        "partition": "five-day-horizon",
+        "conclusion": "success",
+        "tests": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946020,
+        "os": "windows-latest",
+        "python": "3.14.7",
+        "partition": "regular",
+        "conclusion": "success",
+        "tests": 2318,
+        "passed": 2318,
+        "skipped": 0,
+        "failures_or_errors": 0
+      },
+      {
+        "job_id": 116071946224,
+        "os": "windows-latest",
+        "python": "3.14.7",
+        "partition": "five-day-horizon",
+        "conclusion": "success",
+        "tests": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failures_or_errors": 0
+      }
+    ]
   },
   "retained_attempt_notes": [
     "First uv local-directory install reused a cached older wheel; new module import failed before acceptance. Both fresh environments were explicitly reinstalled from the reviewed wheel and all 95 installed source files matched the checkout.",

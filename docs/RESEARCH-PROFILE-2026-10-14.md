@@ -1,6 +1,7 @@
 # Kairos: один конкретный исследовательский профиль
 
 Дата: 14 октября 2026, Europe/Moscow.
+Hosted-приёмка проверена 15 октября 2026, Europe/Moscow.
 Identity: `adaptive-context-epochs.research.v1`.
 Статус: **RESEARCH_PREPARATION_ONLY**, не выбранный экономический чемпион,
 не production policy, не campaign freeze/enrollment и не разрешение торговли.
@@ -167,8 +168,16 @@ Entry ordering работает только с уже выданными в о�
   zero failures/errors/skips;
 - Ruff lint/format, unchanged offline lock, wheel/sdist, Meta static/local links
   и checkout/source-projection regressions — PASS;
-- полный collection — 2 319 cases; hosted CI ещё проверяет exact disjoint union
-  2 318 regular + один полный пятидневный synthetic horizon, а не sampled subset.
+- полный collection — 2 319 cases; [exact-source hosted CI](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38627985375)
+  завершился PASS во всех восьми задачах Windows/Linux × Python 3.11.15/3.14.7
+  × regular/full-horizon. На каждую OS/Python пару — exact disjoint union
+  2 318 regular + один полный пятидневный synthetic horizon (36 000 cells),
+  zero failures/errors/skips, без sampling. Отдельно по 24 market-review cases
+  прошли в каждой из четырёх regular задач; они не включены в число 2 319;
+- [Meta validate](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38627985174)
+  и [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/38627985435)
+  на том же source revision — PASS. Это scoped engineering acceptance,
+  не приёмка release manifest всех сервисов или экономического evaluator.
 
 Первый cache-stale wheel и неудачный managed-Python link attempt не выданы за
 PASS и сохранены как диагностика. CI теперь принудительно переустанавливает

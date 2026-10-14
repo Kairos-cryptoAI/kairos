@@ -1,6 +1,6 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-14 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-15 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
@@ -26,6 +26,9 @@ Its preparation/materialization contracts require retained checkpoint receipts
 and one original creation outcome. Sparse NO_CALL and review for independent
 proposals are intentionally incompatible with the previously accepted V3
 economic driver; a new separately admitted evaluator version is still required.
+Its scoped engineering acceptance now passes the exact 2,319-case union on
+each Windows/Linux Python 3.11.15/3.14.7 pair, with source Meta/CodeQL green.
+This is not evidence of historical net profitability or campaign admission.
 
 The owner now prioritizes finishing operational launch requirements before
 further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
