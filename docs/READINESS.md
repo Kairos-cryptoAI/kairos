@@ -2,7 +2,41 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-10
+## Current boundary — 2026-10-14
+
+The [native composition receipt](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md)
+accepts actual pinned Strategy/Router/review/shared-PG-budget/SIM-Risk mechanics
+on no-network synthetic inputs. The separate
+[research accounting continuation](RESEARCH-ACCOUNTING-ACCEPTANCE-2026-10-14.md)
+accepts installed financial/archive/four-account recovery and causal slot
+audit mechanics, with the full exact-source eight-job hosted matrix passing.
+These scopes do
+not authenticate required historical inputs, qualify paid model quality, prove
+matched net economics or enroll the new adaptive system in a blind campaign.
+
+The [October 13 R7 closeout](ENGINEERING-CLOSEOUT-2026-10-13.md) records accepted,
+dated non-trading epoch recovery, isolated restores and a delivered technical
+Telegram notice. This does not adopt the legacy database/queue or establish
+fresh uptime or trading recovery. Encrypted Restic restoration is local, not
+off-host protection; the destination remains unconfigured.
+
+The [later EVEDEX closeout](EVEDEX-NONTRADING-CLOSEOUT-2026-10-13.md) records Demo
+identity and empty-state reconciliation and the official three-pair scope.
+BTC/ETH/1000PEPE cannot meet the unchanged BTC/ETH/SOL/BNB/XRP qualification
+gate. No symbol substitution, canary, soak or readiness promotion follows.
+
+The [current engineering manifest](../config/current-release.json) keeps
+`TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
+`LIVE_READY=false` and `STRATEGY_POLICY=REJECT_ALL`. The new adaptive system
+requires its own frozen identity/evaluator, accepted sources and provider/
+venue evidence, both 365 future days and 500 naturally closed simulated trades,
+production security/custody/off-host restore and separate manual owner arming.
+Trial 15 cannot transfer its days or provide LIVE authority. UI/UX and profit
+optimization remain deferred; neither synthetic accounting nor a green source
+gate authorizes trading. Unrelated service artifacts are preserved rather than
+removed to force a clean-release pass.
+
+## Previous boundary — 2026-10-10
 
 The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md) adds complete
 runtime-source projection and offline local alert attestation. These are

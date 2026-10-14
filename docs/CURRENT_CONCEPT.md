@@ -1,6 +1,6 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-10 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-14 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
@@ -10,9 +10,24 @@ The owner now prioritizes finishing operational launch requirements before
 further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
 fixes release identity and alert acknowledgement engineering while preserving
 the distinct recovery, host/backup, real notification, venue, custody and
-economic admission gates. UI/UX remains deferred. No strategy is promoted or
-integrated; all readiness remains false and policy is `REJECT_ALL`. Finishing
+economic admission gates. UI/UX remains deferred. No new research strategy is
+admitted to a trading runtime; all readiness remains false and policy is `REJECT_ALL`. Finishing
 engineering is not permission to skip safety or unseen-alpha evidence.
+
+The [October 13 R7 engineering closeout](ENGINEERING-CLOSEOUT-2026-10-13.md)
+records a separately owned non-trading CLOSED_BAR epoch, isolated restores,
+non-republishing technical recovery, a graceful restart and an accepted
+technical Telegram notice. The legacy database/queue were not transitioned.
+The encrypted Restic restoration is local, not off-host; those dated checks do
+not establish present uptime or trading capability. The
+[October 14 native composition](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md)
+adds actual pinned Strategy/Router/review/shared-PG-budget/SIM-Risk mechanics on
+synthetic no-network inputs. Its three-arm observation scope is not economic
+qualification. The separate
+[adaptive accounting continuation](RESEARCH-ACCOUNTING-ACCEPTANCE-2026-10-14.md)
+records installed financial/archive/four-arm recovery checks and their exact
+acceptance boundary, rather than silently promoting previously unfinished code.
+Authentic causal source inputs and measured complete-system value remain open.
 
 ## Preserved research: scenario-based rework after engineering closeout
 
@@ -62,9 +77,11 @@ owner. It is opt-in, public and research-only; the implementation alone does not
 prove an actual capture, news/macro/bar coverage, continuous SIM or economics.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
-runtime, venue, operational-security or economic qualification. Guarded primary
-recovery, external backup/custody, actual alert delivery and venue acceptance
-remain required. No readiness flag or trading authority follows.
+runtime, venue, operational-security or economic qualification. Trading-account
+effect/protection recovery, off-host backup/custody, production alert qualification
+and venue acceptance remain required. The separate R7 technical recovery and
+delivered notice above are accepted dated scopes, not unperformed tasks.
+No readiness flag or trading authority follows.
 
 ## Preserved strategy work: candidate-stream and causal selection evaluation
 
@@ -204,7 +221,7 @@ Risk limits are safety constraints, not a separate source of predicted alpha.
 | Macro and regime/capital | selected finite deterministic detector and four-regime research capability mapping; opt-in account-bound allocation; legacy unchanged; external macro/onchain unavailable | durable detector publisher, capital-basis recovery, accepted policy/source set and independent input qualification |
 | Ordinary PAPER execution | bounded technical-canary admission | separately reviewed adaptive admission after strategy/venue qualification; never remove canary guards globally |
 | PAPER Compose | technical DEV-canary topology, not complete analytics | one accepted full analytical/runtime source set and topology |
-| Matched research economics | observation journal, immutable native-window transport, separate offline four-path controls/audit and a 1m reconstructed historical review bridge with distinct modern/projection clocks; no accepted full-system economics | independently qualified native observed-clock economics bridge, source/provider/mapper inputs, actual execution, natural closes and own sealed evaluation |
+| Matched research economics | separate native three-arm Strategy/Router/review/PG-budget/SIM-Risk engineering; opt-in durable four-account financial/archive/checkpoint mechanics and an audit-only historical slot binding; no accepted original-source full-system economics | accepted causal source/provider/mapper inputs, a qualified native observed-clock economic bridge, realistic execution/costs, natural closes and own sealed evaluation; neither synthetic PASS nor provenance hashes admit a source |
 | Current release | engineering-only source identity | exact matching Windows, integration and CI evidence; no inheritance from historical green runs |
 | Production | LIVE startup blocked | security, custody, backup/restore, alerts, limits and manual arming after all gates |
 
@@ -229,7 +246,8 @@ allocation creates authority without the existing independent risk gates.
   one executable policy/evaluator and one reproducible source set. Preserve
   failed/no-fill/no-action observations; do not mistake the previous engineering
   selection for an economically qualified champion.
-- Compare strategy-only, strategy-review and independent LLM proposals on the
+- Compare strategy-only, strategy-review, independent LLM proposals and the
+  separately preregistered combined rule on the
   same causally available inputs, accounting for actual arm delays and all
   execution/provider costs. A direction prediction is not an executable trade.
 - Existing own-campaign 365 future days plus 500 naturally closed simulated
@@ -255,21 +273,31 @@ allocation creates authority without the existing independent risk gates.
 
 ## Runtime recovery decision
 
-The October 5 archive diagnostic is not accepted primary recovery. Resuming the
-old runtime requires its own accepted backup/schema/outbox/lease evidence. A
-prospective separate runtime is an alternative design decision, not authority
-to reset queues, leases, budgets or history. It would require an exclusive
-reviewed cutover, account/effect/risk-baseline reconciliation and its own verified
-backup/restore. Preserve the old database/outbox/evidence immutably and carry
-prior paid spend and outstanding reservations into the authoritative shared
-budget. No primary mutation or consumer start follows from this document.
+The October 5 archive diagnostic is historical failed restore evidence, not a
+current recovery claim. The [October 10 isolated restoration](RECOVERY-2026-10-10.md)
+and [October 13 R7 continuation](ENGINEERING-CLOSEOUT-2026-10-13.md) have their own
+accepted, dated scopes. The owner selected a separate non-trading runtime epoch
+with verified bar history instead of adopting the legacy database/outbox. R7
+technical recovery is not recovery of trading positions/effects or authority to
+reset the old queue, leases, budgets or history. It is not fresh uptime evidence.
+Preserve old database/outbox/evidence immutably and carry prior paid spend and
+outstanding reservations into the authoritative shared budget. Trading cutover
+still requires its own reviewed account/effect/risk-baseline reconciliation and
+verified protection. No primary mutation or trading consumer start follows
+from this document or the separate SQLite research recovery fixtures.
 
 ## Source of truth
 
 - Readiness and current source identity: [current-release.json](../config/current-release.json).
 - Model defaults and qualification boundary: [ADR 10](adr/0010-openai-only-current-routing.md).
 - Spending authority and historical estimates: [BUDGET.md](BUDGET.md).
-- Current recovery boundary: [RECOVERY-2026-10-05.md](RECOVERY-2026-10-05.md).
+- Dated isolated restoration and separate non-trading runtime boundary:
+  [RECOVERY-2026-10-10.md](RECOVERY-2026-10-10.md) and
+  [October 13 engineering closeout](ENGINEERING-CLOSEOUT-2026-10-13.md).
+- Native actual-component engineering, not economic qualification:
+  [October 14 composition receipt](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md).
+- Adaptive archive/accounting recovery, not source admission:
+  [October 14 accounting receipt](RESEARCH-ACCOUNTING-ACCEPTANCE-2026-10-14.md).
 - Original dated approved trading concept: [TRADING-CONCEPT-2026-09-28.md](TRADING-CONCEPT-2026-09-28.md).
 - Existing engineering research acceptance: [adaptive scoped source set](../config/adaptive-causal-source-set.json).
 - Current structural corrections and test boundaries: [engineering receipt](CONCEPT-CORRECTIONS-2026-10-06.md).

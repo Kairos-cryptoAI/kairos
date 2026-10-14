@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "kind": "ADAPTIVE_DEVELOPMENT_ACCOUNTING_ENGINEERING_RECEIPT",
+  "classification": "OPT_IN_OFFLINE_RESEARCH_ONLY",
+  "recordedAtUtc": "2026-10-14T12:03:12Z",
+  "status": "ACCEPTED_SCOPED_OFFLINE_ACCOUNTING_ENGINEERING",
+  "overallProjectOrLiveComplete": false,
+  "sourceRevision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+  "productionPythonRevision": "462dce08cf450492c76521616e27b52fd9f84288",
+  "signedImplementationCommits": [
+    {
+      "revision": "07f6d6d27e885aa8da231833cf6fdd97067a3ada",
+      "scope": "atomic native financial journal and core codec"
+    },
+    {
+      "revision": "6ec9eb1da265aaa6df142c81b7648fa6f8ab7886",
+      "scope": "archive clocks, funding, portfolio consumers and isolated fixture repair"
+    },
+    {
+      "revision": "173097b10c2cbea897ff260b412c128a9270f5da",
+      "scope": "historical source slot audit; not a routing bridge"
+    },
+    {
+      "revision": "462dce08cf450492c76521616e27b52fd9f84288",
+      "scope": "four-arm checkpoints, exact crash recovery and full installed-source CI"
+    },
+    {
+      "revision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+      "scope": "CI-only exact fixture partition; production Python bytes and assertions unchanged"
+    }
+  ],
+  "trustedSigningFingerprint": "40AF365C6682B73D056A6A274DBFF6B65BE9F827",
+  "originalWip": {
+    "files": 43,
+    "snapshotSha256": "f78ea4182e3fa68a18194cdf4dc8b5fb5e40e2651415b3cc23893fc7098e2eb7",
+    "backupName": "baseline-adaptive-wip.tar",
+    "backupSha256": "c88cfaad032052194a744b22ecdb05a4d243280cc36e2ea6cb0cf78d3ac18072",
+    "backupDisposition": "PRESERVED_BEFORE_REPAIRS",
+    "frozenTrial15V2V4V5Changed": false
+  },
+  "installedSourceAudit": {
+    "name": "installed-source-audit.json",
+    "artifactSha256": "9c3f8d74bf4784421387428ba18f74b92f1ce3a6473e6db08b1489ea9d8bef50",
+    "productionPythonFiles": 94,
+    "contentArraySha256": "529dbc5acad5745ba6bdf18faa5fc1057f2a4c11357f0d5d5497acb8861534f9",
+    "result": "PASS_BYTE_IDENTICAL_INSTALLED_SOURCE",
+    "pythonVersions": [
+      "3.11.15",
+      "3.14.7"
+    ],
+    "nonEditable": true,
+    "isolation": "python -I; pytest --import-mode=importlib; private test-fixture-only loader",
+    "scope": "PRODUCTION_PYTHON_BYTES_NOT_RUNTIME_RELEASE_OR_SOURCE_AUTHENTICITY"
+  },
+  "developmentLock": {
+    "name": "development/adaptive_replay/uv.lock",
+    "sha256": "67386e2af95902ce84ac0cdb0097f26fbb5f8c474de28eb6c89d0b6318b3f99c",
+    "changed": false,
+    "profile": "PRESERVED_HISTORICAL_DEVELOPMENT_DEPENDENCIES_NOT_CURRENT_RUNTIME_RELEASE"
+  },
+  "archivedReference": {
+    "name": "development/adaptive_replay/tests/fixtures/q5-archived-consumer.py.txt",
+    "sha256": "e8b34996a1479eeb99c9a2457a5a3bc661bdce445d09be2031919c7009c629ef",
+    "originalRole": "NEW_CONSUMER_DRAFT",
+    "interpretation": "EXACT_PRESERVED_DIFFERENTIAL_REFERENCE_NOT_SEALED_CAMPAIGN",
+    "hashCriterionRelaxed": false
+  },
+  "localArtifactDirectory": "D:/Kairos/runtime/adaptive-acceptance-20261014",
+  "finalLocalResults": [
+    {
+      "name": "foundation-installed-311.xml",
+      "python": "3.11.15",
+      "passed": 151,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 46.885,
+      "sha256": "63ecb96a6b79684690334cdd20dc58a2396d783935911f89efd2fe3980e3fd84"
+    },
+    {
+      "name": "foundation-installed-314.xml",
+      "python": "3.14.7",
+      "passed": 151,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 22.135,
+      "sha256": "8e5c47302a447ea623fda9b610ddb6b1663c5d80bb33669266cdab0f8626201b"
+    },
+    {
+      "name": "archive-accepted-installed-311.xml",
+      "python": "3.11.15",
+      "passed": 255,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 333.386,
+      "sha256": "a0054d125f40725c2b7b395d900a99b8b97f0543b623d560c268f719a015a6cb"
+    },
+    {
+      "name": "archive-accepted-installed-314.xml",
+      "python": "3.14.7",
+      "passed": 255,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 293.385,
+      "sha256": "16f792e64235d52a5a43dd8d0e371f5a0aabb9ec370c8b9a2204843d76c64d3d"
+    },
+    {
+      "name": "source-binding-final-installed-311.xml",
+      "python": "3.11.15",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.674,
+      "sha256": "5c1ff80fd866de5cd714c0309baa20565f6ce54e3184ffa3a23d62bb39ba9446"
+    },
+    {
+      "name": "source-binding-final-installed-314.xml",
+      "python": "3.14.7",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.553,
+      "sha256": "f955811c0776bc7cb0624a7f4fde6341e172853e6b91adc859018b6e99804c23"
+    },
+    {
+      "name": "durability-final-rest-installed-314-a.xml",
+      "python": "3.14.7",
+      "passed": 183,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 1445.607,
+      "sha256": "2b6ad4b506c233782a07194d682c18684d624d7bf6121f33e3f7917c5d5d7934",
+      "scope": "SIX_FOUR_ARM_WAL_PLAN_DRIVER_BUNDLE_MODULES_NOT_FULL_PACKAGE"
+    },
+    {
+      "name": "market-review-final-installed-311.xml",
+      "python": "3.11.15",
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 5.605,
+      "sha256": "5a901a1f860c276c426e0dfca9fd6f92e028024f6751044e01239dd48a6b7971",
+      "scope": "OFFLINE_UNCHANGED_MARKET_REVIEW_RECEIPTS_AND_GUARDS_NOT_NEW_MODEL_CALLS"
+    },
+    {
+      "name": "market-review-final-installed-314.xml",
+      "python": "3.14.7",
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 338.77,
+      "sha256": "aa4c3903b367f63da0977de8d66e5926764e14a11e189b6f96de09e58902ecc6",
+      "scope": "OFFLINE_UNCHANGED_MARKET_REVIEW_RECEIPTS_AND_GUARDS_NOT_NEW_MODEL_CALLS"
+    }
+  ],
+  "localFullPackageGate": {
+    "status": "FAILED_INTERPRETER_NO_JUNIT_NO_ACCEPTANCE",
+    "name": "full-final-installed-311-a.xml",
+    "python": "3.11.15",
+    "junitCompleted": false,
+    "retainedFailureNote": "full-final-installed-311-a-failure.json",
+    "retainedFailureNoteSha256": "b5838bc5d5228ecfa73929ba72d7cb2d1d72392fc1042c59802d79ba3bc1c9a9",
+    "rootCause": "NOT_ESTABLISHED; access violation coincided with faulthandler_timeout=900 scheduled diagnostic",
+    "hostedConfigurationContainsScheduledDiagnostic": false
+  },
+  "localLongHorizonRecheck": {
+    "status": "PASS",
+    "name": "horizon-final-installed-311-b.xml",
+    "python": "3.11.15",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1229.540,
+    "sha256": "96359ee4d763bd8d3688821cf6b926e62a7d32baa25d256e03a59e27a27d96a9",
+    "scheduledDiagnostic": "NORMAL_PYTEST_DEFAULT; FATAL_FAULT_HANDLER_STILL_ENABLED",
+    "scope": "EXACT_COMPLETE_36000_CELL_SINGLE_PORTFOLIO_FIXTURE; NO_SAMPLE_OR_ASSERTION_CHANGE"
+  },
+  "diagnosticInvestigation": {
+    "localPytestSourceChecked": true,
+    "scheduledDumpIsDiagnosticNotTestDeadline": true,
+    "officialDocumentation": "https://docs.python.org/3.11/library/faulthandler.html",
+    "relatedUpstreamReport": "https://github.com/python/cpython/issues/158200",
+    "relatedReportProvesLocalRootCause": false
+  },
+  "localFullPackage314Gate": "NOT_RUN_LOCALLY_IN_THIS_CONTINUATION; FOCUSED_GATES_ONLY; FULL_HOSTED_MATRIX_REQUIRED",
+  "otherLocalChecks": {
+    "ruff": "PASS_217_ADAPTIVE_PLUS_MARKET_REVIEW_FILES",
+    "format": "PASS_217_FILES",
+    "metaStatic": "PASS_MANIFEST_LINKS_CHECKOUT_AND_SOURCE_PROJECTION_REGRESSIONS",
+    "gitDiffCheck": "PASS"
+  },
+  "sourceIdentityAudit": {
+    "observedAtUtc": "2026-10-14T11:21:40Z",
+    "repositories": 14,
+    "mainBranches": 14,
+    "matchingCanonicalRemoteMain": 14,
+    "matchingLocalOriginMain": 14,
+    "matchingManifestRevisions": 14,
+    "trustedHeadSignatures": 14,
+    "currentMetaRevision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+    "metaOwnedDocumentationPending": true,
+    "unrelatedStatusEntries": {
+      "kairos-execution-engine": 1,
+      "kairos-quant-scouts": 1
+    },
+    "unrelatedArtifactsDisposition": "PRESERVED_UNMODIFIED_NOT_REMOVED_TO_FORCE_PASS",
+    "fullCleanReleaseAccepted": false,
+    "freshR7RuntimeHealthChecked": false
+  },
+  "retainedFailedAttempts": [
+    {
+      "name": "archive-installed-314.xml",
+      "passed": 201,
+      "failed": 3,
+      "sha256": "65c95632250b2dbe07fd0fef433279cb0ff6043b1039e16c32f6298bc7bc0d4e",
+      "category": "TEST_IMPORT_OR_MISSING_EXACT_ARCHIVED_REFERENCE",
+      "acceptance": false
+    },
+    {
+      "name": "source-binding-installed-311.xml",
+      "passed": 16,
+      "failed": 1,
+      "sha256": "677a518b63ba64d0861571482a55ae905175996d147af94b70715ce99bcecec1",
+      "category": "POST_CUT_VERSION_NOT_RETAINED_FOR_AUDIT_STOPITERATION; REPAIRED_WITHOUT_BACKDATING_ADMISSION",
+      "acceptance": false
+    },
+    {
+      "name": "durability-installed-314.xml",
+      "passed": 72,
+      "failed": 5,
+      "sha256": "e14ab1dbfa8cb513d53cb68472184e004c0ae53cc597719b59affd07df821c58",
+      "category": "CHILD_FIXTURE_STARTUP_30_SECOND_TIMEOUT; STOPPED_AFTER_FIVE_FAILURES",
+      "acceptance": false
+    }
+  ],
+  "retainedIntermediatePasses": [
+    {
+      "name": "archive-repair-installed-314.xml",
+      "passed": 3,
+      "sha256": "1471a21efb1b1fdaf79d24eb2c1eb215d0212971c7284ab09c2c5b04641e7f1c",
+      "scope": "TARGETED_REPAIR_ONLY"
+    },
+    {
+      "name": "source-binding-accepted-installed-311.xml",
+      "passed": 17,
+      "sha256": "98b695a37a0922a94a378a136a0f91f3773f98aa696bfe2275c41a158675542c",
+      "scope": "INTERMEDIATE_COMPANION_BEFORE_FINAL_19_CASES"
+    },
+    {
+      "name": "crash-repair-installed-314.xml",
+      "passed": 10,
+      "sha256": "8525cae1bb0a0913316a692e6e39baf46981f211ced0b855b38814788bf882e7",
+      "scope": "ACTUAL_CHILD_EXIT_FIXTURE_REPAIR_ONLY"
+    }
+  ],
+  "abortedAttempts": {
+    "note": "slow-hdd-attempt-retention.json",
+    "disposition": "ABORTED_NO_ACCEPTANCE_CLAIM",
+    "preservedTempNames": [
+      "full-installed-311-temp",
+      "durability-final-rest-314-temp"
+    ],
+    "onlyOwnedTestProcessesTerminated": true,
+    "restartScope": "FRESH_OWNED_TEST_TEMPORARIES_ON_C_NVME; NOT_RUNTIME_OR_DB_MOVE"
+  },
+  "retainedUnacceptedHostedAttempt": {
+    "id": 38546718651,
+    "url": "https://github.com/Kairos-cryptoAI/kairos/actions/runs/38546718651",
+    "sourceRevision": "462dce08cf450492c76521616e27b52fd9f84288",
+    "conclusion": "cancelled",
+    "acceptedFullMatrix": false,
+    "filteredLocalEvidence": "hosted-38546718651-filtered-evidence.json",
+    "filteredLocalEvidenceSha256": "6139a2672348fe9022fb6cccf20031cb78dc549b20966a066ea16a06740c4707",
+    "completedLinuxJobs": [
+      {
+        "jobId": 115794462938,
+        "python": "3.11.15",
+        "adaptivePassed": 2293,
+        "adaptiveSkipped": 0,
+        "adaptiveFailed": 0,
+        "adaptiveSeconds": 2230.03,
+        "marketPassed": 24
+      },
+      {
+        "jobId": 115794463420,
+        "python": "3.14.7",
+        "adaptivePassed": 2293,
+        "adaptiveSkipped": 0,
+        "adaptiveFailed": 0,
+        "adaptiveSeconds": 1937.13,
+        "marketPassed": 24
+      }
+    ],
+    "incompleteWindowsJobs": [
+      {
+        "jobId": 115794463495,
+        "python": "3.11.9",
+        "completedPartialPassed": 783,
+        "fullPackageComplete": false,
+        "conclusion": "cancelled"
+      },
+      {
+        "jobId": 115794463282,
+        "python": "3.14.7",
+        "completedPartialPassed": 783,
+        "fullPackageComplete": false,
+        "conclusion": "cancelled"
+      }
+    ],
+    "windowsAnnotation": "The job has exceeded the maximum execution time of 1h0m0s",
+    "interpretation": "NO_FULL_WINDOWS_ACCEPTANCE; PARTIAL_PROGRESS_IS_NOT_A_PASS",
+    "retainedExactHeadOtherGates": {
+      "validate": {"id": 38546718627, "conclusion": "success"},
+      "CodeQL": {"id": 38546718360, "conclusion": "success"}
+    }
+  },
+  "fixturePartition": {
+    "classification": "EXACT_DISJOINT_UNION_NOT_REDUCED_COVERAGE",
+    "regularExpectedCases": 2292,
+    "fiveDayHorizonExpectedCases": 1,
+    "completeAdaptiveUniverse": 2293,
+    "longNode": "tests/test_continuous_sim_v3_horizon.py::test_real_full_five_day_portfolio_partial_cross_day_funding_cost_restart",
+    "fullHorizonCells": 36000,
+    "longHorizonSkipAllowed": false,
+    "countOrFailureMismatchFailClosed": true,
+    "managedInterpreterRequired": true,
+    "exactPythonVersions": ["3.11.15", "3.14.7"],
+    "perJobTimeoutMinutes": 60,
+    "productionSourcesAssertionsRiskOrSamplingChanged": false
+  },
+  "hostedGates": [
+    {
+      "name": "adaptive-development",
+      "id": 38555317447,
+      "url": "https://github.com/Kairos-cryptoAI/kairos/actions/runs/38555317447",
+      "sourceRevision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+      "status": "success",
+      "completedAtUtc": "2026-10-14T11:58:43Z",
+      "matrix": "TWO_OS_X_TWO_EXACT_PYTHON_VERSIONS_X_TWO_DISJOINT_GROUPS; EIGHT_JOBS",
+      "completedSuccessfulJobsObserved": 8,
+      "jobIds": [115822883663, 115822883975, 115822884062, 115822884079, 115822884110, 115822884137, 115822884171, 115822884211],
+      "numericEvidence": "hosted-38555317447-numeric-evidence.json",
+      "numericEvidenceSha256": "8a9322d6fd5479dc9467875ef5a312741555cd27c5aa338919102c60837a1942",
+      "evidenceMethod": "OFFICIAL_GITHUB_CONNECTOR_DECODED_COMPLETED_JOB_LOGS; ACTUAL_NUMERIC_COUNTS_AND_INTERPRETER_VERSIONS",
+      "perPlatformResults": [
+        {"os":"ubuntu-latest","python":"3.11.15","adaptivePassed":2293,"adaptiveSkipped":0,"adaptiveFailed":0,"marketPassed":24,"full36000CellHorizonPassed":true},
+        {"os":"ubuntu-latest","python":"3.14.7","adaptivePassed":2293,"adaptiveSkipped":0,"adaptiveFailed":0,"marketPassed":24,"full36000CellHorizonPassed":true},
+        {"os":"windows-latest","python":"3.11.15","adaptivePassed":2293,"adaptiveSkipped":0,"adaptiveFailed":0,"marketPassed":24,"full36000CellHorizonPassed":true},
+        {"os":"windows-latest","python":"3.14.7","adaptivePassed":2293,"adaptiveSkipped":0,"adaptiveFailed":0,"marketPassed":24,"full36000CellHorizonPassed":true}
+      ],
+      "fullHorizonSampled": false
+    },
+    {
+      "name": "validate",
+      "id": 38555317366,
+      "sourceRevision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+      "status": "success"
+    },
+    {
+      "name": "CodeQL",
+      "id": 38555317512,
+      "sourceRevision": "b36e583415ebb723476a57061ff2e11a3dd50a83",
+      "status": "success"
+    }
+  ],
+  "capabilityBoundary": {
+    "historicalSlotBinding": "AUDIT_ONLY_NOT_ROUTING_BRIDGE",
+    "sourceAdmission": "NOT_ESTABLISHED",
+    "realFinancialDataCampaign": "NOT_RUN",
+    "fullFiveDayFourFinancialAccounts": "NOT_PROVEN",
+    "fullSyntheticSinglePortfolioCells": 36000,
+    "nativeThreeArmPgComposition": "SEPARATE_ALREADY_PUBLISHED_ENGINEERING_SCOPE",
+    "currentRuntimeReleaseQualification": false,
+    "paidProviderCalls": 0,
+    "venueRequests": 0,
+    "orderCalls": 0,
+    "newBlindCampaignEnrolled": false,
+    "legacyPrimaryR7DbQueueOrPackagesModified": false,
+    "alphaQualification": false,
+    "economicWinnerSelected": false
+  },
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}

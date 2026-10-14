@@ -2,6 +2,34 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-14_
 
+## Later research accounting and recovery continuation — 2026-10-14
+
+The [accounting acceptance receipt](RESEARCH-ACCOUNTING-ACCEPTANCE-2026-10-14.md)
+records the repaired original 43-file adaptive draft and an additive causal
+source-slot audit. Its original pre-repair archive is preserved. Atomic native
+financial accounting, archive/funding consistency, four separate SIM accounts
+and exact pending-operation recovery are implemented as opt-in offline research.
+The historical slot companion is audit-only, not a native routing bridge or
+source-authenticity admission. UNKNOWN context is not relabelled as empty news.
+
+Focused installed-wheel Windows gates pass, including actual child-exit cases
+and the complete 36,000-cell synthetic single-portfolio horizon. The final
+eight-job exact-source hosted matrix passes all 2,293 adaptive cases and 24
+separate market-review cases on each Windows/Linux Python 3.11.15/3.14.7 pair,
+with zero skips/failures; Meta validation and CodeQL also pass. The first matrix
+remains cancelled after incomplete Windows one-hour runs. The CI-only partition
+preserves the exact full test union, horizon and per-job bound. Earlier failures,
+including the complete local 3.11 no-JUnit crash, are retained, not promoted.
+
+This is not original-data four-account economics, real model qualification,
+native trading integration, a strategy winner or a new blind campaign. The
+separate native three-arm receipt below and dated R7 engineering remain their
+own scopes. Legacy/primary/R7 databases, queues, runtime packages, keys and
+frozen research were not changed; no paid calls, venue requests or trading
+were started. Whole clean-release admission remains separate, including
+pre-existing untracked service test artifacts. All readiness remains false,
+`STRATEGY_POLICY=REJECT_ALL`.
+
 ## Native campaign engineering acceptance — 2026-10-14
 
 The [native composition receipt](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md)
