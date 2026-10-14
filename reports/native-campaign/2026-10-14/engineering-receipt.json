@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "kind": "NATIVE_CAMPAIGN_ENGINEERING_ACCEPTANCE",
+  "classification": "OFFLINE_ENGINEERING_FIXTURE",
+  "sourceRevision": "3d8e74be8dd7434063591a737f7f7e16d164c337",
+  "acceptedScope": "native Strategy/Router/review/shared-PG-budget/SIM-Risk durable composition only",
+  "tradingAuthority": "NONE",
+  "economicQualification": false,
+  "paidProviderCalls": 0,
+  "orderCalls": 0,
+  "inputs": "SYNTHETIC_MARKET_NEWS_MACRO_MODEL_USAGE_EQUITY",
+  "sourceLock": "development/native_campaign/source-lock.json",
+  "localArtifactDirectory": "D:/Kairos/runtime/native-campaign-20261014",
+  "localFinalResults": [
+    { "python": "3.11.15", "name": "pure-installed-311-final.xml", "tests": 14, "passed": 14, "skipped": 0, "seconds": 2.308, "sha256": "9338585aadfd7ea012d3694ea50c0eaccc08de8f29ce9703b7884e48655ad0d9" },
+    { "python": "3.11.15", "name": "native-installed-311-final.xml", "tests": 1, "passed": 1, "skipped": 0, "seconds": 34.779, "sha256": "a8b210aea55cdab30da9ab6bc83eba934582bcb5cdd8661cfb24d93d1b348526" },
+    { "python": "3.14.7", "name": "pure-installed-314-final.xml", "tests": 14, "passed": 14, "skipped": 0, "seconds": 2.185, "sha256": "c4cdec510c2807d52632509ac0c27e2297cff00cb4c7a73d260426c29ae3a865" },
+    { "python": "3.14.7", "name": "native-installed-314-final.xml", "tests": 1, "passed": 1, "skipped": 0, "seconds": 41.700, "sha256": "acbd10f42c6adcd6cee5caabeedf95aeeba908af7c3bfda1302efe65641ce222" }
+  ],
+  "retainedFailedAttempt": {
+    "junitName": "native-installed-311-attempt1.xml",
+    "junitSha256": "b6d48d557e110d1b23248d1e5305d0acbadd1f11607af55e1b7da06f86740c1b",
+    "archiveName": "native-attempt1-fd213b22.dump",
+    "archiveSha256": "8f2fe2417d4c6c55c5f107d1610bde2980993a57c840fa07dd5baf25a169c630",
+    "category": "TEST_ASSERTION_SNAPSHOT_PRECEDED_SYNTHETIC_COST_COMMIT"
+  },
+  "retainedFinalArchives": [
+    { "name": "native-final-311-corruption-fixture.dump", "bytes": 1067366, "sha256": "ecb0449772c804bde1a84a7a85d98f442ae1344b44c39ec0d125233d03e2462b" },
+    { "name": "native-final-314-corruption-fixture.dump", "bytes": 1067253, "sha256": "bb61677d1d3c437abdf3a6c5e5069dd74e6869653eecb17652616e8335fe7e9d" }
+  ],
+  "archiveQualification": "READABLE_CUSTOM_TOC_ONLY_NOT_RESTORE_PROOF",
+  "finalFixtureIntegrity": "INTENTIONALLY_CORRUPTED_XRP_BOOK_CHAIN_NEGATIVE_CASE_NOT_REPAIRED",
+  "recoveryQualification": "INTERRUPTED_WRITE_AND_REAL_CONNECTION_REOPEN_NOT_PROCESS_KILL_OR_HOST_RESTART",
+  "hostedNativeRun": { "id": 38523720662, "status": "success", "python": ["3.11", "3.14"], "nativePassRequiredWithoutSkip": true },
+  "hostedMetaValidationRun": { "id": 38523720523, "status": "success" },
+  "hostedSourceCodeqlRun": { "id": 38523720366, "status": "success" },
+  "deployRevision": "41a87675acdbf62bdc7a403af0b9597baecb758b",
+  "deployCiRun": { "id": 38523441910, "status": "success" },
+  "sourceIdentity": "14_MAIN_CANONICAL_REMOTE_SHA_AND_TRUSTED_GPG_HEADS_MATCH",
+  "fullCleanRelease": "FAIL_CLOSED_PRESERVED_WIP",
+  "preservedAdaptiveWip": { "files": 43, "sha256": "f78ea4182e3fa68a18194cdf4dc8b5fb5e40e2651415b3cc23893fc7098e2eb7", "changedByThisWork": false },
+  "cleanup": "ONLY_OWNED_TMPFS_TEST_CONTAINER_AND_TWO_OWNED_NETWORKS_REMOVED_AFTER_ARCHIVE",
+  "readiness": { "technicalPaperReady": false, "paperQualified": false, "alphaReady": false, "liveReady": false, "strategyPolicy": "REJECT_ALL" }
+}

@@ -1,6 +1,34 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-13_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-14_
+
+## Native campaign engineering acceptance — 2026-10-14
+
+The [native composition receipt](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md)
+closes the current engineering gap between the causal campaign scheduler and
+actual pinned Strategy/Router/review/shared PostgreSQL budget/SIM Risk journals.
+It is a separate no-network engineering fixture, not a paid provider quality
+test, economic A/B result, strategy selection or new blind campaign enrollment.
+
+Installed-wheel Windows 3.11/3.14 gates each pass 14 pure contracts and exactly
+one native PostgreSQL target with no skips. Independent exact-source hosted
+native jobs, Meta validation and CodeQL pass. Quota denial, UNKNOWN no-resend,
+quiet/conflict cases, interrupted persistence/reconnect and full sealed-tape
+replay rejection are covered. An unrelated XRP book-chain corruption blocks
+saved BTC adoption without new model/evaluator calls or budget changes.
+
+The signed LLVM correction and transitive leaf pins are synchronized through
+active Deploy locks and the source manifest; all affected exact-source hosted
+gates are green. Third-party versions, current routes and existing strategy
+configuration are unchanged. Temporary fixture data is archived; only the
+owned test container/networks were removed. Old database/queue, runtime packages,
+keys, frozen research and the exact 43-file adaptive WIP snapshot are preserved.
+
+The full clean-release verifier still fails closed on unfinished files. The
+fixture does not establish actual input/provider quality, portfolio reservation,
+fill economics, process-kill/host recovery, off-host protection, five-symbol venue
+qualification, alpha or LIVE. No paid calls or trading were started; all readiness
+remains false and policy remains `REJECT_ALL`.
 
 ## Later EVEDEX non-trading closeout — 2026-10-13, 21:37–21:51 Moscow
 
