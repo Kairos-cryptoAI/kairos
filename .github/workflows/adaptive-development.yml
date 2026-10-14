@@ -52,9 +52,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python: ["3.11", "3.14"]
+        python: ["3.11.15", "3.14.7"]
+        fixture_group: [regular, five-day-horizon]
     runs-on: ${{ matrix.os }}
-    # The complete 36,000-cell synthetic horizon is checked, not sampled or skipped.
+    # Exact disjoint union: 2,292 regular cases plus one complete 36,000-cell horizon.
+    # The long case is a separate bounded job, never sampled or skipped.
     timeout-minutes: 60
     env:
       UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/.adaptive-development-env
@@ -70,7 +72,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install isolated immutable dependencies and non-editable replay wheel
         working-directory: development/adaptive_replay
-        run: uv sync --locked --no-editable --python ${{ matrix.python }}
+        run: uv sync --locked --no-editable --managed-python --python ${{ matrix.python }}
       - name: Check code style
         working-directory: development/adaptive_replay
         run: |
@@ -81,9 +83,20 @@ jobs:
         run: |
           $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
           $testPath = Join-Path $project 'tests'
-          $reportPath = Join-Path $env:RUNNER_TEMP 'adaptive-offline-fixtures.xml'
+          $fixtureGroup = '${{ matrix.fixture_group }}'
+          $longTestName = 'test_real_full_five_day_portfolio_partial_cross_day_funding_cost_restart'
+          $longTestFile = Join-Path $testPath 'test_continuous_sim_v3_horizon.py'
+          $longNodeId = 'tests/test_continuous_sim_v3_horizon.py::' + $longTestName
+          if ($fixtureGroup -eq 'five-day-horizon') {
+            $fixtureArgs = @('{0}::{1}' -f $longTestFile, $longTestName)
+            $expectedTotal = 1
+          } elseif ($fixtureGroup -eq 'regular') {
+            $fixtureArgs = @($testPath, '--deselect', $longNodeId)
+            $expectedTotal = 2292
+          } else { throw 'Unrecognized fixture partition' }
+          $reportPath = Join-Path $env:RUNNER_TEMP ('adaptive-offline-' + $fixtureGroup + '.xml')
           Set-Location $env:RUNNER_TEMP
-          uv run --no-sync --project $project python -I -m pytest --import-mode=importlib $testPath -q -W error --durations=15 --junitxml=$reportPath
+          uv run --no-sync --project $project python -I -m pytest --rootdir=$project --import-mode=importlib @fixtureArgs -q -W error --durations=15 --junitxml=$reportPath
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }
           [xml]$report = Get-Content -LiteralPath $reportPath -Raw
           $total = 0; $failed = 0; $skipped = 0
@@ -93,9 +106,15 @@ jobs:
             $skipped += [int]$suite.skipped
           }
           $passed = $total - $failed - $skipped
-          if ($passed -le 0 -or $failed -ne 0) { throw 'No passing fixture proof or retained failures' }
-          Write-Output "OFFLINE_FIXTURE_COUNTS total=$total passed=$passed skipped=$skipped failed=$failed"
+          if ($total -ne $expectedTotal -or $passed -le 0 -or $failed -ne 0) {
+            throw 'Incomplete exact fixture partition, no passing proof or retained failures'
+          }
+          if ($fixtureGroup -eq 'five-day-horizon' -and $skipped -ne 0) {
+            throw 'The complete long horizon must actually pass without a skip'
+          }
+          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2293"
       - name: Check market-only research code and offline evidence guards (never paid)
+        if: ${{ matrix.fixture_group == 'regular' }}
         shell: pwsh
         run: |
           $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
