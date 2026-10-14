@@ -54,7 +54,8 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python: ["3.11", "3.14"]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    # The complete 36,000-cell synthetic horizon is checked, not sampled or skipped.
+    timeout-minutes: 60
     env:
       UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/.adaptive-development-env
       OPENBLAS_NUM_THREADS: "1"
@@ -80,9 +81,20 @@ jobs:
         run: |
           $project = Join-Path $env:GITHUB_WORKSPACE 'development/adaptive_replay'
           $testPath = Join-Path $project 'tests'
+          $reportPath = Join-Path $env:RUNNER_TEMP 'adaptive-offline-fixtures.xml'
           Set-Location $env:RUNNER_TEMP
-          uv run --no-sync --project $project python -m pytest --import-mode=importlib $testPath -q -W error
+          uv run --no-sync --project $project python -I -m pytest --import-mode=importlib $testPath -q -W error --durations=15 --junitxml=$reportPath
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }
+          [xml]$report = Get-Content -LiteralPath $reportPath -Raw
+          $total = 0; $failed = 0; $skipped = 0
+          foreach ($suite in $report.testsuites.testsuite) {
+            $total += [int]$suite.tests
+            $failed += [int]$suite.failures + [int]$suite.errors
+            $skipped += [int]$suite.skipped
+          }
+          $passed = $total - $failed - $skipped
+          if ($passed -le 0 -or $failed -ne 0) { throw 'No passing fixture proof or retained failures' }
+          Write-Output "OFFLINE_FIXTURE_COUNTS total=$total passed=$passed skipped=$skipped failed=$failed"
       - name: Check market-only research code and offline evidence guards (never paid)
         shell: pwsh
         run: |

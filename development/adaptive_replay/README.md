@@ -5,6 +5,53 @@ source/configuration. It neither searches thresholds nor enrolls/promotes a
 campaign. All trading readiness remains false and policy remains `REJECT_ALL`.
 Trial 15, V4/V5, the frozen Backtest repository and evaluator are never edited.
 
+## October 14 accounting and recovery continuation
+
+The previously unfinished native financial and archive consumers now have
+isolated installed-wheel checks. `account_event_context_v3` activates native
+event relocation only inside an explicitly owned transaction; default V1
+account reducers and codecs stay the defaults. `sim_financial_journal_v3`
+atomically retains the exact native event ledger and its separate current core,
+including Decimal spelling, duplicate identity, unknown costs and sticky gates.
+
+The archive consumers bind original BBO rows, modeled availability, funding
+settlement receipts and durable source cursors without authenticating origin.
+One global chronological portfolio stream preserves the declared FUNDING /
+CANDLE / DEADLINE / CONTROL tie order and position exposure across days.
+`archive_portfolio_financial_consumer_v4` consumes original producer receipts
+and retains model expenses even after veto, failed mapping or no fill.
+
+`continuous_four_arm_v3` provides separate `strategy_only`, `context_review`,
+`independent_proposals` and `combined` accounts. The prospective V3 combined
+rule reviews both origins, abstains on direction conflicts, gives technical
+parents priority and never waits for a later peer to backdate arbitration.
+It is not the earlier static five-minute evaluator's combined policy.
+The fixed five-day horizon is explicit; no daily reset, forced close, hidden
+sample, lifetime renewal or source/cost inference is introduced.
+
+Compact driver history, segmented checkpoint WAL, exact commit-plan store and
+the recovery bundle retain independently held predecessor commitments. Only
+the exact saved pending operation can complete after an interruption. External
+driver/account advancement after checkpoint acknowledgement blocks account
+effects; matching a slot status alone is not sufficient for recovery.
+Partial QUIET/UNAVAILABLE denominators remain exact idempotent effects.
+
+`historical_four_arm_slot_binding_v1` is an **audit binding, not a routing
+bridge**. It binds the slot/protocol, unchanged technical state, required
+source roster, raw receipt references, distinct clocks and the exact as-of
+context/selected-version identities. It preserves post-cut revisions as
+audit-only, and unknown coverage does not become known no-news. Hash or
+archive consistency never sets source admission or provider dispatch to true.
+
+All checks use synthetic local fixtures and disposable SQLite files. The
+unchanged development `uv.lock` is its own historical dependency profile,
+not the current runtime release. New source identities do not adopt old
+campaigns or rewrite original receipts. The native three-arm PostgreSQL
+engineering composition remains a distinct package and acceptance scope.
+No paid provider, venue, database/queue consumer or trading CLI is added.
+Installed checks and CI are recorded separately from source authentication,
+historical economics, strategy selection, unseen alpha and LIVE readiness.
+
 ## Separate opt-in public source producer
 
 `python -m adaptive_replay.public_book_capture` is a no-op by default. Its separate
