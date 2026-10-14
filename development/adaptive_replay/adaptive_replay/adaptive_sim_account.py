@@ -345,6 +345,13 @@ def new_account(initial_equity: Decimal, policy: AccountPolicy) -> SimAccount:
 
 def _once(account: SimAccount, event_id: str, payload: tuple[object, ...]) -> bool:
     _id(event_id, "event_id")
+    # Lazy import avoids the context module's native-type import cycle. Merely
+    # importing it never selects the new mode: only an explicit scope does.
+    from .account_event_context_v3 import current_native_event_context
+
+    context = current_native_event_context(account)
+    if context is not None:
+        return context.lookup(event_id, payload) is not None
     prior = next((e for e in account.events if e.event_id == event_id), None)
     if prior is not None and prior.payload != payload:
         raise ValueError("event ID reused with conflicting content")
@@ -356,6 +363,17 @@ def _commit(account: SimAccount, event_id: str, payload: tuple[object, ...], **c
         return account
     if account.barrier is not None:
         changes["barrier"] = account.barrier
+    from .account_event_context_v3 import current_native_event_context
+
+    context = current_native_event_context(account)
+    if context is not None:
+        updated = replace(account, **changes)
+        context.validate_account(updated)
+        # Validation precedes staging. Staging is not persistence; the explicit
+        # consumer must atomically commit this event and its financial core.
+        if not context.stage_append(AccountEvent(event_id, payload)):
+            return account
+        return updated
     return replace(account, **changes, events=(*account.events, AccountEvent(event_id, payload)))
 
 
@@ -811,6 +829,31 @@ def record_funding(
         cash=account.cash + cashflow,
         realized_net_pnl=account.realized_net_pnl + cashflow,
         positions=positions,
+    )
+
+
+@_decimal_context
+def record_late_known_funding(
+    account: SimAccount, *, event_id: str, funding_key: str, cashflow: Decimal, at_ms: int
+) -> SimAccount:
+    """Book an already-proven liability after its owning exposure became flat.
+
+    The portfolio, not this helper, proves the historical due-time exposure.
+    Preserve the original native tuple and sticky barrier in either event mode.
+    """
+    _id(event_id, "event_id")
+    _id(funding_key, "funding_key")
+    _d(cashflow, "cashflow")
+    _ms(at_ms, "at_ms")
+    payload = ("LATE_KNOWN_FUNDING", funding_key, cashflow, at_ms)
+    if _once(account, event_id, payload):
+        return account
+    return _commit(
+        account,
+        event_id,
+        payload,
+        cash=account.cash + cashflow,
+        realized_net_pnl=account.realized_net_pnl + cashflow,
     )
 
 

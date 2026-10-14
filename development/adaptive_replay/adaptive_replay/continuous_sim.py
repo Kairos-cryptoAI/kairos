@@ -303,9 +303,12 @@ class FundingSchedule:
 
 
 def _implementation():
+    from .account_event_context_v3 import current_native_event_context
+
     paths = [
         Path(__file__),
         Path(account_api.__file__),
+        Path(current_native_event_context.__code__.co_filename),
         Path(simulate_ioc.__code__.co_filename),
         Path(sys.modules[FillAssumptions.__module__].__file__),
         Path(SimStateJournal.create.__func__.__code__.co_filename),
@@ -362,6 +365,14 @@ class ContinuousSimPortfolio:
         self._sealed_config = json.loads(_json(config))
         self.path = Path(path).absolute()
         self.candle_originals = self._sealed_candle_originals = candle_originals
+
+    def _load_account(self, document):
+        """Default V1 codec; explicit transactional consumers may override."""
+        return decode_account(document)
+
+    def _store_account(self, account):
+        """Default V1 codec; a core override must bind its durable ledger ref."""
+        return encode_account(account)
 
     @staticmethod
     def _config(
@@ -645,9 +656,13 @@ class ContinuousSimPortfolio:
             if self._due_inputs(st, at_ms):
                 raise SimInputError("consume known source prefix before service/sizing")
             self._drain(st, at_ms)
-            st["account"] = encode_account(
+            st["account"] = self._store_account(
                 account_api.debit_cost(
-                    decode_account(st["account"]), cost_id=cost_id, amount=amount, at_ms=at_ms, kind="SERVICE"
+                    self._load_account(st["account"]),
+                    cost_id=cost_id,
+                    amount=amount,
+                    at_ms=at_ms,
+                    kind="SERVICE",
                 )
             )
             return {"status": "DEBITED"}
@@ -864,7 +879,7 @@ class ContinuousSimPortfolio:
                 "closed_at": None,
             }
             st["parents"][receipt.parent_id] = parent
-            a = decode_account(st["account"])
+            a = self._load_account(st["account"])
             rule = self.rules[c.symbol]
             m = self.models[c.symbol]
             frame = self._latest(st, c.symbol)
@@ -924,7 +939,7 @@ class ContinuousSimPortfolio:
                         "attempt": 0,
                     }
                     parent["entry"] = "PENDING"
-            st["account"] = encode_account(a)
+            st["account"] = self._store_account(a)
             parent["admission_reason"] = reason
             return {"status": parent["entry"], "reason": reason, "parent": receipt.parent_id}
 
@@ -1014,7 +1029,7 @@ class ContinuousSimPortfolio:
 
     def _exit(self, st, pid, now, reason):
         p = st["parents"][pid]
-        a = decode_account(st["account"])
+        a = self._load_account(st["account"])
         pos = next((x for x in a.positions if x.intent_id == p["candidate"]["intent_id"]), None)
         if pos is None:
             return
@@ -1025,11 +1040,11 @@ class ContinuousSimPortfolio:
             a = account_api.request_protective_exit(
                 a, intent_id=pos.intent_id, event_id=f"protect:{pos.intent_id}:{reason}", reason=reason
             )
-            st["account"] = encode_account(a)
+            st["account"] = self._store_account(a)
         if any(x["parent"] == pid for x in st["pending"].values()):
             return  # never rewrite or pretend cancellation of an existing IOC
         if p["exit_attempts"] >= self.config["maximum_exit_attempts"]:
-            st["account"] = encode_account(
+            st["account"] = self._store_account(
                 account_api.set_barrier(
                     a, event_id=f"exhaust:{pos.intent_id}", reason="PROTECTIVE_EXIT_ATTEMPTS_EXHAUSTED"
                 )
@@ -1070,7 +1085,7 @@ class ContinuousSimPortfolio:
         # A single advance may both fill an entry and reach its later timeout;
         # deadlines may not be discovered after newer commands have executed.
         while True:
-            owned = {p.intent_id for p in decode_account(st["account"]).positions}
+            owned = {p.intent_id for p in self._load_account(st["account"]).positions}
             deadlines = [
                 (p["exposure"][0][0] + p["candidate"]["plan"]["max_holding_ms"], pid)
                 for pid, p in st["parents"].items()
@@ -1121,7 +1136,7 @@ class ContinuousSimPortfolio:
             del st["pending"][cid]
             parent = st["parents"][pending["parent"]]
             parent.setdefault("outcomes", []).append(outcome.model_dump(mode="json"))
-            a = decode_account(st["account"])
+            a = self._load_account(st["account"])
             if outcome.filled_quantity > 0:
                 fn = (
                     account_api.record_entry_fill
@@ -1174,7 +1189,7 @@ class ContinuousSimPortfolio:
                 parent["closed"], parent["closed_at"] = True, arrival
             if outcome.status == "BLOCKED":
                 a = account_api.set_barrier(a, event_id=f"blocked:{cid}", reason=outcome.reason)
-            st["account"] = encode_account(a)
+            st["account"] = self._store_account(a)
             if pending["purpose"] == "ENTRY" and outcome.filled_quantity and f is not None:
                 pos = next((p for p in a.positions if p.intent_id == parent["candidate"]["intent_id"]), None)
                 if pos is not None:
@@ -1230,14 +1245,14 @@ class ContinuousSimPortfolio:
             v = item.value
             if type(v) is AcceptedBookFrame:
                 st["latest"][v.symbol] = v.model_dump(mode="json")
-                a = decode_account(st["account"])
+                a = self._load_account(st["account"])
                 if v.continuity != "ADMITTED":
                     a = account_api.set_barrier(
                         a, event_id=f"source-gap:{global_sequence}", reason=f"SOURCE_{v.continuity}"
                     )
                 else:
                     a = self._mark_book(a, v, global_sequence, now_ms)
-                st["account"] = encode_account(a)
+                st["account"] = self._store_account(a)
                 for pid, p in sorted(st["parents"].items()):
                     pos = next(
                         (
@@ -1272,7 +1287,7 @@ class ContinuousSimPortfolio:
                 if candle_key in st["candles"]:
                     raise SimInputError("closed-candle identity cannot be delivered twice")
                 st["candles"][candle_key] = {"source": v.source_payload_sha256, "available": now_ms}
-                a = decode_account(st["account"])
+                a = self._load_account(st["account"])
                 for _pid, p in sorted(st["parents"].items()):
                     pos = next(
                         (
@@ -1310,7 +1325,7 @@ class ContinuousSimPortfolio:
                                 available_ms=now_ms,
                                 as_of_ms=now_ms,
                             )
-                st["account"] = encode_account(a)
+                st["account"] = self._store_account(a)
             else:
                 self._funding(st, v)
             st["cursor"] = global_sequence
@@ -1340,7 +1355,7 @@ class ContinuousSimPortfolio:
         )
         if receipt.status == "UNAVAILABLE":
             return
-        a = decode_account(st["account"])
+        a = self._load_account(st["account"])
         for pid, p in sorted(st["parents"].items()):
             if p["candidate"]["symbol"] != receipt.symbol:
                 continue
@@ -1364,18 +1379,14 @@ class ContinuousSimPortfolio:
                     at_ms=receipt.available_at_ms,
                 )
             else:
-                a = replace(
+                a = account_api.record_late_known_funding(
                     a,
-                    cash=a.cash + cashflow,
-                    realized_net_pnl=a.realized_net_pnl + cashflow,
-                    events=(
-                        *a.events,
-                        account_api.AccountEvent(
-                            event_id, ("LATE_KNOWN_FUNDING", key, cashflow, receipt.available_at_ms)
-                        ),
-                    ),
+                    event_id=event_id,
+                    funding_key=key,
+                    cashflow=cashflow,
+                    at_ms=receipt.available_at_ms,
                 )
-        st["account"] = encode_account(a)
+        st["account"] = self._store_account(a)
 
     @staticmethod
     def _quantity_due(parent, due):
@@ -1427,7 +1438,7 @@ class ContinuousSimPortfolio:
             if st["cursor"] != len(self.binding.inputs) or now_ms < self.config["minutes"][-1] + 60_000:
                 raise SimInputError("full source cursor and denominator horizon required")
             self._drain(st, now_ms)
-            a = decode_account(st["account"])
+            a = self._load_account(st["account"])
             expected = {f"{s}:{m}" for m in self.config["minutes"] for s in UNIVERSE}
             missing_slots = sorted(expected - set(st["slots"]))
             unavailable_slots = sorted(
