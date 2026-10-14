@@ -55,7 +55,7 @@ jobs:
         python: ["3.11.15", "3.14.7"]
         fixture_group: [regular, five-day-horizon]
     runs-on: ${{ matrix.os }}
-    # Exact disjoint union: 2,292 regular cases plus one complete 36,000-cell horizon.
+    # Exact disjoint union: 2,318 regular cases plus one complete 36,000-cell horizon.
     # The long case is a separate bounded job, never sampled or skipped.
     timeout-minutes: 60
     env:
@@ -72,7 +72,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install isolated immutable dependencies and non-editable replay wheel
         working-directory: development/adaptive_replay
-        run: uv sync --locked --no-editable --managed-python --python ${{ matrix.python }}
+        run: uv sync --locked --no-editable --reinstall-package kairos-adaptive-development-replay --managed-python --python ${{ matrix.python }}
       - name: Check code style
         working-directory: development/adaptive_replay
         run: |
@@ -92,10 +92,19 @@ jobs:
             $expectedTotal = 1
           } elseif ($fixtureGroup -eq 'regular') {
             $fixtureArgs = @($testPath, '--deselect', $longNodeId)
-            $expectedTotal = 2292
+            $expectedTotal = 2318
           } else { throw 'Unrecognized fixture partition' }
           $reportPath = Join-Path $env:RUNNER_TEMP ('adaptive-offline-' + $fixtureGroup + '.xml')
           Set-Location $env:RUNNER_TEMP
+          $installedProfile = uv run --no-sync --project $project python -I -c 'import adaptive_replay.research_profile_v1 as p; print(p.__file__)'
+          if ($LASTEXITCODE -ne 0 -or $installedProfile -notmatch 'site-packages') {
+            throw 'The exact new profile must be imported from the non-editable installed wheel'
+          }
+          $checkoutProfile = Join-Path $project 'adaptive_replay/research_profile_v1.py'
+          if ((Get-FileHash -LiteralPath $installedProfile -Algorithm SHA256).Hash -ne
+              (Get-FileHash -LiteralPath $checkoutProfile -Algorithm SHA256).Hash) {
+            throw 'Cached installed profile bytes differ from the checked-out source'
+          }
           uv run --no-sync --project $project python -I -m pytest --rootdir=$project --import-mode=importlib @fixtureArgs -q -W error --durations=15 --junitxml=$reportPath
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }
           [xml]$report = Get-Content -LiteralPath $reportPath -Raw
@@ -112,7 +121,7 @@ jobs:
           if ($fixtureGroup -eq 'five-day-horizon' -and $skipped -ne 0) {
             throw 'The complete long horizon must actually pass without a skip'
           }
-          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2293"
+          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2319"
       - name: Check market-only research code and offline evidence guards (never paid)
         if: ${{ matrix.fixture_group == 'regular' }}
         shell: pwsh
