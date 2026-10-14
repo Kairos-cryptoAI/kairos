@@ -1,0 +1,78 @@
+name: native-campaign-engineering
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'development/native_campaign/**'
+      - '.github/workflows/native-campaign.yml'
+  pull_request:
+    paths:
+      - 'development/native_campaign/**'
+      - '.github/workflows/native-campaign.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    name: Native review / durable budget / SIM Risk Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.14']
+    defaults:
+      run:
+        working-directory: development/native_campaign
+    services:
+      timescaledb:
+        image: timescale/timescaledb:2.29.1-pg16@sha256:252a443e2936039b83dd8da1373d01e59e932d1054fa6adf1bc061f1d56ae60a
+        env:
+          POSTGRES_USER: kairos
+          POSTGRES_PASSWORD: native_engineering_fixture
+          POSTGRES_DB: kairos_sim_test_campaign_159a87c218f64eb0ba3f5deefb167c2c
+        ports:
+          - 5432:5432
+        options: >-
+          --memory 1g --memory-swap 1g --cpus 1 --pids-limit 128
+          --health-cmd "pg_isready -U kairos -d kairos_sim_test_campaign_159a87c218f64eb0ba3f5deefb167c2c"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      # Public disposable fixture credentials, never a runtime or provider key.
+      KAIROS_NATIVE_CAMPAIGN_TEST_DATABASE_URL: postgresql://kairos:native_engineering_fixture@localhost:5432/kairos_sim_test_campaign_159a87c218f64eb0ba3f5deefb167c2c
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.3'
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          cache-dependency-glob: development/native_campaign/uv.lock
+      - name: Install exact Git sources and non-editable native wheel
+        run: uv sync --locked --no-editable --dev
+      - name: Check source provenance and installed native module bytes
+        run: uv run --locked --no-editable --dev python -I native_gate.py check-source
+      - name: Lint and format
+        run: |
+          uv run --locked --no-editable --dev ruff check kairos_native_campaign tests native_gate.py
+          uv run --locked --no-editable --dev ruff format --check kairos_native_campaign tests native_gate.py
+      - name: Pure fail-closed contracts
+        run: uv run --locked --no-editable --dev python -I -m pytest --import-mode=importlib -q tests/test_pure_contracts.py
+      - name: Prepare empty UUID4 campaign database only
+        run: uv run --locked --no-editable --dev python -I native_gate.py prepare
+      - name: Actual component and PostgreSQL restart/budget acceptance (no network models)
+        run: >-
+          uv run --locked --no-editable --dev python -I -m pytest --import-mode=importlib -q --tb=short
+          tests/test_native.py::test_native_candidate_review_risk_budget_restart_on_disposable_campaign_db
+          --junitxml=native-campaign.xml
+      - name: Require exactly one pass, never a skipped native test
+        run: uv run --locked --no-editable --dev python -I native_gate.py check-result native-campaign.xml
+      - name: Recheck installed source after acceptance
+        run: uv run --locked --no-editable --dev python -I native_gate.py check-source
