@@ -2,6 +2,18 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-14_
 
+## Concrete research policy preparation — 2026-10-14
+
+One [research-only candidate profile](RESEARCH-PROFILE-2026-10-14.md) concretizes
+P1–P4 without economic retuning: direct unchanged adaptive, independent ATR
+geometry with a new frozen price-reset latch, exact five-symbol 5m denominators,
+15m validity/2s quote age and lexical same-issue ordering. Preparation and
+one-original-outcome materialization remain opt-in pure contracts, not dispatch,
+durable publication, trading or campaign enrollment. Production choices remain
+unadmitted. The old V3 economic driver is not silently reused for sparse NO_CALL
+or the independent treatment's required review. No dependency/release/runtime
+or readiness promotion follows.
+
 ## Canonical trading concept consolidated — 2026-10-14
 
 The [unified specification](CANONICAL-TRADING-SPEC-2026-10-14.md) documents the

@@ -7,6 +7,10 @@
 выбирает прибыльного чемпиона, не замораживает систему/evaluator и не создаёт
 исполняемый профиль. Новые TTL, cooldown, веса ранжирования и лимиты не заданы.
 Активные конфиги, модели/маршруты, бюджеты, source sets и runtime не меняются.
+
+Позднее в тот же день подготовлен [один конкретный исследовательский профиль](RESEARCH-PROFILE-2026-10-14.md)
+для P1–P4. Его явно выбранные параметры и новый context latch — отдельный
+engineering-кандидат, не изменение статуса production policy или frozen campaign.
 Торговые права берутся только из [current-release.json](../config/current-release.json):
 все четыре readiness-флага false, `STRATEGY_POLICY=REJECT_ALL`.
 

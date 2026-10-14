@@ -1,0 +1,89 @@
+{
+  "schema": "kairos.research-profile.engineering-receipt.v1",
+  "date": "2026-10-14",
+  "timezone": "Europe/Moscow",
+  "classification": "RESEARCH_PREPARATION_ONLY",
+  "profile_id": "adaptive-context-epochs.research.v1",
+  "source_revision": "77fadff6ef487b2442f4e34a7c7e2eacbfd94026",
+  "source_gpg_fingerprint": "40AF365C6682B73D056A6A274DBFF6B65BE9F827",
+  "module_sha256": "03d2b035a87b86001d9acfad72d335e86abf1119635ae49a30b26076acf7a256",
+  "fixture_file_sha256": "e8d7ebb15a1612039f54280a2fa5c13373ff9feacc2f0e6939acc3bf6bd9de00",
+  "unchanged_lock_sha256": "67386e2af95902ce84ac0cdb0097f26fbb5f8c474de28eb6c89d0b6318b3f99c",
+  "local_wheel_sha256": "e303e360c1b0ba34b71c40dae0d2ea9a3ff35a43465f0ae20b8220b9924b13f6",
+  "local_artifact_root": "D:/Kairos/runtime/research-profile-20261014",
+  "local_acceptance": [
+    {
+      "python": "3.11.15",
+      "installed_source_files_checked": 95,
+      "installed_source_mismatches": 0,
+      "new_fixture_tests": 26,
+      "new_fixture_failures": 0,
+      "new_fixture_errors": 0,
+      "new_fixture_skipped": 0,
+      "existing_lifecycle_regression_tests": 132,
+      "existing_lifecycle_regression_failures": 0,
+      "existing_lifecycle_regression_errors": 0,
+      "existing_lifecycle_regression_skipped": 0,
+      "fixture_junit": "test-research-profile-fixtures-final-311.xml",
+      "regression_junit": "lifecycle-regression-311.xml"
+    },
+    {
+      "python": "3.14.7",
+      "installed_source_files_checked": 95,
+      "installed_source_mismatches": 0,
+      "new_fixture_tests": 26,
+      "new_fixture_failures": 0,
+      "new_fixture_errors": 0,
+      "new_fixture_skipped": 0,
+      "existing_lifecycle_regression_tests": 132,
+      "existing_lifecycle_regression_failures": 0,
+      "existing_lifecycle_regression_errors": 0,
+      "existing_lifecycle_regression_skipped": 0,
+      "fixture_junit": "test-research-profile-fixtures-final-314.xml",
+      "regression_junit": "lifecycle-regression-314.xml"
+    }
+  ],
+  "static_gates": {
+    "ruff_lint": "PASS",
+    "ruff_format": "PASS_212_FILES",
+    "uv_locked_offline_check": "PASS_UNCHANGED",
+    "wheel_and_sdist": "PASS",
+    "meta_static_markdown_and_release_projection_regressions": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "full_collection_count": 2319,
+  "hosted_acceptance": {
+    "state": "PENDING_NOT_CLAIMED_PASS",
+    "exact_source_revision": "77fadff6ef487b2442f4e34a7c7e2eacbfd94026",
+    "adaptive_run": 38627985375,
+    "validate_run": 38627985174,
+    "codeql_run": 38627985435,
+    "regular_partition_expected_tests_per_job": 2318,
+    "full_five_day_partition_expected_tests_per_job": 1
+  },
+  "retained_attempt_notes": [
+    "First uv local-directory install reused a cached older wheel; new module import failed before acceptance. Both fresh environments were explicitly reinstalled from the reviewed wheel and all 95 installed source files matched the checkout.",
+    "Managed uv Python 3.14 link setup failed locally. The fresh 3.14 environment uses the already-installed exact CPython 3.14.7 interpreter; previous environments and first build artifacts were preserved."
+  ],
+  "not_qualified": [
+    "Authentic NEWS/MACRO/BBO source provenance and completeness",
+    "Real provider quality, cumulative ledger adoption and API dispatch",
+    "Durable global epoch adoption or full continuous native producer",
+    "Compatibility with the accepted V3 economic driver",
+    "Full-system net economics, strategy champion or historical model test",
+    "Campaign/evaluator freeze, enrollment, blind duration or natural trade gates",
+    "PAPER, alpha, venue/security/host backup or LIVE"
+  ],
+  "trading_authority": false,
+  "paid_api_calls": 0,
+  "venue_calls": 0,
+  "runtime_mutations": 0,
+  "campaign_enrollment": false,
+  "readiness": {
+    "technicalPaperReady": false,
+    "paperQualified": false,
+    "alphaReady": false,
+    "liveReady": false,
+    "strategyPolicy": "REJECT_ALL"
+  }
+}

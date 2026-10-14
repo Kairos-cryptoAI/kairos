@@ -17,6 +17,16 @@ must be completed and separately reviewed before a new policy freeze/enrollment.
 
 ## Active priority: controlled-launch engineering before profit optimization
 
+The [concrete research profile](RESEARCH-PROFILE-2026-10-14.md) now supplies one
+opt-in engineering candidate for the four target choices: unchanged adaptive,
+unchanged ATR context geometry plus a newly explicit price-epoch latch, sparse
+5m considerations, 15m hypothesis validity/2s quote age and lexical tie-breaks.
+These are not production defaults, an economic champion or campaign admission.
+Its preparation/materialization contracts require retained checkpoint receipts
+and one original creation outcome. Sparse NO_CALL and review for independent
+proposals are intentionally incompatible with the previously accepted V3
+economic driver; a new separately admitted evaluator version is still required.
+
 The owner now prioritizes finishing operational launch requirements before
 further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
 fixes release identity and alert acknowledgement engineering while preserving
