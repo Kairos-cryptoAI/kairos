@@ -1,0 +1,119 @@
+{
+  "coverage": "UNKNOWN",
+  "raw_bodies_published": false,
+  "source_count": 7,
+  "sources": [
+    {
+      "capture_kind": "MODERN_OFFICIAL_RELEASE_HTML_NOT_ARCHIVE_WITNESS",
+      "captured_ms": 1792080153597,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "fed-20220504",
+      "kind": "MACRO",
+      "payload_sha256": "d5506b4e33706fde133dccfae8294e026fee64e2a750fdca8760e33286485a78",
+      "public_metric": {
+        "metric": "US federal funds target range",
+        "unit": "percent",
+        "value": "0.75-1.00"
+      },
+      "published_upper_ms": 1651687200000,
+      "raw_sha256": "c4f9149bc21fd93354d336e53ff104e81327da05739d583bfc3a45553542113d",
+      "strict_causal_admission": false,
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220504a.htm"
+    },
+    {
+      "capture_kind": "MODERN_FIRST_PARTY_SYNDICATION_JSON_NOT_ARCHIVE_WITNESS",
+      "captured_ms": 1792080154419,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "lfg-1523512196965167104",
+      "kind": "NEWS",
+      "payload_sha256": "b33e8568b31653fc68988ceadda9723a0afbd46d94a2c3f3e94f8e23da3bbfec",
+      "published_upper_ms": 1652068587000,
+      "raw_sha256": "c408ab014e2a0fcd806f0d129d3a6c74a90e763082a7c9982f7a54e75f261681",
+      "strict_causal_admission": false,
+      "url": "https://x.com/LFG_org/status/1523512196965167104"
+    },
+    {
+      "capture_kind": "MODERN_FIRST_PARTY_SYNDICATION_JSON_NOT_ARCHIVE_WITNESS",
+      "captured_ms": 1792080154973,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "lfg-1523512201088143360",
+      "kind": "NEWS",
+      "payload_sha256": "59eea9e9739db0ad58dc345ecb793b52cb48379ce3b3fecaa22c2cee9c947c80",
+      "published_upper_ms": 1652068588000,
+      "raw_sha256": "80a85205822a53095eb46fb6adb66f720419f227358002ea012909bbb9b730d8",
+      "strict_causal_admission": false,
+      "url": "https://x.com/LFG_org/status/1523512201088143360"
+    },
+    {
+      "capture_kind": "MODERN_FIRST_PARTY_SYNDICATION_JSON_NOT_ARCHIVE_WITNESS",
+      "captured_ms": 1792080155520,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "celsius-1536169010877739009",
+      "kind": "NEWS",
+      "payload_sha256": "589a8bbde57c9d65430a1a0db8bceeeee1ab8ad601e968a72402e84f81ac34a1",
+      "published_upper_ms": 1655086207000,
+      "raw_sha256": "e47502a0b32150eb9e09ec6933d2e6b3386e6029b56140074fa369b8b6141f7d",
+      "strict_causal_admission": false,
+      "url": "https://x.com/CelsiusNetwork/status/1536169010877739009"
+    },
+    {
+      "capture_kind": "RETAINED_WEB_READER_EXCERPT_NOT_ORIGINAL_HTTP_BODY",
+      "captured_ms": 1792080283645,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "bls-20220412-web-excerpt",
+      "kind": "MACRO",
+      "payload_sha256": "818e93e26cb76f38dfac6186dec8164c499ca230548f05aae5db4222d253f6d4",
+      "public_metric": {
+        "metric": "US CPI-U 12-month change, not seasonally adjusted",
+        "unit": "percent",
+        "value": "8.5"
+      },
+      "published_upper_ms": 1649766600000,
+      "raw_sha256": "e15dd27bcdf5e9cab659394293d6d6c29df449a32638ef5561bbe28bea1cd7b7",
+      "strict_causal_admission": false,
+      "url": "https://www.bls.gov/news.release/archives/cpi_04122022.htm"
+    },
+    {
+      "capture_kind": "RETAINED_WEB_READER_EXCERPT_NOT_ORIGINAL_HTTP_BODY",
+      "captured_ms": 1792080283645,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "bls-20220511-web-excerpt",
+      "kind": "MACRO",
+      "payload_sha256": "163a11485beed006932030a29db27fc777121528fbdd0de07f558e83dcba3c56",
+      "public_metric": {
+        "metric": "US CPI-U 12-month change, not seasonally adjusted",
+        "unit": "percent",
+        "value": "8.3"
+      },
+      "published_upper_ms": 1652272200000,
+      "raw_sha256": "5e781f52b5efb6d95722569d74dbdba76ca0369a393b02d5a3a920b7693f8ccf",
+      "strict_causal_admission": false,
+      "url": "https://www.bls.gov/news.release/archives/cpi_05112022.htm"
+    },
+    {
+      "capture_kind": "RETAINED_WEB_READER_EXCERPT_NOT_ORIGINAL_HTTP_BODY",
+      "captured_ms": 1792080283645,
+      "coverage": "UNKNOWN",
+      "historical_receive_clock_proven": false,
+      "id": "bls-20220610-web-excerpt",
+      "kind": "MACRO",
+      "payload_sha256": "da0a11cce15a5a7fe4db301ef40f3e9f676992c57114d955f8c9ae31fb94e167",
+      "public_metric": {
+        "metric": "US CPI-U 12-month change, not seasonally adjusted",
+        "unit": "percent",
+        "value": "8.6"
+      },
+      "published_upper_ms": 1654864200000,
+      "raw_sha256": "5bbd8fdf89c805294b11b865d208e5741355534c4aa8b961782ba17f21754f50",
+      "strict_causal_admission": false,
+      "url": "https://www.bls.gov/news.release/archives/cpi_06102022.htm"
+    }
+  ],
+  "strict_causal_admission": false
+}

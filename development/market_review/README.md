@@ -65,3 +65,28 @@ The historical fixed source pins remain immutable; the diagnostic separately
 verifies current installed component revisions and unchanged parser/strategy
 fingerprints. It is not a new economic driver, source admission, or permission to
 substitute unknown coverage with known-empty NEWS.
+
+## Bounded publication-time-proxy diagnostic
+
+The [October 15 report](../../docs/PUBLICATION-PROXY-2026-10-15.md) records nine
+actual model replies and three source-missing no-calls on the original twelve
+candidates. This separate reconstruction does not admit PUBLICATION_ONLY text
+to the strict current-context service or claim native SIM/economic completion.
+
+`tools/reconstruct_context.py prepare|finish` takes `--baseline`, `--sources`,
+`--admission-result` and create-only `--output`. It binds the original candidate
+IDs/geometry, prior seals and explicit unknown source coverage. Source selection
+cannot use a future item, exceed the 24-hour NEWS / 31-day MACRO lookbacks, or
+silently replace a missing item with an empty feed. `finish` validates separate
+eligible-only `reviews.jsonl` and zero-cost `no-calls.jsonl` before emitting its
+explicitly noncausal diagnostic result. It never calls a provider or database.
+
+`tools/proxy_worker.py` reuses the existing gateway and cumulative budget inside
+the recorded immutable image; it is **never called from tests or CI**. It checks
+raw public input hashes, source selection, the exact twelve-candidate roster and
+initial-versus-current seals before requests. It reads only protected secret
+mounts and uses a create-only one-shot marker. No migrations or budget resets
+exist in this path. The optional `--prior-failed-run` is solely the owner's
+explicit October 15 credential correction: it retains the two authentication
+failures/holds, subtracts them from the same cap and forbids chained corrections.
+It is not general permission to restart or repeat the completed experiment.

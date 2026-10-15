@@ -1,0 +1,8 @@
+{
+  "before_sha256": "8114f522e121b9e73eae9e3ada1bacdff2e3a5b433a4035469e4573adc4be17b",
+  "expected_candidates": 12,
+  "experiment_mode": "PUBLICATION_TIME_PROXY_RECONSTRUCTION_DIAGNOSTIC",
+  "plan_sha256": "5fa87eb5c9ffe0dc5bf19302bb635f9e0ade3da04de7874dae4c2dbeb0c1ae8d",
+  "requests_sha256": "eedca06384f23eef75cdd61dac2780142373aba3b9d145f29e0a6e6c4e3432fd",
+  "sealed_utc": "2026-10-15T16:15:04.092731+00:00"
+}

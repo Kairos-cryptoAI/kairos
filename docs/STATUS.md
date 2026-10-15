@@ -44,6 +44,25 @@ database/queue mutation was needed. All four readiness flags remain false. Next,
 check whether one causal market/news/macro dataset can support a bounded economic
 comparison; do not resume parallel framework or strategy expansion by default.
 
+## Bounded real-model context reconstruction — 2026-10-15
+
+The [publication-proxy report](PUBLICATION-PROXY-2026-10-15.md) records an actual,
+completed diagnostic on the same twelve native candidates: nine fresh OpenAI
+Luna/medium responses, all DEFER, and three deterministic no-calls because no
+recent NEWS proxy was available. Accounted response cost is USD 0.005411;
+USD 0.005035 from two earlier authentication failures remains reserved. The
+owner explicitly approved one corrected credential launch; cumulative attempts
+are eleven, not a reset of the twelve-attempt or USD 1 / USD 12 limits.
+
+Seven retained first-party inputs include LFG/Celsius statements and Fed/BLS
+release values. Modern source copies are explicitly PUBLICATION_ONLY proxies,
+not exact historical versions or complete feeds. Candidate identities, price
+inputs and geometry are unchanged. The old market-only observations are only
+a noncontemporaneous reference, not matched A/B or evidence of better decisions.
+No native Risk/SIM/exchange execution, economic result or readiness is claimed.
+The strict current-context result below remains blocked; this diagnostic does
+not weaken that gate or finish the requested full historical system test.
+
 ## Real historical inputs: current-context admission blocked — 2026-10-15
 
 The owner authorized reuse of the existing OpenAI key for the requested real-data

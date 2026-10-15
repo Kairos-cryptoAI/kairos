@@ -1,0 +1,18 @@
+{
+  "actual_run_sha256": {
+    "before.json": "8114f522e121b9e73eae9e3ada1bacdff2e3a5b433a4035469e4573adc4be17b",
+    "capture-result.json": "b6314bd53aff8dc7f9ffbe6e101d23bcdbe65af258e936effc473eb3cfd4b794",
+    "no-calls.jsonl": "9173e2343211b5849c323f58861d6652f02f0f450259ea6e12dc1c6f7d2517c6",
+    "proxy-diagnostic-result.json": "0f67b7f3e96a1ea0d070aef6c4f0422dc756ecabcfa996eba3a08ef847b3e6d9",
+    "proxy-sources.json": "40e090f81c1a56a92013f227a9deba752bc9c715b222abc53b44844b4b34f7b9",
+    "requests.json": "eedca06384f23eef75cdd61dac2780142373aba3b9d145f29e0a6e6c4e3432fd",
+    "reviews.jsonl": "b9c5264e9df8645ec4bc90e85eb5bf64cf08071ff4bebb7a909657a0f9c2b25e",
+    "seal.json": "fa2b6ce1dacf8096f1f8fbc9311bee99afb746747d187be71f969990f564f06b",
+    "sealed-plan.json": "5fa87eb5c9ffe0dc5bf19302bb635f9e0ade3da04de7874dae4c2dbeb0c1ae8d",
+    "source-bundle.json": "bdc747f4f587b00b5a799575f4094b9ee08e74939df73295217bea056b5b8b2f",
+    "worker-result.json": "2ed437e4393f726c2fc1c761f7deff4e89f4d74912ccac276a7c6ea2b074b718"
+  },
+  "failed_attempts_preserved": true,
+  "no_keys_copied": true,
+  "scope": "PUBLICATION_ONLY_DIAGNOSTIC_NOT_FULL_SYSTEM"
+}
