@@ -44,6 +44,41 @@ database/queue mutation was needed. All four readiness flags remain false. Next,
 check whether one causal market/news/macro dataset can support a bounded economic
 comparison; do not resume parallel framework or strategy expansion by default.
 
+## Real historical inputs: current-context admission blocked — 2026-10-15
+
+The owner authorized reuse of the existing OpenAI key for the requested real-data
+system test. The [actual admission result](../development/market_review/evidence/2026-10-15-context-admission/result.json)
+is **BLOCKED, not a completed full-system/model/economic run**. The narrow
+[checker](../development/market_review/tools/check_current_context.py) reuses the
+existing archive loader/reference validator and current pinned adaptive adapter,
+Router and CandidateReviewService; it introduces no new strategy or evaluator.
+
+All four original development windows were retained: November 7–10, 2021;
+February 5–8, May 9–12 and June 13–16, 2022 UTC, end exclusive, five instruments.
+Their complete original 17,280-slot roster was validated; all 12 native candidates
+were regenerated from causal real FULL_KLINE prefixes. The pure and routed strict
+intent preserve direction, geometry, timing, protection and metadata. Source ZIP/
+checksum receipts and input/tape/module identities match before and after.
+
+The current review receives only the last 16 real closed bars, not invented
+MarketSnapshot, NEWS or Macro messages. All 12 reviews are deterministic `DEFER`:
+closed bars are AVAILABLE, market/text/macro are UNAVAILABLE. The
+[per-candidate receipts](../development/market_review/evidence/2026-10-15-context-admission/candidate-contexts.jsonl)
+record exact reasons and separate actual checking time from projected strategy/
+receive clocks; historical observation/delivery is not proved. A gateway tripwire
+confirms zero attempted model calls. Risk sizing/SIM execution were not invoked;
+zero new provider cost is not a zero-return full-system result.
+
+The 12 earlier paid market-only responses have exact saved coverage but cannot
+be reused as NEWS/Macro-informed current-context reviews. No accepted contextual
+archive was supplied for these windows; the older May-2021/January-2024 source
+leads are unadmitted and not interchangeable. Minute OHLC alone also cannot
+attest a causal post-review book/fill. These missing inputs, and the absence of
+an accepted real-input orchestration into native SIM, remain explicit rather
+than replacing the requested run with another price-only experiment. Existing
+24 market-review regressions pass; strategy parameters, frozen evidence,
+provider budget, primary/runtime databases and queues are unchanged.
+
 ## Concrete research policy preparation — 2026-10-14
 
 One [research-only candidate profile](RESEARCH-PROFILE-2026-10-14.md) concretizes

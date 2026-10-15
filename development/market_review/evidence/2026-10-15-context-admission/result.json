@@ -1,0 +1,196 @@
+{
+  "actual_observation_end_utc": "2026-10-15T15:00:28.564895+00:00",
+  "actual_observation_start_utc": "2026-10-15T14:59:45.811658+00:00",
+  "all_candidates_deferred": true,
+  "candidates": 12,
+  "complete_system_test_executed": false,
+  "finished_utc": "2026-10-15T15:00:28.564895+00:00",
+  "historical_macro_detail": "NOT_PROVIDED",
+  "historical_macro_status": "UNAVAILABLE",
+  "historical_news_detail": "NOT_PROVIDED_NOT_KNOWN_EMPTY",
+  "historical_news_status": "UNAVAILABLE",
+  "input_signature_after": {
+    "checker": "1a431a88864b92d7b616b61db6846119dd9374ca1ae9ce196079b6fe0dfcaca2",
+    "comparison_loader": "3749ce2e50ead50456044b1b6ede4a7cf18d80833558046b6981cf91225b7a9f",
+    "plan": "6cb7ac4330818433da296bb8a1c1cc94071d78e7f1516e215ffa392ee33e4bc6",
+    "reference_result": "f73c246d6a2fdd17538ed10911223b386e1a3da07d1e0a1365153d9f21f0ce0c",
+    "saved_requests": "f781f261e317ce9043176654aac74a84d9f93351e483f0c425f03d56eb487cc6",
+    "saved_reviews": "c980114f07384363526fdb5fa64154b968dd0aa1d6b7b2e05d413e5d3bb74d92",
+    "source_lock": "53fbd9b1f82953cc8719d6baf28b5e93651249086e8cee349baffb5b4512b291",
+    "strategy_plan": "8ebede875bcfe665efc7733a5385df2ddd7cdc9942808d466a7f264edae20bb0",
+    "windows": {
+      "early_2022": {
+        "expected_tape_sha256": "e1ce735d76dee5ce388c77e265579b5de433e59f96e8b9b88c7787a5ad0cd2fe",
+        "receipt_sha256": "f46f92dbbf35a55c1d20d4463f38a7deba18120de4d7b206e891c844e0ceb1b5",
+        "tape_sha256": "e1ce735d76dee5ce388c77e265579b5de433e59f96e8b9b88c7787a5ad0cd2fe"
+      },
+      "june_2022": {
+        "expected_tape_sha256": "f434057c3cec0a04782e712ae81989450742ba0c8711c72da79c6f511dd9af6a",
+        "receipt_sha256": "d6850eeb6ee41c7d1bdfa5edbf98b722c6d6233f5cc16a246dbc1303ea67e346",
+        "tape_sha256": "f434057c3cec0a04782e712ae81989450742ba0c8711c72da79c6f511dd9af6a"
+      },
+      "late_2021": {
+        "expected_tape_sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612",
+        "receipt_sha256": "b96a1fb2337475b003cd7c9fe70ba8fd1d0bb78329fe0487f30e2318fc17725a",
+        "tape_sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612"
+      },
+      "may_2022": {
+        "expected_tape_sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef",
+        "receipt_sha256": "118f181f016ea3446c9ddb78ac89bebe976cb8ece1b4b4e321b4c0085959e3e4",
+        "tape_sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef"
+      }
+    }
+  },
+  "input_signature_before": {
+    "checker": "1a431a88864b92d7b616b61db6846119dd9374ca1ae9ce196079b6fe0dfcaca2",
+    "comparison_loader": "3749ce2e50ead50456044b1b6ede4a7cf18d80833558046b6981cf91225b7a9f",
+    "plan": "6cb7ac4330818433da296bb8a1c1cc94071d78e7f1516e215ffa392ee33e4bc6",
+    "reference_result": "f73c246d6a2fdd17538ed10911223b386e1a3da07d1e0a1365153d9f21f0ce0c",
+    "saved_requests": "f781f261e317ce9043176654aac74a84d9f93351e483f0c425f03d56eb487cc6",
+    "saved_reviews": "c980114f07384363526fdb5fa64154b968dd0aa1d6b7b2e05d413e5d3bb74d92",
+    "source_lock": "53fbd9b1f82953cc8719d6baf28b5e93651249086e8cee349baffb5b4512b291",
+    "strategy_plan": "8ebede875bcfe665efc7733a5385df2ddd7cdc9942808d466a7f264edae20bb0",
+    "windows": {
+      "early_2022": {
+        "expected_tape_sha256": "e1ce735d76dee5ce388c77e265579b5de433e59f96e8b9b88c7787a5ad0cd2fe",
+        "receipt_sha256": "f46f92dbbf35a55c1d20d4463f38a7deba18120de4d7b206e891c844e0ceb1b5",
+        "tape_sha256": "e1ce735d76dee5ce388c77e265579b5de433e59f96e8b9b88c7787a5ad0cd2fe"
+      },
+      "june_2022": {
+        "expected_tape_sha256": "f434057c3cec0a04782e712ae81989450742ba0c8711c72da79c6f511dd9af6a",
+        "receipt_sha256": "d6850eeb6ee41c7d1bdfa5edbf98b722c6d6233f5cc16a246dbc1303ea67e346",
+        "tape_sha256": "f434057c3cec0a04782e712ae81989450742ba0c8711c72da79c6f511dd9af6a"
+      },
+      "late_2021": {
+        "expected_tape_sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612",
+        "receipt_sha256": "b96a1fb2337475b003cd7c9fe70ba8fd1d0bb78329fe0487f30e2318fc17725a",
+        "tape_sha256": "e280778650b23795e79676f90e1948e176fedb7f77022d34e21cf8ffbb28d612"
+      },
+      "may_2022": {
+        "expected_tape_sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef",
+        "receipt_sha256": "118f181f016ea3446c9ddb78ac89bebe976cb8ece1b4b4e321b4c0085959e3e4",
+        "tape_sha256": "a7cb315e6b06591d44a390837e887239562db916dd1a698a9331e3bfe6d807ef"
+      }
+    }
+  },
+  "limitations": [
+    "Retained inputs contain market candles only; no admitted historical NEWS or Macro source was supplied to this check.",
+    "Strategy observed_at_ms and service receive timestamps are projected historical clocks, not evidence of historical observation or delivery.",
+    "No risk sizing, fee-inclusive admission, SIM command, live order, or full-system completion is claimed."
+  ],
+  "new_provider_cost_usd": 0,
+  "original_reference_strategy_revisions": {
+    "kairos-backtest": "da1237854066fde381542e43c106d0de727448be",
+    "kairos-core": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+    "kairos-persistence": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+    "kairos-quant-scouts": "927f5730d09383736c1dfc7dc5c400b06851019f",
+    "kairos-strategy-engine": "cde8e9c00af0cc19848e800ee76472a800a5fd5d"
+  },
+  "provider_calls": 0,
+  "readiness": {
+    "alpha_ready": false,
+    "live_ready": false,
+    "paper_qualified": false,
+    "strategy_policy": "REJECT_ALL",
+    "technical_paper_ready": false
+  },
+  "risk_or_execution_invoked": false,
+  "saved_market_only_response_coverage": 12,
+  "saved_market_only_responses_fed_to_current_review": false,
+  "schema": "kairos.real-market-input-admission-check.v1",
+  "source_identity": {
+    "adaptive_identity": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "engineering_manifest_identity_sha256": "0565f0319276bbdace65f6ddcb337b810621c3a9604451cafa2229b5d104fd06",
+    "input_loader_sha256": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+    "installed_versions": {
+      "Pygments": "2.21.0",
+      "aiohappyeyeballs": "2.7.1",
+      "aiohttp": "3.14.5",
+      "aiosignal": "1.4.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "asyncpg": "0.32.0",
+      "attrs": "26.1.0",
+      "certifi": "2026.7.22",
+      "click": "8.5.0",
+      "colorama": "0.4.6",
+      "distro": "1.9.0",
+      "fastapi": "0.143.2",
+      "frozenlist": "1.8.0",
+      "h11": "0.16.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "idna": "3.20",
+      "iniconfig": "2.3.1",
+      "jiter": "0.17.0",
+      "kairos-adaptive-development-replay": "0.1.0",
+      "kairos-aggregator": "0.2.0",
+      "kairos-backtest": "0.1.0",
+      "kairos-core": "0.3.0",
+      "kairos-execution-engine": "0.1.0",
+      "kairos-llm": "0.1.0",
+      "kairos-persistence": "0.1.0",
+      "kairos-quant-scouts": "0.1.0",
+      "kairos-risk-manager": "0.2.0",
+      "kairos-router": "0.2.0",
+      "kairos-strategy-engine": "0.2.12",
+      "multidict": "6.9.1",
+      "numpy": "2.4.6",
+      "openai": "2.54.0",
+      "opentelemetry-api": "1.45.1",
+      "orjson": "3.13.0",
+      "packaging": "26.3",
+      "pluggy": "1.7.0",
+      "prometheus_client": "0.26.0",
+      "propcache": "0.5.4",
+      "pydantic": "2.14.1",
+      "pydantic-settings": "2.16.0",
+      "pydantic_core": "2.50.1",
+      "pytest": "9.1.1",
+      "python-dotenv": "1.2.4",
+      "redis": "8.1.0",
+      "sniffio": "1.3.1",
+      "starlette": "1.8.0",
+      "structlog": "26.1.0",
+      "tqdm": "4.70.1",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.54.0",
+      "yarl": "1.25.1"
+    },
+    "modules_sha256": {
+      "kairos_aggregator.candidate_review": "6b7c9a5e6f6e3d0331e019077d9ba476e44bab283d338e66c0bbe54384c1609c",
+      "kairos_aggregator.candidate_service": "b4ae302a682692167517dfb6082692a9091b7aae8d428deeaf7d5b4098f5469b",
+      "kairos_aggregator.config": "b8a017347ce7480ca978511ab1d99101a244d12034efce5def55f3aab9de19f2",
+      "kairos_router.aggregation": "23f217e5c6a476891f8590f2ce18a5aaffeff58b90ceca94d03ca221c09fd0a1",
+      "kairos_router.candidate": "5cf7f3c948f534173d8eb945e1bc9c9fe387a8e6a24072469988ed02c13c9bbf",
+      "kairos_strategy.adaptive.adapter": "508ee2f9881b59a11ed1fee2a3bcc45368341e251b9e97e4839f8cfe16f8e7a5",
+      "kairos_strategy.adaptive.logic": "67d22ebe969a372c91381884f1cfae2abeecf143eb0ac2282eaf9b4026aade15",
+      "kairos_strategy.candles": "663e4718a2235d52c2d68f4587e8b251ecd11ad16e29a4ecb4c56a2396002f5b",
+      "kairos_strategy.runtime": "28beaf01ae884712b7edda2d2dec658f4cfda8133afbcc27e240adfb98e86863"
+    },
+    "reused_backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    }
+  },
+  "source_identity_scope": "ENGINEERING_MANIFEST_IDENTITY_NOT_DATA_OR_SOURCE_ADMISSION",
+  "started_utc": "2026-10-15T14:59:45.811658+00:00",
+  "state": "REAL_MARKET_INPUT_ADMISSION_BLOCKED_MISSING_CONTEXT",
+  "validated_original_roster_slots_per_window": 4320,
+  "validated_original_roster_slots_total": 17280,
+  "validated_windows": [
+    "late_2021",
+    "early_2022",
+    "may_2022",
+    "june_2022"
+  ]
+}
