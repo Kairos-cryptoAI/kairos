@@ -38,6 +38,13 @@ class CaptureRefused(RuntimeError):
     """A bounded capture cannot prove the required source coverage."""
 
 
+def safe_source_barrier_reason(recorder: Any) -> str | None:
+    reason = getattr(getattr(recorder, "status", None), "blocked_reason", None)
+    if isinstance(reason, str) and re.fullmatch(r"[A-Z0-9_]{1,100}", reason):
+        return reason
+    return None
+
+
 def plan() -> dict[str, object]:
     return {
         "mode": "PLAN_ONLY",
@@ -566,6 +573,7 @@ async def _execute_bounded(args: argparse.Namespace, *, cleanup_budget_s: float)
     except CaptureRefused as exc:
         receipt["state"] = "REFUSED"
         receipt["refusal"] = str(exc)
+        receipt["source_barrier_reason"] = safe_source_barrier_reason(recorder)
         _update_receipt(descriptor, receipt)
         raise
     except asyncio.CancelledError:

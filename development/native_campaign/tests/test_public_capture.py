@@ -15,6 +15,14 @@ capture = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(capture)
 
 
+def test_source_barrier_diagnostic_preserves_only_static_reason_codes():
+    recorder = SimpleNamespace(status=SimpleNamespace(blocked_reason="SOURCE_CLOCK_REGRESSION"))
+    assert capture.safe_source_barrier_reason(recorder) == "SOURCE_CLOCK_REGRESSION"
+    recorder.status.blocked_reason = "PRIVATE value https://example.invalid/credential"
+    assert capture.safe_source_barrier_reason(recorder) is None
+    assert capture.safe_source_barrier_reason(None) is None
+
+
 class Frame:
     def __init__(self, continuity="ADMITTED"):
         self.frame_sha256 = "frame-hash"
