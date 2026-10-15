@@ -46,6 +46,26 @@ def valid_status(
     }
 
 
+def valid_dns_status(*, state: str = "WAITING_SOURCE_NONTRADING") -> dict[str, Any]:
+    status = valid_status(state=state)
+    status["source_transport"] = {
+        "timeout_rounds": 0,
+        "recoveries": 0,
+        "consecutive_timeout_rounds": 0,
+        "dns_failure_rounds": 2,
+        "consecutive_dns_failure_rounds": 1
+        if state == "WAITING_SOURCE_NONTRADING"
+        else 0,
+    }
+    status["source_wait_reason"] = (
+        "OFFICIAL_CLOSED_BAR_FETCH_DNS_FAILURE"
+        if state == "WAITING_SOURCE_NONTRADING"
+        else None
+    )
+    status["source_fresh"] = state == "RUNNING_NONTRADING"
+    return status
+
+
 class FakeDelivery:
     def _no_reparse(self, _path: Path) -> None:
         return None
@@ -240,6 +260,102 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             "consecutive_timeout_rounds": 0,
         }
         self.assertEqual(r7.classify_status(catching_up), "catching_up_nontrading")
+
+    def test_r7_dns_profile_requires_real_dns_pause_telemetry_and_is_isolated(
+        self,
+    ) -> None:
+        # The accepted/current generation emits only the original three
+        # timeout counters until it has seen a DNS failure.
+        current = valid_status()
+        self.assertEqual(r7.classify_status(current, profile="r7-dns"), "running_fresh")
+        timeout_wait = valid_status(state="WAITING_SOURCE_NONTRADING")
+        self.assertEqual(
+            r7.classify_status(timeout_wait, profile="r7-dns"),
+            "waiting_source_nontrading",
+        )
+
+        waiting = valid_dns_status()
+        self.assertEqual(
+            r7.classify_status(waiting, profile="r7-dns"),
+            "waiting_source_nontrading",
+        )
+        # The old profile rejects the expanded circuit schema; it cannot
+        # silently inherit the DNS exception or share its binding identity.
+        self.assertEqual(r7.classify_status(waiting), "invalid")
+        self.assertNotEqual(r7._binding_record(), r7._binding_record("r7-dns"))
+        self.assertNotEqual(r7._binding_sha256(), r7._binding_sha256("r7-dns"))
+        self.assertNotEqual(
+            r7._status_path(r7._binding_record()),
+            r7._status_path(r7._binding_record("r7-dns")),
+        )
+
+        for field, bad_value in (
+            ("dns_failure_rounds", 0),
+            ("consecutive_dns_failure_rounds", 0),
+            ("consecutive_timeout_rounds", 1),
+            ("dns_failure_rounds", True),
+        ):
+            status = valid_dns_status()
+            status["source_transport"][field] = bad_value
+            self.assertEqual(r7.classify_status(status, profile="r7-dns"), "invalid")
+        wrong_reason = valid_dns_status()
+        wrong_reason["source_wait_reason"] = r7._SOURCE_TIMEOUT
+        self.assertEqual(r7.classify_status(wrong_reason, profile="r7-dns"), "invalid")
+        # A post-recovery healthy sample must be fresh and all per-symbol
+        # watermarks/readiness guards remain mandatory.
+        fresh = valid_dns_status(state="RUNNING_NONTRADING")
+        self.assertEqual(r7.classify_status(fresh, profile="r7-dns"), "running_fresh")
+        fresh["watermarks_ms"].pop("XRPUSDT")
+        self.assertEqual(r7.classify_status(fresh, profile="r7-dns"), "invalid")
+
+        # Deploy's lifecycle contract also allows a later timeout wait after
+        # DNS telemetry exists, but only when the DNS streak has returned to 0.
+        later_timeout = valid_dns_status(state="WAITING_SOURCE_NONTRADING")
+        later_timeout["source_transport"].update(
+            timeout_rounds=1,
+            recoveries=1,
+            consecutive_timeout_rounds=1,
+            consecutive_dns_failure_rounds=0,
+        )
+        later_timeout["source_wait_reason"] = r7._SOURCE_TIMEOUT
+        self.assertEqual(
+            r7.classify_status(later_timeout, profile="r7-dns"),
+            "waiting_source_nontrading",
+        )
+
+    def test_r7_dns_poll_uses_its_own_status_and_journal_binding(self) -> None:
+        source = self._source()
+        source.update(
+            {
+                "profile": "r7-dns",
+                "binding": r7._binding_record("r7-dns"),
+                "binding_sha256": r7._binding_sha256("r7-dns"),
+            }
+        )
+        MemoryJournal.rows = [
+            {
+                "schema_version": 1,
+                "seq": 0,
+                "kind": "baseline",
+                "state": "waiting_source_nontrading",
+                "binding_sha256": source["binding_sha256"],
+            }
+        ]
+        observed_paths: list[Path] = []
+        result = r7.poll_once(
+            source_admitter=lambda: source,
+            observer=lambda path, _source: (
+                observed_paths.append(path) or "waiting_source_nontrading"
+            ),
+            sender=lambda _event: self.fail("quiet DNS wait must not send"),
+            root=Path("not-used"),
+            journal_factory=MemoryJournal,
+        )
+        self.assertEqual(result["send_attempts"], 0)
+        self.assertIn("runtime-dns-recovery-20261015", str(observed_paths[0]))
+        self.assertEqual(
+            MemoryJournal.rows[0]["binding_sha256"], source["binding_sha256"]
+        )
 
     def _source(self) -> dict[str, Any]:
         return {

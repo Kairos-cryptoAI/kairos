@@ -23,6 +23,9 @@ ROOT = Path(r"D:\Kairos\kairos")
 DEPLOY_ROOT = Path(r"D:\Kairos\kairos-deploy")
 RUNTIME_ROOT = Path(r"D:\Kairos\runtime\runtime-incident-20261013")
 PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261013\operational-r7")
+R7DNS_PRIVATE_ROOT = Path(
+    r"D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns"
+)
 WORK = "read-recovery-r7-cb1bc3984d8440aa965af5b928d2b4fa"
 OWNER = "69893dc7b7c647f49967387e7efca9fb"
 TASK_NAME = "Kairos-R7-TechnicalAlerts-V1-20261013"
@@ -61,6 +64,25 @@ _QUIET_STATES = {
 }
 _KNOWN_STATES = _ALERT_STATES | _QUIET_STATES
 _SOURCE_TIMEOUT = "OFFICIAL_CLOSED_BAR_FETCH_TIMEOUT"
+_SOURCE_DNS_FAILURE = "OFFICIAL_CLOSED_BAR_FETCH_DNS_FAILURE"
+_R7DNS = {
+    "name": "r7-dns",
+    "runtime_root": Path(r"D:\Kairos\runtime\runtime-dns-recovery-20261015"),
+    "private_root": R7DNS_PRIVATE_ROOT,
+    "work": "preflight-b0a90145752d4b1486a466125afbc131",
+    "owner": OWNER,
+    "task_name": "Kairos-R7-DNS-TechnicalAlerts-V1-20261015",
+    "scope": "kairos-r7-dns-technical-runtime-alerts-v1",
+    "container": "5a9fff5848ccd57529029ab8214fc97cc33de6b7efaa371f376fdb07491a2e5b",
+    "generation": "kairos-epoch-69893dc7b7c6-serve-r7-dns-b0a90145",
+    "receipt_sha256": "5933c8c99e994209d7829c5cb5ab4862b4522fe43afb2d7ff80e8f74e90765f0",
+    "signature_sha256": "534803efd215c6e866894aa9be107e9ac528f4e3ba1ebac33b6ec28dc055afb7",
+    "source_revision": "ffa09ddb5a433bdf1dad75b2c8d1f4e9d7999b65",
+    "failed_status_path": Path(
+        r"D:\Kairos\runtime\runtime-incident-20261013\read-recovery-r7-cb1bc3984d8440aa965af5b928d2b4fa\output-serve\status.json"
+    ),
+    "failed_status_sha256": "faf607e8b86b05b579aee162ab113b417356ce409ca41e38b913e3c2b8302354",
+}
 
 
 class R7Error(RuntimeError):
@@ -83,7 +105,24 @@ def _json(raw: bytes) -> Any:
     return json.loads(raw, object_pairs_hook=unique)
 
 
-def _binding_record() -> dict[str, Any]:
+def _binding_record(profile: str = "legacy") -> dict[str, Any]:
+    if profile == "r7-dns":
+        return {
+            "schema_version": 1,
+            "scope": _R7DNS["scope"],
+            "owner": _R7DNS["owner"],
+            "task_name": _R7DNS["task_name"],
+            "work": _R7DNS["work"],
+            "serve_container_id": _R7DNS["container"],
+            "receipt_sha256": _R7DNS["receipt_sha256"],
+            "receipt_signature_sha256": _R7DNS["signature_sha256"],
+            "receipt_source_revision": _R7DNS["source_revision"],
+            "failed_status_sha256": _R7DNS["failed_status_sha256"],
+            "trading_started": False,
+            "business_signals_muted": True,
+        }
+    if profile != "legacy":
+        raise R7Error("R7_PROFILE_INVALID")
     return {
         "schema_version": 1,
         "scope": SCOPE,
@@ -98,12 +137,14 @@ def _binding_record() -> dict[str, Any]:
     }
 
 
-def _binding_bytes() -> bytes:
-    return json.dumps(_binding_record(), sort_keys=True, separators=(",", ":")).encode()
+def _binding_bytes(profile: str = "legacy") -> bytes:
+    return json.dumps(
+        _binding_record(profile), sort_keys=True, separators=(",", ":")
+    ).encode()
 
 
-def _binding_sha256() -> str:
-    return hashlib.sha256(_binding_bytes()).hexdigest()
+def _binding_sha256(profile: str = "legacy") -> str:
+    return hashlib.sha256(_binding_bytes(profile)).hexdigest()
 
 
 def _load_r5_helpers() -> Any:
@@ -175,7 +216,7 @@ def _initializer_source_bytes(raw: bytes) -> bytes:
     return raw
 
 
-def _verify_signed_source(helpers: Any) -> None:
+def _verify_signed_source(helpers: Any, *, profile: str = "legacy") -> None:
     """Require this runner and its installer/tests to be the exact signed main bytes."""
     try:
         for namespace_init in (
@@ -202,13 +243,23 @@ def _verify_signed_source(helpers: Any) -> None:
         deploy_source = (
             helpers._git(
                 DEPLOY_ROOT,
-                ["show", "-s", "--format=%H %G? %GF", SOURCE_REVISION],
+                [
+                    "show",
+                    "-s",
+                    "--format=%H %G? %GF",
+                    _R7DNS["source_revision"]
+                    if profile == "r7-dns"
+                    else SOURCE_REVISION,
+                ],
             )
             .decode("ascii", "strict")
             .strip()
             .split()
         )
-        if deploy_source != [SOURCE_REVISION, "G", helpers.SIGNER]:
+        source_revision = (
+            _R7DNS["source_revision"] if profile == "r7-dns" else SOURCE_REVISION
+        )
+        if deploy_source != [source_revision, "G", helpers.SIGNER]:
             raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
         deploy_head = (
             helpers._git(DEPLOY_ROOT, ["show", "-s", "--format=%H %G? %GF", "HEAD"])
@@ -232,7 +283,7 @@ def _verify_signed_source(helpers: Any) -> None:
             raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
         helpers._git(
             DEPLOY_ROOT,
-            ["merge-base", "--is-ancestor", SOURCE_REVISION, deploy_head_id],
+            ["merge-base", "--is-ancestor", source_revision, deploy_head_id],
         )
         for relative in (
             "development/ops_alerts/runtime_status_r7_notifier.py",
@@ -303,13 +354,16 @@ def _write_new(path: Path, raw: bytes, continuation: Any, delivery: Any) -> None
         raise R7Error("R7_PRIVATE_WRITE_FAILED") from None
 
 
-def admit_r7(*, helpers: Any | None = None) -> dict[str, Any]:
+def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str, Any]:
     """Admit only the immutable accepted R7 receipt and its protected status path."""
     helpers = helpers or _load_r5_helpers()
     try:
-        _verify_signed_source(helpers)
+        if profile not in {"legacy", "r7-dns"}:
+            raise R7Error("R7_PROFILE_INVALID")
+        _verify_signed_source(helpers, profile=profile)
         continuation, delivery = helpers._continuation()
-        work = RUNTIME_ROOT / WORK
+        spec = _R7DNS if profile == "r7-dns" else None
+        work = spec["runtime_root"] / spec["work"] if spec else RUNTIME_ROOT / WORK
         delivery._no_reparse(work)
         delivery._private_acl(work)
         receipt_path = work / "receipt.json"
@@ -317,47 +371,120 @@ def admit_r7(*, helpers: Any | None = None) -> dict[str, Any]:
             receipt_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
         )
         helpers._verify_signature(receipt_path, work / "receipt.json.asc")
-        if hashlib.sha256(receipt_raw).hexdigest() != RECEIPT_SHA256:
+        if spec:
+            signature_path = work / "receipt.json.asc"
+            signature_raw = _protected_read(
+                signature_path, helpers=helpers, delivery=delivery, maximum=16_384
+            )
+            if hashlib.sha256(signature_raw).hexdigest() != spec["signature_sha256"]:
+                raise R7Error("R7DNS_RECEIPT_SIGNATURE_MISMATCH")
+        expected_receipt_sha = spec["receipt_sha256"] if spec else RECEIPT_SHA256
+        if hashlib.sha256(receipt_raw).hexdigest() != expected_receipt_sha:
             raise R7Error("R7_RECEIPT_MISMATCH")
         receipt = _json(receipt_raw)
+        if spec:
+            failed_path = spec["failed_status_path"]
+            delivery._no_reparse(failed_path)
+            failed_raw = _protected_read(
+                failed_path, helpers=helpers, delivery=delivery, maximum=MAX_BYTES
+            )
+            failed = _json(failed_raw)
+            if (
+                hashlib.sha256(failed_raw).hexdigest() != spec["failed_status_sha256"]
+                or not isinstance(failed, dict)
+                or failed.get("error_type") != "ClientConnectorDNSError"
+            ):
+                raise R7Error("R7DNS_ORIGINAL_FAILURE_LATCH_CHANGED")
+            continuation_receipt = (
+                receipt.get("continuation") if isinstance(receipt, dict) else None
+            )
+            continuation_status = (
+                continuation_receipt.get("status")
+                if isinstance(continuation_receipt, dict)
+                else None
+            )
+            if (
+                not isinstance(receipt, dict)
+                or receipt.get("state") != "PASS_REVIEWED_NONTRADING_DNS_CONTINUATION"
+                or receipt.get("source_revision") != spec["source_revision"]
+                or receipt.get("failed_status_sha256") != spec["failed_status_sha256"]
+                or receipt.get("legacy_unchanged") is not True
+                or receipt.get("trading_started") is not False
+                or receipt.get("serving_restart") is not False
+                or not isinstance(continuation_receipt, dict)
+                or continuation_receipt.get("container") != _R7DNS["generation"]
+                or continuation_receipt.get("container_id") != spec["container"]
+                or continuation_receipt.get("state")
+                != "PASS_REVIEWED_NONTRADING_DNS_CONTINUATION"
+                or continuation_receipt.get("graceful_restart_proven") is not True
+                or continuation_receipt.get("trading_started") is not False
+                or not isinstance(continuation_status, dict)
+                or continuation_status.get("owner") != spec["owner"]
+                or continuation_status.get("state")
+                not in {"RUNNING_NONTRADING", "WAITING_SOURCE_NONTRADING"}
+                or continuation_status.get("trading_started") is not False
+                or continuation_status.get("PAPER_QUALIFIED") is not False
+                or continuation_status.get("ALPHA_READY") is not False
+                or continuation_status.get("LIVE_READY") is not False
+                or continuation_status.get("STRATEGY_POLICY") != "REJECT_ALL"
+                or any(
+                    type(continuation_status.get(key)) is not int
+                    or continuation_status[key] != 0
+                    for key in (
+                        "pending_outbox",
+                        "unresolved_inbox",
+                        "uncompleted_publications",
+                    )
+                )
+            ):
+                raise R7Error("R7DNS_RECEIPT_INVALID")
         generation = receipt.get("generation") if isinstance(receipt, dict) else None
         generation_status = (
             generation.get("status") if isinstance(generation, dict) else None
         )
         if (
             not isinstance(receipt, dict)
-            or receipt.get("result") != "PASS_NEW_NONTRADING_GENERATION"
-            or receipt.get("owner") != OWNER
-            or receipt.get("source_revision") != SOURCE_REVISION
-            or receipt.get("trading_started") is not False
-            or not isinstance(generation, dict)
-            or generation.get("name") != GENERATION_NAME
-            or generation.get("container_id") != EXPECTED_CONTAINER
-            or not isinstance(generation_status, dict)
-            or generation_status.get("state") != "RUNNING_NONTRADING"
-            or generation_status.get("owner") != OWNER
-            or any(
-                type(generation_status.get(key)) is not int
-                or generation_status[key] != 0
-                for key in (
-                    "pending_outbox",
-                    "unresolved_inbox",
-                    "uncompleted_publications",
+            or (not spec and receipt.get("result") != "PASS_NEW_NONTRADING_GENERATION")
+            or (not spec and receipt.get("owner") != OWNER)
+            or (not spec and receipt.get("source_revision") != SOURCE_REVISION)
+            or (not spec and receipt.get("trading_started") is not False)
+            or (
+                not spec
+                and (
+                    not isinstance(generation, dict)
+                    or generation.get("name") != GENERATION_NAME
+                    or generation.get("container_id") != EXPECTED_CONTAINER
+                    or not isinstance(generation_status, dict)
+                    or generation_status.get("state") != "RUNNING_NONTRADING"
+                    or generation_status.get("owner") != OWNER
+                    or any(
+                        type(generation_status.get(key)) is not int
+                        or generation_status[key] != 0
+                        for key in (
+                            "pending_outbox",
+                            "unresolved_inbox",
+                            "uncompleted_publications",
+                        )
+                    )
                 )
             )
-            or any(
-                receipt.get(key) is not False
-                for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
+            or (
+                not spec
+                and any(
+                    receipt.get(key) is not False
+                    for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
+                )
             )
-            or receipt.get("STRATEGY_POLICY") != "REJECT_ALL"
+            or (not spec and receipt.get("STRATEGY_POLICY") != "REJECT_ALL")
         ):
             raise R7Error("R7_RECEIPT_INVALID")
         return {
             "helpers": helpers,
             "continuation": continuation,
             "delivery": delivery,
-            "binding": _binding_record(),
-            "binding_sha256": _binding_sha256(),
+            "profile": profile,
+            "binding": _binding_record(profile),
+            "binding_sha256": _binding_sha256(profile),
             "receipt": receipt,
         }
     except R7Error:
@@ -366,14 +493,54 @@ def admit_r7(*, helpers: Any | None = None) -> dict[str, Any]:
         raise R7Error("R7_SOURCE_ADMISSION_FAILED") from None
 
 
-def _source_pause_valid(value: dict[str, Any], state: str) -> bool:
+def _source_pause_valid(
+    value: dict[str, Any], state: str, *, profile: str = "legacy"
+) -> bool:
     circuit = value.get("source_transport")
-    keys = {"timeout_rounds", "recoveries", "consecutive_timeout_rounds"}
+    base_keys = {"timeout_rounds", "recoveries", "consecutive_timeout_rounds"}
+    dns_keys = {"dns_failure_rounds", "consecutive_dns_failure_rounds"}
     waiting = state == "WAITING_SOURCE_NONTRADING"
+    if profile == "r7-dns":
+        schema = frozenset(circuit) if isinstance(circuit, dict) else None
+        has_dns_telemetry = schema == frozenset(base_keys | dns_keys)
+        expected_schemas = {frozenset(base_keys), frozenset(base_keys | dns_keys)}
+        if (
+            not isinstance(circuit, dict)
+            or schema not in expected_schemas
+            or any(type(circuit[key]) is not int or circuit[key] < 0 for key in schema)
+        ):
+            return False
+        dns_rounds = circuit.get("dns_failure_rounds", 0)
+        consecutive_dns = circuit.get("consecutive_dns_failure_rounds", 0)
+        return (
+            (not has_dns_telemetry or dns_rounds >= 1)
+            and circuit["recoveries"] <= circuit["timeout_rounds"] + dns_rounds
+            and circuit["consecutive_timeout_rounds"] <= circuit["timeout_rounds"]
+            and consecutive_dns <= dns_rounds
+            and (
+                (
+                    (
+                        value.get("source_wait_reason") == _SOURCE_TIMEOUT
+                        and circuit["consecutive_timeout_rounds"] >= 1
+                        and consecutive_dns == 0
+                    )
+                    or (
+                        has_dns_telemetry
+                        and value.get("source_wait_reason") == _SOURCE_DNS_FAILURE
+                        and consecutive_dns >= 1
+                        and circuit["consecutive_timeout_rounds"] == 0
+                    )
+                )
+                if waiting
+                else value.get("source_wait_reason") is None
+                and circuit["consecutive_timeout_rounds"] == 0
+                and consecutive_dns == 0
+            )
+        )
     return (
         isinstance(circuit, dict)
-        and set(circuit) == keys
-        and all(type(circuit[key]) is int and circuit[key] >= 0 for key in keys)
+        and set(circuit) == base_keys
+        and all(type(circuit[key]) is int and circuit[key] >= 0 for key in base_keys)
         and circuit["recoveries"] <= circuit["timeout_rounds"]
         and circuit["consecutive_timeout_rounds"] <= circuit["timeout_rounds"]
         and (
@@ -388,7 +555,9 @@ def _source_pause_valid(value: dict[str, Any], state: str) -> bool:
     )
 
 
-def classify_status(value: Any, *, now: datetime | None = None) -> str:
+def classify_status(
+    value: Any, *, now: datetime | None = None, profile: str = "legacy"
+) -> str:
     """Validate the R7 status contract and return a quiet or alert state."""
     if not isinstance(value, dict):
         return "invalid"
@@ -419,9 +588,9 @@ def classify_status(value: Any, *, now: datetime | None = None) -> str:
     if age > MAX_STATUS_AGE_SECONDS:
         return "running_stale"
     watermarks = value.get("watermarks_ms")
-    circuit_valid = _source_pause_valid(value, state)
+    circuit_valid = _source_pause_valid(value, state, profile=profile)
     valid = (
-        value.get("owner") == OWNER
+        value.get("owner") == (_R7DNS["owner"] if profile == "r7-dns" else OWNER)
         and type(value.get("cycles")) is int
         and value["cycles"] >= 0
         and type(value.get("completed_inbox")) is int
@@ -473,7 +642,7 @@ def read_status(path: Path, *, source: dict[str, Any]) -> str:
         raw = _protected_read(
             path, helpers=helpers, delivery=delivery, maximum=MAX_BYTES
         )
-        return classify_status(_json(raw))
+        return classify_status(_json(raw), profile=source.get("profile", "legacy"))
     except R7Error:
         return "invalid"
     except Exception:  # noqa: BLE001 - malformed status is a redacted alert.
@@ -481,16 +650,26 @@ def read_status(path: Path, *, source: dict[str, Any]) -> str:
 
 
 def _status_path(binding: dict[str, Any]) -> Path:
-    if binding != _binding_record():
-        raise R7Error("R7_BINDING_INVALID")
-    return RUNTIME_ROOT / WORK / "output-serve" / "status.json"
+    if binding == _binding_record():
+        return RUNTIME_ROOT / WORK / "output-serve" / "status.json"
+    if binding == _binding_record("r7-dns"):
+        return _R7DNS["runtime_root"] / _R7DNS["work"] / "output-serve" / "status.json"
+    raise R7Error("R7_BINDING_INVALID")
 
 
 class R7Journal:
     """Independent R7 journal; only low-level locked append is borrowed from R5."""
 
-    def __init__(self, path: Path, continuation: Any, delivery: Any, helpers: Any):
+    def __init__(
+        self,
+        path: Path,
+        continuation: Any,
+        delivery: Any,
+        helpers: Any,
+        binding_sha256: str | None = None,
+    ):
         self.path, self.c, self.delivery = path, continuation, delivery
+        self.binding_sha256 = binding_sha256 or _binding_sha256()
         self.lease_path = path.with_name(path.name + ".lock")
         self._base = helpers.R5Journal
         self._error = helpers.R5Error
@@ -543,7 +722,7 @@ class R7Journal:
                 or first["schema_version"] != 1
                 or first.get("kind") != "baseline"
                 or first.get("state") not in _KNOWN_STATES
-                or first.get("binding_sha256") != _binding_sha256()
+                or first.get("binding_sha256") != self.binding_sha256
             ):
                 raise ValueError("baseline")
             current, pending = first["state"], None
@@ -616,7 +795,7 @@ def initialize(
     *,
     source_admitter: Callable[[], dict[str, Any]] = admit_r7,
     observer: Callable[[Path, dict[str, Any]], str] | None = None,
-    root: Path = PRIVATE_ROOT,
+    root: Path | None = None,
 ) -> dict[str, Any]:
     source = source_admitter()
     helpers, continuation, delivery = (
@@ -624,10 +803,13 @@ def initialize(
         source["continuation"],
         source["delivery"],
     )
+    root = root or (
+        R7DNS_PRIVATE_ROOT if source.get("profile") == "r7-dns" else PRIVATE_ROOT
+    )
     delivery._no_reparse(root)
     delivery._private_acl(root)
     binding_path = root / "binding.json"
-    binding_bytes = _binding_bytes()
+    binding_bytes = _binding_bytes(source.get("profile", "legacy"))
     if binding_path.exists():
         if (
             _protected_read(
@@ -638,7 +820,9 @@ def initialize(
             raise R7Error("R7_BINDING_CHANGED")
     else:
         _write_new(binding_path, binding_bytes, continuation, delivery)
-    journal = R7Journal(root / "events.jsonl", continuation, delivery, helpers)
+    journal = R7Journal(
+        root / "events.jsonl", continuation, delivery, helpers, source["binding_sha256"]
+    )
     with journal.locked():
         if journal.read():
             raise R7Error("R7_BASELINE_ALREADY_EXISTS")
@@ -655,7 +839,7 @@ def initialize(
                 "seq": 0,
                 "kind": "baseline",
                 "state": state,
-                "binding_sha256": _binding_sha256(),
+                "binding_sha256": source["binding_sha256"],
             }
         )
     return {"status": "R7_BASELINE_CREATED", "state": state, "trading_authority": False}
@@ -699,7 +883,7 @@ def _monitor_sender(
                 "message_id": response["message_id"],
                 "accepted_at_utc": datetime.now(UTC).isoformat(),
                 "protect_content": True,
-                "binding_sha256": _binding_sha256(),
+                "binding_sha256": source["binding_sha256"],
                 "trading_authority": False,
             }
             _write_new(
@@ -722,7 +906,7 @@ def poll_once(
     source_admitter: Callable[[], dict[str, Any]] = admit_r7,
     observer: Callable[[Path, dict[str, Any]], str] | None = None,
     sender: Callable[[dict[str, Any]], bool] | None = None,
-    root: Path = PRIVATE_ROOT,
+    root: Path | None = None,
     journal_factory: Callable[..., Any] = R7Journal,
 ) -> dict[str, Any]:
     source = source_admitter()
@@ -731,9 +915,14 @@ def poll_once(
         source["continuation"],
         source["delivery"],
     )
+    root = root or (
+        R7DNS_PRIVATE_ROOT if source.get("profile") == "r7-dns" else PRIVATE_ROOT
+    )
     delivery._no_reparse(root)
     delivery._private_acl(root)
-    journal = journal_factory(root / "events.jsonl", continuation, delivery, helpers)
+    journal = journal_factory(
+        root / "events.jsonl", continuation, delivery, helpers, source["binding_sha256"]
+    )
     with journal.locked():
         rows = journal.read()
         if not rows or rows[0].get("binding_sha256") != source["binding_sha256"]:
@@ -778,7 +967,7 @@ def poll_once(
                 "send_attempts": 0,
             }
         event_id = hashlib.sha256(
-            f"{_binding_sha256()}|{len(rows)}|{transition}|{observed_state}".encode()
+            f"{source['binding_sha256']}|{len(rows)}|{transition}|{observed_state}".encode()
         ).hexdigest()
         event = {
             "event_id": event_id,
@@ -825,16 +1014,28 @@ def main(argv: list[str] | None = None) -> int:
     actions.add_argument("--initialize", action="store_true")
     actions.add_argument("--poll-once", action="store_true")
     parser.add_argument("--armed", action="store_true")
+    parser.add_argument("--profile", choices=("legacy", "r7-dns"), default="legacy")
     args = parser.parse_args(argv)
     if not (args.initialize or args.poll_once) or not args.armed:
         print(
             json.dumps(
-                {"status": "PLAN_ONLY", "task": TASK_NAME, "trading_authority": False}
+                {
+                    "status": "PLAN_ONLY",
+                    "task": _R7DNS["task_name"]
+                    if args.profile == "r7-dns"
+                    else TASK_NAME,
+                    "trading_authority": False,
+                }
             )
         )
         return 0
     try:
-        result = initialize() if args.initialize else poll_once()
+        source_admitter = lambda: admit_r7(profile=args.profile)
+        result = (
+            initialize(source_admitter=source_admitter)
+            if args.initialize
+            else poll_once(source_admitter=source_admitter)
+        )
         print(json.dumps(result, sort_keys=True))
         return 0
     except R7Error as error:

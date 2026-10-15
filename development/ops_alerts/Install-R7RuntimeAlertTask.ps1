@@ -1,11 +1,15 @@
 [CmdletBinding()]
-param([switch]$Execute)
+param(
+    [ValidateSet('legacy', 'r7-dns')][string]$ProfileName = 'legacy',
+    [switch]$Execute
+)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$taskName = 'Kairos-R7-TechnicalAlerts-V1-20261013'
+$taskName = if ($ProfileName -eq 'r7-dns') { 'Kairos-R7-DNS-TechnicalAlerts-V1-20261015' } else { 'Kairos-R7-TechnicalAlerts-V1-20261013' }
 $metaRoot = 'D:\Kairos\kairos'
-$privateRoot = 'D:\Kairos\runtime\alert-delivery-20261013\operational-r7'
+$privateRoot = if ($ProfileName -eq 'r7-dns') { 'D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns' } else { 'D:\Kairos\runtime\alert-delivery-20261013\operational-r7' }
+$profileArgs = @('--profile', $ProfileName)
 $driverPath = Join-Path $metaRoot 'development\ops_alerts\runtime_status_r7_notifier.py'
 $pythonPath = 'C:\Users\loval\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\python.exe'
 $gitPath = 'C:\Program Files\Git\cmd\git.exe'
@@ -20,6 +24,7 @@ $relativeFiles = @(
 if (-not $Execute) {
     [ordered]@{
         status = 'PLAN_ONLY'
+        profile = $ProfileName
         task = $taskName
         interval_seconds = 120
         protected_status_file_only = $true
@@ -99,11 +104,11 @@ Set-Acl -LiteralPath $privateRoot -AclObject $acl
 
 # Admission and the initial quiet baseline are read-only except for the new
 # R7 binding/journal. No credential is loaded and no message is sent here.
-& $pythonPath -B -E -s $driverPath --initialize --armed
+& $pythonPath -B -E -s $driverPath --initialize --armed @profileArgs
 if ($LASTEXITCODE -ne 0) { throw 'R7_ACCEPTED_RECEIPT_OR_QUIET_STATUS_REQUIRED' }
 
 $identityName = $identity.Name
-$pollCommand = "& '" + $pythonPath + "' -B -E -s '" + $driverPath + "' --poll-once --armed; exit " + '$LASTEXITCODE'
+$pollCommand = "& '" + $pythonPath + "' -B -E -s '" + $driverPath + "' --poll-once --armed --profile '" + $ProfileName + "'; exit " + '$LASTEXITCODE'
 $action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -Argument ('-NoProfile -NonInteractive -WindowStyle Hidden -Command "' + $pollCommand + '"') -WorkingDirectory $metaRoot
 $timer = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(2)) -RepetitionInterval ([TimeSpan]::FromMinutes(2))
 $logon = New-ScheduledTaskTrigger -AtLogOn -User $identityName
@@ -114,6 +119,7 @@ Register-ScheduledTask -TaskName $taskName -InputObject $definition | Out-Null
 [ordered]@{
     status = 'REGISTERED_NOT_YET_DISPATCH_VERIFIED'
     task = $taskName
+    profile = $ProfileName
     interval_seconds = 120
     hidden = $true
     run_level = 'Limited'
