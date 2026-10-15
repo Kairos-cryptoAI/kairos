@@ -2,7 +2,20 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-14
+## Current boundary — 2026-10-15
+
+The [October 15 engineering/recovery receipt](RECOVERY-2026-10-15.md) records
+fresh isolated before/after restores, accepted DNS recovery and same-container
+restart, separate boot/alert bindings and an actual sealed five-symbol public
+V1 SIM input tape with backup/restore verification. A subsequent 22:29 Moscow
+SQL timeout stopped the new non-trading worker with an unknown-publication
+barrier. Runtime stability is therefore **not accepted**; it remains failed
+closed, without automatic replay/restart or trading. The existing technical
+notifier accepted the real failure transition. The tape is ingress-storage
+evidence only, not native fills or a full real-model campaign. No readiness
+flag or strategy policy changed.
+
+## Previous boundary — 2026-10-14
 
 The [native composition receipt](NATIVE-CAMPAIGN-ENGINEERING-2026-10-14.md)
 accepts actual pinned Strategy/Router/review/shared-PG-budget/SIM-Risk mechanics
