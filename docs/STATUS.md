@@ -44,6 +44,25 @@ database/queue mutation was needed. All four readiness flags remain false. Next,
 check whether one causal market/news/macro dataset can support a bounded economic
 comparison; do not resume parallel framework or strategy expansion by default.
 
+## Historical archives acquired; strict native SIM still unadmitted — 2026-10-15
+
+The [archive acquisition receipt](HISTORICAL-ARCHIVES-2026-10-15.md) adds real
+pre-cut GDELT archive objects, not another publication-only scrape: 29 fixed
+English GKG packages, 44,890 rows and 255 keyword headlines for the same twelve
+candidate cuts. ALFRED supplies 16 CPI vintage columns and 277 nonempty cells.
+Hashes, archive schema and cutoff bounds pass; full configured-feed completeness
+and macro intraday release clocks are not thereby proved. The existing source
+contract preserves UNKNOWN coverage and refuses all 60 cut/symbol checks.
+
+The owner explicitly chose strict native SIM, not an OHLC fill substitution.
+A free, out-of-window Tardis minute demonstrates actual snapshot/diff format
+compatibility: 1,560 contiguous updates pass the existing Quant normalizer.
+It is not target-window coverage, a native tape import or a full-system run.
+Archive pricing/history entitlements now require an owner budget decision;
+no subscription, invoice, paid call, runtime-service/DB mutation or order was created.
+The public receipt records the remaining source/admission/orchestration gaps.
+Readiness and REJECT_ALL remain unchanged.
+
 ## Bounded real-model context reconstruction — 2026-10-15
 
 The [publication-proxy report](PUBLICATION-PROXY-2026-10-15.md) records an actual,
