@@ -2,6 +2,48 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-15_
 
+## Active scope — 2026-10-15
+
+The project is in a course-correction phase: reconcile the living documents,
+then verify one existing-component path end to end and report exactly what it
+does and does not prove. No full target-system end-to-end pass is claimed.
+Freeze new strategy variants, notifier generations, universal research
+frameworks and UI work while this bounded result is pursued. Preserve dated
+receipts, historical findings and existing monitors; do not weaken risk limits
+or readiness gates to manufacture a pass.
+
+The current policy remains `STRATEGY_POLICY=REJECT_ALL`, with all readiness
+markers false. Research/trading permission, if separately granted, does not
+override that policy or readiness. LIVE canary still needs an owner-defined
+dollar-cap and daily stop-loss; these do not block synthetic no-network fixtures.
+This document does not grant provider spend or trading authority. The owner's
+current task permits the bounded isolated SIM verification, not mutation of
+primary/legacy/R7 data or queues, or bypass of venue/readiness/owner-limit gates.
+
+### Verified bounded path
+
+Signed Deploy `676f951cd9cf273c725681e19f69596feaf791dd` passes the actual
+[isolated full-path gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38750488765):
+32 tests, zero failures/skips, including 10 PostgreSQL integration cases.
+The new current-context case uses the unchanged research-only adaptive adapter,
+candidate Router, actual CandidateReviewService with required synthetic NEWS/Macro,
+existing hypothetical fee-inclusive stop sizing, SIM admission and durable execution.
+Context/review audit bytes survive reconnect; a PREPARED stop command is recovered,
+filled once, and duplicate delivery preserves one result. Missing/stale Macro and
+explicit VETO produce no executable admission/command. Per-receipt fees and net
+arithmetic are checked independently; no strategy parameters or protection change.
+The separate installed Text/Macro/Router/review/Risk
+[composition gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38750488846),
+Deploy CI and Deploy CodeQL are green at that exact revision.
+
+This closes the bounded synthetic integration milestone, not deployed current-path
+consumers, real provider/feed quality, account reconciliation, an economic A/B pass
+or EVEDEX qualification. The review response is a local test double; the risk account
+and venue facts are synthetic. No new framework, paid call, real order or local
+database/queue mutation was needed. All four readiness flags remain false. Next,
+check whether one causal market/news/macro dataset can support a bounded economic
+comparison; do not resume parallel framework or strategy expansion by default.
+
 ## Concrete research policy preparation — 2026-10-14
 
 One [research-only candidate profile](RESEARCH-PROFILE-2026-10-14.md) concretizes
@@ -1012,19 +1054,21 @@ specific; it is not a claim that today's runtime or DEV qualification is ready.
 
 ## Summary
 
-The strict Strategy Parity → EVEDEX DEV PAPER code path is implemented on `main`: complete
-closed-bar contracts and recovery, one shared pure Strategy Engine for research/runtime,
-immutable LLM review, deterministic loss-at-stop risk, continuous venue-quality facts, a
-protected trade FSM, official EVEDEX SDK sidecar, durable recovery and an isolated PAPER stack.
+Kairos contains substantial contracts and isolated component proofs, including
+closed-bar handling, Strategy parity, candidate review, loss-at-stop Risk,
+protected execution and a sealed simulator. These are not one currently
+accepted end-to-end target composition. The simulator's deterministic review
+test double is not real-provider review; neither it nor the isolated PAPER
+stack proves venue qualification or an authorized strategy.
 
 Kairos remains **pre-production**. The four readiness markers intentionally make four different
 claims:
 
 | marker | value | scope |
 | --- | --- | --- |
-| `TECHNICAL_PAPER_READY` | `false` | the current signed source, Windows, synthetic Docker and CI checks passed, but real-provider qualification for the new model routes has not |
+| `TECHNICAL_PAPER_READY` | `false` | the current manifest does not accept technical PAPER readiness; isolated component/CI proofs do not establish the complete target composition or its current release admission |
 | `PAPER_QUALIFIED` | `false` | real EVEDEX DEV auth/canary and elapsed 24-hour/7-day evidence are incomplete |
-| `ALPHA_READY` | `false` | one exact revision is `FORWARD_FROZEN`, but none has passed a genuinely future promotion gate; runtime `REJECT_ALL` remains active |
+| `ALPHA_READY` | `false` | no strategy has passed its applicable independent promotion gate; runtime `REJECT_ALL` remains active |
 | `LIVE_READY` | `false` | LIVE startup, PROD endpoints and real-funds authority remain blocked |
 
 The first marker is not evidence of exchange correctness, profitability, a completed canary or
@@ -1035,10 +1079,10 @@ an elapsed soak. The exact revision/evidence boundary is in [READINESS.md](READI
 | repository | implemented state | remaining boundary |
 | --- | --- | --- |
 | `kairos-core` | strict `ClosedBarEventV1`, intent/review/venue/risk/execution/account contracts; explicit DRY_RUN/PAPER/LIVE modes | any future contract revision requires a new version, never silent field reuse |
-| `kairos-llm` | DeepSeek Flash and GPT-6 Luna/Sol workload routing, strict schemas and conservative cache-write-aware durable cost hooks | new-route shadow corpus quality, latency, quota and availability qualification |
+| `kairos-llm` | OpenAI-only default workload routing: Text/normal review use GPT-6 Luna; conflict/Macro use GPT-6.1 Sol, with strict schemas and durable cost hooks | live-provider quality, latency, quota and availability are not established by configured routes or offline checks |
 | `kairos-quant-scouts` | delayed double-REST-finalized Binance 1m bars, provisional WS isolation, gap recovery, funding fallback, indicators and scheduled EVEDEX quality facts | complete 24-hour observation after EVEDEX restores two-sided liquidity across the required universe |
 | `kairos-strategy-engine` | pure generators shared by backtest/runtime; deterministic fingerprints and parity fixtures; exact trial-15 candidate is `FORWARD_FROZEN` | forward candidate must remain unchanged through 365 days and 500 trades; PAPER allow-list remains empty |
-| `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, five-asset local filter, DeepSeek fallback and frozen news corpus | elapsed freshness, source quality, latency-tail and quota qualification |
+| `kairos-text-scouts` | GDELT/RSS and official X API, durable cursors/budgets, five-asset local filter and frozen news corpus | causal input coverage, source quality, freshness, latency-tail and quota qualification |
 | `kairos-router` | immutable candidate-specific NORMAL/CONFLICT route plus isolated legacy FSM | paid review path remains shadow-only while alpha is rejected |
 | `kairos-aggregator` | strict `ALLOW/VETO/DEFER` review, immutable intent, adverse-conflict guard and frozen candidate corpus | production-distribution A/B value and latency-tail qualification |
 | `kairos-macro-strategist` | account-aware allocation/shock context, provider-compatible strict schema, frozen macro corpus and durable publish/ACK | durable long-horizon histories and scheduled latency-tail qualification |
@@ -1053,6 +1097,9 @@ Test counts are intentionally not frozen in this document. The meaningful gate i
 repository's declared checks and supported Python/Windows matrix pass for the reviewed commit.
 
 ## Implemented cross-service flows
+
+The following are implemented component behaviors, not a claim that all
+bullets form one deployed, currently healthy target composition:
 
 - Quant emits canonical complete closed bars, restores REST gaps and blocks a symbol on unresolved
   gap, reorder or conflict. Strategy Engine turns those bars into deterministic intents using the
@@ -1191,15 +1238,13 @@ PnL before the gate is eligible and has no exchange, LLM, X or order-publish pat
    protected DEV round trip, while the complete set must cover limit/cancel, stop, target,
    timeout and restart recovery. The subsequent seven-day data/reconnect/auth/recovery soak has
    not started.
-4. **External LLM/feed corpus qualification passed, but is not a soak.** Frozen safety cases now
-   cover all five assets, stale/future data, prompt injection, deterministic rejects, normal and
-   conflicting reviews, and macro stress. The exact DeepSeek, Luna, Terra and Sol cases pass;
-   the preserved v1 SOL recovery false-negative was replaced only in versioned v2 by an
-   unambiguous approval fixture. The durable ledger records `$0.025494` OpenAI and `$0.001171`
-   DeepSeek committed, plus `$0.154624` of conservative OpenAI reservations from failed or
-   ambiguous attempts. The separate X probe cost `$0.060000` but returned only stale Posts.
-   These bounded samples do not establish monthly availability, latency tails, quota behavior or
-   economic value; continuous paid testing remains disabled outside the enforced ceilings.
+4. **Provider/feed evidence is scoped and historical.** Dated safety corpora and cost ledgers
+   document the routes and calls that existed at those revisions; they are not current-route
+   qualification or a continuous soak. The current default router is OpenAI-only (see
+   [workload routes](https://github.com/Kairos-cryptoAI/kairos-llm/blob/c2207a5bd8bbf39e7d5728f95e52c96a47eca344/kairos_llm/models.py)); configured defaults and offline tests
+   do not prove live calls, monthly availability, latency tails, quota behavior, input quality or
+   economic value. The dated DeepSeek/X costs and observations remain historical evidence, not
+   active routing or authorization. No paid testing is part of the active scope.
 5. **Operations still need elapsed and off-host evidence.** A clean local backup/restore drill
    passed 12 migrations and 18 critical tables, and the read-only services recovered their
    persisted state. This does not prove long-duration or off-host recovery. Production still
@@ -1210,24 +1255,27 @@ PnL before the gate is eligible and has no exchange, LLM, X or order-publish pat
    no independent forward performance yet, and its weakest breadth passed only at the exact
    three-symbol floor. The deterministic fill model also needs real EVEDEX TCA calibration before
    results can inform any future PAPER risk limits.
-7. **Model migration still needs new-route qualification and A/B evaluation.** The previous
-   routes passed their historical strict corpora. The current DeepSeek Flash and GPT-6 Luna/Sol
-   routes have offline contract, budget and fail-closed checks, but no accepted paid shadow
-   qualification or evidence that the overlay improves strategy economics or preserves latency
-   tails and token profiles on live distributions. See the
-   [September 28 migration receipt](MODEL-MIGRATION-2026-09-28.md).
+7. **Current model-route performance is unestablished.** The configured defaults are OpenAI-only:
+   GPT-6 Luna for Text Scouts/normal review and GPT-6.1 Sol for conflict review/Macro. Historical
+   model-migration receipts remain date-scoped; they do not describe today's default routing or
+   establish current paid shadow qualification, live latency tails, or economic value. No model
+   migration or provider call is part of the active scope.
 8. **Advanced position management is outside v1.** Break-even stop moves, trailing, multi-TP and
    protective-order updates are intentionally absent; v1 supports exactly one SL, one TP and one
    timeout.
 
 ## Readiness rule
 
-Do not interpret `TECHNICAL_PAPER_READY=true` as permission to publish a canary, run a rejected or
-forward-frozen strategy, or enable LIVE. The permitted order is: 24 hours read-only, one manually armed bounded
-DEV canary session, completion of the five-symbol lifecycle matrix, then a seven-day soak.
+Do not interpret a readiness marker, engineering receipt, owner permission to investigate, or
+permission for a bounded experiment as permission to bypass `REJECT_ALL`, publish a canary, run a
+rejected or forward-frozen strategy, or enable LIVE. Any separately admitted experiment must
+preserve the applicable readiness gates and the owner's explicit loss cap and stop-loss rules.
+For the EVEDEX PAPER qualification path, the sequence remains: 24 hours read-only, one manually
+armed bounded DEV canary session, completion of the five-symbol lifecycle matrix, then a seven-day soak.
 `PAPER_QUALIFIED` remains false until that evidence is reviewed. Automatic PAPER additionally
-requires the unchanged forward candidate to pass its independent 365-day/500-trade sealed
-promotion gate and a separate approval. LIVE requires a later,
+requires the exact selected strategy to pass its own independent 365-day/500-trade sealed
+promotion gate and a separate approval. Trial 15 remains a preserved baseline, not the
+owner-selected adaptive/LLM LIVE candidate. LIVE requires a later,
 separate managed-secret and real-funds review; it cannot be enabled by a legacy boolean.
 
 The source-identity manifest intentionally keeps its `readiness.*` fields false: it certifies

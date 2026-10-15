@@ -11,6 +11,16 @@ Current scope and implementation priorities are defined in
 candidate contract path, not an accepted continuously running adaptive deployment.
 The existing PAPER Compose profile is a bounded technical DEV-canary profile.
 
+**Verified bounded milestone (2026-10-15):** one existing-component adaptive
+observation -> current causal review -> stop-sized SIM -> durable simulator
+path passes on explicit synthetic/no-network inputs. The actual isolated
+PostgreSQL/SIM gate passes 32 tests; see [scoped results](docs/STATUS.md).
+Parallel strategy/framework and
+notifier expansion is frozen; historical evidence and safety monitors stay
+intact. See the [active disposition table](docs/CURRENT_CONCEPT.md). A passing
+fixture is not a running adaptive deployment, economic A/B or permission to
+trade; current readiness remains false and policy stays `REJECT_ALL`.
+
 ### Strategy Parity → EVEDEX DEV PAPER
 
 ```mermaid

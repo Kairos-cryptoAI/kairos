@@ -4,7 +4,57 @@ Updated: 2026-10-15 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Canonical target specification — 2026-10-14
+## One active milestone — 2026-10-15
+
+The owner approved correcting the course audit: stop expanding parallel
+research frameworks and verify one bounded path using existing components.
+The immediate target is **synthetic, isolated SIM integration**, not a new
+strategy selection, paid model test, historical A/B result or live deployment.
+
+`closed bars -> unchanged adaptive observation adapter -> candidate Router ->
+current causal NEWS/Macro-bound review -> existing hypothetical stop sizing ->
+SIM risk admission -> durable simulator lifecycle/recovery`.
+
+Use the public research-only adaptive adapter directly, never enroll it in the
+PAPER registry to get a test to pass. Reuse the current CandidateContextStore,
+review_with_context and existing simulator; do not substitute legacy context-free
+review or build another economist. Fixtures and model responses must be explicitly
+synthetic/no-network. SIM quantity/admission is not reconciled production-account
+risk or EVEDEX authority. Real source availability, provider quality and full-system
+economics remain separately unproved.
+
+| Workstream | Active disposition |
+| --- | --- |
+| Existing-component current-context SIM path | The one implementation/verification milestone; include refusal and restart/duplicate checks |
+| New strategy families, parameter searches and indicator combinations | Frozen; existing candidate remains a research control, not a profitable champion |
+| Static/complex/historical/V2/V3/V4/profile framework expansion | Frozen; preserve source/evidence, reuse only the primitives needed by this path |
+| New notifier generations, universal transport/recovery tooling | Frozen unless a concrete failure in the selected path requires a narrow fix; keep existing safety monitors |
+| UI/UX, dashboards and TradingView | Deferred |
+| Trial 15 and frozen V2/V4/V5 evidence/observers | Preserved unchanged; existing approved observation/backup safeguards are not disabled |
+| EVEDEX canary/soak and LIVE | Still require venue, readiness, security and owner limits; no bypass from a general trading permission |
+
+Completion means an actual isolated test of that declared chain, with immutable
+inputs/intent/protection, current context, bounded sizing, SIM-only effects and
+recovery/refusal evidence. A failed or no-fill outcome is retained, not tuned away.
+Do not claim that a successful fixture qualifies feeds, models, alpha or trading.
+After this milestone, check availability of one bounded causal dataset before
+authorizing any new economic driver or paid historical comparison.
+
+The bounded milestone passed on signed Deploy
+`676f951cd9cf273c725681e19f69596feaf791dd`: the actual isolated PostgreSQL/SIM
+[run](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/38750488765)
+reports 32 tests passing, with missing/stale-context refusal, VETO, immutable
+protection, hypothetical fee-inclusive risk bounds, persisted context and a
+prepared stop recovered after reconnect. This is an executed fixture composition,
+not deployed service wiring, real-model review, economic qualification or LIVE.
+The workstream freeze remains in force after this proof.
+
+All four readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`. The
+owner permits trading only subject to its existing gates; LIVE canary also needs
+explicit dollar-cap and daily stop-loss, which are not assigned here. Existing
+primary/legacy/R7 data and queues are outside this isolated test's scope.
+
+## Target specification and preserved research — not parallel active milestones
 
 The [unified trading specification](CANONICAL-TRADING-SPEC-2026-10-14.md) consolidates
 the existing architecture, two hypothesis origins, V2 lifecycle, distinct V3
@@ -15,7 +65,7 @@ are not assigned by this documentation. No config, campaign/evaluator, source
 identity, route, budget or runtime changes follow. The pending-choice register
 must be completed and separately reviewed before a new policy freeze/enrollment.
 
-## Active priority: controlled-launch engineering before profit optimization
+## Preserved preparation and launch engineering — historical scope
 
 The [concrete research profile](RESEARCH-PROFILE-2026-10-14.md) now supplies one
 opt-in engineering candidate for the four target choices: unchanged adaptive,
@@ -30,8 +80,8 @@ Its scoped engineering acceptance now passes the exact 2,319-case union on
 each Windows/Linux Python 3.11.15/3.14.7 pair, with source Meta/CodeQL green.
 This is not evidence of historical net profitability or campaign admission.
 
-The owner now prioritizes finishing operational launch requirements before
-further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
+The earlier controlled-launch task prioritized operational launch requirements
+before further profit tuning. The [launch continuation](LAUNCH-CLOSEOUT-2026-10-10.md)
 fixes release identity and alert acknowledgement engineering while preserving
 the distinct recovery, host/backup, real notification, venue, custody and
 economic admission gates. UI/UX remains deferred. No new research strategy is
@@ -55,7 +105,7 @@ Authentic causal source inputs and measured complete-system value remain open.
 
 ## Preserved research: scenario-based rework after engineering closeout
 
-The owner has reopened the trading-logic task around specialized hypotheses,
+The earlier trading-logic task investigated specialized hypotheses,
 explicit market confirmation, fixed invalidation and expiry, independent review
 and risk, and complete trade/no-trade accounting. The prior non-strategy
 closeout remains delivered, with its operational admissions still separate.
@@ -109,7 +159,7 @@ No readiness flag or trading authority follows.
 
 ## Preserved strategy work: candidate-stream and causal selection evaluation
 
-The user's latest direction evaluates strategy families as candidate generators
+The preserved selection work evaluates strategy families as candidate generators
 and tests whether causal selection adds complete-system value. A weak standalone
 result is not automatic research exclusion; it is not presumed rescued by LLM.
 The additive [selection controls and all-candidate audit](STRATEGY-FILTER-EVALUATION-2026-10-07.md)
