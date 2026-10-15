@@ -83,3 +83,19 @@ The native target deliberately leaves its disposable fixture corrupted after
 the final negative integrity scenario; it never repairs or reuses that target.
 Interrupted writes plus connection close/reopen prove durable replay, not a
 process kill, host/power failure, backup restoration or production rollout.
+
+## Separate opt-in public capture tool
+
+`tools/capture_sim_tape.py` defaults to `--plan`; the existing offline/native
+campaign fixture and its source lock stay unchanged and cannot launch it.
+Explicit execution uses an independently prepared, exact non-editable
+Quant/Persistence/Core environment and a fresh UUID4 PostgreSQL 16 simulator
+database. It captures at most 300 seconds and 16 MiB of accounted market inputs,
+stops producers before the final durable drain, and seals only fresh five-symbol
+bar/book coverage. CLI credentials are read from a protected file or a named
+environment variable, never a command-line DSN. It calls no models or venue orders.
+
+The pinned V1 recorder retains normalized book levels, original clocks and raw
+payload hashes, not raw WebSocket text. A successful capture is not V2 raw-source
+attestation, complete analytics, fill economics, venue qualification or alpha.
+The separate hermetic adapter tests run in CI without a public connection.

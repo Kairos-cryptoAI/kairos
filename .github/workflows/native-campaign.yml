@@ -61,10 +61,12 @@ jobs:
         run: uv run --locked --no-editable --dev python -I native_gate.py check-source
       - name: Lint and format
         run: |
-          uv run --locked --no-editable --dev ruff check kairos_native_campaign tests native_gate.py
-          uv run --locked --no-editable --dev ruff format --check kairos_native_campaign tests native_gate.py
+          uv run --locked --no-editable --dev ruff check kairos_native_campaign tests tools native_gate.py
+          uv run --locked --no-editable --dev ruff format --check kairos_native_campaign tests tools native_gate.py
       - name: Pure fail-closed contracts
         run: uv run --locked --no-editable --dev python -I -m pytest --import-mode=importlib -q tests/test_pure_contracts.py
+      - name: Test public-capture adapter without network or Quant runtime
+        run: uv run --locked --no-editable --dev python -I -m pytest --import-mode=importlib -q tests/test_public_capture.py
       - name: Prepare empty UUID4 campaign database only
         run: uv run --locked --no-editable --dev python -I native_gate.py prepare
       - name: Actual component and PostgreSQL restart/budget acceptance (no network models)
