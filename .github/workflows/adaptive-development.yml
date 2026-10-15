@@ -57,7 +57,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     # Exact disjoint union: 2,318 regular cases plus one complete 36,000-cell horizon.
     # The long case is a separate bounded job, never sampled or skipped.
-    timeout-minutes: 60
+    # Windows CPython 3.11 regular suite has repeatedly taken 33–55 minutes;
+    # keep the normal cap elsewhere and leave this measured outlier headroom.
+    timeout-minutes: ${{ matrix.os == 'windows-latest' && matrix.python == '3.11.15' && matrix.fixture_group == 'regular' && 75 || 60 }}
     env:
       UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/.adaptive-development-env
       OPENBLAS_NUM_THREADS: "1"
