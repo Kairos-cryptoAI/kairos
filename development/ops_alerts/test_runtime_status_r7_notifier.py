@@ -27,11 +27,11 @@ def _load_local(name: str, path: Path) -> Any:
 
 
 r5 = _load_local(
-    "_staged_runtime_status_r5_notifier",
-    Path(r"D:\Kairos\kairos\development\ops_alerts\runtime_status_r5_notifier.py"),
+    "_runtime_status_r5_notifier_test",
+    Path(__file__).with_name("runtime_status_r5_notifier.py"),
 )
 r7 = _load_local(
-    "_staged_runtime_status_r7_notifier",
+    "_runtime_status_r7_notifier_test",
     Path(__file__).with_name("runtime_status_r7_notifier.py"),
 )
 
