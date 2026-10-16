@@ -371,6 +371,156 @@ class ObserverTests(unittest.TestCase):
         self.assertEqual(outcome["requests_not_sent"], 9)
         self.assertEqual(outcome["unknown_outcomes"], 0)
 
+    def test_run_deadline_marks_reserved_but_unsent_attempts(self):
+        fetcher, calls = _fake_fetcher()
+        mono = {"now": 0.0}
+
+        def consume_run_deadline(url: str, *, timeout_s: int, max_bytes: int):
+            response = fetcher(url, timeout_s=timeout_s, max_bytes=max_bytes)
+            mono["now"] = 3.0
+            return response
+
+        with tempfile.TemporaryDirectory() as directory:
+            run_dir = self.make_run_dir(Path(directory))
+            outcome, samples = observer._collect_slot(
+                run_dir=run_dir,
+                slot=1,
+                scheduled_at="2026-01-01T00:00:00+00:00",
+                source_hash="d" * 64,
+                plan=self.small_plan(),
+                module=self.comparison,
+                fetcher=consume_run_deadline,
+                monotonic=lambda: mono["now"],
+                wall_ms=lambda: 1_000_000,
+                run_deadline=3.0,
+            )
+            results = [
+                json.loads(path.read_text(encoding="utf-8"))
+                for path in (run_dir / "attempts").glob("*.result.json")
+            ]
+            unsent = [
+                result
+                for result in results
+                if result["error_category"] == "NOT_SENT_RUN_DEADLINE"
+            ]
+            self.assertEqual(len(unsent), 9)
+            self.assertTrue(all(result["outcome"] == "NOT_SENT" for result in unsent))
+            self.assertTrue(all(result["raw_file"] is None for result in unsent))
+            self.assertTrue(all(result["http_status"] is None for result in unsent))
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(samples, [])
+        self.assertEqual(outcome["requests_reserved"], 10)
+        self.assertEqual(outcome["requests_attempted"], 1)
+        self.assertEqual(outcome["requests_completed"], 1)
+        self.assertEqual(outcome["requests_not_sent"], 9)
+        self.assertEqual(outcome["unknown_outcomes"], 0)
+
+    def test_expired_run_sends_nothing_and_keeps_all_symbols_unavailable(self):
+        fetcher, calls = _fake_fetcher()
+        with tempfile.TemporaryDirectory() as directory:
+            run_dir = self.make_run_dir(Path(directory))
+            outcome, samples = observer._collect_slot(
+                run_dir=run_dir,
+                slot=1,
+                scheduled_at="2026-01-01T00:00:00+00:00",
+                source_hash="e" * 64,
+                plan=self.small_plan(),
+                module=self.comparison,
+                fetcher=fetcher,
+                monotonic=lambda: 4.0,
+                wall_ms=lambda: 1_000_000,
+                run_deadline=3.0,
+            )
+            measurements = list((run_dir / "slots").glob("*.measurement.json"))
+            self.assertEqual(len(measurements), 5)
+            self.assertTrue(
+                all(
+                    json.loads(path.read_text(encoding="utf-8"))["measurement_status"]
+                    == "UNAVAILABLE"
+                    for path in measurements
+                )
+            )
+        self.assertEqual(calls, [])
+        self.assertEqual(samples, [])
+        self.assertEqual(outcome["requests_attempted"], 0)
+        self.assertEqual(outcome["requests_not_sent"], 10)
+        self.assertEqual(outcome["unknown_outcomes"], 0)
+
+    def test_fresh_availability_is_separate_from_measured_availability(self):
+        fetcher, _calls = _fake_fetcher(
+            bad={
+                ("BTCUSDT", "evedex"): "unknown",
+                ("SOLUSDT", "evedex"): "empty",
+                ("BNBUSDT", "evedex"): "stale",
+                ("XRPUSDT", "evedex"): "future",
+            }
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            report = observer._execute_observation(
+                authorize=True,
+                output_root=Path(directory),
+                plan=self.small_plan(),
+                fetcher=fetcher,
+                monotonic=lambda: 0.0,
+                wall_clock=lambda: datetime(2026, 1, 1, tzinfo=UTC),
+                make_uuid=lambda: "32345678-1234-4234-8234-123456789abc",
+            )
+        self.assertEqual(len(report["symbols"]), 5)
+        for symbol, _venue in observer.INSTRUMENTS:
+            summary = report["symbols"][symbol]
+            self.assertEqual(summary["availability_basis"], "MEASURED_PAIR")
+            self.assertEqual(
+                summary["fresh_samples"]
+                + summary["stale_or_clock_skewed_samples"]
+                + summary["unavailable_samples"]
+                + summary["missed_samples"],
+                report["planned_slots"],
+            )
+        self.assertEqual(report["symbols"]["ETHUSDT"]["fresh_availability"], 1.0)
+        for symbol in ("BNBUSDT", "XRPUSDT"):
+            summary = report["symbols"][symbol]
+            self.assertEqual(summary["availability"], 1.0)
+            self.assertEqual(summary["fresh_availability"], 0.0)
+            self.assertEqual(summary["stale_or_clock_skewed_samples"], 1)
+        for symbol in ("BTCUSDT", "SOLUSDT"):
+            summary = report["symbols"][symbol]
+            self.assertEqual(summary["availability"], 0.0)
+            self.assertEqual(summary["fresh_availability"], 0.0)
+            self.assertEqual(summary["unavailable_samples"], 1)
+        self.assertFalse(report["sample_is_24h_evidence"])
+        self.assertFalse(report["readiness_changed"])
+
+    def test_run_deadline_and_missed_slots_keep_the_planned_denominator(self):
+        fetcher, calls = _fake_fetcher()
+        mono = {"now": 0.0}
+
+        def consume_run(url: str, *, timeout_s: int, max_bytes: int):
+            response = fetcher(url, timeout_s=timeout_s, max_bytes=max_bytes)
+            mono["now"] = 20.0
+            return response
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = observer._execute_observation(
+                authorize=True,
+                output_root=Path(directory),
+                plan=self.small_plan(duration=20),
+                fetcher=consume_run,
+                monotonic=lambda: mono["now"],
+                wall_clock=lambda: datetime(2026, 1, 1, tzinfo=UTC),
+                make_uuid=lambda: "42345678-1234-4234-8234-123456789abc",
+            )
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(report["planned_slots"], 2)
+        self.assertEqual(report["missed_slots"], 1)
+        self.assertEqual(report["requests_attempted"], 1)
+        self.assertEqual(report["requests_not_sent"], 9)
+        self.assertEqual(report["unknown_outcomes"], 0)
+        for summary in report["symbols"].values():
+            self.assertEqual(summary["sample_count"], 0)
+            self.assertEqual(summary["fresh_availability"], 0.0)
+            self.assertEqual(summary["unavailable_samples"], 1)
+            self.assertEqual(summary["missed_samples"], 1)
+
     def test_plan_limits_keep_duration_polling_and_storage_finite(self):
         with self.assertRaises(ValueError):
             observer.ObservationPlan(duration_s=observer.MAX_DURATION_S + 1)

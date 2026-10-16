@@ -476,7 +476,8 @@ def _collect_slot(
             "attempt_id": key,
             "outcome": (
                 "NOT_SENT"
-                if response.error_category == "NOT_SENT_SLOT_DEADLINE"
+                if response.error_category
+                in {"NOT_SENT_SLOT_DEADLINE", "NOT_SENT_RUN_DEADLINE"}
                 else (
                     "UNKNOWN_OUTCOME"
                     if response.status is None
@@ -498,6 +499,7 @@ def _collect_slot(
         _create_json(run_dir / "attempts" / f"{key}.result.json", result)
         responses[key] = {"attempt": attempt, "response": response, "result": result}
 
+    slot_measurements: dict[str, dict[str, str]] = {}
     for binance, evedex in INSTRUMENTS:
         ekey, bkey = f"{slot_id}-{binance}-evedex", f"{slot_id}-{binance}-binance"
         ev, br = responses[ekey]["response"], responses[bkey]["response"]
@@ -594,6 +596,10 @@ def _collect_slot(
         _create_json(
             run_dir / "slots" / f"{slot_id}-{binance}.measurement.json", metrics
         )
+        slot_measurements[binance] = {
+            "measurement_status": metrics["measurement_status"],
+            "freshness": metrics["freshness"],
+        }
     slot_result = {
         "schema": "kairos-public-slot-result-v1",
         "slot_id": slot_id,
@@ -612,6 +618,7 @@ def _collect_slot(
             item["result"]["outcome"] == "UNKNOWN_OUTCOME"
             for item in responses.values()
         ),
+        "symbols": slot_measurements,
         "automatic_retry": False,
     }
     _create_json(run_dir / "slots" / f"{slot_id}.result.json", slot_result)
@@ -738,9 +745,31 @@ def _execute_observation(
                 requested=plan.slots,
                 thresholds=dict(module.DEFAULT_THRESHOLDS),
             )
+            # Quant's availability intentionally means a parsed measurement,
+            # including stale/skewed pairs. Keep those samples and percentiles;
+            # disclose fresh availability separately with the same denominator.
+            measurements = [outcome["symbols"][symbol] for outcome in outcomes]
+            fresh = sum(item["freshness"] == "FRESH" for item in measurements)
+            stale = sum(
+                item["freshness"] == "STALE_OR_CLOCK_SKEWED" for item in measurements
+            )
+            unavailable = sum(
+                item["measurement_status"] == "UNAVAILABLE" for item in measurements
+            )
+            if (
+                fresh + stale != summary.samples
+                or fresh + stale + unavailable + missed_slots != plan.slots
+            ):
+                raise ObserverError("MEASUREMENT_ACCOUNTING_MISMATCH")
             summaries[symbol] = {
                 "sample_count": summary.samples,
                 "availability": summary.availability,
+                "availability_basis": "MEASURED_PAIR",
+                "fresh_samples": fresh,
+                "fresh_availability": fresh / plan.slots,
+                "stale_or_clock_skewed_samples": stale,
+                "unavailable_samples": unavailable,
+                "missed_samples": missed_slots,
                 "p50_abs_basis_bps": summary.p50_abs_basis_bps,
                 "p95_abs_basis_bps": summary.p95_abs_basis_bps,
                 "p95_spread_bps": summary.p95_evedex_spread_bps,
