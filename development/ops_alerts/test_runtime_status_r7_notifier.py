@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import io
 import json
 import os
@@ -12,8 +13,27 @@ from types import SimpleNamespace
 from typing import Any, ClassVar
 from unittest.mock import patch
 
-from development.ops_alerts import runtime_status_r5_notifier as r5
-from development.ops_alerts import runtime_status_r7_notifier as r7
+
+def _load_local(name: str, path: Path) -> Any:
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("test module unavailable")
+    module = importlib.util.module_from_spec(spec)
+    import sys
+
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+r5 = _load_local(
+    "_staged_runtime_status_r5_notifier",
+    Path(r"D:\Kairos\kairos\development\ops_alerts\runtime_status_r5_notifier.py"),
+)
+r7 = _load_local(
+    "_staged_runtime_status_r7_notifier",
+    Path(__file__).with_name("runtime_status_r7_notifier.py"),
+)
 
 
 def valid_status(
@@ -30,6 +50,7 @@ def valid_status(
         "unresolved_inbox": 0,
         "completed_inbox": 8070,
         "uncompleted_publications": 0,
+        "new_publications": 0,
         "observed_at_utc": state_now.isoformat(),
         "PAPER_QUALIFIED": False,
         "ALPHA_READY": False,
@@ -322,6 +343,94 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             r7.classify_status(later_timeout, profile="r7-dns"),
             "waiting_source_nontrading",
         )
+
+    def test_r7_sql_profile_is_isolated_and_unpinned_admission_fails_closed(self) -> None:
+        sql_status = valid_status()
+        sql_status["completed_inbox"] = r7._R7SQL["min_completed_inbox"]
+        self.assertEqual(r7.classify_status(sql_status, profile="r7-sql"), "running_fresh")
+        sql_waiting = valid_dns_status()
+        sql_waiting["completed_inbox"] = r7._R7SQL["min_completed_inbox"]
+        self.assertEqual(
+            r7.classify_status(sql_waiting, profile="r7-sql"),
+            "waiting_source_nontrading",
+        )
+        self.assertEqual(r7.classify_status(sql_waiting), "invalid")
+        self.assertNotEqual(r7._binding_record(), r7._binding_record("r7-sql"))
+        self.assertNotEqual(r7._binding_record("r7-dns"), r7._binding_record("r7-sql"))
+        self.assertNotEqual(
+            r7._status_path(r7._binding_record()),
+            r7._status_path(r7._binding_record("r7-sql")),
+        )
+        self.assertNotEqual(
+            r7._status_path(r7._binding_record("r7-dns")),
+            r7._status_path(r7._binding_record("r7-sql")),
+        )
+        self.assertTrue(r7._binding_record("r7-sql")["business_signals_muted"])
+        self.assertIs(r7._binding_record("r7-sql")["trading_started"], False)
+        with patch.dict(r7._R7SQL, {"receipt_sha256": None}), self.assertRaisesRegex(
+            r7.R7Error, "R7SQL_RECEIPT_SIGNATURE_AND_SERVE_PINS_REQUIRED"
+        ):
+            r7.admit_r7(helpers=object(), profile="r7-sql")
+
+    def test_r7_sql_receipt_projection_requires_zero_execution_and_restart_progress(self) -> None:
+        pins = {
+            **r7._R7SQL,
+            "receipt_sha256": "a" * 64,
+            "signature_sha256": "b" * 64,
+            "container": "c" * 64,
+        }
+        first = valid_status()
+        first["completed_inbox"] = pins["min_completed_inbox"]
+        second = valid_status(now=datetime.now(UTC) + timedelta(seconds=1))
+        second["completed_inbox"] = pins["min_completed_inbox"]
+        second["cycles"] = first["cycles"] + 1
+        second["watermarks_ms"] = {
+            symbol: first["watermarks_ms"][symbol] + 60_000 for symbol in r7.SYMBOLS
+        }
+
+        def projection(value: dict[str, Any]) -> dict[str, Any]:
+            return {key: value[key] for key in (
+                "owner", "state", "cycles", "watermarks_ms", "pending_outbox",
+                "unresolved_inbox", "completed_inbox", "uncompleted_publications",
+                "new_publications", "observed_at_utc", "PAPER_QUALIFIED",
+                "ALPHA_READY", "LIVE_READY", "STRATEGY_POLICY", "trading_started",
+            )}
+
+        receipt = {
+            "schema_version": 1,
+            "state": "PASS_NONTRADING_SQL_CONTINUATION",
+            "owner": pins["owner"],
+            "work_directory": str(pins["runtime_root"] / pins["work"]),
+            "deploy_root": str(r7.DEPLOY_ROOT),
+            "deploy_revision": pins["source_revision"],
+            "worker_sha256": pins["worker_sha256"],
+            "new_serve_name": "kairos-epoch-69893dc7b7c6-serve-r7-sql-a1b2c3d4",
+            "new_serve_id": pins["container"],
+            "old_failed_container_id": pins["old_failed_container"],
+            "old_failed_status_sha256": pins["old_failed_status_sha256"],
+            "legacy_unchanged": True,
+            "five_symbol_fresh_progress_proven": True,
+            "all_native_queue_rows_caught_up": True,
+            "execution_rows_after": 0,
+            "trading_started": False,
+            "orders_submitted": 0,
+            "paid_calls": 0,
+            "primary_migration": False,
+            "automatic_retry": False,
+            "readiness": {"PAPER_QUALIFIED": False, "ALPHA_READY": False, "LIVE_READY": False},
+            "serve_status": projection(first),
+            "restart_status": projection(second),
+        }
+        self.assertIs(r7._validate_r7_sql_receipt(receipt, spec=pins), receipt)
+        for field, bad_value in (
+            ("execution_rows_after", 1),
+            ("trading_started", True),
+            ("all_native_queue_rows_caught_up", False),
+        ):
+            invalid = dict(receipt)
+            invalid[field] = bad_value
+            with self.subTest(field=field), self.assertRaises(r7.R7Error):
+                r7._validate_r7_sql_receipt(invalid, spec=pins)
 
     def test_r7_dns_poll_uses_its_own_status_and_journal_binding(self) -> None:
         source = self._source()

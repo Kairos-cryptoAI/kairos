@@ -26,6 +26,9 @@ PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261013\operational-r7")
 R7DNS_PRIVATE_ROOT = Path(
     r"D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns"
 )
+R7SQL_PRIVATE_ROOT = Path(
+    r"D:\Kairos\runtime\alert-delivery-20261016\operational-r7-sql"
+)
 WORK = "read-recovery-r7-cb1bc3984d8440aa965af5b928d2b4fa"
 OWNER = "69893dc7b7c647f49967387e7efca9fb"
 TASK_NAME = "Kairos-R7-TechnicalAlerts-V1-20261013"
@@ -83,6 +86,29 @@ _R7DNS = {
     ),
     "failed_status_sha256": "faf607e8b86b05b579aee162ab113b417356ce409ca41e38b913e3c2b8302354",
 }
+_R7SQL = {
+    "name": "r7-sql",
+    "runtime_root": Path(r"D:\Kairos\runtime\runtime-sql-recovery-20261016"),
+    "private_root": R7SQL_PRIVATE_ROOT,
+    "work": "work-b45eda59250048a6b376f625be82febe",
+    "owner": OWNER,
+    "task_name": "Kairos-R7-SQL-TechnicalAlerts-V1-20261016",
+    "scope": "kairos-r7-sql-technical-runtime-alerts-v1",
+    "container": "2cfadb6fe53a58639db6c74bbdd31d993fe7bc05f817668979a8bee407021a83",
+    "generation_pattern": (
+        r"kairos-epoch-69893dc7b7c6-serve-r7-sql-[0-9a-f]{8}"
+    ),
+    "receipt_name": "controlled-continuation-receipt.json",
+    "receipt_sha256": "6d2e855c4804dfaffdfab91e604ab9f13e634b553824bd05dde3fa724e161c74",
+    "signature_sha256": "72491a955dd7a616143673e1d3958b386a9b2201b709940321977849d9e99161",
+    "source_revision": "682d8e237d0046371717981728aa23199fbb2d86",
+    "worker_sha256": "5d9389b05b43ccf69ae8e2afff562a659d50a02f7ea00689078919e04ed1103b",
+    "old_failed_container": "5a9fff5848ccd57529029ab8214fc97cc33de6b7efaa371f376fdb07491a2e5b",
+    "old_failed_status_sha256": (
+        "3ca166304a0a083c9c234dd3f7a2f589ebd8df4d7fa58891cbed5ff8824d911c"
+    ),
+    "min_completed_inbox": 8602,
+}
 
 
 class R7Error(RuntimeError):
@@ -121,6 +147,21 @@ def _binding_record(profile: str = "legacy") -> dict[str, Any]:
             "trading_started": False,
             "business_signals_muted": True,
         }
+    if profile == "r7-sql":
+        return {
+            "schema_version": 1,
+            "scope": _R7SQL["scope"],
+            "owner": _R7SQL["owner"],
+            "task_name": _R7SQL["task_name"],
+            "work": _R7SQL["work"],
+            "serve_container_id": _R7SQL["container"],
+            "generation_name_pattern": _R7SQL["generation_pattern"],
+            "receipt_sha256": _R7SQL["receipt_sha256"],
+            "receipt_signature_sha256": _R7SQL["signature_sha256"],
+            "receipt_source_revision": _R7SQL["source_revision"],
+            "trading_started": False,
+            "business_signals_muted": True,
+        }
     if profile != "legacy":
         raise R7Error("R7_PROFILE_INVALID")
     return {
@@ -145,6 +186,150 @@ def _binding_bytes(profile: str = "legacy") -> bytes:
 
 def _binding_sha256(profile: str = "legacy") -> str:
     return hashlib.sha256(_binding_bytes(profile)).hexdigest()
+
+
+def _source_revision(profile: str) -> str:
+    if profile == "r7-dns":
+        return _R7DNS["source_revision"]
+    if profile == "r7-sql":
+        return _R7SQL["source_revision"]
+    return SOURCE_REVISION
+
+
+def _require_r7_sql_pins(spec: dict[str, Any] | None = None) -> dict[str, Any]:
+    spec = _R7SQL if spec is None else spec
+    if (
+        not isinstance(spec.get("receipt_sha256"), str)
+        or _HEX64.fullmatch(spec["receipt_sha256"]) is None
+        or not isinstance(spec.get("signature_sha256"), str)
+        or _HEX64.fullmatch(spec["signature_sha256"]) is None
+        or not isinstance(spec.get("container"), str)
+        or re.fullmatch(r"[0-9a-f]{64}", spec["container"]) is None
+    ):
+        raise R7Error("R7SQL_RECEIPT_SIGNATURE_AND_SERVE_PINS_REQUIRED")
+    return spec
+
+
+def _validate_r7_sql_receipt(
+    receipt: Any, *, spec: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    spec = _require_r7_sql_pins(spec)
+    if not isinstance(receipt, dict):
+        raise R7Error("R7SQL_RECEIPT_INVALID")
+    receipt_work = spec["runtime_root"] / spec["work"]
+    serve_name = receipt.get("new_serve_name")
+    serve_status = receipt.get("serve_status")
+    restart_status = receipt.get("restart_status")
+    readiness = receipt.get("readiness")
+    status_fields = (
+        "owner",
+        "state",
+        "cycles",
+        "watermarks_ms",
+        "pending_outbox",
+        "unresolved_inbox",
+        "completed_inbox",
+        "uncompleted_publications",
+        "new_publications",
+        "observed_at_utc",
+        "PAPER_QUALIFIED",
+        "ALPHA_READY",
+        "LIVE_READY",
+        "STRATEGY_POLICY",
+        "trading_started",
+    )
+
+    def valid_status(value: Any) -> bool:
+        if not isinstance(value, dict) or not set(status_fields).issubset(value):
+            return False
+        watermarks = value.get("watermarks_ms")
+        try:
+            observed = datetime.fromisoformat(
+                value["observed_at_utc"].replace("Z", "+00:00")
+            )
+        except (AttributeError, TypeError, ValueError):
+            return False
+        return (
+            value.get("owner") == spec["owner"]
+            and value.get("state") == "RUNNING_NONTRADING"
+            and type(value.get("cycles")) is int
+            and value["cycles"] > 0
+            and isinstance(watermarks, dict)
+            and set(watermarks) == SYMBOLS
+            and all(type(mark) is int and mark > 0 for mark in watermarks.values())
+            and all(
+                type(value.get(key)) is int and value[key] == 0
+                for key in (
+                    "pending_outbox",
+                    "unresolved_inbox",
+                    "uncompleted_publications",
+                )
+            )
+            and type(value.get("completed_inbox")) is int
+            and value["completed_inbox"] >= spec["min_completed_inbox"]
+            and type(value.get("new_publications")) is int
+            and value["new_publications"] >= 0
+            and all(
+                value.get(key) is False
+                for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY", "trading_started")
+            )
+            and value.get("STRATEGY_POLICY") == "REJECT_ALL"
+            and observed.tzinfo is not None
+            and observed.utcoffset() is not None
+        )
+
+    try:
+        if (
+            type(receipt.get("schema_version")) is not int
+            or receipt["schema_version"] != 1
+            or receipt.get("state") != "PASS_NONTRADING_SQL_CONTINUATION"
+            or receipt.get("owner") != spec["owner"]
+            or receipt.get("work_directory") != str(receipt_work)
+            or receipt.get("deploy_root") != str(DEPLOY_ROOT)
+            or receipt.get("deploy_revision") != spec["source_revision"]
+            or receipt.get("worker_sha256")
+            != "5d9389b05b43ccf69ae8e2afff562a659d50a02f7ea00689078919e04ed1103b"
+            or receipt.get("new_serve_id") != spec["container"]
+            or not isinstance(serve_name, str)
+            or re.fullmatch(spec["generation_pattern"], serve_name) is None
+            or receipt.get("old_failed_container_id") != spec["old_failed_container"]
+            or receipt.get("old_failed_status_sha256")
+            != spec["old_failed_status_sha256"]
+            or receipt.get("legacy_unchanged") is not True
+            or receipt.get("five_symbol_fresh_progress_proven") is not True
+            or receipt.get("all_native_queue_rows_caught_up") is not True
+            or receipt.get("execution_rows_after") != 0
+            or receipt.get("trading_started") is not False
+            or receipt.get("orders_submitted") != 0
+            or receipt.get("paid_calls") != 0
+            or receipt.get("primary_migration") is not False
+            or receipt.get("automatic_retry") is not False
+            or readiness
+            != {"PAPER_QUALIFIED": False, "ALPHA_READY": False, "LIVE_READY": False}
+            or not valid_status(serve_status)
+            or not valid_status(restart_status)
+        ):
+            raise R7Error("R7SQL_RECEIPT_INVALID")
+        before_time = datetime.fromisoformat(
+            serve_status["observed_at_utc"].replace("Z", "+00:00")
+        )
+        after_time = datetime.fromisoformat(
+            restart_status["observed_at_utc"].replace("Z", "+00:00")
+        )
+        if (
+            after_time <= before_time
+            or any(
+                restart_status["watermarks_ms"][symbol]
+                <= serve_status["watermarks_ms"][symbol]
+                for symbol in SYMBOLS
+            )
+        ):
+            raise R7Error("R7SQL_RESTART_PROOF_INVALID")
+    except R7Error:
+        raise
+    except Exception:  # noqa: BLE001 - never surface private receipt details.
+        raise R7Error("R7SQL_RECEIPT_INVALID") from None
+    return receipt
 
 
 def _load_r5_helpers() -> Any:
@@ -247,18 +432,14 @@ def _verify_signed_source(helpers: Any, *, profile: str = "legacy") -> None:
                     "show",
                     "-s",
                     "--format=%H %G? %GF",
-                    _R7DNS["source_revision"]
-                    if profile == "r7-dns"
-                    else SOURCE_REVISION,
+                    _source_revision(profile),
                 ],
             )
             .decode("ascii", "strict")
             .strip()
             .split()
         )
-        source_revision = (
-            _R7DNS["source_revision"] if profile == "r7-dns" else SOURCE_REVISION
-        )
+        source_revision = _source_revision(profile)
         if deploy_source != [source_revision, "G", helpers.SIGNER]:
             raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
         deploy_head = (
@@ -358,31 +539,46 @@ def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str
     """Admit only the immutable accepted R7 receipt and its protected status path."""
     helpers = helpers or _load_r5_helpers()
     try:
-        if profile not in {"legacy", "r7-dns"}:
+        if profile not in {"legacy", "r7-dns", "r7-sql"}:
             raise R7Error("R7_PROFILE_INVALID")
+        spec = (
+            _R7DNS
+            if profile == "r7-dns"
+            else _require_r7_sql_pins()
+            if profile == "r7-sql"
+            else None
+        )
         _verify_signed_source(helpers, profile=profile)
         continuation, delivery = helpers._continuation()
-        spec = _R7DNS if profile == "r7-dns" else None
         work = spec["runtime_root"] / spec["work"] if spec else RUNTIME_ROOT / WORK
         delivery._no_reparse(work)
         delivery._private_acl(work)
-        receipt_path = work / "receipt.json"
+        receipt_name = spec.get("receipt_name", "receipt.json") if spec else "receipt.json"
+        receipt_path = work / receipt_name
         receipt_raw = _protected_read(
             receipt_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
         )
-        helpers._verify_signature(receipt_path, work / "receipt.json.asc")
+        signature_path = work / (receipt_name + ".asc")
+        helpers._verify_signature(receipt_path, signature_path)
         if spec:
-            signature_path = work / "receipt.json.asc"
             signature_raw = _protected_read(
                 signature_path, helpers=helpers, delivery=delivery, maximum=16_384
             )
             if hashlib.sha256(signature_raw).hexdigest() != spec["signature_sha256"]:
-                raise R7Error("R7DNS_RECEIPT_SIGNATURE_MISMATCH")
+                raise R7Error(
+                    "R7SQL_RECEIPT_SIGNATURE_MISMATCH"
+                    if profile == "r7-sql"
+                    else "R7DNS_RECEIPT_SIGNATURE_MISMATCH"
+                )
         expected_receipt_sha = spec["receipt_sha256"] if spec else RECEIPT_SHA256
         if hashlib.sha256(receipt_raw).hexdigest() != expected_receipt_sha:
-            raise R7Error("R7_RECEIPT_MISMATCH")
+            raise R7Error(
+                "R7SQL_RECEIPT_MISMATCH"
+                if profile == "r7-sql"
+                else "R7_RECEIPT_MISMATCH"
+            )
         receipt = _json(receipt_raw)
-        if spec:
+        if profile == "r7-dns":
             failed_path = spec["failed_status_path"]
             delivery._no_reparse(failed_path)
             failed_raw = _protected_read(
@@ -438,18 +634,20 @@ def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str
                 )
             ):
                 raise R7Error("R7DNS_RECEIPT_INVALID")
+        elif profile == "r7-sql":
+            _validate_r7_sql_receipt(receipt, spec=spec)
         generation = receipt.get("generation") if isinstance(receipt, dict) else None
         generation_status = (
             generation.get("status") if isinstance(generation, dict) else None
         )
         if (
             not isinstance(receipt, dict)
-            or (not spec and receipt.get("result") != "PASS_NEW_NONTRADING_GENERATION")
-            or (not spec and receipt.get("owner") != OWNER)
-            or (not spec and receipt.get("source_revision") != SOURCE_REVISION)
-            or (not spec and receipt.get("trading_started") is not False)
+            or (profile == "legacy" and receipt.get("result") != "PASS_NEW_NONTRADING_GENERATION")
+            or (profile == "legacy" and receipt.get("owner") != OWNER)
+            or (profile == "legacy" and receipt.get("source_revision") != SOURCE_REVISION)
+            or (profile == "legacy" and receipt.get("trading_started") is not False)
             or (
-                not spec
+                profile == "legacy"
                 and (
                     not isinstance(generation, dict)
                     or generation.get("name") != GENERATION_NAME
@@ -469,13 +667,13 @@ def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str
                 )
             )
             or (
-                not spec
+                profile == "legacy"
                 and any(
                     receipt.get(key) is not False
                     for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
                 )
             )
-            or (not spec and receipt.get("STRATEGY_POLICY") != "REJECT_ALL")
+            or (profile == "legacy" and receipt.get("STRATEGY_POLICY") != "REJECT_ALL")
         ):
             raise R7Error("R7_RECEIPT_INVALID")
         return {
@@ -500,7 +698,7 @@ def _source_pause_valid(
     base_keys = {"timeout_rounds", "recoveries", "consecutive_timeout_rounds"}
     dns_keys = {"dns_failure_rounds", "consecutive_dns_failure_rounds"}
     waiting = state == "WAITING_SOURCE_NONTRADING"
-    if profile == "r7-dns":
+    if profile in {"r7-dns", "r7-sql"}:
         schema = frozenset(circuit) if isinstance(circuit, dict) else None
         has_dns_telemetry = schema == frozenset(base_keys | dns_keys)
         expected_schemas = {frozenset(base_keys), frozenset(base_keys | dns_keys)}
@@ -590,11 +788,12 @@ def classify_status(
     watermarks = value.get("watermarks_ms")
     circuit_valid = _source_pause_valid(value, state, profile=profile)
     valid = (
-        value.get("owner") == (_R7DNS["owner"] if profile == "r7-dns" else OWNER)
+        value.get("owner") == (OWNER if profile != "r7-dns" else _R7DNS["owner"])
         and type(value.get("cycles")) is int
         and value["cycles"] >= 0
         and type(value.get("completed_inbox")) is int
-        and value["completed_inbox"] >= MIN_COMPLETED_INBOX
+        and value["completed_inbox"]
+        >= (_R7SQL["min_completed_inbox"] if profile == "r7-sql" else MIN_COMPLETED_INBOX)
         and value.get("trading_started") is False
         and value.get("PAPER_QUALIFIED") is False
         and value.get("ALPHA_READY") is False
@@ -654,6 +853,13 @@ def _status_path(binding: dict[str, Any]) -> Path:
         return RUNTIME_ROOT / WORK / "output-serve" / "status.json"
     if binding == _binding_record("r7-dns"):
         return _R7DNS["runtime_root"] / _R7DNS["work"] / "output-serve" / "status.json"
+    if binding == _binding_record("r7-sql"):
+        return (
+            _R7SQL["runtime_root"]
+            / _R7SQL["work"]
+            / "output-serve"
+            / "status.json"
+        )
     raise R7Error("R7_BINDING_INVALID")
 
 
@@ -803,9 +1009,11 @@ def initialize(
         source["continuation"],
         source["delivery"],
     )
-    root = root or (
-        R7DNS_PRIVATE_ROOT if source.get("profile") == "r7-dns" else PRIVATE_ROOT
-    )
+    root = root or {
+        "legacy": PRIVATE_ROOT,
+        "r7-dns": R7DNS_PRIVATE_ROOT,
+        "r7-sql": R7SQL_PRIVATE_ROOT,
+    }.get(source.get("profile"), PRIVATE_ROOT)
     delivery._no_reparse(root)
     delivery._private_acl(root)
     binding_path = root / "binding.json"
@@ -915,9 +1123,11 @@ def poll_once(
         source["continuation"],
         source["delivery"],
     )
-    root = root or (
-        R7DNS_PRIVATE_ROOT if source.get("profile") == "r7-dns" else PRIVATE_ROOT
-    )
+    root = root or {
+        "legacy": PRIVATE_ROOT,
+        "r7-dns": R7DNS_PRIVATE_ROOT,
+        "r7-sql": R7SQL_PRIVATE_ROOT,
+    }.get(source.get("profile"), PRIVATE_ROOT)
     delivery._no_reparse(root)
     delivery._private_acl(root)
     journal = journal_factory(
@@ -1014,16 +1224,22 @@ def main(argv: list[str] | None = None) -> int:
     actions.add_argument("--initialize", action="store_true")
     actions.add_argument("--poll-once", action="store_true")
     parser.add_argument("--armed", action="store_true")
-    parser.add_argument("--profile", choices=("legacy", "r7-dns"), default="legacy")
+    parser.add_argument(
+        "--profile", choices=("legacy", "r7-dns", "r7-sql"), default="legacy"
+    )
     args = parser.parse_args(argv)
     if not (args.initialize or args.poll_once) or not args.armed:
         print(
             json.dumps(
                 {
                     "status": "PLAN_ONLY",
-                    "task": _R7DNS["task_name"]
-                    if args.profile == "r7-dns"
-                    else TASK_NAME,
+                    "task": {
+                        "legacy": TASK_NAME,
+                        "r7-dns": _R7DNS["task_name"],
+                        "r7-sql": _R7SQL["task_name"],
+                    }[args.profile],
+                    "profile": args.profile,
+                    "business_signals_muted": True,
                     "trading_authority": False,
                 }
             )

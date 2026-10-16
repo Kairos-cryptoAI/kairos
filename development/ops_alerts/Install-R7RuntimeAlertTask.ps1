@@ -1,14 +1,22 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('legacy', 'r7-dns')][string]$ProfileName = 'legacy',
+    [ValidateSet('legacy', 'r7-dns', 'r7-sql')][string]$ProfileName = 'legacy',
     [switch]$Execute
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$taskName = if ($ProfileName -eq 'r7-dns') { 'Kairos-R7-DNS-TechnicalAlerts-V1-20261015' } else { 'Kairos-R7-TechnicalAlerts-V1-20261013' }
+$taskName = switch ($ProfileName) {
+    'r7-dns' { 'Kairos-R7-DNS-TechnicalAlerts-V1-20261015' }
+    'r7-sql' { 'Kairos-R7-SQL-TechnicalAlerts-V1-20261016' }
+    default { 'Kairos-R7-TechnicalAlerts-V1-20261013' }
+}
 $metaRoot = 'D:\Kairos\kairos'
-$privateRoot = if ($ProfileName -eq 'r7-dns') { 'D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns' } else { 'D:\Kairos\runtime\alert-delivery-20261013\operational-r7' }
+$privateRoot = switch ($ProfileName) {
+    'r7-dns' { 'D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns' }
+    'r7-sql' { 'D:\Kairos\runtime\alert-delivery-20261016\operational-r7-sql' }
+    default { 'D:\Kairos\runtime\alert-delivery-20261013\operational-r7' }
+}
 $profileArgs = @('--profile', $ProfileName)
 $driverPath = Join-Path $metaRoot 'development\ops_alerts\runtime_status_r7_notifier.py'
 $pythonPath = 'C:\Users\loval\AppData\Local\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\python.exe'
@@ -29,6 +37,7 @@ if (-not $Execute) {
         interval_seconds = 120
         protected_status_file_only = $true
         database_or_queue_access = $false
+        business_signals_muted = $true
         trading_authority = $false
         task_started = $false
     } | ConvertTo-Json -Compress
