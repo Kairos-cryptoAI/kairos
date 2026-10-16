@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "kind": "CURRENT_SOURCE_IDENTITY",
-  "releaseId": "engineering-main-20261016T071500Z",
-  "generatedAtUtc": "2026-10-16T07:15:00Z",
+  "releaseId": "engineering-main-20261016T072000Z",
+  "generatedAtUtc": "2026-10-16T07:20:00Z",
   "purpose": "Reproducible source identity for the current Kairos engineering work. This is not a trading, alpha, simulator, PAPER, or LIVE approval.",
   "scope": {
     "classification": "ENGINEERING_ONLY",
@@ -18,7 +18,7 @@
     { "name": "kairos-aggregator", "directory": "kairos-aggregator", "origin": "https://github.com/Kairos-cryptoAI/kairos-aggregator.git", "revision": "4c1325ca8803a6f06443cbb73e7209a55f29bc1c" },
     { "name": "kairos-backtest", "directory": "kairos-backtest", "origin": "https://github.com/Kairos-cryptoAI/kairos-backtest.git", "revision": "da1237854066fde381542e43c106d0de727448be" },
     { "name": "kairos-core", "directory": "kairos-core", "origin": "https://github.com/Kairos-cryptoAI/kairos-core.git", "revision": "6937eb4773fc00afaf5ba4e020b28b689f48e377" },
-    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "25737b434fad00665e01923b411fb25b4e126e27" },
+    { "name": "kairos-deploy", "directory": "kairos-deploy", "origin": "https://github.com/Kairos-cryptoAI/kairos-deploy.git", "revision": "c2b94860d77506b77a4069b18aa61a987a24bdb6" },
     { "name": "kairos-execution-engine", "directory": "kairos-execution-engine", "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git", "revision": "f8dd4cd78d1732c3ef724fbec615a275417fda40" },
     { "name": "kairos-llm", "directory": "kairos-llm", "origin": "https://github.com/Kairos-cryptoAI/kairos-llm.git", "revision": "c2207a5bd8bbf39e7d5728f95e52c96a47eca344" },
     { "name": "kairos-macro-strategist", "directory": "kairos-macro-strategist", "origin": "https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git", "revision": "516da27e8c223fcb8f282cf6a4d00bebfd1aea0e" },
