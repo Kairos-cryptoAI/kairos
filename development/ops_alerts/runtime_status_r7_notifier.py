@@ -26,9 +26,20 @@ PRIVATE_ROOT = Path(r"D:\Kairos\runtime\alert-delivery-20261013\operational-r7")
 R7DNS_PRIVATE_ROOT = Path(
     r"D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns"
 )
-R7SQL_PRIVATE_ROOT = Path(
+R7SQL_PREDECESSOR_ROOT = Path(
     r"D:\Kairos\runtime\alert-delivery-20261016\operational-r7-sql"
 )
+R7SQL_PRIVATE_ROOT = Path(
+    r"D:\Kairos\runtime\alert-delivery-20261018\operational-r7-sql-successor"
+)
+R7SQL_PREDECESSOR_EVENT_ID = "6c06d9673800c48c297d05211d9d31abb7f062ac9a483ac3dc38a16e5b25091b"
+R7SQL_PREDECESSOR_GUARD_NAME = (
+    "events.jsonl." + R7SQL_PREDECESSOR_EVENT_ID + ".guard"
+)
+R7SQL_SUCCESSOR_ADJUDICATION_NAME = "predecessor-adjudication.json"
+R7SQL_SUCCESSOR_ADJUDICATION_SHA256 = "8ed992d4b2b4381994f69d0c661c4a18a8c2bb3e910aba4dbef928eaf011f756"
+R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256 = "14901b7799ac0711b35ee17279a4e8546e5dd6bd67608a0aaea28742cee3e250"
+R7SQL_RUNTIME_PASS_RECEIPT_SHA256 = "92a8e424a0ab27ebded11a7872f0d9cc588631b380c9c4377ce49b8df82014e9"
 WORK = "read-recovery-r7-cb1bc3984d8440aa965af5b928d2b4fa"
 OWNER = "69893dc7b7c647f49967387e7efca9fb"
 TASK_NAME = "Kairos-R7-TechnicalAlerts-V1-20261013"
@@ -159,6 +170,9 @@ def _binding_record(profile: str = "legacy") -> dict[str, Any]:
             "receipt_sha256": _R7SQL["receipt_sha256"],
             "receipt_signature_sha256": _R7SQL["signature_sha256"],
             "receipt_source_revision": _R7SQL["source_revision"],
+            "private_root": str(R7SQL_PRIVATE_ROOT),
+            "predecessor_adjudication_sha256": R7SQL_SUCCESSOR_ADJUDICATION_SHA256,
+            "runtime_pass_receipt_sha256": R7SQL_RUNTIME_PASS_RECEIPT_SHA256,
             "trading_started": False,
             "business_signals_muted": True,
         }
@@ -523,6 +537,117 @@ def _protected_read(path: Path, *, helpers: Any, delivery: Any, maximum: int) ->
         return helpers._read_private(path, maximum=maximum, delivery=delivery)
     except Exception:  # noqa: BLE001 - collapse filesystem/ACL detail.
         raise R7Error("PROTECTED_EVIDENCE_REQUIRED") from None
+
+
+def _verify_r7sql_successor_adjudication(source: dict[str, Any]) -> None:
+    """Verify the signed, pinned operator adjudication before touching status."""
+    if any(
+        _HEX64.fullmatch(value) is None or value == "0" * 64
+        for value in (
+            R7SQL_SUCCESSOR_ADJUDICATION_SHA256,
+            R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256,
+            R7SQL_RUNTIME_PASS_RECEIPT_SHA256,
+        )
+    ):
+        raise R7Error("R7SQL_SUCCESSOR_ADJUDICATION_NOT_PINNED")
+    helpers, delivery = source["helpers"], source["delivery"]
+    old_root = R7SQL_PREDECESSOR_ROOT
+    new_root = R7SQL_PRIVATE_ROOT
+    proof_path = new_root / R7SQL_SUCCESSOR_ADJUDICATION_NAME
+    signature_path = proof_path.with_name(proof_path.name + ".asc")
+    for path in (old_root, new_root, proof_path, signature_path):
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+    raw = _protected_read(
+        proof_path, helpers=helpers, delivery=delivery, maximum=8192
+    )
+    signature_raw = _protected_read(
+        signature_path, helpers=helpers, delivery=delivery, maximum=16_384
+    )
+    if (
+        hashlib.sha256(raw).hexdigest() != R7SQL_SUCCESSOR_ADJUDICATION_SHA256
+        or hashlib.sha256(signature_raw).hexdigest()
+        != R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256
+    ):
+        raise R7Error("R7SQL_SUCCESSOR_ADJUDICATION_HASH_MISMATCH")
+    try:
+        helpers._verify_signature(proof_path, signature_path)
+    except Exception:  # noqa: BLE001 - verifier diagnostics may contain private data.
+        raise R7Error("R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_INVALID") from None
+    proof = _json(raw)
+    expected_keys = {
+        "schema_version",
+        "kind",
+        "predecessor_root",
+        "predecessor_binding_name",
+        "predecessor_binding_sha256",
+        "predecessor_journal_name",
+        "predecessor_journal_sha256",
+        "predecessor_guard_name",
+        "predecessor_guard_sha256",
+        "event_id",
+        "human_adjudication",
+        "event_resend_authorized",
+        "runtime_pass_receipt_sha256",
+        "trading_started",
+    }
+    if (
+        not isinstance(proof, dict)
+        or set(proof) != expected_keys
+        or type(proof.get("schema_version")) is not int
+        or proof.get("schema_version") != 1
+        or proof.get("kind") != "kairos.r7sql.notifier-successor-adjudication.v1"
+        or proof.get("predecessor_root") != str(old_root)
+        or proof.get("predecessor_binding_name") != "binding.json"
+        or proof.get("predecessor_journal_name") != "events.jsonl"
+        or proof.get("predecessor_guard_name") != R7SQL_PREDECESSOR_GUARD_NAME
+        or proof.get("event_id") != R7SQL_PREDECESSOR_EVENT_ID
+        or proof.get("human_adjudication")
+        != "CONFIRMED_EVENT_ABSENT_FROM_FINAL_GROUP"
+        or proof.get("event_resend_authorized") is not False
+        or proof.get("runtime_pass_receipt_sha256")
+        != R7SQL_RUNTIME_PASS_RECEIPT_SHA256
+        or proof.get("trading_started") is not False
+    ):
+        raise R7Error("R7SQL_SUCCESSOR_ADJUDICATION_INVALID")
+    old_files = (
+        (old_root / "binding.json", "predecessor_binding_sha256", 4096),
+        (old_root / "events.jsonl", "predecessor_journal_sha256", MAX_BYTES),
+        (old_root / R7SQL_PREDECESSOR_GUARD_NAME, "predecessor_guard_sha256", 4096),
+    )
+    for path, digest_key, maximum in old_files:
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+        previous = _protected_read(
+            path, helpers=helpers, delivery=delivery, maximum=maximum
+        )
+        pinned = proof.get(digest_key)
+        if (
+            not isinstance(pinned, str)
+            or _HEX64.fullmatch(pinned) is None
+            or hashlib.sha256(previous).hexdigest() != pinned
+        ):
+            raise R7Error("R7SQL_PREDECESSOR_EVIDENCE_CHANGED")
+
+
+def _profile_root(source: dict[str, Any], requested: Path | None) -> Path:
+    profile = source.get("profile", "legacy")
+    fixed = {
+        "legacy": PRIVATE_ROOT,
+        "r7-dns": R7DNS_PRIVATE_ROOT,
+        "r7-sql": R7SQL_PRIVATE_ROOT,
+    }.get(profile, PRIVATE_ROOT)
+    if profile == "r7-sql":
+        if requested is not None and requested != fixed:
+            raise R7Error("R7SQL_SUCCESSOR_ROOT_OVERRIDE_REJECTED")
+        if (
+            source.get("binding") != _binding_record("r7-sql")
+            or source.get("binding_sha256") != _binding_sha256("r7-sql")
+        ):
+            raise R7Error("R7SQL_SUCCESSOR_BINDING_INVALID")
+        _verify_r7sql_successor_adjudication(source)
+        return fixed
+    return requested or fixed
 
 
 def _write_new(path: Path, raw: bytes, continuation: Any, delivery: Any) -> None:
@@ -1009,15 +1134,26 @@ def initialize(
         source["continuation"],
         source["delivery"],
     )
-    root = root or {
-        "legacy": PRIVATE_ROOT,
-        "r7-dns": R7DNS_PRIVATE_ROOT,
-        "r7-sql": R7SQL_PRIVATE_ROOT,
-    }.get(source.get("profile"), PRIVATE_ROOT)
+    root = _profile_root(source, root)
     delivery._no_reparse(root)
     delivery._private_acl(root)
     binding_path = root / "binding.json"
     binding_bytes = _binding_bytes(source.get("profile", "legacy"))
+    successor = source.get("profile") == "r7-sql"
+    if successor:
+        expected_entries = {
+            R7SQL_SUCCESSOR_ADJUDICATION_NAME,
+            R7SQL_SUCCESSOR_ADJUDICATION_NAME + ".asc",
+        }
+        try:
+            if {entry.name for entry in root.iterdir()} != expected_entries:
+                raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN")
+        except R7Error:
+            raise
+        except Exception:  # noqa: BLE001 - private root errors remain redacted.
+            raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN") from None
+        if binding_path.exists() or (root / "events.jsonl").exists():
+            raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN")
     if binding_path.exists():
         if (
             _protected_read(
@@ -1026,7 +1162,7 @@ def initialize(
             != binding_bytes
         ):
             raise R7Error("R7_BINDING_CHANGED")
-    else:
+    elif not successor:
         _write_new(binding_path, binding_bytes, continuation, delivery)
     journal = R7Journal(
         root / "events.jsonl", continuation, delivery, helpers, source["binding_sha256"]
@@ -1039,8 +1175,10 @@ def initialize(
             if observer
             else read_status(_status_path(source["binding"]), source=source)
         )
-        if state not in _QUIET_STATES:
+        if state not in ({"running_fresh"} if successor else _QUIET_STATES):
             raise R7Error("R7_QUIET_BASELINE_REQUIRED")
+        if successor and not binding_path.exists():
+            _write_new(binding_path, binding_bytes, continuation, delivery)
         journal._append(
             {
                 "schema_version": 1,
@@ -1123,11 +1261,7 @@ def poll_once(
         source["continuation"],
         source["delivery"],
     )
-    root = root or {
-        "legacy": PRIVATE_ROOT,
-        "r7-dns": R7DNS_PRIVATE_ROOT,
-        "r7-sql": R7SQL_PRIVATE_ROOT,
-    }.get(source.get("profile"), PRIVATE_ROOT)
+    root = _profile_root(source, root)
     delivery._no_reparse(root)
     delivery._private_acl(root)
     journal = journal_factory(

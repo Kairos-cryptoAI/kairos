@@ -155,6 +155,54 @@ class MemoryJournal:
 
 
 class RuntimeStatusR7NotifierTests(unittest.TestCase):
+    def _successor_fixture(self, base: Path) -> tuple[Any, dict[str, Any], Path, bytes, bytes]:
+        import hashlib
+
+        predecessor = base / "predecessor"
+        successor = base / "successor"
+        predecessor.mkdir()
+        successor.mkdir()
+        old_binding = b'{"synthetic":"old binding"}'
+        old_journal = b'{"synthetic":"old journal"}\n'
+        old_guard = b"synthetic guard metadata"
+        (predecessor / "binding.json").write_bytes(old_binding)
+        (predecessor / "events.jsonl").write_bytes(old_journal)
+        (predecessor / r7.R7SQL_PREDECESSOR_GUARD_NAME).write_bytes(old_guard)
+        proof = {
+            "schema_version": 1,
+            "kind": "kairos.r7sql.notifier-successor-adjudication.v1",
+            "predecessor_root": str(predecessor),
+            "predecessor_binding_name": "binding.json",
+            "predecessor_binding_sha256": hashlib.sha256(old_binding).hexdigest(),
+            "predecessor_journal_name": "events.jsonl",
+            "predecessor_journal_sha256": hashlib.sha256(old_journal).hexdigest(),
+            "predecessor_guard_name": r7.R7SQL_PREDECESSOR_GUARD_NAME,
+            "predecessor_guard_sha256": hashlib.sha256(old_guard).hexdigest(),
+            "event_id": r7.R7SQL_PREDECESSOR_EVENT_ID,
+            "human_adjudication": "CONFIRMED_EVENT_ABSENT_FROM_FINAL_GROUP",
+            "event_resend_authorized": False,
+            "runtime_pass_receipt_sha256": "a" * 64,
+            "trading_started": False,
+        }
+        raw = json.dumps(proof, sort_keys=True, separators=(",", ":")).encode()
+        signature = b"synthetic detached signature"
+        (successor / r7.R7SQL_SUCCESSOR_ADJUDICATION_NAME).write_bytes(raw)
+        (successor / (r7.R7SQL_SUCCESSOR_ADJUDICATION_NAME + ".asc")).write_bytes(signature)
+        reader = FileReader()
+        helpers = SimpleNamespace(
+            R5Journal=r5.R5Journal,
+            R5Error=r5.R5Error,
+            _read_private=reader._read_private,
+            _verify_signature=lambda _data, _signature: None,
+        )
+        source = {
+            "helpers": helpers,
+            "continuation": FakeContinuation(),
+            "delivery": FakeDelivery(),
+            "profile": "r7-sql",
+        }
+        return predecessor, source, successor, raw, signature
+
     def test_initializer_only_allows_uniform_checkout_line_endings(self) -> None:
         initializer = b'"""Deployment validation helpers."""\n'
         self.assertEqual(r7._initializer_source_bytes(initializer), initializer)
@@ -168,6 +216,196 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
                 self.assertRaisesRegex(r7.R7Error, "DEPLOY_NAMESPACE_IMPORT_REJECTED"),
             ):
                 r7._initializer_source_bytes(invalid)
+
+    def test_r7sql_root_override_is_rejected_before_any_private_read(self) -> None:
+        source = {
+            "profile": "r7-sql",
+            "binding": r7._binding_record("r7-sql"),
+            "binding_sha256": r7._binding_sha256("r7-sql"),
+        }
+        with self.assertRaisesRegex(r7.R7Error, "ROOT_OVERRIDE_REJECTED"):
+            r7._profile_root(source, Path("arbitrary-root"))
+
+    def test_successor_proof_tamper_fails_before_observer_or_journal(self) -> None:
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            predecessor, source, successor, raw, signature = self._successor_fixture(
+                Path(directory)
+            )
+            old_binding_bytes = (predecessor / "binding.json").read_bytes()
+            (predecessor / "events.jsonl").write_bytes(b"tampered\n")
+            callbacks: list[str] = []
+            with (
+                patch.object(r7, "R7SQL_PREDECESSOR_ROOT", predecessor),
+                patch.object(r7, "R7SQL_PRIVATE_ROOT", successor),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SHA256", hashlib.sha256(raw).hexdigest()),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256", hashlib.sha256(signature).hexdigest()),
+                patch.object(r7, "R7SQL_RUNTIME_PASS_RECEIPT_SHA256", "a" * 64),
+                self.assertRaisesRegex(r7.R7Error, "PREDECESSOR_EVIDENCE_CHANGED"),
+            ):
+                source.update(
+                    binding=r7._binding_record("r7-sql"),
+                    binding_sha256=r7._binding_sha256("r7-sql"),
+                )
+                r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda *_args: callbacks.append("observer") or "running_fresh",
+                    sender=lambda _event: callbacks.append("sender") or True,
+                    journal_factory=lambda *_args, **_kwargs: callbacks.append("journal") or MemoryJournal([]),
+                )
+            self.assertEqual(callbacks, [])
+            self.assertEqual((predecessor / "binding.json").read_bytes(), old_binding_bytes)
+
+    def test_successor_signature_and_hash_failures_precede_all_callbacks_and_writes(
+        self,
+    ) -> None:
+        import hashlib
+
+        cases = (
+            ("signature", "R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_INVALID", "initialize"),
+            ("receipt_hash", "R7SQL_SUCCESSOR_ADJUDICATION_HASH_MISMATCH", "poll"),
+            ("signature_hash", "R7SQL_SUCCESSOR_ADJUDICATION_HASH_MISMATCH", "initialize"),
+        )
+        for mode, expected_error, operation in cases:
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
+                predecessor, source, successor, raw, signature = self._successor_fixture(
+                    Path(directory)
+                )
+                old_before = {
+                    name: (predecessor / name).read_bytes()
+                    for name in ("binding.json", "events.jsonl", r7.R7SQL_PREDECESSOR_GUARD_NAME)
+                }
+                observer_calls: list[str] = []
+                journal_calls: list[str] = []
+
+                def bad_signature(*_args: Any) -> None:
+                    raise ValueError("synthetic bad signature")
+
+                source["helpers"]._verify_signature = (
+                    bad_signature if mode == "signature" else lambda *_args: None
+                )
+                with (
+                    patch.object(r7, "R7SQL_PREDECESSOR_ROOT", predecessor),
+                    patch.object(r7, "R7SQL_PRIVATE_ROOT", successor),
+                    patch.object(
+                        r7,
+                        "R7SQL_SUCCESSOR_ADJUDICATION_SHA256",
+                        ("b" * 64 if mode == "receipt_hash" else hashlib.sha256(raw).hexdigest()),
+                    ),
+                    patch.object(
+                        r7,
+                        "R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256",
+                        ("b" * 64 if mode == "signature_hash" else hashlib.sha256(signature).hexdigest()),
+                    ),
+                    patch.object(r7, "R7SQL_RUNTIME_PASS_RECEIPT_SHA256", "a" * 64),
+                    self.assertRaisesRegex(r7.R7Error, expected_error),
+                ):
+                    source.update(
+                        binding=r7._binding_record("r7-sql"),
+                        binding_sha256=r7._binding_sha256("r7-sql"),
+                    )
+                    if operation == "poll":
+                        r7.poll_once(
+                            source_admitter=lambda: source,
+                            observer=lambda *_args: observer_calls.append("observer") or "running_fresh",
+                            sender=lambda _event: observer_calls.append("sender") or True,
+                            journal_factory=lambda *_args, **_kwargs: journal_calls.append("journal"),
+                        )
+                    else:
+                        with patch.object(
+                            r7,
+                            "R7Journal",
+                            side_effect=lambda *_args, **_kwargs: journal_calls.append("journal"),
+                        ):
+                            r7.initialize(
+                                source_admitter=lambda: source,
+                                observer=lambda *_args: observer_calls.append("observer") or "running_fresh",
+                            )
+                self.assertEqual(observer_calls, [])
+                self.assertEqual(journal_calls, [])
+                self.assertEqual(
+                    {entry.name for entry in successor.iterdir()},
+                    {
+                        r7.R7SQL_SUCCESSOR_ADJUDICATION_NAME,
+                        r7.R7SQL_SUCCESSOR_ADJUDICATION_NAME + ".asc",
+                    },
+                )
+                self.assertEqual(
+                    {name: (predecessor / name).read_bytes() for name in old_before},
+                    old_before,
+                )
+
+    def test_fresh_successor_baseline_and_first_poll_are_quiet(self) -> None:
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            predecessor, source, successor, raw, signature = self._successor_fixture(
+                Path(directory)
+            )
+            observed: list[str] = []
+            original_predecessor = {
+                name: (predecessor / name).read_bytes()
+                for name in ("binding.json", "events.jsonl", r7.R7SQL_PREDECESSOR_GUARD_NAME)
+            }
+            with (
+                patch.object(r7, "R7SQL_PREDECESSOR_ROOT", predecessor),
+                patch.object(r7, "R7SQL_PRIVATE_ROOT", successor),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SHA256", hashlib.sha256(raw).hexdigest()),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256", hashlib.sha256(signature).hexdigest()),
+                patch.object(r7, "R7SQL_RUNTIME_PASS_RECEIPT_SHA256", "a" * 64),
+            ):
+                source.update(
+                    binding=r7._binding_record("r7-sql"),
+                    binding_sha256=r7._binding_sha256("r7-sql"),
+                )
+                initialized = r7.initialize(
+                    source_admitter=lambda: source,
+                    observer=lambda *_args: observed.append("initialize") or "running_fresh",
+                )
+                self.assertEqual(initialized["state"], "running_fresh")
+                baseline_rows = [
+                    r7._json(line)
+                    for line in (successor / "events.jsonl").read_bytes().splitlines()
+                ]
+                self.assertEqual(baseline_rows[0]["kind"], "baseline")
+                quiet = r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda *_args: observed.append("poll") or "running_fresh",
+                    sender=lambda _event: self.fail("fresh baseline must not send"),
+                )
+            self.assertEqual(quiet["send_attempts"], 0)
+            self.assertEqual(observed, ["initialize", "poll"])
+            self.assertEqual(
+                {name: (predecessor / name).read_bytes() for name in original_predecessor},
+                original_predecessor,
+            )
+
+    def test_successor_initialize_refuses_nonfresh_state_before_binding_write(self) -> None:
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            predecessor, source, successor, raw, signature = self._successor_fixture(
+                Path(directory)
+            )
+            with (
+                patch.object(r7, "R7SQL_PREDECESSOR_ROOT", predecessor),
+                patch.object(r7, "R7SQL_PRIVATE_ROOT", successor),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SHA256", hashlib.sha256(raw).hexdigest()),
+                patch.object(r7, "R7SQL_SUCCESSOR_ADJUDICATION_SIGNATURE_SHA256", hashlib.sha256(signature).hexdigest()),
+                patch.object(r7, "R7SQL_RUNTIME_PASS_RECEIPT_SHA256", "a" * 64),
+            ):
+                source.update(
+                    binding=r7._binding_record("r7-sql"),
+                    binding_sha256=r7._binding_sha256("r7-sql"),
+                )
+                with self.assertRaisesRegex(r7.R7Error, "QUIET_BASELINE_REQUIRED"):
+                    r7.initialize(
+                        source_admitter=lambda: source,
+                        observer=lambda *_args: "running_stale",
+                    )
+            self.assertFalse((successor / "binding.json").exists())
+            self.assertFalse((successor / "events.jsonl").exists())
 
     def setUp(self) -> None:
         MemoryJournal.rows = [
