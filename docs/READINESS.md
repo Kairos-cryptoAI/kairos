@@ -4,11 +4,19 @@ _Evidence boundary: 2026-08-27. This document records capability and permission 
 
 ## Current operational boundary — 2026-10-18
 
+**Later observation, 22:55 Moscow:** the previously accepted non-trading worker
+stopped fail-closed with `REDIS_RECOVERY_DEADLINE_EXCEEDED`. This is not evidence
+that Redis itself failed: the retained status identifies the exhausted transport
+deadline, not the underlying cause. PostgreSQL and Redis were subsequently also
+observed stopped at 23:32 Moscow. No runtime restart, queue/lease reset or primary
+change was performed by this continuation. Current uptime is **not accepted**.
+See the [bounded engineering continuation](ENGINEERING-CONTINUATION-2026-10-18.md).
+
 The [October 18 recovery receipt](RECOVERY-2026-10-18.md) accepts the separate
 non-trading epoch's fresh backup/isolated restores, native recovery and fresh
 five-symbol serving status. Its existing boot task passed an actual scheduler
 smoke without starting a duplicate worker; a physical host reboot was not tested.
-The current technical monitor also passes scheduled source admission. These
+The earlier technical monitor also passed scheduled source admission. These
 accepted scopes supersede the failed current-runtime status in the October 15
 snapshot below; they do not adopt or modify the legacy database/queue.
 
@@ -22,7 +30,10 @@ The [remaining non-strategy launch register](LAUNCH-REMAINING-2026-10-18.md)
 separates implementation/deployment gaps from strategy and elapsed-time gates.
 The full current-context path has an accepted isolated synthetic proof, not a
 deployed real-provider trading runtime. The real venue-to-canary observation
-recorder is not wired, and Execution still explicitly rejects LIVE at startup.
+recorder now has implemented, tested GET-only/SQL wiring, but no real 24-hour
+window is claimed. The current profile explicitly requires NEWS and Macro for
+candidate review; this is not full deployed-provider acceptance. Execution still
+explicitly rejects LIVE at startup.
 Local encrypted restore is accepted; independent off-host recovery is not.
 
 The [latest public EVEDEX snapshot](EVEDEX-DEV-PROGRESS-2026-10-18.md) remains
