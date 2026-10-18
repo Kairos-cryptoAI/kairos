@@ -2,6 +2,16 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
+## Current incident continuation — 2026-10-19
+
+The [new incident diagnosis](RUNTIME-INCIDENT-2026-10-19.md) confirms the exact
+non-trading epoch remains stopped. Existing transport tests do not reproduce a
+timer defect. Windows records an unexpected host restart, but that does not
+establish the cause of the earlier Redis recovery deadline. Fresh cold backup
+and clone-only restoration must precede an independently admitted restart;
+neither runtime recovery nor current uptime is accepted at this checkpoint.
+Legacy data/queue, frozen research, readiness flags and `REJECT_ALL` are unchanged.
+
 ## Current operational boundary — 2026-10-18
 
 **Later observation, 22:55 Moscow:** the previously accepted non-trading worker
