@@ -160,3 +160,39 @@ remain strict, and no serving restart or current uptime is accepted here.
 
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, `STRATEGY_POLICY=REJECT_ALL` remain unchanged.
+
+## Accepted exact-five acknowledgement on the separate source epoch
+
+The signed one-shot source adapter `source-five-ack-70f3122d` passed. Before
+starting its consumer it matched all 32 table digests, three sequences, queue
+classification and Redis stream/publication identity to the accepted cold
+backup and signed clone observation. Only the same five sealed messages were
+acknowledged through the normal consumer-only durable bus.
+
+Outbox remained 13,205; completed inbox increased from 13,200 to 13,205. Native
+`PASS_BOOT_STATE` and `PASS_BOOT_REDIS_STATE` both passed, with zero pending
+deliveries, unresolved inbox rows, execution rows, transport failures,
+recoveries or pending replays. All non-target data, history, stream contents
+and publication ledger were preserved. There was no republish, cursor/lease
+reset, manual completion, producer, serving worker or trading start.
+
+The exact source PostgreSQL and Redis containers were stopped again with clean
+exit codes. Their legitimate lifecycle changes produce a new full metadata
+digest `2dbb3d883b1fc3993b70e332f63c3d80b1ff738504cf5d67127ac5a8bd28f69b`;
+all non-lifecycle source metadata, legacy/standby metadata and retained cold
+volume fingerprints were unchanged. Source volumes changed only through this
+admitted database recovery/normal acknowledgement and clean shutdown, not a
+claim of byte-for-byte source immutability after ACK.
+
+Signed artifacts under
+`D:\Kairos\runtime\runtime-cold-backup-20261019\source-five-ack-70f3122d`:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `source-ack-handoff.json` | `3877b54bf2633fad9a8136b8c56bc1ea0de4fe527c2151dc27c80fc1ebbaf5ea` |
+| `worker-result.json` | `6e44533f76418a0d7c5908daf214b0e03ebf328a220908b1aec62ea83e4659a1` |
+
+This closes the exact-five queue mismatch only. The old failed serving status
+and boot binding are still preserved; native serving recovery/current uptime
+and a current-source scheduler handoff require separate evidence. All trading
+readiness flags remain false and the strategy policy remains `REJECT_ALL`.

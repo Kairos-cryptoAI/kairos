@@ -10,13 +10,14 @@ timer defect. Windows records an unexpected host restart, but that does not
 establish the cause of the earlier Redis recovery deadline. A fresh cold backup
 and separate physical/logical PostgreSQL restores are now accepted, with all
 32 tables and three sequences equal and the source/cold volumes unchanged.
-Ordinary startup remains blocked by exactly five published messages without
-completed inbox confirmation (13,205 outbox / 13,200 inbox). A separate
-clone-only SQL/Redis identity and exact-five consumer-ACK proof has now passed:
-the isolated clone reached 13,205 completed inbox rows with zero pending
-deliveries and no non-target data changes. The source remains stopped with
-its original five-message gap; a separate source-specific admission is still
-required. Neither runtime recovery nor current uptime is accepted yet.
+The clone-only exact-five consumer-ACK proof passed first. A separate signed
+source-specific admission has now also passed: normal consumer acknowledgements
+closed precisely that five-message gap, reaching 13,205 outbox / 13,205 completed
+inbox rows, with zero pending deliveries or execution rows and no non-target
+data changes. PostgreSQL and Redis were stopped again, cold backups remained
+unchanged, and the serving worker was not started by that adapter. The old
+failed serving status and boot binding remain preserved. Native serving
+recovery/current uptime and current-source scheduler handoff are not yet accepted.
 Legacy data/queue, frozen research, readiness flags and `REJECT_ALL` are unchanged.
 
 ## Current operational boundary — 2026-10-18
