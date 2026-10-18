@@ -2,7 +2,36 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current boundary — 2026-10-15
+## Current operational boundary — 2026-10-18
+
+The [October 18 recovery receipt](RECOVERY-2026-10-18.md) accepts the separate
+non-trading epoch's fresh backup/isolated restores, native recovery and fresh
+five-symbol serving status. Its existing boot task passed an actual scheduler
+smoke without starting a duplicate worker; a physical host reboot was not tested.
+The current technical monitor also passes scheduled source admission. These
+accepted scopes supersede the failed current-runtime status in the October 15
+snapshot below; they do not adopt or modify the legacy database/queue.
+
+The [new Telegram delivery test](TELEGRAM-DELIVERY-2026-10-18.md) also passed:
+one API-accepted message (ID 89) in the approved group and a separate direct
+owner confirmation that it is visible. The old unknown send was not replayed.
+This closes this finite delivery check, not production host-loss/escalation
+or extended notification reliability.
+
+The [remaining non-strategy launch register](LAUNCH-REMAINING-2026-10-18.md)
+separates implementation/deployment gaps from strategy and elapsed-time gates.
+The full current-context path has an accepted isolated synthetic proof, not a
+deployed real-provider trading runtime. The real venue-to-canary observation
+recorder is not wired, and Execution still explicitly rejects LIVE at startup.
+Local encrypted restore is accepted; independent off-host recovery is not.
+
+The [latest public EVEDEX snapshot](EVEDEX-DEV-PROGRESS-2026-10-18.md) remains
+blocked by missing SOL/BNB/XRP books. A three-pair Demo route does not satisfy
+the unchanged five-instrument DEV gate. No current strategy, paid-provider,
+venue-order or LIVE authority follows from engineering completion. All four
+readiness flags remain false and policy remains `REJECT_ALL`.
+
+## Previous boundary — 2026-10-15
 
 The [October 15 engineering/recovery receipt](RECOVERY-2026-10-15.md) records
 fresh isolated before/after restores, accepted DNS recovery and same-container
