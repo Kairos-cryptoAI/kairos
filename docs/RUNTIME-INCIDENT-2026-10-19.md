@@ -113,5 +113,50 @@ and runs only the existing consumer-only durable acknowledgement path for
 those five messages. No source restart or source queue recovery is accepted
 yet; the old failed status and boot binding remain unchanged.
 
+## Accepted isolated five-message delivery proof
+
+The separate queue clone `a71d093d` passed read-only SQL/Redis observation and
+then the bounded consumer-only delivery rehearsal. The exact five sealed
+messages were present in the Redis stream with matching canonical payloads and
+publication receipts. None was in the pending-entry list: they were an
+undelivered stream tail, not stale inbox leases.
+
+The normal `DurableMessageBus` consumer committed exactly five new completed
+inbox rows and requested their Redis ACKs. Outbox stayed at 13,205 rows; completed
+inbox increased from 13,200 to 13,205. Generic `PASS_BOOT_REDIS_STATE` acceptance
+then confirmed 13,205 publication receipts, one consumer group and zero pending
+deliveries. The 13,206 stream entries include the already-admitted historical
+duplicate; no new duplicate or publication was created by this rehearsal.
+
+The other 31 table digests, all three sequences, history anchors/original
+prefix, existing non-target inbox rows, stream contents and publication ledger
+were preserved. Execution rows remained zero. Transport failures, recoveries
+and pending replays were all zero. The clone-only consumer did run; the source
+consumer and all three source services did not. Both clone data services were
+stopped afterwards. Fresh final fingerprints again match the unchanged source
+and retained cold volumes and the original full source metadata projection.
+
+An earlier clone-only wrapper attempt `a71d093c` failed at its first Python
+import, before any SQL/Redis operation: it selected system Python instead of
+the runner virtual environment. That failure and those stopped clones remain
+retained. A new signed, one-shot wrapper pins the exact failure and changes only
+the worker interpreter/claim lineage; runner imports were independently checked
+without data mounts. No dependency was downloaded and no timeout was enlarged.
+
+The following actual proofs and their detached signatures are retained under
+`D:\Kairos\runtime\runtime-cold-backup-20261019`:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `queue-clone-a71d093d-observe/observe-proof.json` | `b67691fad374098db8989dff19f657831bbe5169c0b0bbd5bbd78a824c689626` |
+| `queue-clone-a71d093d-rehearse/worker-rehearsal-result.json` | `2bc8696c8205e92202f231d7ad564c68caa7eeb0390835c71f46e99ea166f2c1` |
+| `queue-clone-a71d093d-rehearse/rehearsal-result.json` | `d8b5dfd2e2f089c42011a5cdf9d0b7756b5fa0e67953f78032b318b70bb5d061` |
+
+This accepts isolated delivery mechanics only. The source still has its five
+unconfirmed messages and original `FAILED_CLOSED` status. A separately signed
+source-specific admission must compare its full prestate to the accepted cold
+backup and clone ledger before any normal ACK; generic clean-queue/boot gates
+remain strict, and no serving restart or current uptime is accepted here.
+
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, `STRATEGY_POLICY=REJECT_ALL` remain unchanged.
