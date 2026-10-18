@@ -66,6 +66,18 @@ are also green at that same revision. No built image was deployed or started.
 The temporary synthetic PostgreSQL test container was stopped and removed after
 the test; test source and result reports remain, with no user data removed.
 
+Final source-identity follow-up: Execution
+`f5c100f2046e8352974bf6e659747757bd136e85` only shortens a synthetic exception
+fixture that the unchanged path-only credential scanner classified as a bearer
+token pattern. No real credential was present and the scanner was not relaxed.
+Deploy `3b1aba77faa3471a846bcf553e54c371f74e22f4` projects that exact follow-up;
+neither recorder runtime code nor boot/worker code changed in these follow-ups.
+The final Execution [CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39164599377)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39164599181)
+pass, as do the final Deploy
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39164632622)
+and [current-source REJECT_ALL gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39164632618).
+
 ## New runtime incident, not hidden by source acceptance
 
 The existing frozen R7 worker stopped at **22:55:18 Moscow**, exit 1, no OOM.
