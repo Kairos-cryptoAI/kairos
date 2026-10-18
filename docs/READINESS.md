@@ -4,8 +4,8 @@ _Evidence boundary: 2026-08-27. This document records capability and permission 
 
 ## Current incident continuation — 2026-10-19
 
-The [new incident diagnosis](RUNTIME-INCIDENT-2026-10-19.md) confirms the exact
-non-trading epoch remains stopped. Existing transport tests do not reproduce a
+The [incident continuation](RUNTIME-INCIDENT-2026-10-19.md) now accepts native
+recovery of the separate non-trading epoch. Existing transport tests do not reproduce a
 timer defect. Windows records an unexpected host restart, but that does not
 establish the cause of the earlier Redis recovery deadline. A fresh cold backup
 and separate physical/logical PostgreSQL restores are now accepted, with all
@@ -15,9 +15,15 @@ source-specific admission has now also passed: normal consumer acknowledgements
 closed precisely that five-message gap, reaching 13,205 outbox / 13,205 completed
 inbox rows, with zero pending deliveries or execution rows and no non-target
 data changes. PostgreSQL and Redis were stopped again, cold backups remained
-unchanged, and the serving worker was not started by that adapter. The old
-failed serving status and boot binding remain preserved. Native serving
-recovery/current uptime and current-source scheduler handoff are not yet accepted.
+unchanged, and the serving worker was not started by that adapter. A separately
+admitted native recovery then passed fresh backup-before/after, both isolated
+restores, full 32-table/three-sequence checks, bounded catch-up and fresh
+`RUNNING_NONTRADING` status. All five symbol watermarks advanced again afterwards;
+queue/Redis error counters were zero. The same serving container is reused.
+The old failed status and binding remain archived. The existing boot task now
+binds current signed Deploy `3b1aba7`; its actual scheduled smoke returned exit 0
+and `ALREADY_RUNNING_NONTRADING`, without another worker or recovery run.
+This is not a physical reboot, off-host backup or long stability/soak acceptance.
 Legacy data/queue, frozen research, readiness flags and `REJECT_ALL` are unchanged.
 
 ## Current operational boundary — 2026-10-18
