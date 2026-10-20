@@ -51,6 +51,8 @@ All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
   Backtest has three historical aiohttp alerts, Deploy has three for the old
   `tests/release_gate/uv.lock`, and Core's already-patched multidict alert remains
   open at the observation time. No alert was dismissed or exception weakened.
+  A later authenticated check returned zero open Core alerts; the two historical
+  environments remain distinct unresolved items in the strict aggregate gate.
 - **Strategy packaging only.** Strategy commit `72a3fcf` changes only
   `pyproject.toml` and `uv.lock` so its service image uses the patched common
   runtime. The source subtree remains `836e84c2523e0ffd7a473ce31722baca4ca2a0bb`;
@@ -147,6 +149,16 @@ The result is **FORENSIC_ONLY_MATCH**, explicitly `restart_admitted=false` and
 `runtime_recovered=false`. It does not prove a fresh Redis/AOF restore, exactly-once
 queue recovery or a healthy running service. The unsuccessful earlier adapter
 attempt and all retained safety claims remain immutable incident evidence.
+
+A subsequent bounded SQL diagnostic ran only on that restored clone, in a
+repeatable-read/read-only transaction followed by rollback. It classifies all
+five rows as `CLOSED_BAR` with an exact audit match and no inbox row; there is
+no outbox error, lease, dead-letter state or pending reconciliation. The clone
+was stopped again with exit code zero. This identifies the completion gap, not
+the underlying cause of the Redis recovery deadline, and does not authorize an
+ACK. Its signed receipt is
+`D:/Kairos/runtime/runtime-incident-20261020/clone-queue-classification.json`,
+SHA-256 `9b3a9f167e8fcf57fc9e0782317056aa255aecd3cffa9831d3082fce6d8fa28c`.
 
 ## Fresh public venue evidence
 
