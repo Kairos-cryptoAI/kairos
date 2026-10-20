@@ -11,9 +11,14 @@ prerequisites while strategy selection, parameters and qualification remain
 untouched. Reuse the existing components; do not reopen the frozen research/UI
 workstreams below or call a fixture an operational deployment. The
 [October 20 continuation](ENGINEERING-CONTINUATION-2026-10-20.md) is the current
-implementation and blocker register. Fresh runtime recovery, real venue
-acceptance and concrete production infrastructure/custody still require their
-own evidence; engineering source checks cannot promote readiness or arm trading.
+implementation and blocker register. The revised target is one server: DEMO
+books/campaigns, independent backup hosting and cloud KMS are not mandatory
+engineering gates. Existing SIM supplies finite lifecycle checks. Full-host-loss
+resilience is unestablished. Fresh runtime stability, authentic PROD identity,
+protected local custody and actual production authorization/execution composition
+still need evidence; source checks cannot promote readiness or arm trading.
+Owner capital/day-loss limits are assigned before real dispatch, independently
+of strategy confidence. See the [active remaining list](LAUNCH-REMAINING-2026-10-18.md).
 
 ## Accepted bounded milestone — 2026-10-15
 

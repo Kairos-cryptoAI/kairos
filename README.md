@@ -12,9 +12,13 @@ candidate contract path, not an accepted continuously running adaptive deploymen
 The existing PAPER Compose profile is a bounded technical DEV-canary profile.
 
 Current [non-strategy launch engineering](docs/ENGINEERING-CONTINUATION-2026-10-20.md)
-includes durable news no-resend and native PostgreSQL checks. The complete
-real-money system is not ready: the newer runtime incident, missing DEV books,
-actual PROD activation and target-host/custody/recovery acceptance remain open.
+adds native lifecycle/claim checks, encrypted local signing and a separate
+single-server evidence profile. DEMO books/campaigns, independent backup hosting
+and cloud KMS are not mandatory gates of that revised engineering profile;
+full-host-loss resilience is not claimed. The complete real-money system is not
+ready: the latest non-trading runtime failed at 22:47 MSK October 20, and actual
+PROD authorization/execution composition, identity and target-host acceptance
+remain open. See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
 **Verified bounded milestone (2026-10-15):** one existing-component adaptive
 observation -> current causal review -> stop-sized SIM -> durable simulator

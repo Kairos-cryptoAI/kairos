@@ -5,13 +5,18 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
-**October 20 continuation:** [implemented engineering and current blockers](ENGINEERING-CONTINUATION-2026-10-20.md).
-Durable Text no-resend now passes an actual PostgreSQL restart check; owner-signed
-arm-request validation is implemented but still validation-only. These close
-those bounded subparts, not the full deployed-path or PROD activation rows below.
-R7SQL failed again at 03:09 October 19 after its separately accepted recovery;
-the worker remains failed closed. A fresh public DEV check still finds empty
-SOL/BNB/XRP books. Historical acceptance below is not current uptime.
+**October 20 latest owner scope:** [implemented engineering and current blockers](ENGINEERING-CONTINUATION-2026-10-20.md).
+One deployment server is the target. DEMO book availability and elapsed DEV
+campaigns are no longer mandatory engineering prerequisites; existing SIM is
+used for finite lifecycle checks. Independent backup hosting and cloud KMS are
+not required purchases. Full-host-loss resilience is explicitly not established.
+The separate historical V1 policy and research evidence are not rewritten.
+
+Durable Text no-resend, signed owner-request validation, local encrypted signing
+and the native lifecycle/claim plumbing have bounded acceptance. They are not
+the fully composed production service. The latest non-trading generation failed
+closed at **22:47 MSK October 20**; earlier successful recovery/postserve receipts
+are not present uptime. Strategy and elapsed scientific gates remain separate.
 
 ## Accepted scopes, not work to repeat
 
@@ -38,22 +43,22 @@ updating engineering source locks below does not rebind or authorize that task.
 
 | Item | Concrete remaining work | Boundary |
 | --- | --- | --- |
-| Real DEV venue and identity | Obtain an officially supported no-real-funds route for the exact five required instruments, then accept dedicated account/API/signing pairing and current reconciliation. The latest snapshot has empty SOL/BNB/XRP books; the separately reconciled three-pair Demo is not a substitute. | External venue/account prerequisite; no extra key values are requested in chat. [Venue evidence](EVEDEX-DEV-PROGRESS-2026-10-18.md), [support scope](EVEDEX-NONTRADING-CLOSEOUT-2026-10-13.md). |
-| Real observation recorder | Code wiring is implemented in Execution `f5c100f`: existing Quant measurements, actual scoped SQL health, authenticated flat-account GETs, duplicate-process lock and the unchanged repository receipt. Still provision/admit the separate exact target/account and collect the real 24-hour window. | Engineering tests do not establish venue identity, book availability or elapsed observation. See `kairos-execution-engine/docs/READONLY_RECORDER.md` and the [continuation](ENGINEERING-CONTINUATION-2026-10-18.md). |
-| Full deployed current-context path | The current Compose profile now explicitly requires NEWS and Macro in review, with missing/false/empty-setting regressions. Still assemble and accept the running isolated profile with actual feed/provider bindings, adopted durable budgets and account/venue facts; persistent Text dedup/no-resend across process loss needs bounded acceptance. Synthetic end-to-end proof is not running-service/provider-quality evidence. | Reuse existing Strategy/Text/Macro/Router/review/Risk/Execution components. Historical paid order-book archives are not prerequisites for beginning DEV venue tests. |
-| Short DEV execution coverage | After venue admission and separate bounded arming, prove actual cancel, protection, timeout, partial-fill/restart and reconciled round trips under the fixed canary plan. Requests for a scenario do not prove its execution. | Test-funds DEV only; not authorized or started by the Telegram/status request. The elapsed 24-hour/seven-day gates remain separate. |
-| Guarded production execution | Implement and qualify the actual production activation/execution boundary after its evidence gates. `ExecSettings.validate_execution_boundary` currently rejects `TradingMode.LIVE` unconditionally; `ProductionPreconditionsVerifier` returns validation-only, never mutation authority. | This is real remaining code/integration work, not merely changing `LIVE_READY` or removing the startup rejection. Preserve risk, custody and explicit owner arming. |
-| Host, custody and disaster recovery | Choose the deployment host and a genuinely independent encrypted backup destination; deploy managed DEV/PROD secret separation, recovery-key custody, retention/RPO/RTO and perform an actual remote snapshot readback/full restore. | Local Restic works, but the owner has not supplied an independent destination. Deploying everything to one host alone is not off-host protection. |
-| Production operations and final release | Qualify an independent host-loss watchdog, actual firing/resolved/restart delivery and kill switch; review security and production account pairing. Bind owner capital cap/daily loss stop, source/image identities, exact affected Windows/Docker/CI evidence and manual arming to the final target deployment. | No real-money canary or automatic capital ramp. A successful Telegram test alone does not qualify the whole alerting/disaster-recovery path. |
+| Stable non-trading runtime | Diagnose the new bounded Redis transport failure and separately admit a fresh recovery/generation with preserved history and queue proofs. Validate restart on the actual single-server target. | Do not retry UNKNOWN_PARTIAL, relax a timeout to hide the error, edit executed snapshots or touch the legacy database/queue. |
+| Full deployed current-context path | Accept the existing feed/Text/Macro/Router/review/Risk composition with authentic provider/account bindings and the already adopted durable budget. Text no-resend has a native restart proof; fixtures do not establish the whole running provider path. | No extra strategy family, UI or paid-call authority is implied. Preserve prior spend and reservations. |
+| Guarded production execution | Wire concrete current operator/risk signing authorization, a one-use capability issuer and the production lifecycle executor/service composition. The factory still rejects LIVE; both evidence verifiers remain validation-only. | Local encrypted signing and SQL claims are implemented components, not complete production execution. Do not remove the startup refusal without the composed checks. |
+| Authentic PROD identity and protected custody | Establish the dedicated PROD account/wallet/chain/API association. Provision the reviewed encrypted keystore and protected unlock file, separate from DEV; verify the public binding without revealing secret values. | General-purpose keys.txt is not an approved encrypted keystore. No cloud KMS purchase is mandatory; same-host/admin compromise remains a limitation. |
+| Single-server operations | Exercise local supervisor restart, process failure/escalation/resolution, kill switch and encrypted local restore on the final host. Match all source/image identities and confirm no unexpected exposure. | No independent watchdog/off-host service is claimed or required by this profile; full host loss can stop both service and its local monitor. |
+| Owner arm before real money | Bind explicit dollar-cap, daily loss stop and one-use manual arm only after the strategy and technical evidence are accepted. | Amounts are not chosen by LLM confidence or automatic capital ramp. Their absence does not block source preparation, but blocks real dispatch. |
 
 ## External decisions versus local engineering
 
-The real-source recorder, existing-component deployment integration and bounded
-fault tests can be developed locally without a month-long campaign. Their real
-venue/provider acceptance cannot be manufactured from fixtures or old receipts.
-Host/storage/custody choices, an officially supported DEV route and later owner
-capital/stop-loss settings require actual external inputs. Production secrets
-and funding are not needed for the current Telegram test or code preparation.
+Existing-component integration and bounded fault tests can be developed without
+a month-long campaign. Real identity, provider and target-host acceptance cannot
+be manufactured from fixtures or old receipts. A PROD identity/environment
+clarification is requested without asking for key values. No independent backup
+subscription, replacement exchange, cloud KMS or DEMO campaign is required by
+the new single-host scope. Later owner capital/stop-loss settings block arming,
+not routine code preparation. Production funding is not needed for offline tests.
 
 A bespoke BuildKit adapter, new strategy families, UI/UX, TradingView integration,
 and rewriting Trial 15/V2/V4/V5 are not extra launch gates introduced here.

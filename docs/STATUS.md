@@ -4,14 +4,17 @@ _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 
 
 ## Current non-strategy engineering — 2026-10-20
 
-See [the current receipt](ENGINEERING-CONTINUATION-2026-10-20.md) for implemented
-durable news processing, native PostgreSQL acceptance, owner-request signature
-validation and coherent patched runtime dependencies. Strategy source/tests are
-unchanged; its two packaging files alone were refreshed. No paid API or order
-was executed. The frozen R7SQL runtime has a newer 03:09 October 19 failure;
-historical uptime/restore proofs do not establish current stability. Required
-DEV books remain unavailable, and actual production activation, target hosting,
-custody and independent recovery/operations acceptance remain open.
+See [the latest checkpoint](ENGINEERING-CONTINUATION-2026-10-20.md) and
+[active remaining list](LAUNCH-REMAINING-2026-10-18.md). Native lifecycle/claim
+plumbing, encrypted local signing and a separate single-host evidence verifier
+are implemented; they do not compose a complete production service. DEMO books,
+elapsed DEV campaigns, independent backup hosting and cloud KMS are not mandatory
+engineering gates in the owner's revised scope. Full-host-loss resilience is
+explicitly unestablished. The latest non-trading generation failed closed at
+22:47 MSK October 20; dated restore/postserve proofs are not present uptime.
+Actual PROD authorization/execution integration, authentic PROD identity and
+single-server operational acceptance remain open. No strategy source/evaluator,
+legacy database/queue, paid API or real order was changed by this checkpoint.
 
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
 `LIVE_READY=false`, `STRATEGY_POLICY=REJECT_ALL`.

@@ -5,6 +5,104 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+## Latest owner scope and engineering checkpoint — 20:39 UTC
+
+This section supersedes the remaining-work list and current-state statements
+below; their dated receipts remain historical evidence. The owner selected a
+single-server deployment. DEMO book availability, the three historical DEV
+campaign receipts, an independent backup server and cloud KMS are no longer
+mandatory gates for this engineering profile. Existing SIM is reused for finite
+lifecycle checks; no replacement exchange or parallel research line is added.
+This does not claim real EVEDEX execution, full-host-loss resilience or alpha.
+
+Execution `283754059c6566bdeb30d8cf16a5a054cd99bb5d` implements:
+
+- A separate fixed single-host evidence verifier with an independently pinned
+  issuer registry. Historical V1 schemas and accepted/failed receipts are not
+  reinterpreted. Its local alert evidence explicitly reports host-loss resilience
+  as `NOT_ESTABLISHED`; scientific, recovery, security, custody, account-pairing,
+  operator-control and owner-limit checks remain.
+- A concrete encrypted local-keystore signing backend: a fresh bounded child,
+  protected dedicated files, exact public binding and fixed order/protection
+  typed-data schemas, followed by independent signature recovery. It is process
+  isolation, not HSM custody or protection against a compromised administrator.
+  It does not import `keys.txt`, sign a withdrawal or submit an order.
+- Finite existing-engine acceptance on actual PostgreSQL with a local venue
+  double: stale refusal, partial-fill protection, remainder cancel, restart,
+  duplicate refusal, disarm and competing terminal exits. A native claims test
+  also composes SQL with the actual encrypted-keystore child using a public
+  synthetic wallet and fixture authorization. Those are plumbing proofs, not
+  production authorization or real-account fills.
+
+The exact Execution [six-job CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39491766227)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39491767276)
+passed. Local all-extras tests passed 668 tests, with one existing skip and 47
+native tests deselected locally; native integration runs in the isolated CI
+database. Windows/Linux typing, Ruff and Bandit passed. The fixed sidecar SDK
+remains 1.2.11; only its vulnerable redirect dependency was patched. Optional
+CCXT and both active Deploy gate locks now require patched Certifi. The existing
+Cockpit build dependency was patched without UI/UX work. Historical locks remain
+unchanged and must not be used as the current deployment source set.
+
+Deploy `2d9dadab19165ce0faf541d846c1db1aa041dcfd` binds all 13 active projections
+to that Execution source. Both nested lock checks, all source validators and
+1,064 Deploy unit tests passed (eight existing skips). At that exact commit,
+[CI/builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492496331),
+[current-source gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492496328),
+[native full-path SIM](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492496327),
+[installed context composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492496265)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492496546)
+passed. The separate [dependency updater](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39492669874)
+for a historical gate failed because its tool rejects pinned uv 0.12.3 in favor
+of supported 0.12.18, before creating any lock update. This is not hidden or
+counted as a passing check, and its frozen lock was not rewritten.
+No local Docker build, primary SQL access, queue mutation, paid provider request,
+exchange order or LIVE arming was performed by this checkpoint.
+
+**Current runtime is not healthy.** Generation
+`9e489055b91e44df8e5ab15f94529382` failed closed at 19:47:42 UTC (22:47 MSK),
+with `REDIS_RECOVERY_DEADLINE_EXCEEDED`, exit code 1 and `trading_started=false`.
+The exact PostgreSQL and Redis containers were still running. The mounted
+worker uses a relative monotonic recovery budget; the old batch-data deadline
+was not incorrectly reused as that timer. An anonymous Redis response confirms
+reachability only, not authenticated health or the root cause of the outage.
+No timeout was relaxed and no retained unknown/partial attempt was retried.
+The earlier restore/postserve receipts do not establish present uptime.
+
+The hidden monitor continued scheduled runs. Its existing incident dedup treats
+`running_stale` and `failed_closed` as the same active alarm, so this escalation
+did not generate a new Telegram reservation. This is not evidence of a new
+Telegram transport failure. No old message or unknown send was replayed.
+
+A small maintained escalation extension (`runtime_status_r7_escalation.py`,
+signed source `da873d8`) tracks the last accepted active alarm
+state and permits exactly one stale-to-failed escalation through the existing
+guarded `firing` transition. Real journal/guard tests cover acceptance, duplicate
+suppression, recovery resolution, interrupted/unknown no-replay and budget
+refusal before guard/send. The original notifier is retained byte-for-byte:
+the installed signed monitor imports that path with an exact source hash.
+The initial in-place edit and unsigned restoration caused the 23:33 and 23:35
+MSK scheduled polls to refuse with exit code 2. Signed restoration `b29b1e2`
+returned the original notifier to the exact pinned SHA-256
+`20b3d58f2becff6bb5272c0b57b8bfe1b86d8daf0b5e3618363d228240e6a8fb`.
+The natural 23:37:51 MSK poll then completed with exit code zero. All 231 offline
+alert tests pass with the fix in the separate extension; the original notifier
+and its original test are unchanged from the pre-edit baseline. Ruff/format and
+the 12 offline campaign-bridge regressions also pass.
+The installed monitor/task and live delivery journal were not rewritten, and
+no old send was retried. Extension adoption remains a separate signed handoff,
+not an asserted delivered message or changed installed-monitor behavior.
+
+**Real-money engineering remains incomplete**, even excluding strategy. The
+concrete current operator/risk signing authorization, production capability
+issuer, production lifecycle executor and service composition are not wired;
+the factory still refuses LIVE. Authentic PROD account/wallet/chain pairing
+must also be established. General machine access and the presence of API keys
+are not that identity or an implemented dispatch path. Owner dollar-cap and
+daily stop-loss are chosen before arming, not invented by strategy or LLM.
+See [the active remaining list](LAUNCH-REMAINING-2026-10-18.md) and
+`kairos-execution-engine/docs/SINGLE-HOST-PRODUCTION.md`.
+
 ## Later continuation — postserve validation
 
 This checkpoint supersedes earlier current-state statements, not their immutable
@@ -439,7 +537,8 @@ adopted exposure: $0.216428 total against the existing $12 cap. This is an archi
 audit, not a fresh running-database or provider-invoice reconciliation. No calls,
 refunds, reservation releases or budget increases were made by this continuation.
 
-Remaining work is explicit, not hidden behind green unit tests:
+The following list records the earlier pre-single-host scope and is historical;
+the latest checkpoint and active remaining list above supersede it:
 
 1. The fresh incident-specific restore and separate postserve read-only proof
    above are accepted. Extend bounded desktop operation to target-host
