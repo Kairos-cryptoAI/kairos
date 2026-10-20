@@ -764,6 +764,215 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             r7.poll_once(**kwargs)
         self.assertEqual(attempts, 1)
 
+    def test_real_journal_allows_one_stale_to_failed_closed_escalation(self) -> None:
+        source = self._source()
+        events: list[dict[str, Any]] = []
+
+        def accepted(event: dict[str, Any]) -> bool:
+            events.append(event)
+            return True
+
+        with tempfile.TemporaryDirectory() as directory:
+            journal = self._real_journal(directory)
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+
+            first = r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "running_stale",
+                sender=accepted,
+                root=Path(directory),
+            )
+            escalation = r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "failed_closed",
+                sender=accepted,
+                root=Path(directory),
+            )
+            self.assertEqual(first["status"], "alert_accepted")
+            self.assertEqual(escalation["status"], "alert_accepted")
+            self.assertEqual([event["transition"] for event in events], ["firing", "firing"])
+            self.assertIn("status escalation: failed_closed", events[1]["text"])
+
+            with journal.locked():
+                outcomes = [row for row in journal.read() if row["kind"] == "send_outcome"]
+            self.assertEqual(
+                [(row["transition"], row["state"], row["result"]) for row in outcomes],
+                [
+                    ("firing", "running_stale", "accepted"),
+                    ("firing", "failed_closed", "accepted"),
+                ],
+            )
+            guards = list(Path(directory).glob("events.jsonl.*.guard"))
+            self.assertEqual(len(guards), 2)
+            self.assertEqual(
+                {
+                    (record["transition"], record["state"])
+                    for record in (json.loads(path.read_text(encoding="utf-8")) for path in guards)
+                },
+                {("firing", "running_stale"), ("firing", "failed_closed")},
+            )
+
+            duplicate = r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "failed_closed",
+                sender=lambda _event: self.fail("accepted escalation must not repeat"),
+                root=Path(directory),
+            )
+            self.assertEqual(duplicate["send_attempts"], 0)
+
+            resolved = r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "running_fresh",
+                sender=accepted,
+                root=Path(directory),
+            )
+            self.assertEqual(resolved["status"], "alert_accepted")
+            self.assertEqual(events[-1]["transition"], "resolved")
+
+    def test_real_escalation_unknown_and_interrupted_reservations_never_replay(self) -> None:
+        source = self._source()
+        with tempfile.TemporaryDirectory() as directory:
+            journal = self._real_journal(directory)
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+            r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "running_stale",
+                sender=lambda _event: True,
+                root=Path(directory),
+            )
+
+            attempts = 0
+
+            def unknown(_event: dict[str, Any]) -> bool:
+                nonlocal attempts
+                attempts += 1
+                return False
+
+            with self.assertRaisesRegex(r7.R7Error, "R7_SEND_OUTCOME_UNKNOWN"):
+                r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda _path, _source: "failed_closed",
+                    sender=unknown,
+                    root=Path(directory),
+                )
+            with self.assertRaisesRegex(r7.R7Error, "R7_SEND_OUTCOME_UNKNOWN"):
+                r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda _path, _source: "failed_closed",
+                    sender=lambda _event: self.fail("unknown escalation must not replay"),
+                    root=Path(directory),
+                )
+            self.assertEqual(attempts, 1)
+
+        with tempfile.TemporaryDirectory() as directory:
+            journal = self._real_journal(directory)
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+            r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "running_stale",
+                sender=lambda _event: True,
+                root=Path(directory),
+            )
+            with journal.locked():
+                rows = journal.read()
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": len(rows),
+                        "kind": "observe",
+                        "state": "failed_closed",
+                    }
+                )
+                rows = journal.read()
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": len(rows),
+                        "kind": "send_reserved",
+                        "event_id": "d" * 64,
+                        "transition": "firing",
+                        "state": "failed_closed",
+                    }
+                )
+            with self.assertRaisesRegex(r7.R7Error, "R7_SEND_OUTCOME_UNKNOWN"):
+                r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda _path, _source: "failed_closed",
+                    sender=lambda _event: self.fail("interrupted escalation must not replay"),
+                    root=Path(directory),
+                )
+
+    def test_real_escalation_budget_refusal_precedes_guard_and_can_retry(self) -> None:
+        source = self._source()
+        with tempfile.TemporaryDirectory() as directory:
+            journal = self._real_journal(directory)
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+            r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "running_stale",
+                sender=lambda _event: True,
+                root=Path(directory),
+            )
+            guards_before = set(Path(directory).glob("events.jsonl.*.guard"))
+            self.assertEqual(len(guards_before), 1)
+
+            with patch.object(r7, "MAX_RECORDS", 6), self.assertRaisesRegex(
+                r7.R7Error, "R7_JOURNAL_LIMIT_BEFORE_GUARD"
+            ):
+                r7.poll_once(
+                    source_admitter=lambda: source,
+                    observer=lambda _path, _source: "failed_closed",
+                    sender=lambda _event: self.fail("budget refusal must precede send"),
+                    root=Path(directory),
+                )
+            self.assertEqual(set(Path(directory).glob("events.jsonl.*.guard")), guards_before)
+
+            events: list[dict[str, Any]] = []
+            retried = r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda _path, _source: "failed_closed",
+                sender=lambda event: events.append(event) or True,
+                root=Path(directory),
+            )
+            self.assertEqual(retried["status"], "alert_accepted")
+            self.assertIn("status escalation: failed_closed", events[0]["text"])
+
     def test_valid_pause_does_not_alert_or_resolve_an_active_failure(self) -> None:
         MemoryJournal.rows = [
             MemoryJournal.rows[0],
