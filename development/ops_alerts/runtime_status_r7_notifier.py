@@ -1277,28 +1277,14 @@ def poll_once(
             else read_status(_status_path(source["binding"]), source=source)
         )
         current = rows[0]["state"]
-        active_state: str | None = None
+        active = False
         for row in rows[1:]:
             if row["kind"] == "observe":
                 current = row["state"]
             elif row["kind"] == "send_outcome":
-                if row["transition"] == "firing":
-                    # The borrowed R5 guard accepts only firing/resolved.
-                    # Preserve the most recently accepted alarm state so one
-                    # specific severity escalation can use another firing.
-                    active_state = row["state"]
-                elif row["transition"] == "resolved":
-                    active_state = None
-        active = active_state is not None
-        escalation = (
-            active_state == "running_stale" and observed_state == "failed_closed"
-        )
+                active = row["transition"] == "firing"
         transition = None
-        if escalation:
-            # This is intentionally another `firing`: the borrowed R5
-            # journal/guard contract rejects any additional transition value.
-            transition = "firing"
-        elif (
+        if (
             observed_state in _ALERT_STATES
             and not active
             and current not in _ALERT_STATES
@@ -1332,12 +1318,8 @@ def poll_once(
             "transition": transition,
             "state": observed_state,
             "text": (
-                (
-                    f"Kairos R7 technical status escalation: {observed_state}. "
-                    if escalation
-                    else f"Kairos R7 technical status: {observed_state}. "
-                )
-                + "Non-trading shadow runtime; technical monitoring only."
+                f"Kairos R7 technical status: {observed_state}. "
+                "Non-trading shadow runtime; technical monitoring only."
             ),
         }
         journal._append(
