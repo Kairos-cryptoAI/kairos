@@ -1,6 +1,6 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-20_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-21_
 
 ## Current non-strategy engineering — 2026-10-20
 
@@ -12,8 +12,10 @@ elapsed DEV campaigns, independent backup hosting and cloud KMS are not mandator
 engineering gates in the owner's revised scope. Full-host-loss resilience is
 explicitly unestablished. The latest non-trading generation failed closed at
 22:47 MSK October 20; dated restore/postserve proofs are not present uptime.
-Actual PROD authorization/execution integration, authentic PROD identity and
-single-server operational acceptance remain open. No strategy source/evaluator,
+Existing PROD account/API/owner-wallet identity is now verified read-only, without
+new credentials. Dedicated One-Click signing/delegation acceptance, the unresolved
+SDK signing-chain discrepancy, actual PROD authorization/execution integration
+and single-server operational acceptance remain open. No strategy source/evaluator,
 legacy database/queue, paid API or real order was changed by this checkpoint.
 
 `TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,

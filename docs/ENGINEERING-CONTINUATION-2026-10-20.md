@@ -5,6 +5,71 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+## Latest credential checkpoint — 2026-10-21 00:06 MSK
+
+The owner asked to inspect the existing local credential source and account
+directly, instead of requesting DEV/PROD clarification again. The prior missing
+environment/identity question is now resolved at **read-only scope**:
+
+- The existing Chrome session is signed in to the official PROD exchange. Its
+  API page contains the existing `Kairos` key, permission `Trading`, indefinite
+  expiry. Nothing was created, regenerated, deleted, funded or armed.
+- The unscoped EVEDEX API entry in the supplied local file matches that visible
+  key mask and authenticates to PROD `GET /api/user/me` with HTTP 200. The API
+  `authId` equals the owner's browser profile ID. The exchange account ID is a
+  separate identifier; it must not be replaced by the public profile ID.
+- The API wallet equals the declared wallet in the supplied file and the full
+  public address derived offline from one supplied owner private key. This
+  owner key is **not selected for bot custody**. No wallet signature was made.
+- A separate existing One Click Trading export is available in the same PROD
+  account; the UI describes it as order-signing-only. Its visible key mask
+  matches the supplied unscoped EVEDEX signing-key entry, not the DEMO key.
+  Full secret-equality comparison did not complete: the clipboard interface
+  returned no matchable key and was cleared/observed empty. Mask correspondence
+  is not silently upgraded to signing/delegation acceptance.
+
+Public identity/endpoints were retained in a separately ACL-restricted local
+candidate binding. No secret was copied into the report, repository or chat.
+The accepted read-only report SHA-256 is
+`5237f4bd66e6a03015aaa0be040f249ae07bb282d81ac3577e27283070c2e831`;
+the private public-identity binding SHA-256 is
+`7e4f3b97edb782170687152473748857f85c8e4741517f26d06cc1ba0604aa87`.
+Signed session facts are retained at
+`D:/Kairos/runtime/evedex-prod-credential-check-20261020-c4f26f/session-facts.json`,
+SHA-256 `969628745d907d12992a84753124949c314aaf54b3ab010f9b1f39cf422ccc73`.
+The binding, final report, offline public-key inventory and session facts all
+verify against the trusted release signer. They are not production gate issuers.
+
+Retained unsuccessful probes are not erased or relabelled: the initial Python
+attempt has a durable claim but no completion receipt and no surviving process
+(at most one unknown GET); the first native GET returned 200 but rejected an
+overstrict wallet/profile assumption; the next probe refused locally before
+wire; another returned 200 and rejected an optional name-field assumption. The
+final canonical auth-ID comparison succeeds. There are three known completed
+GETs, all 200, plus the one bounded unknown attempt. Seven synthetic parser,
+redirect, ambiguity and atomic-claim tests pass. Native selector/optional-field
+regressions were checked separately. No order, transfer, wallet signature,
+credential creation, paid API or runtime/database/queue mutation occurred.
+
+There is a separate **release-versus-master EIP-712 chain discrepancy**, not a
+missing user credential. Installed/released SDK 1.2.11 uses `arbitrum_one` from
+the locked networks package, chain `42161`; the
+[current official upstream source](https://github.com/evedex-official/exchange-bot-sdk/blob/master/src/params.ts)
+sets PROD signing chain `161803`. The official
+[published SDK artifact](https://registry.npmjs.org/@evedex/exchange-bot-sdk/-/exchange-bot-sdk-1.2.11.tgz)
+and its signing path support the former release behavior, not proof of what the
+current PROD verifier deploys. The candidate binding therefore keeps `chain_id`
+null/UNVERIFIED rather than inventing an accepted chain or modifying frozen DEV
+defaults. The [official signing requirement](https://docs.evedex.com/developers/developers/toolkit)
+still requires exact EIP-712 payload and sender authority.
+
+Basic PROD account/API/owner-key inputs are present; no repeated request for
+those inputs is needed. Remaining work is concrete signer/delegation acceptance,
+encrypted dedicated custody, resolution of the deployed signing chain and actual
+production authorization/execution service composition. Read-only success does
+not close those code/operational gaps or change any readiness flag. The existing
+runtime failure and research/strategy boundaries are untouched.
+
 ## Latest owner scope and engineering checkpoint — 20:39 UTC
 
 This section supersedes the remaining-work list and current-state statements

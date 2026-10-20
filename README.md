@@ -17,8 +17,10 @@ single-server evidence profile. DEMO books/campaigns, independent backup hosting
 and cloud KMS are not mandatory gates of that revised engineering profile;
 full-host-loss resilience is not claimed. The complete real-money system is not
 ready: the latest non-trading runtime failed at 22:47 MSK October 20, and actual
-PROD authorization/execution composition, identity and target-host acceptance
-remain open. See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
+PROD authorization/execution composition, dedicated signer/chain and target-host
+acceptance remain open. Existing PROD account/API/owner-wallet identity has now
+been verified read-only using the supplied credentials; no new key is requested.
+See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
 **Verified bounded milestone (2026-10-15):** one existing-component adaptive
 observation -> current causal review -> stop-sized SIM -> durable simulator
