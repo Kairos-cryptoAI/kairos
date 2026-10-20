@@ -44,6 +44,13 @@ All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
   historical environment still resolves older vulnerable aiohttp/multidict:
   preserving its evidence does not make that environment safe to install or run.
   Its old environment was not installed or executed by this continuation.
+  The full read-only GitHub source-security check finds Secret Scanning,
+  push protection and required signed/no-force-push/no-deletion main protection
+  enabled for all 14 repositories, with zero open redacted secret alerts.
+  The strict all-repository security gate nevertheless **does not pass**:
+  Backtest has three historical aiohttp alerts, Deploy has three for the old
+  `tests/release_gate/uv.lock`, and Core's already-patched multidict alert remains
+  open at the observation time. No alert was dismissed or exception weakened.
 - **Strategy packaging only.** Strategy commit `72a3fcf` changes only
   `pyproject.toml` and `uv.lock` so its service image uses the patched common
   runtime. The source subtree remains `836e84c2523e0ffd7a473ce31722baca4ca2a0bb`;
