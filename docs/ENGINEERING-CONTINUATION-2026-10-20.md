@@ -31,8 +31,19 @@ All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 - **Patched network dependencies.** Maintained runtime locks now select aiohttp
   `3.14.5` with a floor excluding releases below `3.14.4`. The update follows
   [the October advisory](https://github.com/advisories/GHSA-2g87-pp6c-29x5).
+  Core's independently installed lock also required `multidict` to advance from
+  `6.7.1` to `6.9.1`, with an explicit minimum, following the
+  [multidict advisory](https://github.com/advisories/GHSA-54p9-h82j-f925).
+  Core `d52fd97` passes 321 tests (two existing skips), lint, formatting, types
+  and Bandit; its hosted main CI passed. Consumer locks already used `6.9.1`;
+  their source pins are refreshed rather than waiving exact-source identity.
   Git pins and active deployment/gate projections were advanced coherently.
   Historical research lockfiles and Backtest remain untouched.
+  A read-only check of all 14 repositories' open Dependabot alerts found no
+  additional current maintained-service dependency finding. Backtest's frozen
+  historical environment still resolves older vulnerable aiohttp/multidict:
+  preserving its evidence does not make that environment safe to install or run.
+  Its old environment was not installed or executed by this continuation.
 - **Strategy packaging only.** Strategy commit `72a3fcf` changes only
   `pyproject.toml` and `uv.lock` so its service image uses the patched common
   runtime. The source subtree remains `836e84c2523e0ffd7a473ce31722baca4ca2a0bb`;

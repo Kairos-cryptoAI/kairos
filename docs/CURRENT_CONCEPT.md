@@ -1,10 +1,21 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-15 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-20 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## One active milestone — 2026-10-15
+## Current owner scope — non-strategy launch engineering
+
+The owner now requests completion of the operational and engineering launch
+prerequisites while strategy selection, parameters and qualification remain
+untouched. Reuse the existing components; do not reopen the frozen research/UI
+workstreams below or call a fixture an operational deployment. The
+[October 20 continuation](ENGINEERING-CONTINUATION-2026-10-20.md) is the current
+implementation and blocker register. Fresh runtime recovery, real venue
+acceptance and concrete production infrastructure/custody still require their
+own evidence; engineering source checks cannot promote readiness or arm trading.
+
+## Accepted bounded milestone — 2026-10-15
 
 The owner approved correcting the course audit: stop expanding parallel
 research frameworks and verify one bounded path using existing components.
