@@ -76,6 +76,33 @@ final local stdlib suite passed 1,037 tests with eight existing skips.
 The separately owned synthetic PostgreSQL fixture and its private Docker network
 were removed after the native Text proof; no user database or queue was removed.
 
+## Matched final engineering source set
+
+All 11 maintained Python package heads in the current manifest have successful
+main CI and CodeQL runs. The final Strategy packaging head is `236361a`; its
+source and test subtrees still match the hashes above. Backtest is unchanged.
+
+The exact Deploy head `418b0979bd53fcfaa1816392efebcff59162f601` passed:
+
+- [Current-source gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39414922090).
+- [Full-path SIM gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39414922184).
+- [Native PostgreSQL/Redis composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39414458882).
+- [Repository CI and main/PAPER image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39414458864).
+- [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39414457780).
+
+The Windows 3.11 CI job initially timed out in the runner's `docker compose
+version` probe. Only that failed job was retried once and then passed; no
+timeout, assertion or safety gate was relaxed. Actual rendered base/PAPER build
+contexts and `SOURCE_REVISION` values match their source locks. Obsolete
+intermediate source-pin failures and cancelled duplicate dispatches are not
+used as acceptance for this final head. The local unauthenticated remote REST
+validator later hit GitHub's rate limit; authenticated CI and exact remote
+`git ls-remote` checks are recorded separately, not replaced by a local PASS.
+
+These are published source/build and explicitly isolated fixture results. No
+image was deployed to a trading runtime, and no real venue or model call is
+inferred from these checks.
+
 ## Current runtime is still failed closed
 
 The separate frozen R7SQL serving worker failed again at **03:09:09 MSK on
@@ -88,7 +115,38 @@ The October 19 recovery/restore/task proofs remain dated valid evidence, not
 current uptime. No failed status, frozen worker/config, old receipt or queue was
 overwritten. New diagnostics are engineering source, not a replacement of the
 frozen running generation. Fresh incident-specific backup/clone work is separate
-from serving admission; no new restore, restart or stability PASS is claimed here.
+from serving admission. No restart or current stability PASS is claimed here.
+
+### Fresh PostgreSQL forensic restore
+
+The incident-specific native backup attempt `c78e9b6b7f9749208652236597bfbe39`
+stopped at `BOOT_QUEUE_ORPHAN_OR_UNRESOLVED_ROW`, before its dump or clone steps.
+The read-only source projection identifies 13,620 outbox rows, 13,615 completed
+inbox rows and five published outbox rows without a completed inbox counterpart.
+The existing boot gate was not relaxed and these rows were not acknowledged.
+
+A separately reviewed, signed PostgreSQL-only forensic adapter then completed
+run `ab7f499ed45342fe9272e6fdb5215db0`. Its 50,676,946-byte fresh dump was restored
+into a newly owned PostgreSQL clone on a private internal network, with no host
+ports and no source Redis attachment. All 32 tables, three sequences, verified
+bar history and queue-identity projection match byte-for-byte before backup,
+after backup, on the restored clone and on the final source read:
+`562efa2dc824def3c16026c33e525a8d99a45a2108a937eb29417b3d688e7fe6`.
+The five-row anomaly is preserved, not repaired or waived.
+
+The clone was stopped with exit code zero; its container, volume and evidence
+are retained. Final source identities and the source network census were
+rechecked. Only the original PostgreSQL and Redis were running there. No source
+ACK, source queue change, source-latch change, serving restart or trading occurred.
+
+The create-only receipt is
+`D:/Kairos/runtime/runtime-incident-20261020/forensic-pg-c78-ab7f499ed45342fe9272e6fdb5215db0/forensic-receipt.json`,
+SHA-256 `61d66f4d571e9510a523e91586c94b9ff953c4e46844f8ecc43a83e27872476b`.
+Its detached GPG signature verifies against the trusted release signer.
+The result is **FORENSIC_ONLY_MATCH**, explicitly `restart_admitted=false` and
+`runtime_recovered=false`. It does not prove a fresh Redis/AOF restore, exactly-once
+queue recovery or a healthy running service. The unsuccessful earlier adapter
+attempt and all retained safety claims remain immutable incident evidence.
 
 ## Fresh public venue evidence
 
