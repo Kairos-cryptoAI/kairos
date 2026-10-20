@@ -5,6 +5,49 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+## Later continuation — 16:10 UTC
+
+This section supersedes the earlier Deploy source identity only; it does not
+replace historical receipts or upgrade any readiness decision.
+
+- Deploy `5f72f203717b94e5e7791dc74e0fac0195ef8e45` is on signed `main` and
+  `origin/main`. Its three proportional commits add explicit bounded forensic
+  AOF profiles/copy admission, patch the old release-gate environment without
+  changing its historical Git pins, and add a manual current-runner build.
+  The standard AOF admission defaults are unchanged; the larger forensic profile
+  is explicit and is not an automatic recovery or restart authorization.
+- The final local Deploy suite passes **1,055 tests**, with eight existing skips;
+  all eleven static deployment/recovery validators and both PowerShell offline
+  recovery checks pass. The local PowerShell checks used the installed PowerShell
+  7 runtime; Windows PowerShell 5.1 refused script-file execution under its existing
+  execution policy, which was not changed. Hosted Windows 3.11 checks also pass.
+- The manual current-runner build and transport workflow passed at this exact
+  Deploy head: [run 39454484978](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39454484978).
+  It built Persistence `752c984ca276ccbb7fcbd1b60a6c75d95fe6f108` with the reviewed
+  Deploy `418b0979bd53fcfaa1816392efebcff59162f601` recipe. Before registry login it
+  verified Python 3.11.15, aiohttp 3.14.5, multidict 6.9.1, the full installed SQL
+  migration hash map, non-root user and source/revision labels. The Docker-save
+  artifact transports the image ID, not the original registry manifest bytes.
+  This is a build proof, not deployment, current-R7 schema migration or LIVE approval.
+- The independent retained-clone data/resource postvalidation passed, binding
+  exactly five completed normal consumer deliveries and unchanged non-target
+  state. The earlier host-cleanup failure remains immutable and is not relabelled
+  as a successful original attempt. Postvalidation receipt SHA-256 is
+  `510673d8b14c13e44e4efb09723060225a1dc5ff2b9d11e52da10455c50c112f`.
+- The single source-helper attempt `21021a87167770b15f2584a6c234d2fb` failed closed.
+  Its original claim is retained; both `UNKNOWN_PARTIAL` markers are retained
+  and signed. It has not been retried. Private pure-input replay found that the immutable serving
+  config intentionally lacks `admin_password`, which this candidate requires
+  before source capture or consumer construction. No credential value is recorded
+  here. An independent read-only source-state proof is still required before any
+  further recovery admission. The old serve container/status and all legacy data,
+  queues and frozen research inputs remain untouched.
+
+Current source identity is recorded in `config/current-release.json`; GitHub CI,
+local archive verification, recovery proof and production activation remain
+distinct gates. In particular, neither the new image nor the five-message clone
+proof is authority to run orders or to declare the working runtime healthy.
+
 ## Implemented and checked
 
 - **Durable news processing.** Persistence adds migration `028_news_processing.sql`
