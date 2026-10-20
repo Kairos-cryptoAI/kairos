@@ -5,6 +5,100 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+## Later continuation — postserve validation
+
+This checkpoint supersedes earlier current-state statements, not their immutable
+receipts. The real-money endpoint is **not complete**, even excluding strategy.
+
+- A separately admitted non-trading generation `9e489055b91e44df8e5ab15f94529382`
+  is running on the existing owned epoch PostgreSQL/Redis. Its one bounded public
+  catch-up added 2,515 finalized bars per symbol (12,575 total); the original
+  history prefix and queue were preserved. No legacy database or queue was used.
+  The old failed serve was not restarted. Two fresh frames show all five symbol
+  watermarks advancing, empty pending/unresolved queues, and `REJECT_ALL`.
+- The original generation workflow nevertheless failed its last history-state
+  check: that old predicate requires an empty message queue, which is not valid
+  for a populated, healthy serving epoch. Its signed `generation-failure.json`
+  remains `UNKNOWN_PARTIAL`, SHA-256
+  `a5895a413fc36aab59f2e7dae32aed58bca42b6b658bec6eb8ce251d627f32f1`.
+  It was not retried or relabelled PASS. This is distinct from the original
+  Redis outage, whose historical cause is still not established.
+- A **separate read-only** probe `77a615d3` passed all 32 table digests,
+  three-sequence inventory, schema, original history prefix, anchors, database
+  identity, and completed-queue predicates inside a repeatable-read read-only
+  transaction. It observed 13,865 outbox/inbox/completed rows, zero pending,
+  unresolved or trading rows, and zero execution orders/effects. No advisory
+  lock-free claim is made while the serve owns its supervisor lock. Source
+  container metadata before/during/after matched; only the exact helper was
+  removed. The external source network is **not** egress-isolated. The signed
+  receipt is retained at
+  `D:/Kairos/runtime/runtime-incident-20261020/postserve-readonly-77a615d3/postserve-validation-receipt.json`,
+  SHA-256 `d0a57cbc387d848556567a6cfc229a019fd14b2f63080bf7c719220003b48ca1`.
+  Its complete worker result is also signed, SHA-256
+  `77eb0d1a5677859bed75be44c1237ec9bd61deec28ae95362b43b1e537314c54`.
+  Later captured frames had 13,870 then 13,875 completed rows; two Redis transport
+  failures had two recoveries and zero pending replays. This is a bounded serving
+  observation, not zero-error uptime or target-host restart acceptance.
+- An earlier independent probe stopped before any Docker call or SQL access:
+  generated Python cache files changed the directory hash, while all six source
+  files remained byte-identical to the pinned archive. Its signed code/admission
+  and unused workdir are retained. V2 stages only the exact six validated archive
+  entries into a fresh clean snapshot; the frozen source/cache is not altered.
+  Nine focused tests cover the populated queue and native-shaped archive path.
+- The obsolete R7-SQL logon boot task is now disabled: its existing action pins
+  the old failed container. Only its Enabled field changed; before/after XML and
+  a signed disable receipt are retained. No task was dispatched and no replacement
+  reboot profile is qualified. Target-host restart/host-loss acceptance remains
+  open; this running desktop generation must not be described as that acceptance.
+- The existing hidden two-minute R7 alert task now observes the new exact signed
+  generation binding. Only its action changed; triggers, principal, settings and
+  hidden WScript hosting match the preserved task XML. Create-only successor
+  initialization copied all 30 predecessor journal rows and five send guards;
+  the predecessor bytes remain unchanged. The natural 19:05:51 and 19:07:51 UTC
+  runs both returned zero. One normal recovery transition was accepted by
+  Telegram as message **94**; no human delivery observation is asserted and no
+  unknown send was retried. All source/receipt/adjudication pairs are GPG-verified,
+  and the new files plus owned notification parent have restricted Windows ACLs.
+  Sixteen offline tests include the actual signed receipt, valid timezone
+  offsets, inherited active alert, subsequent fault and unknown/no-replay path.
+  Signed handoff acceptance SHA-256:
+  `d300447aa4c9f9c8f219a73d233b56748cde8dd9fc07e8695727a94c0d787016`.
+- Execution `7c6706d94e037a5656b9afa9a528cebe72d5f3f0` adds fresh synthetic CI
+  databases for durable production-claim and sealed SIM-controller tests. The
+  [exact six-job CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39472211649)
+  is green, including **46 native TimescaleDB tests without skips** and the
+  Linux/Windows quality matrix. Tests verify role boundaries, immutable terminal
+  claims, concurrent admission, restart and unknown/no-replay behavior. No PC
+  source database, real signer, paid model or venue order is used. The two
+  Execution commits change CI/tests only, not the LIVE factory.
+- Deploy `bf7490129233d3a50b706a36345dbb05d3abcc0c` aligns the active runtime,
+  PAPER, current-source and full-path SIM projections with that exact Execution
+  source. Other pins, strategies, fixtures, evaluator bytes and readiness flags
+  are unchanged. All local source validators, both lock checks and 1,064 Deploy
+  unit tests pass (eight existing skips). Historical release/simulator profiles
+  and frozen research remain unchanged. Hosted [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39480413327),
+  [current-source bar-to-REJECT_ALL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39480413605),
+  [full-path SIM](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39480413437),
+  [installed context composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39480413372)
+  and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39480413438)
+  are all green at this exact commit. These remain fixture/isolation proofs, not
+  real-feed/model, target-host or production-order acceptance.
+- A later 12-GET anonymous EVEDEX sample at 18:05 UTC remained blocked:
+  BTC/ETH books fresh; SOL/BNB/XRP books empty with stale trades;
+  `instrument_not_fully_enabled`. Signed report SHA-256
+  `2d66b8d7e4b7775385d304916665545d681c6c912439b66afa1e3d58ffd1cd80`
+  is retained under `evedex-dev-preflight-20261012/sample-20261020T180511Z-c4a6490b-24c6-494a-98a3-6c6d488634ad/`.
+  No unsupported asset was dropped or DEV qualification granted.
+
+The actual production factory still rejects LIVE unconditionally. Durable
+claims, evidence checks and manual-arm validation are preparation, not wired
+production capability. Concrete custody/signing authorization, PROD identity,
+evidence issuers, target deployment, independent encrypted backup and owner
+dollar/day-loss limits are still required before that integration can be
+implemented and accepted. Neither a DEV key nor green fixture tests substitute
+for those inputs. The deployed real-feed/model/context acceptance and existing
+adopted budget reconciliation also remain open; no paid provider was invoked.
+
 ## Later continuation — 17:44 UTC
 
 This dated checkpoint supersedes the current-state statements below, not their
@@ -347,8 +441,10 @@ refunds, reservation releases or budget increases were made by this continuation
 
 Remaining work is explicit, not hidden behind green unit tests:
 
-1. Accept a fresh incident-specific restore and guarded non-trading recovery;
-   establish current runtime freshness/stability and the actual failure cause.
+1. The fresh incident-specific restore and separate postserve read-only proof
+   above are accepted. Extend bounded desktop operation to target-host
+   restart/stability/host-loss acceptance; the old Redis outage cause remains
+   historically unestablished. Do not reopen or retry retained failed attempts.
 2. Obtain the supported five-instrument DEV venue/account/signing prerequisites,
    then perform the unchanged real observation, short execution and soak gates.
 3. Accept the deployed real-feed/model/context path with the existing adopted
