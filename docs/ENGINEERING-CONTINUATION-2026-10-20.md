@@ -5,6 +5,82 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+## Later continuation — 17:44 UTC
+
+This dated checkpoint supersedes the current-state statements below, not their
+historical evidence. A new serving generation is still **not started** at this
+checkpoint, and no runtime-stability or real-money readiness PASS is claimed.
+
+- Deploy `f67f030b73eb6a59feac91dd1e6a6886045afa09` is signed and pushed on
+  `main`. The runner-receipt writer now distinguishes image-config identity from
+  OCI archive-manifest identity. Raw descriptor hashes and sizes are validated;
+  corrupt/partial OCI layouts fail closed. Historical signed receipts remain
+  unchanged. The imported archive's config digest is `be2235c2...abf88df`, while
+  this Docker Desktop store identifies its runnable image by manifest digest
+  `41bc12dc...9703f38`; the registry manifest is a separate identity. The full
+  identities are bound in the signed local import crosswalk
+  `current-runner-import-crosswalk-39454484978-1.json`, SHA-256
+  `b1067c786faef44cf474be2f9bbed2f2d3438f283c3020607894bb50f105f777`.
+- **1,064 local Deploy tests pass**, with eight existing skips; this includes
+  all original receipt/repository/migration/runtime/workflow guards and the new
+  archive-identity regressions. Hosted [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39466320500),
+  [installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39466319963),
+  and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39466319956)
+  are green at this exact commit. The current engineering manifest records it;
+  readiness flags are not promoted.
+- The separately admitted source delivery attempt
+  `7dc32965adeec4a3d43b209507ffcb79` completed exactly the five previously
+  clone-verified `CLOSED_BAR` messages through the normal consumer path. Its
+  signed `source-result.json` has SHA-256
+  `a956c7eec56d9911b95b1c02b4ee1c56fbe998b526a00dbcd5d4483273128334`.
+  PostgreSQL now has 13,620 outbox and 13,620 completed inbox rows; the missing
+  count is zero. No other SQL table/sequence/history delta, manual cursor/lease
+  reset, producer start, old-serve restart or trading was admitted. The earlier
+  failed attempt and its claims remain immutable; it was not replayed.
+- A fresh **50,677,447-byte** post-ACK PostgreSQL dump was restored into a new
+  isolated clone. All four full 32-table/three-sequence/history/queue projections
+  are byte-identical, SHA-256
+  `091950ae34a3d5bf4183e2045df5536d54b674ba245c94f6d7cf2d1eda252e46`.
+  The original V3 operator nevertheless failed its final generic actor census
+  before its planned stop: its own live clone was classified as another worker.
+  Cleanup stopped that exact clone with exit zero. The original failure is
+  retained, not converted to a success. Separate read-only postvalidation
+  accepted the stored restore evidence plus fresh source/stopped-clone metadata;
+  its signed receipt SHA-256 is
+  `9408e883375ca84d0a933de36de182e6a8ee6649570df352d72b7754d13c438e`.
+- Post-ACK Redis proof `9d6e31e3ec274720878e7adaa1f51aae` passed native RDB
+  checks, bounded AOF parsing/copy/replay and the full joint PostgreSQL/Redis
+  crosswalk on isolated copies. Four files total **25,426,154 bytes**; the AOF
+  has 100,762 commands and 13,620 matched publication receipts. The joint
+  snapshot has 13,621 stream entries, cursor at the tail and an empty PEL.
+  Its signed `postack-redis-joint-receipt.json` SHA-256 is
+  `a98fd05d33619aa9cd1ad53447c25e0a073c1b9a2d28a47a5a761eadd42ae9aa`;
+  signed `joint-output/capture-result.json` SHA-256 is
+  `c8a884b50be60dda3d8dffbe1893c3482bd2b0042d28ae7b42115780d50b5eda`.
+  Both clones exited zero; their internal network is empty. The source AOF
+  manifest/inventory and source container identities stayed unchanged during
+  this proof. An earlier Redis adapter stopped before creating any network or
+  clone because standard Docker `host`/`none` networks report null IPAM config;
+  that signed failed attempt remains retained separately.
+- Docker's default address pools are exhausted. No retained network or partial
+  clone was removed. Only two reviewed, non-overlapping internal `/28` ranges
+  were allocated after read-only Docker-IPAM and host-route checks; no daemon
+  pool, host route, legacy service or primary database setting was changed.
+- An isolated dependency-only Backtest candidate installs aiohttp 3.14.5 and
+  multidict 6.9.1 without advancing any of its four internal VCS pins. Lint,
+  formatting, types and Bandit pass; full pytest reports 595 passes and **one
+  failure**: the frozen evaluator correctly rejects changed `pyproject.toml`
+  and `uv.lock`. Excluding that guard verifies compatibility only; it is not a
+  full gate pass. The original Backtest files, reports and evaluator lock remain
+  unchanged, and its three historical aiohttp alerts have not been dismissed.
+
+The accepted restore is not a serving admission. The new versioned non-trading
+launcher still requires a separately signed, exact source/proof/image admission
+and its own fresh boot/queue/status/resource checks. The Redis outage that
+triggered the old recovery deadline is not historically established; a future
+outage must still stop safely rather than bypass the bounded recovery policy.
+No strategy, frozen evaluator, paid API, venue order or LIVE arming changed.
+
 ## Later continuation — 16:10 UTC
 
 This section supersedes the earlier Deploy source identity only; it does not
