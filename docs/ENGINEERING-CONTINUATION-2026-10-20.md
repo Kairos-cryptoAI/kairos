@@ -160,6 +160,50 @@ ACK. Its signed receipt is
 `D:/Kairos/runtime/runtime-incident-20261020/clone-queue-classification.json`,
 SHA-256 `9b3a9f167e8fcf57fc9e0782317056aa255aecd3cffa9831d3082fce6d8fa28c`.
 
+### Fresh Redis forensic copy and native load
+
+Run `3a9918f6df1b4ff3810cecb4ad55e22e` completed a separately reviewed,
+signed, bounded Redis copy/load proof. The four source files total 25,424,366
+bytes. Source content and structural AOF inventory matched before and after
+copying; both new backup and pristine replay copies have the same content hash
+`26aaafc8aae91fb28de518f4ecc5fec92719e4c75949ede287bb6e016d2a6672`.
+Metadata-tree hashes are volume-specific and were not incorrectly equated.
+The AOF contains 100,749 parsed commands and 13,620 matched publication receipts.
+
+Redis's native RDB checker accepted both copies. A new Redis container loaded the
+replay copy on an internal-only network without host ports, AOF truncation, RDB
+save or automatic AOF rewrite. It was stopped and retained with exit code zero.
+The source PostgreSQL/Redis identities, source network membership, file manifests
+and AOF inventory were rechecked; no source ACK or restart occurred.
+
+The create-only signed profile receipt is
+`D:/Kairos/runtime/runtime-incident-20261020/forensic-redis-c78-3a9918f6df1b4ff3810cecb4ad55e22e/forensic-aof-v7-profile-receipt.json`,
+SHA-256 `9827aac74eca8ed6ebcff1daa25bfcdcd740d98d3cd253e116f8dec4a2658a3f`.
+The underlying signed receipt has SHA-256
+`1a3320dbd66668bf8ae15561fe8226f8b73a3fa6b728fe219f80335538ba56b5`.
+Both detached signatures verify against the trusted release signer.
+
+The result is **FORENSIC_COPY_REPLAY_VALIDATED_ONLY**: successful parsing and
+native loading do not establish logical SQL/Redis equality, a successful
+five-message recovery, restart admission or a recovered runtime. Those checks
+remain separate. The load probe's database-size value is not semantic queue
+acceptance. Previously failed adapters, safety claims and owned resources were
+retained; their failure receipts were not replaced with this success.
+
+The private diagnostic adapters corrected concrete procedure errors: a bounded
+parser had rejected valid `SELECT 0` inside `MULTI`, a second normalization lost
+proof flags, a copy-proof ceiling disagreed with the explicitly reviewed 32 MiB
+incident profile, and Docker's implicit image volume conflicted with the native
+RDB checker's exact-mount requirement. The successful adapter retains default
+maintained-source ceilings, transaction/database checks, exact identities,
+read-only source mounts and finite exact-ID cleanup. It is not a deployed patch
+to the frozen R7 worker or a change to research V4/V5 evidence.
+
+A bounded read-only Windows event query found no matching power/wake/service
+event in the retained incident window. The available Docker backend/VM logs do
+not cover that window. These negative/retention observations do not establish
+or exclude a Docker/network cause; the serving deadline's cause remains unproven.
+
 ## Fresh public venue evidence
 
 At `2026-10-20T10:39:53.886567Z`, the unchanged existing sampler made exactly
