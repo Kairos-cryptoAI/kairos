@@ -2,6 +2,20 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
+## Current engineering and runtime boundary — 2026-10-20
+
+The [current continuation](ENGINEERING-CONTINUATION-2026-10-20.md) records durable
+news no-resend, real PostgreSQL Text acceptance, owner-signed request validation,
+patched dependency/source projections and strict prepared-schema startup. These
+are engineering results, not a running real-provider or LIVE deployment.
+
+The previously recovered R7SQL worker failed again at **03:09 MSK on October 19**
+with `REDIS_RECOVERY_DEADLINE_EXCEEDED`; source PG/Redis were observed running and
+serve exited. Current runtime stability remains unaccepted. The older recovery
+proof below is historical and is not overwritten or reused for this incident.
+Fresh October 20 public venue observation still has empty SOL/BNB/XRP books.
+All readiness flags remain false and policy stays `REJECT_ALL`.
+
 ## Current incident continuation — 2026-10-19
 
 The [incident continuation](RUNTIME-INCIDENT-2026-10-19.md) now accepts native

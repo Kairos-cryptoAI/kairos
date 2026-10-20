@@ -5,6 +5,14 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
+**October 20 continuation:** [implemented engineering and current blockers](ENGINEERING-CONTINUATION-2026-10-20.md).
+Durable Text no-resend now passes an actual PostgreSQL restart check; owner-signed
+arm-request validation is implemented but still validation-only. These close
+those bounded subparts, not the full deployed-path or PROD activation rows below.
+R7SQL failed again at 03:09 October 19 after its separately accepted recovery;
+the worker remains failed closed. A fresh public DEV check still finds empty
+SOL/BNB/XRP books. Historical acceptance below is not current uptime.
+
 ## Accepted scopes, not work to repeat
 
 - Signed source identity and clean-main verification across all 14 repositories.

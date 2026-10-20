@@ -11,6 +11,11 @@ Current scope and implementation priorities are defined in
 candidate contract path, not an accepted continuously running adaptive deployment.
 The existing PAPER Compose profile is a bounded technical DEV-canary profile.
 
+Current [non-strategy launch engineering](docs/ENGINEERING-CONTINUATION-2026-10-20.md)
+includes durable news no-resend and native PostgreSQL checks. The complete
+real-money system is not ready: the newer runtime incident, missing DEV books,
+actual PROD activation and target-host/custody/recovery acceptance remain open.
+
 **Verified bounded milestone (2026-10-15):** one existing-component adaptive
 observation -> current causal review -> stop-sized SIM -> durable simulator
 path passes on explicit synthetic/no-network inputs. The actual isolated

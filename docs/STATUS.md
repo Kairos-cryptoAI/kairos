@@ -1,6 +1,20 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-15_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-20_
+
+## Current non-strategy engineering — 2026-10-20
+
+See [the current receipt](ENGINEERING-CONTINUATION-2026-10-20.md) for implemented
+durable news processing, native PostgreSQL acceptance, owner-request signature
+validation and coherent patched runtime dependencies. Strategy source/tests are
+unchanged; its two packaging files alone were refreshed. No paid API or order
+was executed. The frozen R7SQL runtime has a newer 03:09 October 19 failure;
+historical uptime/restore proofs do not establish current stability. Required
+DEV books remain unavailable, and actual production activation, target hosting,
+custody and independent recovery/operations acceptance remain open.
+
+`TECHNICAL_PAPER_READY=false`, `PAPER_QUALIFIED=false`, `ALPHA_READY=false`,
+`LIVE_READY=false`, `STRATEGY_POLICY=REJECT_ALL`.
 
 ## Active scope — 2026-10-15
 
