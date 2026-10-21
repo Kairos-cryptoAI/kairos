@@ -195,15 +195,87 @@ The adapters above do not calculate aggregate exposure or provide atomic pending
 risk/notional reservations, independent deployed writers, or a production
 lifecycle service. Those gaps remain real, not hidden behind fixture readiness.
 
-### Remaining after that checkpoint
+### Bounded authenticated order/fill reads
+
+Execution `1444900e8d1f18b183b82c9ff9a1bb1d8bda5b44` adds the existing
+EVEDEX adapter's bounded order-history and per-order fill retrieval. The source
+binds the authenticated `/api/user/me.exchangeId`, reads `/api/order` with
+`version=2`, explicit limit/offset and a 10,000-row / 30-second ceiling, and
+requires an exact parent-order binding before querying its fills. Duplicate or
+conflicting rows, malformed identities/quantities, incomplete pagination and
+timeouts fail closed. The adapter preserves REPLACED and EXPIRED rather than
+inventing a fill from an HTTP response.
+
+The retrieval timestamp is local capture time, not an exchange guarantee of
+freshness. These records explicitly remain
+`authoritative_reconciliation=false`: reading history does not release pending
+risk, prove a complete authoritative venue snapshot, or enable LIVE.
+
+The focused local suite passed 62 tests, Ruff/format and Bandit. The follow-up
+commit repairs the original `_get(path)` callback compatibility by keeping
+parameterized retrieval in a separate `_get_with_params` method; the earlier
+failed mypy CI run is not counted as acceptance. The exact final source's
+[CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39627786003)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39627789069)
+completed successfully, including Linux/Windows, all-extras and native SQL jobs.
+No real exchange query, signature, order or paid provider call was used to test
+this change. A locally interrupted full-suite invocation is not reported as a
+local full-suite pass.
+
+### Atomic account-wide reservations: implemented and native-tested
+
+Execution `6570747f9e277084dec4d1bfe6a0707ada83722b` adds production-state
+schema v2 and exact-decimal, immutable pending-risk/notional reservations.
+The PostgreSQL advisory lock serializes reservations across contexts for the
+same venue account. Persisted operator/risk/arm/nonce lineage and freshness are
+checked before capacity is granted. Both synchronous and asynchronous signing
+authorization require the reservation contract before claims or key access;
+missing sources fail closed. Reducing exits do not add entry exposure. Identical
+effects are idempotent; changed payloads or request/context rebinding are refused.
+
+Two native PostgreSQL tests passed on a fresh, isolated synthetic database.
+The account-wide race admits one competing reservation and rejects the other;
+the exact remaining limit is accepted and an extra 0.01 is refused. Separate
+focused validation passed 65 tests, Ruff/format and mypy. The final source's
+[CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39640133218)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39640132718)
+completed successfully, including the native integration jobs. The owned
+synthetic PostgreSQL container was stopped and removed after validation.
+
+Earlier native fixture failures are retained. Corrections bind a distinct entry,
+the persisted owner arm and a disarm timestamp after the latest race observation;
+they do not relax production risk, freshness or authorization checks. Reservations
+are deliberately not released by TTL, failed/unknown delivery or non-authoritative
+history reads. This conservative behavior can strand capacity: authoritative
+venue reconciliation and lifecycle-based release are still required, not claimed.
+The opt-in components are not deployed production state producers; the LIVE
+factory refusal remains intact. No real signature, order or paid API ran.
+
+Deploy `5d915fe603176839cb06ce50481e02f4dd413375` advances only the 13 active
+Execution projections to this exact source. Both nested lock checks, all eleven
+source validators and 1,064 stdlib tests (eight existing skips) pass locally.
+The exact source's [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641141796),
+[current-release gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641141681),
+[full-path simulator](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641141706),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641141675),
+[CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641141898)
+and [dependency graph](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39641153699)
+completed successfully. One Windows/Python 3.14 test job initially timed out
+while probing `docker compose version --short` at its unchanged 45-second bound.
+The failed job alone passed on one rerun of the same commit. No policy, assertion,
+timeout, component pin or source file was changed to obtain that retry result.
+CI image builds are not a local PAPER service launch.
+
+### Remaining after these checkpoints
 
 1. Authoritative PROD chain/signature acceptance and final signer admission.
-2. Independent deployed PROD state producers, account-scoped pending-risk/notional
-   reservations and lifecycle/service composition. Native-tested source/claim/
-   dispatcher components do not establish that deployed service.
-3. Fresh non-trading recovery/admission with newly provisioned local credentials,
-   preserved history/queue proofs and current sanitized diagnostics; the prior
-   failure's cause is still unestablished.
+2. Independent deployed PROD state producers, authoritative reconciliation,
+   reservation release and lifecycle/service composition. Account-scoped atomic
+   reservations are now native-tested source, not a deployed trading service.
+3. Final-host/Windows reboot and logged-off operational acceptance. Non-trading
+   feed/queue recovery itself now has fresh credentials, native joint proofs,
+   an independently accepted serving contour, one drained restart and adopted
+   technical monitoring. The original failure's cause remains unestablished.
 4. Real feed/model/context acceptance with the existing adopted budget, plus
    final-host operational checks. No paid API or readiness promotion is inferred.
 

@@ -10,10 +10,14 @@ The dedicated signer's full public address is now present in the PROD API's
 delegate list, and an encrypted local candidate has a fresh-process roundtrip
 proof. Async PostgreSQL evidence readers, separate immutable state writers,
 async signing authorization and a one-use wire dispatcher are implemented and
-native-tested. They are not deployed authoritative risk/exposure producers,
-atomic account-wide risk reservations or a complete production lifecycle/service.
-Fresh PostgreSQL backup/restore and Redis byte-backup integrity now pass; joint
-queue replay and the new serving generation are still separate acceptance steps.
+native-tested. Account-wide exact-decimal reservations are now also implemented
+and tested under concurrent native PostgreSQL transactions. These are not
+deployed authoritative risk/exposure producers, reconciliation-based reservation
+release or a complete production lifecycle/service.
+Fresh PostgreSQL backup/restore, Redis native joint integrity and exact-ten clone
+adjudication now pass. The new serving contour is independently accepted after
+one drained same-container restart; original DB/queue and failed receipts remain
+preserved. This does not qualify Windows boot or a full production service.
 The approved EVEDEX chain/signature clarification has been sent once. Historical
 descriptions below remain dated evidence rather than current completion claims.
 
@@ -30,7 +34,7 @@ The separate historical V1 policy and research evidence are not rewritten.
 
 Durable Text no-resend, signed owner-request validation, local encrypted signing
 and the native lifecycle/claim plumbing have bounded acceptance. They are not
-the fully composed production service. The latest non-trading generation failed
+the fully composed production service. The October 20 non-trading generation failed
 closed at **22:47 MSK October 20**; earlier successful recovery/postserve receipts
 are not present uptime. Strategy and elapsed scientific gates remain separate.
 
@@ -50,7 +54,7 @@ No old failure, research ledger, strategy or legacy queue needs to be rewritten.
 
 Later on the same day the previously accepted worker failed closed at 22:55
 Moscow (`REDIS_RECOVERY_DEADLINE_EXCEEDED`); its PG/Redis containers were also
-observed stopped at 23:32. Current runtime uptime is not accepted. Preserve the
+observed stopped at 23:32. That historical runtime uptime is not accepted. Preserve the
 failed worker/evidence and independently diagnose/adjudicate recovery before any
 restart. The existing boot binding still names the previous Deploy source;
 updating engineering source locks below does not rebind or authorize that task.
@@ -59,7 +63,7 @@ updating engineering source locks below does not rebind or authorize that task.
 
 | Item | Concrete remaining work | Boundary |
 | --- | --- | --- |
-| Stable non-trading runtime | Diagnose the new bounded Redis transport failure and separately admit a fresh recovery/generation with preserved history and queue proofs. Validate restart on the actual single-server target. | Do not retry UNKNOWN_PARTIAL, relax a timeout to hide the error, edit executed snapshots or touch the legacy database/queue. |
+| Stable non-trading runtime | Fresh feed/queue recovery and one drained same-container restart are accepted on October 21. Final-host/Windows boot and longer operational stability remain unaccepted; old boot tasks stay disabled. | Original failure cause is not claimed fixed. No UNKNOWN_PARTIAL retry, old queue mutation, automatic unknown-outcome startup or in-place snapshot edit. |
 | Full deployed current-context path | Accept the existing feed/Text/Macro/Router/review/Risk composition with authentic provider/account bindings and the already adopted durable budget. Text no-resend has a native restart proof; fixtures do not establish the whole running provider path. | No extra strategy family, UI or paid-call authority is implied. Preserve prior spend and reservations. |
 | Guarded production execution | Connect authoritative current PROD operator/risk readers to the implemented signing policy, then a one-use capability issuer and production lifecycle/service composition. The factory still rejects LIVE; evidence verifiers remain validation-only. | Tested policy, local encrypted signing and SQL claims are components, not complete production execution. Do not remove the startup refusal without the composed checks. |
 | PROD signer admission and protected custody | API-reported dedicated delegation and encrypted candidate roundtrip are verified. Resolve actual accepted signing chain, complete signer admission and bind the candidate into the reviewed deployed source set. | Do not choose the owner key, mistake API delegation for an accepted order signature, or guess the chain. The original keys.txt is unchanged; plaintext-source retirement is not claimed. No cloud KMS purchase is mandatory. |

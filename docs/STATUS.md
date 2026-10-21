@@ -10,13 +10,16 @@ plumbing, encrypted local signing and a separate single-host evidence verifier
 are implemented; they do not compose a complete production service. DEMO books,
 elapsed DEV campaigns, independent backup hosting and cloud KMS are not mandatory
 engineering gates in the owner's revised scope. Full-host-loss resilience is
-explicitly unestablished. The latest non-trading generation failed closed at
-22:47 MSK October 20; dated restore/postserve proofs are not present uptime.
+explicitly unestablished. A fresh non-trading serving contour is now accepted
+after [native recovery, queue adjudication and one drained restart](RUNTIME-RECOVERY-2026-10-21.md).
+The original database/queue and failed generations are preserved. This is not
+full production trading, Windows-reboot acceptance or long-term uptime proof.
 Existing PROD account/API/owner-wallet identity is now verified read-only, without
 new credentials. The dedicated One-Click address is listed by the PROD API; a
 separate encrypted candidate passes fresh-process decryption/public-address
-verification. The new signing policy has synthetic boundary tests, not a deployed
-PROD state reader. Final signing acceptance, the unresolved
+verification. Native-tested PostgreSQL signing state, account-wide atomic risk
+reservations and one-use dispatch components are implemented, not a deployed
+authoritative production service. Final signing acceptance, the unresolved
 SDK signing-chain discrepancy, actual PROD authorization/execution integration
 and single-server operational acceptance remain open. No strategy source/evaluator,
 legacy database/queue, paid API or real order was changed by this checkpoint.
