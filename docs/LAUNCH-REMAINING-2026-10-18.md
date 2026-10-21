@@ -8,9 +8,13 @@ from the work list below, not waived from eventual LIVE admission.
 **Latest implementation:** [October 21 checkpoint](ENGINEERING-2026-10-21.md).
 The dedicated signer's full public address is now present in the PROD API's
 delegate list, and an encrypted local candidate has a fresh-process roundtrip
-proof. A signing policy evaluator is tested, but deployed state readers and
-capability/lifecycle composition are not implemented. Current Redis AUTH/PING
-succeeds for both roles; that is not a recovered serving runtime. Historical
+proof. Async PostgreSQL evidence readers, separate immutable state writers,
+async signing authorization and a one-use wire dispatcher are implemented and
+native-tested. They are not deployed authoritative risk/exposure producers,
+atomic account-wide risk reservations or a complete production lifecycle/service.
+Fresh PostgreSQL backup/restore and Redis byte-backup integrity now pass; joint
+queue replay and the new serving generation are still separate acceptance steps.
+The approved EVEDEX chain/signature clarification has been sent once. Historical
 descriptions below remain dated evidence rather than current completion claims.
 
 **October 21 credential update / October 20 owner scope:** [implemented engineering and current blockers](ENGINEERING-CONTINUATION-2026-10-20.md).

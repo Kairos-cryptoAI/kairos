@@ -158,10 +158,49 @@ qualified secret source. They were not rotated on the retained database/queue.
 
 ## Still not closed
 
+### Later implementation checkpoint: native production plumbing
+
+Execution `baeda0a28f2b85bb60aece15fa9b1fef430ba27a` adds concrete async PostgreSQL
+signing-state reads, separate least-privilege append-only operator/risk/exposure
+writers, strict JSONB identity/lease checks and accepted owner-arm nonce lineage.
+Authorization is rechecked after I/O under the signer's shared bounded deadline.
+TP/SL checks use the venue's protected-position side rather than an exit-order side.
+
+The opt-in wire dispatcher verifies exact signed geometry, durable signing
+terminal and current authorization; a separate durable one-use dispatch claim
+commits before the sender callback. Timeout, cancellation or ambiguous response
+does not authorize resend. Exact JSON types and immutable derived payloads are
+enforced. A completed HTTP response is not represented as an exchange fill.
+The existing LIVE factory refusal is unchanged; no real signer or wire call ran.
+
+Local regular acceptance: 736 passed, one existing skip, 48 native tests excluded
+from that regular invocation, plus seven subtests. Ruff/format, mypy and Bandit
+pass. Two actual native PostgreSQL integration tests pass in a new isolated
+synthetic database, including separated roles, async authorization, missing-risk
+refusal before key access and refusal to re-arm with an old accepted nonce. Its
+owned test container is stopped. The exact source's
+[CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39613189840)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39613192263)
+are completed successfully. Earlier failed native runs are retained; no assertion
+or scientific gate was skipped to pass them.
+
+Deploy `90759ffc0459f7684262a90e72632d5bbe647768` advances only the 13 active
+Execution source projections to that SHA. Both nested lock checks, all eleven
+source validators and 1,064 stdlib tests (eight existing skips) pass locally.
+Historical component locks and frozen research evidence are unchanged.
+
+See [fresh recovery evidence](RUNTIME-RECOVERY-2026-10-21.md) and the
+[single approved EVEDEX inquiry](EVEDEX-PROD-SUPPORT-2026-10-21.md).
+The adapters above do not calculate aggregate exposure or provide atomic pending
+risk/notional reservations, independent deployed writers, or a production
+lifecycle service. Those gaps remain real, not hidden behind fixture readiness.
+
+### Remaining after that checkpoint
+
 1. Authoritative PROD chain/signature acceptance and final signer admission.
-2. Actual PROD state readers, one-use mutation capability and lifecycle/service
-   composition. The evaluator and encrypted candidate are components, not that
-   deployed service.
+2. Independent deployed PROD state producers, account-scoped pending-risk/notional
+   reservations and lifecycle/service composition. Native-tested source/claim/
+   dispatcher components do not establish that deployed service.
 3. Fresh non-trading recovery/admission with newly provisioned local credentials,
    preserved history/queue proofs and current sanitized diagnostics; the prior
    failure's cause is still unestablished.

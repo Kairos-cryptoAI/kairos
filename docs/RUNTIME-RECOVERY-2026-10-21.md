@@ -49,6 +49,28 @@ dump/clone creation. Both are retained, not overwritten or represented as
 successful recovery. The accepted fresh run above uses the corrected,
 reviewed operator and a separate identity.
 
+## Redis: byte-preserving AOF backup accepted
+
+The independently verified backup contains three files, 20,475,278 bytes in
+total. Saved pre-copy, post-copy and later source metadata/inventories match;
+every copied file matches the source SHA-256. No Redis queue command, ACK,
+BGSAVE, source consumer, ACL or database change was issued by this backup.
+
+Receipt:
+`D:/Kairos/runtime/redis-aof-backup-20261021-90d84c/independent-validation-03/backup-receipt.json`,
+SHA-256 `4dd0e77f971d8724160528521caa57fea2059b83c55fde11e709788d234b1fe3`.
+The detached signature verifies against the configured trusted fingerprint.
+The accepted bytes remain in `attempt-02/aof` beside that validation directory.
+
+The first copy attempt refused a metadata comparison; its exact cause was not
+established. The second preserved before/after observations but its old-format
+manifest parser refused Redis's incremental `startoffset 0` field. Both failed
+attempts are retained unchanged. A separate tested validator accepted that
+native manifest field, checked sequence/type/file-set consistency and independently
+verified saved/current/copied bytes; no failed receipt was rewritten as PASS.
+
+This is backup integrity, not a native Redis restore or joint replay acceptance.
+
 ## Not yet accepted
 
 Redis/joint queue recovery, fresh application credentials, a new runtime
