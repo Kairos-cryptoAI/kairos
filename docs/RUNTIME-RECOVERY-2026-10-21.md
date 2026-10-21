@@ -243,3 +243,20 @@ manual poll or duplicate alert was launched. The adopted journal observed
 delivery. That is Telegram API acceptance, not a new human visibility claim.
 Later scheduled polling keeps the same no-resend history. Old boot tasks remain
 disabled; monitor adoption does not arm or restart a trading consumer.
+
+The first later poll exposed a monitor-directory validation defect: its exact
+file inventory included predecessor guards but omitted the new guard created
+by a legitimate accepted successor send. It refused with task result 2, without
+resending or changing the delivery history. A separate signed guard-aware patch
+now admits only guards for actual journal reservations and checks each new
+guard's exact canonical event/state/transition bytes. Unknown extra files and
+rebound guards still fail closed; no guard or receipt was removed or bypassed.
+Twenty-eight offline tests pass, and read-only admission verifies all 33 journal
+rows, six reservations and six accepted outcomes (five inherited, one new).
+
+The installed hidden task was retargeted action-only to this patch, SHA-256
+`0123aaa7898bf1ab646e52406f45772e386dc76ec2363181abf9255879ced882`.
+Its actual run at `2026-10-21T20:44:10+03:00` completed with task result 0.
+The journal remains `running_fresh` with no seventh send reservation: the
+unchanged-state poll was silent. At final observation the feed is fresh,
+pending/unresolved/uncompleted counts and Redis transport failures remain zero.
