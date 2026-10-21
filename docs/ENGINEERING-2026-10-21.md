@@ -98,13 +98,25 @@ new native SQL or real-account acceptance claim. The exact source's
 [six-job CI](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39592433556)
 and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/39592433555)
 passed. All 13 current deployment projections retain the same source identity;
-historical gates and frozen evidence are not rewritten.
+historical component Git pins and frozen research evidence are not rewritten.
 
 Deploy `532d5d44531b6b503680d861c514608434b84f9b` updates only those exact
 13 source projections. Both nested lock checks and all eleven source validators
 pass. Its local stdlib suite ran 1,064 tests with eight existing skips. An initial
 run using Execution's installed environment had four test-namespace import
 errors; the clean stdlib `-S` run passed without changing code or assertions.
+
+A subsequent proportional security commit, Deploy
+`ffbcaaa061fc255f099055cf0ae88ed085007406`, patches the two additional Certifi
+alerts discovered during delivery. The Text/Macro environment and older
+`tests/release_gate` environment now explicitly require Certifi >=2026.10.19,
+following [the published advisory](https://github.com/advisories/GHSA-6q48-6c7w-9gw2).
+Their lock deltas contain only Certifi 2026.7.22 -> 2026.10.19 and root dependency
+metadata; an independent TOML comparison confirms every component Git source
+unchanged. This explicitly advances that old gate's **dependency environment**,
+not its historical component pins or old acceptance receipts. Both updated locks
+check successfully and the 1,064-test/eight-skip stdlib suite passes again. No
+Backtest lock or frozen research artifact was edited, installed or executed.
 
 ## Current runtime observation, not recovery acceptance
 
