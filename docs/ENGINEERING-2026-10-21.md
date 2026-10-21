@@ -118,6 +118,21 @@ not its historical component pins or old acceptance receipts. Both updated locks
 check successfully and the 1,064-test/eight-skip stdlib suite passes again. No
 Backtest lock or frozen research artifact was edited, installed or executed.
 
+At this source set, [current-source isolation](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593394371),
+[full-path SIM](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593398790),
+[installed context composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593153020),
+[the dependency-patched older gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593152985),
+[Deploy CI/builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593153078)
+and [Deploy CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/39593151454)
+have separate run identities. The first Deploy CI attempt stopped on Docker
+Hub HTTP 502 while fetching the pinned Prometheus image, before checking rules;
+only the failed portion was rerun once on the same commit, without a policy,
+timeout, image-pin or assertion change. Its earlier failure is not erased.
+These links identify each exact run; a nonterminal run is not counted as PASS.
+Authenticated Deploy Dependabot inspection after the graph update returned no
+open alerts; no alert was manually dismissed. The meta source verifier accepts
+all 14 clean signed-main checkouts and their exact active projections.
+
 ## Current runtime observation, not recovery acceptance
 
 The exact failed non-trading serve remains stopped. A separately signed,
