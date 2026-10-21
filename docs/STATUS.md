@@ -2,9 +2,9 @@
 
 _Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-21_
 
-## Current non-strategy engineering — 2026-10-20
+## Current non-strategy engineering — 2026-10-21
 
-See [the latest checkpoint](ENGINEERING-CONTINUATION-2026-10-20.md) and
+See [the latest checkpoint](ENGINEERING-2026-10-21.md) and
 [active remaining list](LAUNCH-REMAINING-2026-10-18.md). Native lifecycle/claim
 plumbing, encrypted local signing and a separate single-host evidence verifier
 are implemented; they do not compose a complete production service. DEMO books,
@@ -13,7 +13,10 @@ engineering gates in the owner's revised scope. Full-host-loss resilience is
 explicitly unestablished. The latest non-trading generation failed closed at
 22:47 MSK October 20; dated restore/postserve proofs are not present uptime.
 Existing PROD account/API/owner-wallet identity is now verified read-only, without
-new credentials. Dedicated One-Click signing/delegation acceptance, the unresolved
+new credentials. The dedicated One-Click address is listed by the PROD API; a
+separate encrypted candidate passes fresh-process decryption/public-address
+verification. The new signing policy has synthetic boundary tests, not a deployed
+PROD state reader. Final signing acceptance, the unresolved
 SDK signing-chain discrepancy, actual PROD authorization/execution integration
 and single-server operational acceptance remain open. No strategy source/evaluator,
 legacy database/queue, paid API or real order was changed by this checkpoint.

@@ -5,6 +5,14 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
+**Latest implementation:** [October 21 checkpoint](ENGINEERING-2026-10-21.md).
+The dedicated signer's full public address is now present in the PROD API's
+delegate list, and an encrypted local candidate has a fresh-process roundtrip
+proof. A signing policy evaluator is tested, but deployed state readers and
+capability/lifecycle composition are not implemented. Current Redis AUTH/PING
+succeeds for both roles; that is not a recovered serving runtime. Historical
+descriptions below remain dated evidence rather than current completion claims.
+
 **October 21 credential update / October 20 owner scope:** [implemented engineering and current blockers](ENGINEERING-CONTINUATION-2026-10-20.md).
 The existing PROD account/API identity is now verified read-only; the supplied
 owner key matches its wallet, and the separate supplied EVEDEX signing entry
@@ -49,8 +57,8 @@ updating engineering source locks below does not rebind or authorize that task.
 | --- | --- | --- |
 | Stable non-trading runtime | Diagnose the new bounded Redis transport failure and separately admit a fresh recovery/generation with preserved history and queue proofs. Validate restart on the actual single-server target. | Do not retry UNKNOWN_PARTIAL, relax a timeout to hide the error, edit executed snapshots or touch the legacy database/queue. |
 | Full deployed current-context path | Accept the existing feed/Text/Macro/Router/review/Risk composition with authentic provider/account bindings and the already adopted durable budget. Text no-resend has a native restart proof; fixtures do not establish the whole running provider path. | No extra strategy family, UI or paid-call authority is implied. Preserve prior spend and reservations. |
-| Guarded production execution | Wire concrete current operator/risk signing authorization, a one-use capability issuer and the production lifecycle executor/service composition. The factory still rejects LIVE; both evidence verifiers remain validation-only. | Local encrypted signing and SQL claims are implemented components, not complete production execution. Do not remove the startup refusal without the composed checks. |
-| PROD signer admission and protected custody | Basic account/API/owner-wallet identity is read-only bound. Finish the dedicated One-Click signer/delegation proof, provision the encrypted keystore/unlock files separately from DEV, and resolve released SDK 42161 versus current upstream 161803 signing-chain drift against the actual PROD verifier. | Do not select the owner key for the bot, treat a masked One-Click match as full authorization, or guess the chain. General-purpose keys.txt is not an approved encrypted keystore. No cloud KMS purchase is mandatory. |
+| Guarded production execution | Connect authoritative current PROD operator/risk readers to the implemented signing policy, then a one-use capability issuer and production lifecycle/service composition. The factory still rejects LIVE; evidence verifiers remain validation-only. | Tested policy, local encrypted signing and SQL claims are components, not complete production execution. Do not remove the startup refusal without the composed checks. |
+| PROD signer admission and protected custody | API-reported dedicated delegation and encrypted candidate roundtrip are verified. Resolve actual accepted signing chain, complete signer admission and bind the candidate into the reviewed deployed source set. | Do not choose the owner key, mistake API delegation for an accepted order signature, or guess the chain. The original keys.txt is unchanged; plaintext-source retirement is not claimed. No cloud KMS purchase is mandatory. |
 | Single-server operations | Exercise local supervisor restart, process failure/escalation/resolution, kill switch and encrypted local restore on the final host. Match all source/image identities and confirm no unexpected exposure. | No independent watchdog/off-host service is claimed or required by this profile; full host loss can stop both service and its local monitor. |
 | Owner arm before real money | Bind explicit dollar-cap, daily loss stop and one-use manual arm only after the strategy and technical evidence are accepted. | Amounts are not chosen by LLM confidence or automatic capital ramp. Their absence does not block source preparation, but blocks real dispatch. |
 

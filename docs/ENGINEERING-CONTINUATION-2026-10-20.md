@@ -5,6 +5,11 @@ The requested endpoint has not been reached. Strategy rules, parameters, signals
 research evaluators and frozen Trial 15/V2/V4/V5 evidence are not changed.
 All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
+**Newer checkpoint:** [October 21 delegation, encrypted candidate and signing
+policy implementation](ENGINEERING-2026-10-21.md). It supersedes the mask-only
+signer observation and records current authenticated Redis preflight; it does
+not declare the runtime recovered or the production service complete.
+
 ## Latest credential checkpoint — 2026-10-21 00:06 MSK
 
 The owner asked to inspect the existing local credential source and account
