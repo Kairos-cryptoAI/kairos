@@ -125,28 +125,53 @@ class CurrentLiveCapture:
             raise CurrentLiveRefused("LIVE_METRIC_CAPTURE_REQUIRES_FRESH_PUBLIC_CAPTURE_BUDGET")
         metrics = await self._capture_rest_metrics()
         book_dir = self._book_output_path()
-        from adaptive_replay.public_book_capture import capture_public_book
 
         self._market_initial = asyncio.get_running_loop().create_future()
         self._market_task = asyncio.create_task(
             self._capture_market_stream(), name="kairos-current-market-capture"
         )
         book_task = asyncio.create_task(
-            capture_public_book(book_dir, seconds=self.max_seconds),
+            _capture_v2_window(book_dir, seconds=self.max_seconds),
             name="kairos-current-v2-book-capture",
         )
         book_results = await asyncio.gather(book_task, return_exceptions=True)
         if isinstance(book_results[0], BaseException):
             await self._stop_market_task()
             raise CurrentLiveRefused(f"V2_BOOK_CAPTURE_FAILED:{type(book_results[0]).__name__}")
+        book_receipt = book_results[0]
+        if type(book_receipt) is not dict:
+            await self._stop_market_task()
+            raise CurrentLiveRefused("V2_BOOK_CAPTURE_RECEIPT_INVALID")
+        if book_receipt.get("state") != "CAPTURED":
+            # A failed source-book receipt is terminal evidence. Do not wait for
+            # the independent Quant window future after this source has failed.
+            await self._stop_market_task()
+            reason = book_receipt.get("reason", "UNKNOWN")
+            raise CurrentLiveRefused(f"V2_BOOK_CAPTURE_NOT_COMPLETE:{reason}")
+        if self._market_initial is None or self._market_task is None:
+            await self._stop_market_task()
+            raise CurrentLiveRefused("MARKET_INITIAL_CAPTURE_NOT_STARTED")
+        done, _pending = await asyncio.wait(
+            {self._market_initial, self._market_task},
+            timeout=self.max_seconds + MARKET_GAP_LIMIT_SECONDS + 1.0,
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+        if not done:
+            await self._stop_market_task()
+            raise CurrentLiveRefused("MARKET_INITIAL_CAPTURE_TIMEOUT")
+        if self._market_task in done and not self._market_initial.done():
+            try:
+                self._market_task.result()
+            except Exception as exc:
+                await self._stop_market_task()
+                raise CurrentLiveRefused(f"MARKET_STREAM_CAPTURE_FAILED:{type(exc).__name__}") from None
+            await self._stop_market_task()
+            raise CurrentLiveRefused("MARKET_STREAM_ENDED_BEFORE_INITIAL_CAPTURE")
         try:
-            market_result = await self._market_initial
+            market_result = self._market_initial.result()
         except Exception as exc:
             await self._stop_market_task()
             raise CurrentLiveRefused(f"MARKET_STREAM_CAPTURE_FAILED:{type(exc).__name__}") from None
-        book_receipt = book_results[0]
-        if type(book_receipt) is not dict or book_receipt.get("state") != "CAPTURED":
-            raise CurrentLiveRefused("V2_BOOK_CAPTURE_NOT_COMPLETE")
         frames = self._read_v2_frames(book_dir, book_receipt)
         receipt_path = self._persist_market_receipt(market_result)
         completed_metrics = self._attach_force_order_metrics(metrics, market_result)
@@ -689,6 +714,121 @@ class _RESTCapture:
     received_ms: int
     persisted_ms: int
     path: Path
+
+
+async def _capture_v2_window(
+    output: Path,
+    *,
+    seconds: int,
+    wall_clock: Callable[[], int] | None = None,
+    monotonic_clock: Callable[[], int] | None = None,
+) -> dict[str, Any]:
+    """Record the existing V2 policy window starting after verified WS setup.
+
+    The recorder's source clocks and five-second admission rules are untouched;
+    only pre-capture DNS/TLS/WebSocket setup is outside that observed-data
+    denominator. Optional clocks are an offline test seam.
+    """
+
+    import aiohttp
+    from adaptive_replay.public_book_capture import (
+        ENDPOINT,
+        MAX_RAW_BYTES,
+        CaptureOwner,
+        PublicBookRecorder,
+        wall_ms,
+    )
+
+    clock = wall_clock or wall_ms
+    mono = monotonic_clock or time.monotonic_ns
+
+    async def reject_redirect(*_args: Any) -> None:
+        raise ValueError("public capture redirects are forbidden")
+
+    trace = aiohttp.TraceConfig()
+    trace.on_request_redirect.append(reject_redirect)
+    ssl_context = ssl.create_default_context()
+    if not ssl_context.check_hostname or ssl_context.verify_mode != ssl.CERT_REQUIRED:
+        raise CurrentLiveRefused("DEFAULT_TLS_VALIDATION_UNAVAILABLE")
+
+    recorder = None
+    handshake_completed_ms: int | None = None
+    state, reason = "FAILED", "NO_CONNECTION"
+    transport: dict[str, Any] = {
+        "endpoint": ENDPOINT,
+        "attempts": 0,
+        "retries": 0,
+        "redirects": 0,
+        "tls_default_validation": True,
+        "handshake_completed": False,
+    }
+    timeout = aiohttp.ClientTimeout(total=None, sock_connect=10, sock_read=10)
+    with CaptureOwner(output.parent):
+        try:
+            async with asyncio.timeout(seconds + 15):
+                async with aiohttp.ClientSession(
+                    timeout=timeout, trust_env=False, trace_configs=[trace]
+                ) as session:
+                    transport["attempts"] = 1
+                    async with session.ws_connect(
+                        ENDPOINT,
+                        ssl=ssl_context,
+                        proxy=None,
+                        autoping=True,
+                        heartbeat=None,
+                        max_msg_size=MAX_RAW_BYTES,
+                    ) as socket:
+                        if str(socket._response.url) != ENDPOINT:
+                            raise ValueError("unexpected public capture response URL")
+                        transport["handshake_completed"] = True
+                        handshake_completed_ms = clock()
+                        # This instant, after TLS and the verified WS upgrade,
+                        # starts both the admission TTL and bounded capture.
+                        recorder = PublicBookRecorder(output, seconds=seconds, clock=clock, monotonic=mono)
+                        deadline = time.monotonic() + seconds
+                        while time.monotonic() < deadline:
+                            remaining = deadline - time.monotonic()
+                            if remaining <= 0:
+                                break
+                            try:
+                                message = await asyncio.wait_for(socket.receive(), min(5.0, remaining))
+                            except TimeoutError:
+                                if time.monotonic() >= deadline:
+                                    break
+                                raise ValueError("public stream receive gap") from None
+                            received_ms, received_ns = clock(), mono()
+                            if message.type is not aiohttp.WSMsgType.TEXT:
+                                raise ValueError("public stream closed or returned non-text")
+                            recorder.accept(message.data, received_ms=received_ms, received_ns=received_ns)
+                        state, reason = "CAPTURED", "SEALED_DURATION_COMPLETE"
+        except (Exception, asyncio.CancelledError) as exc:
+            state, reason = "FAILED", type(exc).__name__
+        finally:
+            # Match the existing capture's bounded aiohttp TLS-close drain.
+            await asyncio.sleep(0.250)
+        if recorder is None:
+            raise CurrentLiveRefused(f"V2_BOOK_HANDSHAKE_FAILED:{reason}") from None
+        receipt = recorder.finish(state=state, reason=reason, transport=transport)
+        if handshake_completed_ms is None:
+            raise CurrentLiveRefused("V2_BOOK_HANDSHAKE_CLOCK_MISSING")
+        _write_receipt(
+            output,
+            "handshake-provenance.receipt.json",
+            {
+                "schema": "kairos.current-live-public-book-handshake.v1",
+                "capture_id": receipt["capture_id"],
+                "endpoint": ENDPOINT,
+                "transport_attempts": transport["attempts"],
+                "handshake_completed": transport["handshake_completed"],
+                "handshake_completed_ms": handshake_completed_ms,
+                "recorder_started_ms": recorder.started_ms,
+                "recorder_started_monotonic_ns": recorder.started_ns,
+                "capture_seconds_from_recorder_start": seconds,
+                "source_receipt_sha256": hashlib.sha256(_canonical_bytes(receipt)).hexdigest(),
+                "risk_authority": "NONE",
+            },
+        )
+        return receipt
 
 
 @dataclass(frozen=True, slots=True)

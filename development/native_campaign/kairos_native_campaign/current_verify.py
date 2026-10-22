@@ -221,6 +221,15 @@ def installed_source_identity():
     result["current_adapter_files"] = {
         path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(here.glob("current_*.py"))
     }
+    # Catalyst/policy and the reused recorder are the installed existing local
+    # engineering package, not one of the Git-installed service distributions.
+    import adaptive_replay
+
+    adaptive_root = Path(adaptive_replay.__file__).parent
+    result["installed_adaptive_replay_files"] = {
+        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(adaptive_root.glob("*.py"))
+    }
     return result
 
 
