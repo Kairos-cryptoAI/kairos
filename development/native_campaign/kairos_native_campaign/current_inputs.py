@@ -184,7 +184,7 @@ class CurrentCutInputs:
         if type(self.simulation_session) is not SimulationSessionV1:
             raise CurrentInputRefused("SIMULATION_SESSION_REQUIRED")
         self.simulation_session.__class__.model_validate(
-            self.simulation_session.model_dump(mode="json"), strict=True
+            self.simulation_session.model_dump(mode="python"), strict=True
         )
         if self.simulation_session.tape_id != self.tape_id or not _IDENTIFIER.fullmatch(self.tape_id):
             raise CurrentInputRefused("SIMULATION_TAPE_ID_CONFLICT")
@@ -343,7 +343,7 @@ class CurrentObservationSource:
         last_close = plan.origin_cut_ms - 1
         if not plan.origin_cut_ms <= plan.created_ms < plan.origin_cut_ms + BAR_MS:
             self.last_status = "CREATION_AFTER_FIRST_POST_ORIGIN_MINUTE_STARTED"
-            self.status_by_plan[plan.sha256] = self.last_status
+            self.status_by_plan[plan.scenario_id] = self.last_status
             return ()
         deadline = min(plan.valid_until_ms, plan.origin_cut_ms + self.max_wait_ms)
         observations: list[HypothesisObservation] = []
@@ -357,7 +357,7 @@ class CurrentObservationSource:
         )
         if market_source_id is None:
             self.last_status = "PLAN_MARKET_SOURCE_MISSING"
-            self.status_by_plan[plan.sha256] = self.last_status
+            self.status_by_plan[plan.scenario_id] = self.last_status
             return ()
         try:
             for _ in range(self.max_observations):
@@ -365,14 +365,14 @@ class CurrentObservationSource:
                 remaining_ms = deadline - now_ms
                 if remaining_ms <= 0:
                     self.last_status = "NOT_REACHED_WINDOW"
-                    self.status_by_plan[plan.sha256] = self.last_status
+                    self.status_by_plan[plan.scenario_id] = self.last_status
                     return tuple(observations)
                 captured = await self._next_closed_bar(
                     symbol, last_close, timeout_s=min(60.0, remaining_ms / 1_000.0)
                 )
                 if captured is None:
                     self.last_status = "CLOSED_BAR_UNAVAILABLE"
-                    self.status_by_plan[plan.sha256] = self.last_status
+                    self.status_by_plan[plan.scenario_id] = self.last_status
                     return tuple(observations)
                 captured.__post_init__()
                 candle = captured.candle
@@ -385,7 +385,7 @@ class CurrentObservationSource:
                     or captured.captured_ms > deadline
                 ):
                     self.last_status = "CLOSED_BAR_GAP_OR_LATE"
-                    self.status_by_plan[plan.sha256] = self.last_status
+                    self.status_by_plan[plan.scenario_id] = self.last_status
                     return tuple(observations)
                 try:
                     quote_snapshot = await self.quote_source.fresh_quote(symbol)
@@ -407,7 +407,7 @@ class CurrentObservationSource:
                 )
                 if observed_ms > deadline:
                     self.last_status = "OBSERVATION_CAPTURED_AFTER_WINDOW"
-                    self.status_by_plan[plan.sha256] = self.last_status
+                    self.status_by_plan[plan.scenario_id] = self.last_status
                     return tuple(observations)
                 market_source = ScenarioEvidence(
                     market_source_id,
@@ -428,16 +428,16 @@ class CurrentObservationSource:
                 final = results[-1]
                 if final.state != "WAITING_TRIGGER":
                     self.last_status = final.reason
-                    self.status_by_plan[plan.sha256] = self.last_status
+                    self.status_by_plan[plan.scenario_id] = self.last_status
                     return tuple(observations)
                 expected_open += BAR_MS
                 last_close = candle.close_time_ms
             self.last_status = "OBSERVATION_LIMIT_REACHED"
-            self.status_by_plan[plan.sha256] = "NOT_REACHED_WINDOW"
+            self.status_by_plan[plan.scenario_id] = "NOT_REACHED_WINDOW"
             return tuple(observations)
         except (TimeoutError, OSError, CurrentInputRefused, ValueError):
             self.last_status = "SOURCE_UNAVAILABLE"
-            self.status_by_plan[plan.sha256] = self.last_status
+            self.status_by_plan[plan.scenario_id] = self.last_status
             return tuple(observations)
 
 
@@ -484,7 +484,7 @@ def build_current_cut_inputs(
         raise CurrentInputRefused("FIVE_SYMBOL_POINT_QUOTE_ROSTER_REQUIRED")
     if type(allocation) is not StrategicAllocation:
         raise CurrentInputRefused("ACTUAL_MACRO_STRATEGIST_ALLOCATION_REQUIRED")
-    allocation = StrategicAllocation.model_validate(allocation.model_dump(mode="json"), strict=True)
+    allocation = StrategicAllocation.model_validate(allocation.model_dump(mode="python"), strict=True)
     allocation_ms = _datetime_ms(allocation.produced_at)
     _clock_pair(allocation_ms, allocation_received_ms, "MACRO_ALLOCATION")
     _clock_pair(signal_received_ms, signal_received_ms, "TEXT_SIGNAL")
@@ -493,7 +493,7 @@ def build_current_cut_inputs(
     for signal in signals:
         if type(signal) is not SentimentSignal:
             raise CurrentInputRefused("TYPED_TEXT_SCOUT_SIGNALS_REQUIRED")
-        SentimentSignal.model_validate(signal.model_dump(mode="json"), strict=True)
+        SentimentSignal.model_validate(signal.model_dump(mode="python"), strict=True)
         if _datetime_ms(signal.produced_at) > signal_received_ms:
             raise CurrentInputRefused("TEXT_SIGNAL_PRECEDES_LOCAL_RECEIPT")
     if type(quant_measurements_by_symbol) is not tuple:

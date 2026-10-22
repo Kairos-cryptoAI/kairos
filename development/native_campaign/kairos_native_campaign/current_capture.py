@@ -11,10 +11,10 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import importlib
 import json
 import math
 import os
-import sys
 import time
 import uuid
 from collections.abc import Callable
@@ -177,16 +177,9 @@ def _canonical_bytes(value: Any) -> bytes:
 
 
 def _ensure_source_packages() -> None:
-    """Expose the two sibling source packages without installing or modifying them."""
-
-    repo_root = Path(__file__).resolve().parents[3]
-    package_roots = (
-        repo_root / "development" / "adaptive_replay",
-        repo_root.parent / "kairos-text-scouts",
-    )
-    for package_root in package_roots:
-        if package_root.is_dir() and str(package_root) not in sys.path:
-            sys.path.insert(0, str(package_root))
+    """Require the locked environment; never substitute sibling checkouts."""
+    for module in ("adaptive_replay", "kairos_text"):
+        importlib.import_module(module)
 
 
 def _ms_datetime(value: datetime) -> int:

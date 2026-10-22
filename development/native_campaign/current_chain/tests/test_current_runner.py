@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import asdict
 from types import SimpleNamespace
 
 import pytest
@@ -15,8 +16,10 @@ from kairos_native_campaign.current_runner import (
     ProviderAttempt,
     UsageSnapshot,
     _arm_creation_status,
+    _canonical_sha,
     _scheduled_wait_seconds,
     _shared_gate,
+    _stage,
     _stop_risk_microusd,
     _usage_delta,
     write_create_only,
@@ -123,3 +126,30 @@ def test_defensive_macro_blocks_combined_but_not_matched_technical_baseline():
     allocation = SimpleNamespace(stable_reserve_pct=1.0, strategy_weights={})
     assert _shared_gate("combined", allocation, macro_fallback=False) == "BLOCKED"
     assert _shared_gate("strategy_only", allocation, macro_fallback=False) == "PASS"
+
+
+@pytest.mark.asyncio
+async def test_actual_catalyst_plan_fold_and_dataclass_receipts_not_v3_or_model_dump():
+    from test_current_chain import prepared_plan
+
+    from kairos_native_campaign import current_runner
+
+    _chain, _prepared, _outcome, plan, _bars, preview = prepared_plan()
+    result = current_runner.evaluate_hypothesis(plan, preview.observations)[-1]
+    assert result.reason == "REVIEW_MISSING_DEFER" and result.state == "CONSUMED"
+    # Native emitted raw candidates are dataclasses, never Pydantic objects.
+    from adaptive_replay.catalyst_hypothesis_v1 import _entry
+
+    raw, _ = _entry(plan, preview.observation)
+    assert raw is not None and not hasattr(raw, "model_dump")
+    assert _canonical_sha(raw) == _canonical_sha(asdict(raw))
+    records = []
+
+    async def operation():
+        return raw
+
+    async def usage():
+        return UsageSnapshot(())
+
+    assert await _stage("actual-current-candidate", operation, usage, UsageSnapshot(()), records) is raw
+    assert records[0].status == "COMPLETED"

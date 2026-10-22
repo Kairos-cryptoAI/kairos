@@ -16,14 +16,16 @@ import json
 import os
 import time
 from collections.abc import Awaitable, Callable
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, fields, is_dataclass
+from datetime import datetime
 from decimal import ROUND_CEILING, Decimal
 from pathlib import Path
 from typing import Any, Protocol
 
 from adaptive_replay import catalyst_policy_v1 as catalyst
+from adaptive_replay.catalyst_hypothesis_v1 import evaluate_hypothesis
 from adaptive_replay.complex_assessment import DirectionalAssessment
-from adaptive_replay.hypothesis_v3 import CreationAssessment, HypothesisObservation, evaluate_hypothesis
+from adaptive_replay.hypothesis_v3 import CreationAssessment, HypothesisObservation
 from adaptive_replay.research_profile_v1 import CreationOutcome
 from kairos_aggregator.candidate_review import CandidateReviewBrain
 from kairos_core.bus import InMemoryBus
@@ -271,8 +273,36 @@ def _scheduled_wait_seconds(cut_ms: int, now_ms: int) -> float:
 
 
 def _canonical_sha(value: Any) -> str:
-    body = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    body = json.dumps(
+        _receipt_value(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+    )
     return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+def _receipt_value(value: Any) -> Any:
+    """Normalize actual component results, never repr/client/settings objects.
+
+    Raw source bytes already have create-only originals; their receipt binds
+    content hash and length instead of copying megabytes into a stage record.
+    Dataclass fields are traversed explicitly (not arbitrary object __dict__).
+    """
+    if value is None or isinstance(value, (str, bool, int, float)):
+        return value
+    if isinstance(value, bytes):
+        return {"bytes_sha256": hashlib.sha256(value).hexdigest(), "byte_count": len(value)}
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if hasattr(value, "model_dump"):
+        return value.model_dump(mode="json")
+    if is_dataclass(value) and not isinstance(value, type):
+        return {field.name: _receipt_value(getattr(value, field.name)) for field in fields(value)}
+    if isinstance(value, (tuple, list)):
+        return [_receipt_value(item) for item in value]
+    if isinstance(value, dict) and all(isinstance(key, str) for key in value):
+        return {key: _receipt_value(item) for key, item in value.items()}
+    raise CurrentRunRefused("UNSUPPORTED_STAGE_RECEIPT_TYPE")
 
 
 def _usage_delta(
@@ -363,14 +393,13 @@ async def _stage(
         _, _, actual, attempts = _usage_delta(baseline, after)
         used = {identity for record in records for identity in record.provider_reservation_ids}
         new = tuple(item for item in attempts if item.reservation_id not in used)
-        serial = result.model_dump(mode="json") if hasattr(result, "model_dump") else result
         records.append(
             StageRecord(
                 name,
                 "COMPLETED",
                 started,
                 completed,
-                _canonical_sha(serial),
+                _canonical_sha(result),
                 tuple(item.reservation_id for item in new),
                 sum(item.actual_microusd for item in new),
             )
@@ -782,6 +811,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                 # Preserve every arm/symbol evaluation, including arms that have no plan.
                 plan_observations: dict[tuple[str, str, str], tuple[Any, ...]] = {}
                 plan_reviews: dict[tuple[str, str, str], Any] = {}
+                plan_context_receipts: dict[tuple[str, str, str], tuple[Any, ...]] = {}
                 plan_candidates: dict[tuple[str, str, str], Any] = {}
                 stage_coverage: dict[str, str] = {
                     "physical_provider_calls": "RECORDED_FROM_SHARED_BUDGET_LEDGER",
@@ -883,6 +913,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                         receipts = tuple(row for row in receipts_by_symbol[symbol] if row[0] != "market") + (
                             ("market", refreshed_market.snapshot, refreshed_market.captured_ms),
                         )
+                        plan_context_receipts[key] = receipts
                         preview = build_hypothesis_preview(
                             plan,
                             observations,
@@ -991,9 +1022,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                                 "symbol": symbol,
                                 "arm_id": arm_id,
                                 "reason": arm_decision.reason,
-                                "candidate_sha256": _canonical_sha(selected.model_dump(mode="json"))
-                                if selected
-                                else None,
+                                "candidate_sha256": _canonical_sha(selected) if selected else None,
                             }
                         )
 
@@ -1006,7 +1035,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                                 "symbol": symbol,
                                 "state": "NO_COMBINED_CANDIDATE",
                                 "matched_strategy_only_candidate_sha256": _canonical_sha(
-                                    arm_candidates["strategy_only"].model_dump(mode="json")
+                                    arm_candidates["strategy_only"]
                                 )
                                 if arm_candidates.get("strategy_only")
                                 else None,
@@ -1040,7 +1069,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                     final_route = build_final_route(intent, text_by_symbol[symbol])
                     final_observations = observations
                     final_receipts = _receipt_tail(
-                        receipts_by_symbol[symbol],
+                        plan_context_receipts.get(key, receipts_by_symbol[symbol]),
                         native_bars,
                         final_observations,
                     )
@@ -1152,7 +1181,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                             "primary_arm": "combined",
                             "selected_origin": candidate_origin,
                             "matched_strategy_only_candidate_sha256": _canonical_sha(
-                                arm_candidates["strategy_only"].model_dump(mode="json")
+                                arm_candidates["strategy_only"]
                             )
                             if arm_candidates.get("strategy_only")
                             else None,

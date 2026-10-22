@@ -15,6 +15,7 @@ import json
 import re
 import time
 from dataclasses import asdict
+from functools import partial
 from pathlib import Path
 from uuid import uuid4
 
@@ -39,6 +40,7 @@ from .current_runner import (
 from .current_runtime import append_evidence, build_existing_gateway, canonical, read_existing_openai_key
 
 ROOT = Path("D:/Kairos/runtime/current-system-20261022")
+PUBLIC_BOOK_ROOT = Path("C:/Users/loval/Documents/ChatGPT/Kairos/current-system-public-capture-20261022")
 STRATEGY_ID = "closed-catalyst-hypothesis.research.v1"
 REVISION = "current-chain.observed-sim.v2"
 TEXT_FEED = "https://www.coindesk.com/arc/outboundfeeds/rss"
@@ -134,12 +136,16 @@ def scope():
         "readiness_promotion": False,
         "real_venue_orders": False,
         "historical_test": False,
+        "initial_native_book_window_seconds": 10,
+        "initial_quant_window_seconds": 70,
         "blind_campaign_credit": False,
         "external_macro_release_coverage": "NOT_ESTABLISHED",
     }
 
 
-def macro_context_factory(*, config, history, text, quotes, simulation_repository):
+def macro_context_factory(
+    *, config, history, text, quotes, simulation_repository, official_macro_context=None
+):
     """Truthful SIM context, not invented CPI, rates or an actual account balance."""
     del simulation_repository
     quote_map = {item.symbol: item for item in quotes}
@@ -184,7 +190,8 @@ def macro_context_factory(*, config, history, text, quotes, simulation_repositor
                     for item in text.news_items
                 ],
             },
-            "macro_factors": {"status": "unavailable", "reason": "no admitted current macro release feed"},
+            "macro_factors": official_macro_context
+            or {"status": "unavailable", "reason": "no admitted current macro release feed"},
             "onchain_factors": {"status": "unavailable", "reason": "no admitted current onchain feed"},
             "limits": {
                 "risk_per_trade": 0.0025,
@@ -261,14 +268,31 @@ async def execute():
                 key=key, budget_pool=resources.budget_pool, evidence_root=output
             )
             del key
-            metric_capture = CurrentPublicCapture(output)
+            from .current_macro import capture_current_macro
+
+            official_macro = await capture_current_macro(
+                output / ("official-context-20261022-" + uuid4().hex[:12])
+            )
+            write_create_only(output / "official-macro-context.json", official_macro)
+            # This new capture uses the observed faster local volume. Old D:
+            # captures are retained in place; fsync/clock/TTL rules are identical.
+            PUBLIC_BOOK_ROOT.mkdir(exist_ok=True)
+            book_output = PUBLIC_BOOK_ROOT / identity
+            book_output.mkdir()
+            metric_capture = CurrentPublicCapture(book_output)
+            write_create_only(
+                output / "public-book-location.json",
+                {"public_book_parent": str(book_output), "old_evidence_moved": False},
+            )
             async with CurrentLiveCapture(
-                output,
+                book_output,
                 capture=metric_capture,
                 tape_id="current-" + identity,
                 max_seconds=70,
                 observation_seconds=900,
-                quote_capture_factory=lambda: CurrentPublicCapture(output),
+                quote_capture_factory=lambda: CurrentPublicCapture(book_output),
+                book_output_root=book_output,
+                book_seconds=10,
             ) as live:
                 print("Bounded current public capture started; models not called yet", flush=True)
                 initial = await live.capture_initial()
@@ -349,7 +373,9 @@ async def execute():
                     simulation_repository=repository,
                     usage_snapshot=budget.snapshot,
                     open_risk_snapshot=open_risk_snapshot,
-                    macro_context_factory=macro_context_factory,
+                    macro_context_factory=partial(
+                        macro_context_factory, official_macro_context=official_macro
+                    ),
                     build_cut_inputs=build_current_cut_inputs,
                     observation_source=observation,
                     risk_frame_source=live,

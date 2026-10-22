@@ -217,3 +217,115 @@ async def test_v2_recorder_window_starts_after_verified_websocket_handshake(
     assert receipt["transport"]["handshake_completed"] is True
     assert receipt["observed_messages"] == receipt["admitted_frames"] == 5
     assert receipt["state"] == "FAILED"  # fake socket then closes before the one-second window seals
+
+
+def test_completed_quant_metrics_are_facts_not_a_coroutine_and_have_canonical_five_symbol_order(
+    tmp_path, monkeypatch
+):
+    from test_current_inputs import NOW, _metrics
+
+    import kairos_native_campaign.current_live as module
+
+    symbols = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
+    ended = NOW + 70_000
+    monkeypatch.setattr(module.time, "time_ns", lambda: (ended + 2) * 1_000_000)
+    live = CurrentLiveCapture(
+        tmp_path, capture=CurrentPublicCapture(tmp_path), tape_id="quant-only", max_seconds=70
+    )
+    completed = live._attach_force_order_metrics(
+        tuple((symbol, _metrics(symbol)) for symbol in symbols),
+        {
+            "window_start_ms": NOW,
+            "window_end_ms": ended,
+            "last_receive_ms": ended,
+            "force_values": {symbol: [0.0, 0.0] for symbol in symbols},
+            "force_last_event": {},
+            "raw_sha256": "e" * 64,
+        },
+    )
+    assert type(completed) is tuple
+    assert tuple(symbol for symbol, _ in completed) == tuple(sorted(symbols))
+    assert all(metrics.long_liquidations_usd.window_end_ms == ended for _, metrics in completed)
+    assert all(metrics.long_liquidations_usd.complete for _, metrics in completed)
+
+
+def test_native_segments_keep_original_ids_hashes_and_sequence_roots():
+    from kairos_native_campaign.current_live import _latest_complete_native_segment
+
+    symbols = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
+    original = tuple(
+        SimpleNamespace(tape_id="original:0001", symbol=symbol, tape_sequence=index + 1)
+        for index, symbol in enumerate(symbols)
+    )
+    trailing = (SimpleNamespace(tape_id="original:0002", symbol="BTCUSDT", tape_sequence=1),)
+    selected = _latest_complete_native_segment(original + trailing)
+    assert len(selected) == 5
+    assert all(left is right for left, right in zip(selected, original, strict=True))
+    with pytest.raises(RuntimeError, match="NO_SINGLE_ORIGINAL_FIVE_SYMBOL_NATIVE_SEGMENT"):
+        _latest_complete_native_segment(trailing)
+
+
+@pytest.mark.asyncio
+async def test_actual_market_route_closes_after_retained_boundary_message_and_camel_case_events(
+    tmp_path, monkeypatch
+):
+    import aiohttp
+
+    import kairos_native_campaign.current_live as module
+
+    now = 1_800_000_000_000
+    seconds = [0.0]
+    monkeypatch.setattr(module.time, "monotonic", lambda: seconds[0])
+    monkeypatch.setattr(module.time, "time_ns", lambda: (now + int(seconds[0] * 1000)) * 1_000_000)
+    symbols = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
+    messages = [
+        {"stream": symbol.lower() + "@markPrice@1s", "data": {"E": now, "s": symbol}} for symbol in symbols
+    ]
+    messages.append(
+        {
+            "stream": "btcusdt@forceOrder",
+            "data": {"E": now + 1200, "o": {"ap": "100", "z": "3", "S": "SELL"}},
+        }
+    )
+
+    class Socket:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def receive(self):
+            if not messages:
+                return SimpleNamespace(type=aiohttp.WSMsgType.CLOSED, data="")
+            seconds[0] += 0.1 if len(messages) > 1 else 0.7
+            return SimpleNamespace(type=aiohttp.WSMsgType.TEXT, data=json.dumps(messages.pop(0)))
+
+    class Session:
+        def __init__(self, **_kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        def ws_connect(self, *_args, **_kwargs):
+            return Socket()
+
+    monkeypatch.setattr(aiohttp, "ClientSession", Session)
+    capture = CurrentPublicCapture(tmp_path)
+    live = CurrentLiveCapture(
+        tmp_path, capture=capture, tape_id="market-window", max_seconds=1, observation_seconds=2
+    )
+    live._market_initial = asyncio.get_running_loop().create_future()
+    with pytest.raises(RuntimeError, match="MARKET_STREAM_CLOSED_OR_NON_TEXT"):
+        await live._capture_market_stream()
+    result = live._market_initial.result()
+    assert result["rows"] == 6
+    assert result["window_end_ms"] == result["last_receive_ms"] == now + 1200
+    assert result["force_values"]["BTCUSDT"] == [300.0, 0.0]
+    assert result["force_last_event"]["BTCUSDT"] == now + 1200
+    rows = [json.loads(row) for row in Path(result["raw_path"]).read_text().splitlines()]
+    assert [row["sequence"] for row in rows] == list(range(1, 7))

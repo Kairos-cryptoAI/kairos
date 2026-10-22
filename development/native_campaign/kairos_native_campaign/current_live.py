@@ -76,6 +76,8 @@ class CurrentLiveCapture:
         max_seconds: int = MAX_LIVE_SECONDS,
         observation_seconds: int = 300,
         quote_capture_factory: Callable[[], CurrentPublicCapture] | None = None,
+        book_output_root: Path | None = None,
+        book_seconds: int | None = None,
     ) -> None:
         if not isinstance(output_root, Path) or not output_root.is_absolute():
             raise ValueError("absolute output root required")
@@ -91,8 +93,20 @@ class CurrentLiveCapture:
         self.capture = capture
         self.requested_tape_id = tape_id
         self.max_seconds = max_seconds
+        if book_seconds is not None and (
+            type(book_seconds) is not int or not 1 <= book_seconds <= max_seconds
+        ):
+            raise ValueError("separate native book window must be bounded by the initial market window")
+        self.book_seconds = max_seconds if book_seconds is None else book_seconds
         self.observation_seconds = observation_seconds
         self.quote_capture_factory = quote_capture_factory
+        if book_output_root is not None and (
+            not isinstance(book_output_root, Path)
+            or not book_output_root.is_absolute()
+            or not book_output_root.is_dir()
+        ):
+            raise ValueError("existing absolute public book output parent required")
+        self.book_output_root = book_output_root or output_root
         self._result: CurrentLiveCaptureResult | None = None
         self._bars: dict[str, dict[int, CapturedClosedBar]] = defaultdict(dict)
         self._conditions: dict[str, asyncio.Condition] = {symbol: asyncio.Condition() for symbol in UNIVERSE}
@@ -131,7 +145,7 @@ class CurrentLiveCapture:
             self._capture_market_stream(), name="kairos-current-market-capture"
         )
         book_task = asyncio.create_task(
-            _capture_v2_window(book_dir, seconds=self.max_seconds),
+            _capture_v2_window(book_dir, seconds=self.book_seconds),
             name="kairos-current-v2-book-capture",
         )
         book_results = await asyncio.gather(book_task, return_exceptions=True)
@@ -172,12 +186,30 @@ class CurrentLiveCapture:
         except Exception as exc:
             await self._stop_market_task()
             raise CurrentLiveRefused(f"MARKET_STREAM_CAPTURE_FAILED:{type(exc).__name__}") from None
-        frames = self._read_v2_frames(book_dir, book_receipt)
+        all_frames = self._read_v2_frames(book_dir, book_receipt)
+        frames = _latest_complete_native_segment(all_frames)
+        _write_receipt(
+            book_dir,
+            "sim-segment-projection.receipt.json",
+            {
+                "schema": "kairos.current-native-segment-projection.v1",
+                "policy": "LATEST_COMPLETE_ORIGINAL_RETAINED_SEGMENT",
+                "source_capture_id": book_receipt["capture_id"],
+                "source_receipt_sha256": hashlib.sha256(_canonical_bytes(book_receipt)).hexdigest(),
+                "observed_source_frames": len(all_frames),
+                "selected_tape_id": frames[0].tape_id,
+                "selected_original_frame_sha256s": [frame.frame_sha256 for frame in frames],
+                "original_frames_rewritten": False,
+                "omitted_segments_retained": True,
+                "source_set_admitted": False,
+                "risk_authority": "NONE",
+            },
+        )
         receipt_path = self._persist_market_receipt(market_result)
         completed_metrics = self._attach_force_order_metrics(metrics, market_result)
         # PublicBookRecorder generates its own actual capture identity; don't
         # rewrite immutable frame IDs to the requested caller label.
-        actual_tape_id = book_receipt["capture_id"]
+        actual_tape_id = frames[0].tape_id
         self._latest_frames = {
             symbol: next((frame for frame in reversed(frames) if frame.symbol == symbol), None)
             for symbol in UNIVERSE
@@ -437,28 +469,6 @@ class CurrentLiveCapture:
                             except TimeoutError:
                                 raise CurrentLiveRefused("MARKET_STREAM_RECEIVE_GAP") from None
                             received_ms = time.time_ns() // 1_000_000
-                            if (
-                                self._market_initial is not None
-                                and not self._market_initial.done()
-                                and time.monotonic() >= initial_deadline
-                            ):
-                                if len(marks) != len(UNIVERSE):
-                                    raise CurrentLiveRefused("INITIAL_MARKET_FIVE_SYMBOL_LIVENESS_MISSING")
-                                self._market_initial.set_result(
-                                    {
-                                        "window_start_ms": market_window_start,
-                                        "window_end_ms": window_end_ms,
-                                        "last_receive_ms": last_receive,
-                                        "force_values": {
-                                            key: list(value) for key, value in force_values.items()
-                                        },
-                                        "force_last_event": dict(force_last_event),
-                                        "raw_sha256": stream_hash.copy().hexdigest(),
-                                        "raw_bytes": stream_bytes,
-                                        "raw_path": str(path),
-                                        "rows": message_count,
-                                    }
-                                )
                             if message.type is not aiohttp.WSMsgType.TEXT or type(message.data) is not str:
                                 raise CurrentLiveRefused("MARKET_STREAM_CLOSED_OR_NON_TEXT")
                             payload_bytes = message.data.encode("utf-8", errors="strict")
@@ -474,12 +484,13 @@ class CurrentLiveCapture:
                             ):
                                 raise CurrentLiveRefused("MARKET_STREAM_SCOPE_INVALID")
                             symbol = stream.partition("@")[0].upper()
+                            stream_lower = stream.lower()
                             if symbol not in UNIVERSE:
                                 raise CurrentLiveRefused("MARKET_STREAM_SYMBOL_INVALID")
                             row = (
                                 _canonical_bytes(
                                     {
-                                        "sequence": stream_bytes + 1,
+                                        "sequence": message_count + 1,
                                         "requested_ms": market_window_start,
                                         "received_ms": received_ms,
                                         "raw_payload": message.data,
@@ -502,11 +513,11 @@ class CurrentLiveCapture:
                             event_ms = _integer(data.get("E"))
                             if event_ms is not None and event_ms > received_ms:
                                 raise CurrentLiveRefused("MARKET_EXCHANGE_CLOCK_AFTER_LOCAL_RECEIPT")
-                            if "@markprice" in stream:
+                            if "@markprice" in stream_lower:
                                 if event_ms is None:
                                     raise CurrentLiveRefused("MARK_PRICE_EVENT_CLOCK_MISSING")
                                 marks.add(symbol)
-                            if "@forceorder" in stream:
+                            if "@forceorder" in stream_lower:
                                 order = data.get("o")
                                 if type(order) is not dict:
                                     raise CurrentLiveRefused("FORCE_ORDER_SCHEMA_INVALID")
@@ -527,9 +538,34 @@ class CurrentLiveCapture:
                                 index = 0 if side == "SELL" else 1
                                 force_values[symbol][index] += price * quantity
                                 force_last_event[symbol] = order_event
-                            if "@kline_1m" in stream:
+                            if "@kline_1m" in stream_lower:
                                 self._capture_closed_bar(
                                     symbol, data, message.data, received_ms, persisted_ms
+                                )
+                            if (
+                                self._market_initial is not None
+                                and not self._market_initial.done()
+                                and time.monotonic() >= initial_deadline
+                            ):
+                                if len(marks) != len(UNIVERSE):
+                                    raise CurrentLiveRefused("INITIAL_MARKET_FIVE_SYMBOL_LIVENESS_MISSING")
+                                # Close only on an actually received, retained,
+                                # processed record. Do not give a no-event zero
+                                # an invented future nominal-deadline clock.
+                                self._market_initial.set_result(
+                                    {
+                                        "window_start_ms": market_window_start,
+                                        "window_end_ms": received_ms,
+                                        "last_receive_ms": received_ms,
+                                        "force_values": {
+                                            key: list(value) for key, value in force_values.items()
+                                        },
+                                        "force_last_event": dict(force_last_event),
+                                        "raw_sha256": stream_hash.copy().hexdigest(),
+                                        "raw_bytes": stream_bytes,
+                                        "raw_path": str(path),
+                                        "rows": message_count,
+                                    }
                                 )
                 ended_ms = time.time_ns() // 1_000_000
         except (CurrentLiveRefused, asyncio.CancelledError):
@@ -600,7 +636,7 @@ class CurrentLiveCapture:
         async with condition:
             condition.notify_all()
 
-    async def _attach_force_order_metrics(
+    def _attach_force_order_metrics(
         self,
         metrics: tuple[tuple[str, _RESTQuantBase], ...],
         market: dict[str, Any],
@@ -655,7 +691,7 @@ class CurrentLiveCapture:
                     ),
                 )
             )
-        return tuple(result)
+        return tuple(sorted(result, key=lambda item: item[0]))
 
     def _read_v2_frames(self, output: Path, receipt: dict[str, Any]) -> tuple[Any, ...]:
         from adaptive_replay.book_bundle import (
@@ -702,7 +738,7 @@ class CurrentLiveCapture:
 
         now = datetime.fromtimestamp(time.time(), tz=UTC)
         suffix = uuid.uuid4().hex[:12]
-        return self.output_root / f"public-book-capture-{now:%Y%m%d}-{suffix}"
+        return self.book_output_root / f"public-book-capture-{now:%Y%m%d}-{suffix}"
 
 
 @dataclass(frozen=True, slots=True)
@@ -714,6 +750,20 @@ class _RESTCapture:
     received_ms: int
     persisted_ms: int
     path: Path
+
+
+def _latest_complete_native_segment(frames: tuple[Any, ...]) -> tuple[Any, ...]:
+    """Select one original tape, never flatten/re-hash unrelated segment roots."""
+    groups: dict[str, list[Any]] = {}
+    for frame in frames:
+        groups.setdefault(frame.tape_id, []).append(frame)
+    for values in reversed(tuple(groups.values())):
+        if {frame.symbol for frame in values} == set(UNIVERSE):
+            result = tuple(values)
+            if tuple(frame.tape_sequence for frame in result) != tuple(range(1, len(result) + 1)):
+                raise CurrentLiveRefused("ORIGINAL_SEGMENT_SEQUENCE_CONFLICT")
+            return result
+    raise CurrentLiveRefused("NO_SINGLE_ORIGINAL_FIVE_SYMBOL_NATIVE_SEGMENT")
 
 
 async def _capture_v2_window(
@@ -752,6 +802,7 @@ async def _capture_v2_window(
         raise CurrentLiveRefused("DEFAULT_TLS_VALIDATION_UNAVAILABLE")
 
     recorder = None
+    failure_category = None
     handshake_completed_ms: int | None = None
     state, reason = "FAILED", "NO_CONNECTION"
     transport: dict[str, Any] = {
@@ -786,23 +837,18 @@ async def _capture_v2_window(
                         # starts both the admission TTL and bounded capture.
                         recorder = PublicBookRecorder(output, seconds=seconds, clock=clock, monotonic=mono)
                         deadline = time.monotonic() + seconds
-                        while time.monotonic() < deadline:
-                            remaining = deadline - time.monotonic()
-                            if remaining <= 0:
-                                break
-                            try:
-                                message = await asyncio.wait_for(socket.receive(), min(5.0, remaining))
-                            except TimeoutError:
-                                if time.monotonic() >= deadline:
-                                    break
-                                raise ValueError("public stream receive gap") from None
-                            received_ms, received_ns = clock(), mono()
-                            if message.type is not aiohttp.WSMsgType.TEXT:
-                                raise ValueError("public stream closed or returned non-text")
-                            recorder.accept(message.data, received_ms=received_ms, received_ns=received_ns)
+                        await _consume_public_book_socket(
+                            socket, recorder, deadline=deadline, clock=clock, mono=mono
+                        )
                         state, reason = "CAPTURED", "SEALED_DURATION_COMPLETE"
         except (Exception, asyncio.CancelledError) as exc:
             state, reason = "FAILED", type(exc).__name__
+            failure_category = {
+                "public delivery queue bound reached; source not admitted": "DELIVERY_QUEUE_BOUND_REACHED",
+                "delivery beyond declared capture window": "DELIVERY_OUTSIDE_CAPTURE_WINDOW",
+                "public stream receive gap": "PUBLIC_RECEIVE_GAP",
+                "public stream closed or returned non-text": "PUBLIC_STREAM_CLOSED_OR_NON_TEXT",
+            }.get(str(exc), type(exc).__name__)
         finally:
             # Match the existing capture's bounded aiohttp TLS-close drain.
             await asyncio.sleep(0.250)
@@ -819,16 +865,124 @@ async def _capture_v2_window(
                 "capture_id": receipt["capture_id"],
                 "endpoint": ENDPOINT,
                 "transport_attempts": transport["attempts"],
+                "failure_category": failure_category,
                 "handshake_completed": transport["handshake_completed"],
                 "handshake_completed_ms": handshake_completed_ms,
                 "recorder_started_ms": recorder.started_ms,
                 "recorder_started_monotonic_ns": recorder.started_ns,
                 "capture_seconds_from_recorder_start": seconds,
+                "transport_delivery_sha256": (
+                    hashlib.sha256((output / "transport-delivery.raw.jsonl").read_bytes()).hexdigest()
+                    if (output / "transport-delivery.raw.jsonl").exists()
+                    else None
+                ),
                 "source_receipt_sha256": hashlib.sha256(_canonical_bytes(receipt)).hexdigest(),
                 "risk_authority": "NONE",
             },
         )
         return receipt
+
+
+async def _consume_public_book_socket(socket, recorder, *, deadline, clock, mono) -> None:
+    """Keep actual delivery clocks while the unchanged recorder seals segments.
+
+    Every delivered body is separately retained before enqueueing. The bounded
+    single consumer calls the original recorder in exact arrival order; no
+    message is sampled, sorted, retimed, or admitted if either side fails.
+    """
+    import aiohttp
+    from adaptive_replay.public_book_capture import MAX_FRAMES, MAX_RAW_BYTES, MAX_RAW_TOTAL
+
+    queue: asyncio.Queue = asyncio.Queue(maxsize=512)
+    delivered = 0
+    raw_bytes = 0
+    delivery_path = recorder.output / "transport-delivery.raw.jsonl"
+
+    async def consume() -> None:
+        while True:
+            item = await queue.get()
+            try:
+                if item is None:
+                    return
+                text, received_ms, received_ns = item
+                job = asyncio.create_task(
+                    asyncio.to_thread(recorder.accept, text, received_ms=received_ms, received_ns=received_ns)
+                )
+                try:
+                    await asyncio.shield(job)
+                except asyncio.CancelledError:
+                    # Do not race finish() against an in-flight durable write.
+                    await job
+                    raise
+            finally:
+                queue.task_done()
+
+    consumer = asyncio.create_task(consume(), name="kairos-current-ordered-book-writer")
+    try:
+        with delivery_path.open("xb") as delivery:
+            while time.monotonic() < deadline:
+                if consumer.done():
+                    consumer.result()
+                    raise ValueError("public book consumer ended before capture")
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                try:
+                    message = await asyncio.wait_for(socket.receive(), min(5.0, remaining))
+                except TimeoutError:
+                    if time.monotonic() >= deadline:
+                        break
+                    raise ValueError("public stream receive gap") from None
+                received_ms, received_ns = clock(), mono()
+                if received_ns - recorder.started_ns > recorder.seconds * 1_000_000_000:
+                    raise ValueError("delivery beyond declared capture window")
+                if message.type is not aiohttp.WSMsgType.TEXT:
+                    raise ValueError("public stream closed or returned non-text")
+                body = message.data.encode("utf-8", errors="strict")
+                if not 0 < len(body) <= MAX_RAW_BYTES or raw_bytes + len(body) > MAX_RAW_TOTAL:
+                    raise ValueError("public delivery byte bound exceeded")
+                if delivered >= MAX_FRAMES:
+                    raise ValueError("public delivery frame bound exceeded")
+                delivered += 1
+                raw_bytes += len(body)
+                line = (
+                    _canonical_bytes(
+                        {
+                            "sequence": delivered,
+                            "received_ms": received_ms,
+                            "received_monotonic_ns": received_ns,
+                            "raw_payload": message.data,
+                            "raw_payload_sha256": hashlib.sha256(body).hexdigest(),
+                        }
+                    )
+                    + b"\n"
+                )
+                if delivery.write(line) != len(line):
+                    raise OSError("incomplete public delivery receipt")
+                delivery.flush()
+                os.fsync(delivery.fileno())
+                try:
+                    queue.put_nowait((message.data, received_ms, received_ns))
+                except asyncio.QueueFull:
+                    raise ValueError("public delivery queue bound reached; source not admitted") from None
+            await queue.put(None)
+            await consumer
+        if delivered != recorder.observed or delivered != recorder.admitted:
+            raise ValueError("public delivery and native recorder denominators differ")
+    except BaseException:
+        # A later socket failure must not discard earlier delivered bodies.
+        # They remain separately fsynced even if native validation itself fails.
+        if not consumer.done():
+            try:
+                await asyncio.wait_for(queue.put(None), 5.0)
+                await asyncio.wait_for(asyncio.shield(consumer), 5.0)
+            except (Exception, asyncio.CancelledError):
+                pass
+        raise
+    finally:
+        if not consumer.done():
+            consumer.cancel()
+        await asyncio.gather(consumer, return_exceptions=True)
 
 
 @dataclass(frozen=True, slots=True)
