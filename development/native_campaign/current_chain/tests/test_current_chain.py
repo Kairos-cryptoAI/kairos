@@ -28,6 +28,11 @@ from kairos_core.contracts import (
 )
 from kairos_core.contracts.base import datetime_from_unix_ms
 from kairos_core.enums import ImpactDirection, MarketRegime, ReasoningEffort, Side, StrategicTrigger
+from kairos_router.aggregation import TextAggregate
+from kairos_strategy.candles import Candle
+from kairos_strategy.provenance import candle_payload
+from kairos_strategy.runtime import candle_to_closed_bar
+
 from kairos_native_campaign.current_chain import (
     CurrentCatalystChain,
     bind_scenario_review,
@@ -38,10 +43,6 @@ from kairos_native_campaign.current_chain import (
     native_intent,
     review_native,
 )
-from kairos_router.aggregation import TextAggregate
-from kairos_strategy.candles import Candle
-from kairos_strategy.provenance import candle_payload
-from kairos_strategy.runtime import candle_to_closed_bar
 
 START = 1_700_000_100_000
 SYMBOL = sorted(UNIVERSE)[0]

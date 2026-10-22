@@ -6,6 +6,8 @@ from pathlib import Path
 
 import pytest
 from adaptive_replay.hypothesis_v3 import EntryQuote
+from kairos_strategy.candles import Candle
+
 from kairos_native_campaign.current_capture import BAR_COUNT, BAR_MS, FreshQuoteSnapshot
 from kairos_native_campaign.current_inputs import (
     CapturedClosedBar,
@@ -15,7 +17,6 @@ from kairos_native_campaign.current_inputs import (
     QuantMeasurements,
     build_market_snapshot,
 )
-from kairos_strategy.candles import Candle
 
 NOW = 1_800_000_000_000
 

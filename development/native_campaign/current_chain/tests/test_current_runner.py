@@ -6,6 +6,7 @@ import json
 from types import SimpleNamespace
 
 import pytest
+
 from kairos_native_campaign.current_runner import (
     MAX_SCHEDULED_WAIT_MS,
     CurrentRunConfig,

@@ -1,6 +1,7 @@
 import json
 
 import pytest
+
 from kairos_native_campaign.current_runtime import (
     _ACTIVE,
     CurrentScopedBudget,

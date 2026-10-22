@@ -23,12 +23,13 @@ from kairos_core.contracts import (
     SimulationSessionV1,
 )
 from kairos_execution.simulation import SimulationExecutionController
-from kairos_native_campaign.current_chain import bind_scenario_review, decide_sim, native_intent
 from kairos_persistence import Database, MigrationProfile, PersistenceSettings, SimulationRepository
 from kairos_persistence.database_target import connect_verified_database, require_database_target_url
 from kairos_strategy.candles import Candle
 from kairos_strategy.runtime import candle_to_closed_bar
 from test_current_chain import NATIVE, START, SYMBOL, UNIVERSE, prepared_plan, reviewed, sim_session
+
+from kairos_native_campaign.current_chain import bind_scenario_review, decide_sim, native_intent
 
 
 def _target():

@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 import pytest
+
 from kairos_native_campaign.current_capture import (
     BAR_COUNT,
     BAR_MS,

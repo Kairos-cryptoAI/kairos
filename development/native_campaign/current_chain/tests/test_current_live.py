@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
+
 from kairos_native_campaign.current_capture import CurrentPublicCapture, HTTPResponse
 from kairos_native_campaign.current_live import CurrentLiveCapture
 

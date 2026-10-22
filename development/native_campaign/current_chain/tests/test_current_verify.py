@@ -1,6 +1,7 @@
 """CLI/factual capture-envelope tests; no provider, socket or database."""
 
 import pytest
+
 from kairos_native_campaign import current_verify as cv
 
 
