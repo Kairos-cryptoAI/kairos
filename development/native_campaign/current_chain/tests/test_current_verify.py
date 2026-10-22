@@ -90,6 +90,20 @@ def test_phase_cap_is_pre_request_and_plan_does_not_arm(tmp_path):
     assert not list(tmp_path.iterdir())
 
 
+def test_plan_reviewed_mode_is_explicit_distinct_and_never_arms_old_campaigns():
+    original = cv.scope()
+    separate = cv.scope(plan_reviewed_entry=True)
+    assert original["mode"] == "CURRENT_OBSERVED_DECISIONS_THEN_SEALED_NATIVE_SIM_REPLAY"
+    assert separate["mode"] == cv.PLAN_REVIEWED_MODE
+    assert separate["review_binding"] == "REAL_MODEL_PLAN_THEN_DETERMINISTIC_EXACT_ENTRY"
+    assert separate["frozen_campaign_mutation"] is False
+    for plan in (original, separate):
+        assert plan["real_venue_orders"] is False
+        assert plan["readiness_promotion"] is False
+        assert plan["maximum_openai_calls"] == 24
+        assert plan["existing_cumulative_cap_microusd"] == 12_000_000
+
+
 def test_news_selection_is_only_existing_configured_feed_not_implicit_fallback(tmp_path):
     chosen = "https://cointelegraph.com/rss"
     capture = cv.PhaseBoundedCapture(tmp_path, text_feed=chosen)

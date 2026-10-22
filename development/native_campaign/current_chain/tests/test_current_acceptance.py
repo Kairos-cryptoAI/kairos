@@ -123,6 +123,287 @@ def test_outer_bootstrap_only_failure_returns_sanitized_fail_closed_assessment(t
     assert result["input_sha256s"]["bootstrap-failure.json"] == hashlib.sha256(body).hexdigest()
 
 
+def test_plan_reviewed_certificate_requires_actual_call_join_and_deterministic_final_review():
+    """Engineering proof-join fixture only, not a real-source acceptance result."""
+    from dataclasses import replace
+
+    from test_current_plan import authorize, setup_plan
+
+    from kairos_native_campaign.current_acceptance import _plan_reviewed_entries_bound
+    from kairos_native_campaign.current_plan import PLAN_REVIEW_SYSTEM, plan_review_prompt
+    from kairos_native_campaign.current_runner import _canonical_sha
+
+    plan, original_review, observations, bars = setup_plan()
+    directional_content = json.dumps(
+        {
+            "long_review": "ALLOW",
+            "short_review": "DEFER",
+            "proposal": "LONG",
+            "evidence_ids": [],
+        }
+    )
+    creation = replace(
+        plan.creation_assessment,
+        response_sha256=hashlib.sha256(directional_content.encode()).hexdigest(),
+    )
+    plan = replace(plan, creation_assessment=creation)
+    content = '{"decision":"ALLOW","priority":1,"reason_codes":["ENGINEERING_ONLY"]}'
+    provenance = original_review.model_provenance.model_copy(
+        update={
+            "response_sha256": hashlib.sha256(content.encode()).hexdigest(),
+            "prompt_sha256": _canonical_sha({"system": PLAN_REVIEW_SYSTEM, "user": plan_review_prompt(plan)}),
+        }
+    )
+    plan_review = replace(
+        original_review,
+        model_provenance=provenance,
+        plan_sha256=plan.sha256,
+        reason_codes=("ENGINEERING_ONLY",),
+    )
+    authorization = authorize(plan, plan_review, observations, bars)
+    certificate = authorization.payload()
+    request = {
+        "sequence": 1,
+        "entry_authorization": certificate,
+        "entry_authorization_sha256": authorization.sha256,
+        "review": authorization.native_review.model_dump(mode="json"),
+        "intent": authorization.intent.model_dump(mode="json"),
+        "quote": {"entry_quote_sha256": authorization.quote_sha256},
+        "observed_request_ms": authorization.authorized_at_ms + 1,
+    }
+    actual = [
+        {
+            "budget_reservation_id": provenance.budget_reservation_id,
+            "request_id": provenance.request_id,
+            "provider": provenance.provider,
+            "resolved_model": provenance.model,
+            "workload": "aggregator_normal",
+            "content": content,
+            "attempt_started_at_ts_ms": plan_review.requested_at_ms,
+            "response_observed_at_ts_ms": plan_review.response_observed_at_ms,
+        },
+        {
+            "budget_reservation_id": "directional-engineering-only",
+            "request_id": "directional-engineering-only",
+            "provider": "openai",
+            "resolved_model": "engineering-fixture",
+            "workload": "aggregator_normal",
+            "content": directional_content,
+            "attempt_started_at_ts_ms": creation.actual_requested_ms,
+            "response_observed_at_ts_ms": creation.actual_completed_ms,
+        },
+    ]
+    planning = {
+        "complete": True,
+        "objects": {
+            plan.sha256: plan.payload(),
+            plan_review.sha256: plan_review.payload(),
+            authorization.sha256: certificate,
+        },
+        "provider_requests": {
+            provenance.budget_reservation_id: {
+                "system": PLAN_REVIEW_SYSTEM,
+                "user": plan_review_prompt(plan),
+            },
+            "directional-engineering-only": {"user": plan.creation_input_json},
+        },
+    }
+    # The acceptance reader receives JSON artifacts, not in-memory tuples and
+    # enums from the typed engineering helper.
+    planning = json.loads(json.dumps(planning))
+    replay = [
+        {
+            "observed_request_sequence": 1,
+            "entry_authorization_sha256": authorization.sha256,
+            "entry_review_semantics": "DETERMINISTIC_AFTER_RETAINED_PLAN_MODEL_REVIEW",
+        }
+    ]
+    assert _plan_reviewed_entries_bound(
+        {"plan_reviews": ["engineering-only"]}, actual, [request], replay, planning
+    )
+    assert not _plan_reviewed_entries_bound({"plan_reviews": []}, actual, [request], replay, planning)
+    actual[0]["request_id"] = "not-the-model-call"
+    assert not _plan_reviewed_entries_bound(
+        {"plan_reviews": ["engineering-only"]}, actual, [request], replay, planning
+    )
+
+
+def _native_source_join_fixture():
+    """Synthetic semantic-contract fixture, never a real acceptance receipt."""
+    from kairos_core.contracts import StrategicAllocation
+    from kairos_core.contracts.base import datetime_from_unix_ms
+    from kairos_macro.prompts import allocation_system_prompt
+    from kairos_macro.strategist import AllocationOutput
+    from kairos_text.models import NewsItem
+    from kairos_text.prompts import SENTIMENT_SYSTEM
+    from kairos_text.sentiment import SentimentExtractor
+    from test_current_chain import START
+
+    from kairos_native_campaign.current_acceptance import _actual_text_signals, _macro_news_item
+    from kairos_native_campaign.current_plan import STRATEGY_ID
+
+    item = NewsItem(
+        title="Bitcoin ETF approval rally",
+        body="Bitcoin market news",
+        url="https://example.test/bitcoin",
+        source="coindesk_rss",
+        source_kind="rss",
+        published_at=datetime_from_unix_ms(START - 1_000),
+        timestamp_is_estimated=False,
+        provenance=("https://example.test/bitcoin",),
+    )
+    receipt = {"persisted_ms": START - 100, "received_ms": START - 200, "raw_sha256": "1" * 64}
+    rss = {"receipt": receipt, "items": (item,), "snapshot_sha256": "2" * 64}
+    text_request = {
+        "system": SENTIMENT_SYSTEM,
+        "user": SentimentExtractor(None)._format_batch([item]),
+        "requested_ms": START,
+    }
+    text_result = {
+        "budget_reservation_id": "text-fixture-only",
+        "workload": "text_scouts",
+        "attempt_started_at_ts_ms": START,
+        "response_observed_at_ts_ms": START + 500,
+        "content": json.dumps(
+            {
+                "signals": [
+                    {
+                        "topic": "BTCUSDT",
+                        "sentiment": 0.8,
+                        "impact": "bullish",
+                        "confidence": 0.9,
+                        "summary": "Fixture only",
+                        "item_ids": [1],
+                    }
+                ]
+            }
+        ),
+    }
+    signal = _actual_text_signals(text_result, text_request, rss, {})[0]
+    macro_output = AllocationOutput.model_validate(
+        {
+            "regime": "CHOP",
+            "stable_reserve_pct": 0.2,
+            "strategy_weights": [{"strategy_name": STRATEGY_ID, "weight": 0.8}],
+            "max_gross_leverage": 1.0,
+            "rationale": "Fixture only",
+        }
+    )
+    allocation = StrategicAllocation(
+        source="kairos-current-plan-macro",
+        produced_at=datetime_from_unix_ms(START + 1_000),
+        regime=macro_output.regime,
+        stable_reserve_pct=macro_output.stable_reserve_pct,
+        strategy_weights=macro_output.strategy_weight_map((STRATEGY_ID,)),
+        max_gross_leverage=1.0,
+        triggered_by="schedule",
+        rationale=macro_output.rationale,
+    )
+    official = {"captured_ms": START - 2_000, "status": "partial", "fixture_only": True}
+    macro_request = {
+        "system": allocation_system_prompt((STRATEGY_ID,)),
+        "requested_ms": START + 600,
+        "user": json.dumps(
+            {
+                "as_of_ms": START - 50,
+                "macro_factors": official,
+                "news": {
+                    "raw_sha256": receipt["raw_sha256"],
+                    "received_ms": receipt["received_ms"],
+                    "items": [_macro_news_item(item)],
+                },
+            }
+        ),
+    }
+    macro_result = {
+        "budget_reservation_id": "macro-fixture-only",
+        "workload": "macro_strategist",
+        "attempt_started_at_ts_ms": START + 600,
+        "response_observed_at_ts_ms": START + 900,
+        "content": macro_output.model_dump_json(),
+    }
+    context = [
+        {
+            "kind": "MACRO",
+            "payloads_json": json.dumps([allocation.model_dump(mode="json")]),
+            "event_ms": START + 1_000,
+            "received_ms": START + 1_010,
+            "persisted_ms": START + 1_010,
+        },
+        {
+            "kind": "TEXT",
+            "payloads_json": json.dumps([signal.model_dump(mode="json")]),
+            "event_ms": START - 1_000,
+            "received_ms": START + 550,
+            "persisted_ms": START + 550,
+        },
+    ]
+    run = {
+        "macro_allocation": allocation.model_dump(mode="json"),
+        "text_snapshot_sha256": rss["snapshot_sha256"],
+        "macro_provider_reservation_ids": ["macro-fixture-only"],
+    }
+    planning = {
+        "actual_sources": {"complete": True, "rss": [rss], "official_macro": official},
+        "objects": {"plan-fixture": {"plan": {"created_at_ms": START + 2_000, "context": context}}},
+        "provider_requests": {"text-fixture-only": text_request, "macro-fixture-only": macro_request},
+    }
+    requests = [{"entry_authorization": {"plan_sha256": "plan-fixture"}}]
+    return run, [text_result, macro_result], requests, planning
+
+
+def test_v3_text_macro_semantics_join_actual_outputs_and_original_request_sources():
+    from kairos_native_campaign.current_acceptance import _native_model_sources_bound
+
+    run, actual, requests, planning = _native_source_join_fixture()
+    assert _native_model_sources_bound(run, actual, requests, planning)
+    # An unrelated successful call no longer grants source/producer credit.
+    actual[0]["content"] = '{"signals":[]}'
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+
+
+def test_v3_macro_allocation_fields_and_official_inputs_cannot_be_substituted():
+    from kairos_native_campaign.current_acceptance import _native_model_sources_bound
+
+    run, actual, requests, planning = _native_source_join_fixture()
+    run["macro_allocation"]["rationale"] = "Not the actual model output"
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+    run, actual, requests, planning = _native_source_join_fixture()
+    request = planning["provider_requests"]["macro-fixture-only"]
+    payload = json.loads(request["user"])
+    payload["macro_factors"]["captured_ms"] += 1
+    request["user"] = json.dumps(payload)
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+
+
+def test_v3_text_confidence_envelope_and_raw_rss_request_cannot_be_forged():
+    from kairos_native_campaign.current_acceptance import _native_model_sources_bound
+
+    run, actual, requests, planning = _native_source_join_fixture()
+    text = planning["objects"]["plan-fixture"]["plan"]["context"][1]
+    signal = json.loads(text["payloads_json"])[0]
+    signal["confidence"] = 0.9  # Native cap with one source is exactly 0.65.
+    text["payloads_json"] = json.dumps([signal])
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+    run, actual, requests, planning = _native_source_join_fixture()
+    request = planning["provider_requests"]["text-fixture-only"]
+    payload = json.loads(request["user"])
+    payload["items"][0]["body"] = "Not present in captured RSS"
+    request["user"] = json.dumps(payload)
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+
+
+def test_v3_missing_original_sources_or_future_native_wrapping_is_fail_closed():
+    from kairos_native_campaign.current_acceptance import _native_model_sources_bound
+
+    run, actual, requests, planning = _native_source_join_fixture()
+    planning["actual_sources"]["complete"] = False
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+    run, actual, requests, planning = _native_source_join_fixture()
+    planning["objects"]["plan-fixture"]["plan"]["context"][1]["received_ms"] = 0
+    assert not _native_model_sources_bound(run, actual, requests, planning)
+
+
 def test_outer_bootstrap_directory_path_is_present_and_disqualifying(tmp_path):
     (tmp_path / "bootstrap-failure.json").mkdir()
 
@@ -278,7 +559,9 @@ def test_synthetic_positive_deferred_receipt_contract_only(tmp_path):
             }
         ],
         "source_end_watermark": {"original_frame_count": 5},
-        "incomplete_lifecycles": [{"observed_request_sequence": 1, "execution_state": "ACTIVE"}],
+        "incomplete_lifecycles": [
+            {"observed_request_sequence": 1, "trade_id": None, "execution_state": "ACTIVE"}
+        ],
         "window_completion": "INSUFFICIENT_FUTURE_OBSERVATION",
         "full_trade_lifecycle_verified": False,
         "actual_live_risk_or_execution": False,
@@ -407,7 +690,9 @@ def test_synthetic_positive_deferred_receipt_contract_only(tmp_path):
     missing_unresolved = assess_directory(tmp_path)
     assert not missing_unresolved["checks"]["later_native_sim_replay_bound"]
 
-    replay["incomplete_lifecycles"] = [{"observed_request_sequence": 1, "execution_state": "ACTIVE"}]
+    replay["incomplete_lifecycles"] = [
+        {"observed_request_sequence": 1, "trade_id": None, "execution_state": "ACTIVE"}
+    ]
     write_json(deferred / "native-replay-result.json", replay)
     tape_verification_path = tmp_path / "native-tape-verification.json"
     tape_verification = json.loads(tape_verification_path.read_text(encoding="utf-8"))

@@ -10,11 +10,14 @@ import argparse
 import hashlib
 import json
 import re
+from datetime import datetime
 from pathlib import Path
+from uuid import UUID
 
 from .current_runner import write_create_only
 
 _OBSERVED_MODE = "CURRENT_OBSERVED_DECISIONS_THEN_SEALED_NATIVE_SIM_REPLAY"
+_PLAN_REVIEWED_MODE = "CURRENT_PLAN_REVIEW_THEN_FRESH_QUOTE_NATIVE_SIM_V3"
 _REPLAY_MODE = "OFFLINE_NATIVE_SIM_REPLAY_FROM_OBSERVED_DECISIONS"
 _SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
 
@@ -117,6 +120,7 @@ def _deferred_acceptance(
     stages = {row["name"] for row in run.get("stages", []) if row.get("status") == "COMPLETED"}
     text = run.get("text_poll", {})
     slots = run.get("slot_results", [])
+    plan_reviewed = before.get("plan", {}).get("mode") == _PLAN_REVIEWED_MODE
 
     plan = evidence.get("deferred-plan", {})
     replay = evidence.get("native-replay-result", {})
@@ -209,13 +213,14 @@ def _deferred_acceptance(
     expected_incomplete = [
         {
             "observed_request_sequence": row.get("observed_request_sequence"),
+            "trade_id": row.get("trade_id"),
             "execution_state": row.get("execution_state"),
         }
         for row in replay_outcomes
         if isinstance(row, dict)
         and row.get("replay_risk_approved") is True
         and row.get("execution_state")
-        in {None, "ACTIVE", "PENDING_ENTRY", "NOT_SUBMITTED_ARRIVAL_OUTSIDE_ORIGINAL_WINDOW"}
+        in {None, "ACTIVE", "PENDING", "UNRESOLVED", "NOT_SUBMITTED_ARRIVAL_OUTSIDE_ORIGINAL_WINDOW"}
     ]
     replay_completion_consistent = replay.get("incomplete_lifecycles") == expected_incomplete and replay.get(
         "window_completion"
@@ -237,7 +242,8 @@ def _deferred_acceptance(
     )
     checks = {
         "traversal_completed": run.get("result") == "COMPLETED",
-        "observed_decisions_then_native_replay_mode": before.get("plan", {}).get("mode") == _OBSERVED_MODE,
+        "observed_decisions_then_native_replay_mode": before.get("plan", {}).get("mode")
+        in {_OBSERVED_MODE, _PLAN_REVIEWED_MODE},
         "five_symbol_real_bar_capture": set(run.get("history_bar_counts", {})) == set(_SYMBOLS)
         and all(run.get("history_bar_counts", {}).get(symbol) == 3240 for symbol in _SYMBOLS),
         "fresh_news_with_actual_text_model": text.get("captured_item_count", 0) > 0
@@ -299,6 +305,25 @@ def _deferred_acceptance(
         ),
         "later_native_sim_replay_bound": replay_bound,
     }
+    if plan_reviewed:
+        # New explicit binding: real plan-level model output followed by a
+        # separately proved deterministic entry, NOT final-intent LLM review.
+        del checks["actual_native_router_and_model_review"]
+        checks["current_catalyst_plan_materialized"] = any(
+            _is_sha256(row.get("plan_sha256")) for row in slots
+        )
+        checks["actual_plan_model_and_deterministic_entry_bound"] = _plan_reviewed_entries_bound(
+            run, actual, requests, replay_outcomes, evidence.get("planning", {})
+        )
+        checks["actual_native_text_macro_outputs_and_sources_bound"] = _native_model_sources_bound(
+            run, actual, requests, evidence.get("planning", {})
+        )
+        checks["new_plan_profile_not_frozen_campaign"] = (
+            run.get("schema_version") == "kairos.current-plan-run.v3"
+            and before.get("plan", {}).get("frozen_campaign_mutation") is False
+            and before.get("plan", {}).get("review_binding")
+            == "REAL_MODEL_PLAN_THEN_DETERMINISTIC_EXACT_ENTRY"
+        )
     missing = [name for name, passed in checks.items() if not passed]
     replay_unresolved = replay.get("incomplete_lifecycles")
     full_lifecycle = (
@@ -314,7 +339,7 @@ def _deferred_acceptance(
         and not any(
             row.get("replay_risk_approved") is True
             and row.get("execution_state")
-            in {None, "ACTIVE", "PENDING_ENTRY", "NOT_SUBMITTED_ARRIVAL_OUTSIDE_ORIGINAL_WINDOW"}
+            in {None, "ACTIVE", "PENDING", "UNRESOLVED", "NOT_SUBMITTED_ARRIVAL_OUTSIDE_ORIGINAL_WINDOW"}
             for row in replay_outcomes
             if isinstance(row, dict)
         )
@@ -323,7 +348,11 @@ def _deferred_acceptance(
     )
     return {
         "schema": "kairos.current-real-path-acceptance.v1",
-        "state": "OBSERVED_DECISIONS_WITH_LATER_NATIVE_SIM_ENTRY_VERIFIED"
+        "state": (
+            "PLAN_REVIEWED_FRESH_ENTRY_WITH_NATIVE_SIM_VERIFIED"
+            if plan_reviewed
+            else "OBSERVED_DECISIONS_WITH_LATER_NATIVE_SIM_ENTRY_VERIFIED"
+        )
         if not missing
         else "PARTIAL_REQUIRED_STAGES_NOT_EXERCISED",
         "traversal_result": run.get("result"),
@@ -340,7 +369,481 @@ def _deferred_acceptance(
         "readiness_promotion": False,
         "trading_authority": "NONE",
         "risk_and_controller_classification": "LATER_NATIVE_SIM_REPLAY_NOT_ACTUAL_LIVE_EXECUTION",
+        "entry_review_semantics": "DETERMINISTIC_AFTER_REAL_PLAN_MODEL_REVIEW"
+        if plan_reviewed
+        else "EXACT_FINAL_INTENT_MODEL_REVIEW",
     }
+
+
+def _plan_reviewed_entries_bound(run, actual, requests, replay_outcomes, planning) -> bool:
+    from kairos_aggregator.candidate_review import CandidateReviewOutput
+
+    from .current_plan import POLICY_ID, STRATEGY_ID, STRATEGY_REVISION
+
+    objects = planning.get("objects", {})
+    provider_requests = planning.get("provider_requests", {})
+    if not requests or planning.get("complete") is not True:
+        return False
+    results = {row.get("budget_reservation_id"): row for row in actual}
+    for request in requests:
+        certificate = request.get("entry_authorization", {})
+        review = request.get("review", {})
+        intent = request.get("intent", {})
+        plan_document = objects.get(certificate.get("plan_sha256"), {})
+        review_document = objects.get(certificate.get("plan_review_sha256"), {})
+        plan = plan_document.get("plan", {})
+        plan_review = review_document.get("plan_review", {})
+        provenance = plan_review.get("model_provenance", {})
+        result = results.get(provenance.get("budget_reservation_id"), {})
+        provider_request = provider_requests.get(provenance.get("budget_reservation_id"), {})
+        try:
+            prompt = json.loads(provider_request.get("user", ""))
+            output = CandidateReviewOutput.model_validate_json(result.get("content", ""))
+        except (ValueError, TypeError):
+            return False
+        payload_sha = _sha256(_canonical(certificate))
+        matches_replay = any(
+            row.get("observed_request_sequence") == request.get("sequence")
+            and row.get("entry_authorization_sha256") == payload_sha
+            and row.get("entry_review_semantics") == "DETERMINISTIC_AFTER_RETAINED_PLAN_MODEL_REVIEW"
+            for row in replay_outcomes
+        )
+        if not (
+            certificate.get("schema") == "kairos.current-plan-entry-authorization.v1"
+            and certificate.get("policy")
+            == plan_document.get("policy")
+            == review_document.get("policy")
+            == POLICY_ID
+            and objects.get(payload_sha) == certificate
+            and request.get("entry_authorization_sha256") == payload_sha
+            and certificate.get("native_review") == review
+            and review.get("intent") == intent
+            and certificate.get("quote_sha256") == request.get("quote", {}).get("entry_quote_sha256")
+            and dict(intent.get("metadata", ())).get("entry_quote_sha256") == certificate.get("quote_sha256")
+            and dict(intent.get("metadata", ())).get("current_plan_sha256") == certificate.get("plan_sha256")
+            and dict(intent.get("metadata", ())).get("current_plan_review_sha256")
+            == certificate.get("plan_review_sha256")
+            and review.get("reviewer") == "DETERMINISTIC"
+            and review.get("model_provenance") is None
+            and review.get("decision") == plan_review.get("decision") == "ALLOW"
+            and output.decision.value == "ALLOW"
+            and output.priority == plan_review.get("priority")
+            and tuple(output.reason_codes) == tuple(plan_review.get("reason_codes", ()))
+            and intent.get("strategy_id") == STRATEGY_ID
+            and intent.get("strategy_revision") == STRATEGY_REVISION
+            and plan_review.get("plan_sha256") == certificate.get("plan_sha256")
+            and plan_review.get("context_sha256") == certificate.get("context_sha256")
+            and result.get("request_id") == provenance.get("request_id")
+            and (result.get("resolved_model") or result.get("model")) == provenance.get("model")
+            and result.get("provider") == provenance.get("provider") == "openai"
+            and result.get("workload") in {"aggregator_normal", "aggregator_conflict"}
+            and provenance.get("response_sha256") == _sha256(str(result.get("content", "")).encode("utf-8"))
+            and provenance.get("prompt_sha256")
+            == _sha256(_canonical({key: provider_request.get(key) for key in ("system", "user")}))
+            and prompt.get("plan_sha256") == certificate.get("plan_sha256")
+            and prompt.get("plan") == plan
+            and prompt.get("authority") == "PLANNING_ONLY_NO_EXECUTABLE_QUOTE_OR_ORDER"
+            and prompt.get("planning_route", {}).get("workload") == result.get("workload")
+            and all(
+                type(value) is int
+                for value in (
+                    plan.get("created_at_ms"),
+                    plan_review.get("requested_at_ms"),
+                    plan_review.get("response_observed_at_ms"),
+                    plan_review.get("completed_at_ms"),
+                    certificate.get("authorized_at_ms"),
+                    request.get("observed_request_ms"),
+                    intent.get("entry_expires_ts_ms"),
+                )
+            )
+            and plan["created_at_ms"]
+            <= plan_review["requested_at_ms"]
+            <= plan_review["response_observed_at_ms"]
+            <= plan_review["completed_at_ms"]
+            <= certificate["authorized_at_ms"]
+            <= request["observed_request_ms"]
+            <= intent["entry_expires_ts_ms"]
+            and result.get("attempt_started_at_ts_ms") == plan_review.get("requested_at_ms")
+            and result.get("response_observed_at_ts_ms") == plan_review.get("response_observed_at_ms")
+            and matches_replay
+            and _actual_directional_creation_bound(plan, actual, provider_requests)
+        ):
+            return False
+    return bool(run.get("plan_reviews"))
+
+
+def _actual_directional_creation_bound(plan, actual, provider_requests) -> bool:
+    if plan.get("origin") == "TECHNICAL":
+        return plan.get("creation_assessment") is None
+    if plan.get("origin") != "CONTEXT_PROPOSAL":
+        return False
+    from adaptive_replay.complex_assessment import DirectionalAssessment
+
+    assessment = plan.get("creation_assessment") or {}
+    matches = []
+    for result in actual:
+        request = provider_requests.get(result.get("budget_reservation_id"), {})
+        if (
+            request.get("user") != plan.get("creation_input_json")
+            or result.get("workload") != "aggregator_normal"
+            or _sha256(str(result.get("content", "")).encode("utf-8")) != assessment.get("response_sha256")
+            or result.get("attempt_started_at_ts_ms") != assessment.get("actual_requested_ms")
+            or result.get("response_observed_at_ts_ms") != assessment.get("actual_completed_ms")
+        ):
+            continue
+        try:
+            parsed = DirectionalAssessment.model_validate_json(result["content"])
+        except (ValueError, TypeError):
+            continue
+        if parsed.proposal == assessment.get("direction") == plan.get("template", {}).get("side"):
+            matches.append(result)
+    return len(matches) == 1
+
+
+def _native_model_sources_bound(run, actual, requests, planning) -> bool:
+    """V3-only semantic join, not credit for unrelated successful model calls."""
+    from kairos_core.contracts import StrategicAllocation
+    from kairos_macro.prompts import allocation_system_prompt
+    from kairos_macro.strategist import AllocationOutput
+
+    from .current_plan import STRATEGY_ID
+
+    sources = planning.get("actual_sources", {})
+    provider_requests = planning.get("provider_requests", {})
+    if sources.get("complete") is not True or not requests:
+        return False
+    try:
+        rss = next(
+            item for item in sources["rss"] if item["snapshot_sha256"] == run.get("text_snapshot_sha256")
+        )
+        allocation = StrategicAllocation.model_validate(run.get("macro_allocation", {}))
+        if (
+            allocation.source != "kairos-current-plan-macro"
+            or allocation.triggered_by.value != "schedule"
+            or allocation.correlation_id is not None
+            or allocation.causation_id is not None
+            or UUID(allocation.message_id).version != 4
+        ):
+            return False
+        macro_matches = []
+        reconstructed_signals = {}
+        signal_completed = {}
+        for result in actual:
+            request = provider_requests.get(result.get("budget_reservation_id"), {})
+            if result.get("workload") == "text_scouts":
+                for signal in _actual_text_signals(result, request, rss, run):
+                    body = signal.model_dump(mode="json")
+                    if (
+                        signal.message_id in reconstructed_signals
+                        and reconstructed_signals[signal.message_id] != body
+                    ):
+                        return False
+                    reconstructed_signals[signal.message_id] = body
+                    signal_completed[signal.message_id] = result["response_observed_at_ts_ms"]
+            if result.get("workload") != "macro_strategist":
+                continue
+            payload = json.loads(request.get("user", ""))
+            output = AllocationOutput.model_validate_json(result.get("content", ""))
+            expected = {
+                "regime": output.regime.value,
+                "stable_reserve_pct": output.stable_reserve_pct,
+                "strategy_weights": output.strategy_weight_map((STRATEGY_ID,)),
+                "max_gross_leverage": output.max_gross_leverage,
+                "rationale": output.rationale,
+            }
+            allocation_body = allocation.model_dump(mode="json")
+            news = payload.get("news", {})
+            if (
+                result.get("budget_reservation_id") not in run.get("macro_provider_reservation_ids", ())
+                or request.get("system") != allocation_system_prompt((STRATEGY_ID,))
+                or any(allocation_body[key] != value for key, value in expected.items())
+                or payload.get("macro_factors") != sources["official_macro"]
+                or news.get("raw_sha256") != rss["receipt"]["raw_sha256"]
+                or news.get("received_ms") != rss["receipt"]["received_ms"]
+                or news.get("items") != [_macro_news_item(item) for item in rss["items"]]
+                or not _actual_call_clock(result, request, rss["receipt"]["persisted_ms"])
+                or not sources["official_macro"]["captured_ms"]
+                <= payload["as_of_ms"]
+                <= request["requested_ms"]
+            ):
+                continue
+            macro_matches.append(result)
+        if len(macro_matches) != 1 or not reconstructed_signals:
+            return False
+        macro_result = macro_matches[0]
+        produced_ms = int(allocation.produced_at.timestamp() * 1_000)
+        if produced_ms < macro_result["response_observed_at_ts_ms"]:
+            return False
+        for request in requests:
+            certificate = request.get("entry_authorization", {})
+            plan = planning["objects"][certificate["plan_sha256"]]["plan"]
+            context = {source["kind"]: source for source in plan["context"]}
+            macro_source = context["MACRO"]
+            if (
+                json.loads(macro_source["payloads_json"]) != [allocation.model_dump(mode="json")]
+                or macro_source["event_ms"] != produced_ms
+                or not produced_ms
+                <= macro_source["received_ms"]
+                <= macro_source["persisted_ms"]
+                <= plan["created_at_ms"]
+            ):
+                return False
+            text_source = context["TEXT"]
+            text = json.loads(text_source["payloads_json"])
+            if not text or any(
+                reconstructed_signals.get(signal.get("message_id")) != signal for signal in text
+            ):
+                return False
+            if (
+                text_source["event_ms"]
+                != min(
+                    int(datetime.fromisoformat(s["produced_at"].replace("Z", "+00:00")).timestamp() * 1_000)
+                    for s in text
+                )
+                or not max(signal_completed[s["message_id"]] for s in text)
+                <= text_source["received_ms"]
+                <= text_source["persisted_ms"]
+                <= plan["created_at_ms"]
+            ):
+                return False
+        return True
+    except (ValueError, TypeError, KeyError, StopIteration, AttributeError):
+        return False
+
+
+def _actual_call_clock(result, request, source_persisted_ms):
+    values = (
+        source_persisted_ms,
+        request.get("requested_ms"),
+        result.get("attempt_started_at_ts_ms"),
+        result.get("response_observed_at_ts_ms"),
+    )
+    return all(type(value) is int for value in values) and tuple(sorted(values)) == values
+
+
+def _macro_news_item(item):
+    return {
+        "title": item.title,
+        "body": item.body,
+        "url": item.url,
+        "published_at": item.published_at.isoformat(),
+    }
+
+
+def _actual_text_signals(result, request, rss, run):
+    """Reconstruct native stable envelopes and confidence calibration without a gateway."""
+    from kairos_core.contracts.base import datetime_from_unix_ms
+    from kairos_text.config import TextSettings
+    from kairos_text.dedup import EventDeduplicator
+    from kairos_text.filter import LocalRelevanceFilter
+    from kairos_text.freshness import EventFreshnessFilter
+    from kairos_text.normalize import EventNormalizer
+    from kairos_text.prompts import SENTIMENT_SYSTEM
+    from kairos_text.schemas import SentimentBatch
+    from kairos_text.sentiment import _MIN_DIRECTIONAL_SENTIMENT, _MIN_MODEL_CONFIDENCE, _confidence_cap
+    from kairos_text.signals import build_signal
+
+    if request.get("system") != SENTIMENT_SYSTEM or not _actual_call_clock(
+        result, request, rss["receipt"]["persisted_ms"]
+    ):
+        return []
+    settings = TextSettings(_env_file=None, service_name="kairos-current-plan-text", bus_backend="memory")
+    started = next(
+        (
+            stage["started_ms"]
+            for stage in run.get("stages", ())
+            if stage.get("name") == "text_scouts_poll_once"
+        ),
+        request["requested_ms"],
+    )
+    if not rss["receipt"]["persisted_ms"] <= started <= request["requested_ms"]:
+        return []
+    timely = EventFreshnessFilter(
+        settings.max_event_age_s,
+        settings.max_future_skew_s,
+        allow_estimated_timestamps=settings.allow_estimated_timestamps,
+        clock=lambda: datetime_from_unix_ms(started),
+    ).select(EventNormalizer().normalize(rss["items"]))
+    relevant = LocalRelevanceFilter(settings.relevance_threshold, settings.top_k).select(
+        EventDeduplicator(settings.dedup_window_s).collapse_batch(timely)
+    )
+    expected_items = [
+        {"id": index, "source": item.source, "source_kind": item.source_kind, **_macro_news_item(item)}
+        for index, item in enumerate(relevant, 1)
+    ]
+    if json.loads(request.get("user", "")).get("items") != expected_items:
+        return []
+    batch = SentimentBatch.model_validate_json(result.get("content", ""))
+    signals = []
+    for output in batch.signals:
+        ids = output.item_ids
+        if len(ids) != len(set(ids)) or any(type(i) is not int or not 1 <= i <= len(relevant) for i in ids):
+            continue
+        evidence = [relevant[i - 1] for i in ids]
+        refs = sorted({ref for item in evidence for ref in item.provenance_refs}, key=str.casefold)
+        if (
+            not refs
+            or output.confidence < _MIN_MODEL_CONFIDENCE
+            or (output.sentiment > 0 and output.impact.value != "bullish")
+            or (output.sentiment < 0 and output.impact.value != "bearish")
+            or abs(output.sentiment) < _MIN_DIRECTIONAL_SENTIMENT
+            or output.impact.value == "neutral"
+        ):
+            continue
+        signals.append(
+            build_signal(
+                source="kairos-current-plan-text",
+                topic=output.topic,
+                sentiment=output.sentiment,
+                impact=output.impact,
+                confidence=min(output.confidence, _confidence_cap(len(refs))),
+                sources=refs,
+                summary=output.summary,
+                evidence=evidence,
+            )
+        )
+    return signals
+
+
+def _load_planning_evidence(root, responses, input_hashes, input_presence) -> dict:
+    """Join bounded create-only planning artifacts to recorded physical calls."""
+    folder = root / "plan-reviews"
+    files = sorted(folder.glob("*.json")) if folder.is_dir() else []
+    complete = bool(files) and len(files) <= 32
+    objects, provider_requests = {}, {}
+    total_bytes = 0
+    try:
+        if not complete:
+            return {"complete": False, "objects": {}, "provider_requests": {}}
+        for path in files:
+            body = _read(path)
+            total_bytes += len(body)
+            if total_bytes > 32 * 1024 * 1024:
+                raise ValueError("bounded planning proof required")
+            name = path.relative_to(root).as_posix()
+            input_hashes[name] = _sha256(body)
+            input_presence[name] = True
+            value = json.loads(body)
+            if not isinstance(value, dict):
+                raise ValueError("typed planning proof object required")
+            objects[_sha256(_canonical(value))] = value
+        for response in responses:
+            index = response.get("index")
+            if type(index) is not int or not 1 <= index <= 24:
+                raise ValueError("bounded actual provider index required")
+            path = root / f"provider-{index:02d}.request.json"
+            body = _read(path)
+            request = json.loads(body)
+            # The recorder hashes canonical request bytes before appending its
+            # final newline. Preserve exact bytes, not a recomposed prompt.
+            if body != _canonical(request) + b"\n" or _sha256(body[:-1]) != response.get("request_sha256"):
+                raise ValueError("actual planning provider request changed")
+            input_hashes[path.name] = _sha256(body)
+            input_presence[path.name] = True
+            reservation = response.get("result", {}).get("budget_reservation_id")
+            if reservation:
+                provider_requests[reservation] = request
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        complete = False
+    sources = (
+        _load_actual_model_sources(root, input_hashes, input_presence) if complete else {"complete": False}
+    )
+    return {
+        "complete": complete,
+        "objects": objects,
+        "provider_requests": provider_requests,
+        "actual_sources": sources,
+    }
+
+
+def _load_actual_model_sources(root, input_hashes, input_presence):
+    """Reparse retained RSS and audit original official capture, without network or writes."""
+    from adaptive_replay.historical_context import import_archive
+    from adaptive_replay.official_context_capture import audit_official_context_capture
+
+    from .current_capture import TEXT_TTL_MS, _strict_rss_items
+    from .current_macro import describe_official_context
+
+    used = 0
+
+    def retain(path):
+        nonlocal used
+        if path.is_symlink() or not path.is_file():
+            raise ValueError("regular retained source file required")
+        body = _read(path)
+        used += len(body)
+        if used > 32 * 1024 * 1024:
+            raise ValueError("bounded retained model sources required")
+        name = path.relative_to(root).as_posix()
+        input_hashes[name], input_presence[name] = _sha256(body), True
+        return body
+
+    try:
+        receipt_paths = sorted(root.glob("current-public-capture-*/?*-rss.receipt.json"))
+        if not 1 <= len(receipt_paths) <= 4:
+            raise ValueError("bounded original RSS capture required")
+        rss = []
+        for path in receipt_paths:
+            receipt = json.loads(retain(path))
+            if receipt.get("schema") != "kairos.current-public-rss-capture.v1":
+                raise ValueError("original RSS source receipt required")
+            raw_name = receipt["raw_file"]
+            if type(raw_name) is not str or Path(raw_name).name != raw_name:
+                raise ValueError("local original RSS raw file required")
+            raw = retain(path.parent / raw_name)
+            if _sha256(raw) != receipt["raw_sha256"] or len(raw) != receipt["bytes"]:
+                raise ValueError("original RSS body hash mismatch")
+            items, ids = _strict_rss_items(raw, received_ms=receipt["received_ms"], text_feed=receipt["url"])
+            if list(ids) != receipt["item_ids"]:
+                raise ValueError("original RSS item identity mismatch")
+            fresh = tuple(
+                item
+                for item in items
+                if receipt["received_ms"] - TEXT_TTL_MS
+                <= (int(item.published_at.timestamp() * 1_000))
+                <= receipt["received_ms"]
+            )
+            if len(items) != receipt["raw_item_count"] or len(fresh) != receipt["fresh_item_count"]:
+                raise ValueError("original RSS count mismatch")
+            identity = {
+                "source_name": receipt["source_id"],
+                "raw_sha256": receipt["raw_sha256"],
+                **{
+                    key: receipt[key]
+                    for key in ("requested_ms", "received_ms", "persisted_ms", "item_ids", "coverage_scope")
+                },
+            }
+            rss.append({"receipt": receipt, "items": fresh, "snapshot_sha256": _sha256(_canonical(identity))})
+        official = json.loads(retain(root / "official-macro-context.json"))
+        candidates = sorted(root.glob("official-context-*/receipt.json"))
+        if not 1 <= len(candidates) <= 4:
+            raise ValueError("bounded original official capture required")
+        matched = []
+        for path in candidates:
+            body = retain(path)
+            if _sha256(body) != official["receipt_sha256"]:
+                continue
+            audit_official_context_capture(path.parent, official["receipt_sha256"])
+            receipt = json.loads(body)
+            files = sorted(p for p in path.parent.iterdir() if p.is_file())
+            if len(files) > 12:
+                raise ValueError("bounded official source roster required")
+            for source in files:
+                retain(source)
+            archive = import_archive(
+                (path.parent / "historical-context.json").read_bytes(), receipt["archive_sha256"]
+            )
+            reconstructed = describe_official_context(
+                receipt, archive, receipt_sha256=official["receipt_sha256"]
+            )
+            if reconstructed != official:
+                raise ValueError("official context does not match audited original sources")
+            matched.append(official)
+        if len(matched) != 1:
+            raise ValueError("unique original official capture required")
+        return {"complete": True, "rss": rss, "official_macro": official}
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return {"complete": False}
 
 
 def _read(path: Path) -> bytes:
@@ -471,7 +974,7 @@ def assess_directory(root: Path) -> dict:
     input_presence = {name: (root / name).is_file() for name in names}
     input_presence["bootstrap-failure.json"] = bootstrap_present
 
-    if before.get("plan", {}).get("mode") != _OBSERVED_MODE:
+    if before.get("plan", {}).get("mode") not in {_OBSERVED_MODE, _PLAN_REVIEWED_MODE}:
         result = assess(before, run, responses, budget)
     else:
         request_root = root / "deferred-sim-requests"
@@ -535,6 +1038,8 @@ def assess_directory(root: Path) -> dict:
             "unexpected_request_files": unexpected_request_files,
             "inputs_within_byte_limit": deferred_inputs_within_byte_limit,
         }
+        if before.get("plan", {}).get("mode") == _PLAN_REVIEWED_MODE:
+            evidence["planning"] = _load_planning_evidence(root, responses, input_hashes, input_presence)
         result = _deferred_acceptance(before, run, responses, budget, evidence)
     _apply_bootstrap_failure_guard(result, present=bootstrap_present, parse_status=bootstrap_status)
     result["input_sha256s"] = input_hashes

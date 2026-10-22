@@ -231,7 +231,14 @@ async def test_actual_typed_run_one_cut_reaches_catalyst_brain_and_native_risk(m
                     "regime": "CHOP",
                     "stable_reserve_pct": 0.2,
                     "strategy_weights": [
-                        {"strategy_name": "closed-catalyst-hypothesis.research.v1", "weight": 0.8}
+                        {
+                            "strategy_name": getattr(
+                                self,
+                                "macro_strategy_id",
+                                "closed-catalyst-hypothesis.research.v1",
+                            ),
+                            "weight": 0.8,
+                        }
                     ],
                     "max_gross_leverage": 1.0,
                     "rationale": "Synthetic model transport only",

@@ -117,10 +117,13 @@ class ObservedSimulationRequests:
         self.requests: list[dict] = []
         self._bodies: list[bytes] = []
         self._durable_bodies: list[bytes] = []
+        self._entry_authorizations: dict[int, object] = {}
         _write_receipt(output, "plan.json", {**plan.payload(), "plan_sha256": plan.sha256})
         self._plan_body = (output / "plan.json").read_bytes()
 
-    async def record(self, *, intent, review, quote, frame, request_ms, requested_quantity):
+    async def record(
+        self, *, intent, review, quote, frame, request_ms, requested_quantity, entry_authorization=None
+    ):
         if type(intent) is not ObservedSimStrategyIntentV2 or type(review) is not CandidateReviewV1:
             raise ValueError("EXACT_OBSERVED_SIM_INTENT_AND_REVIEW_REQUIRED")
         checked = ObservedSimStrategyIntentV2.model_validate(intent.model_dump(mode="python"), strict=True)
@@ -158,6 +161,7 @@ class ObservedSimulationRequests:
             raise ValueError("POSITIVE_DEFERRED_QUANTITY_REQUIRED")
         if any(row["intent"]["intent_id"] == intent.intent_id for row in self.requests):
             raise ValueError("DEFERRED_INTENT_ALREADY_RECORDED")
+        authorization_payload = _validate_plan_entry_authorization(intent, review, entry_authorization)
         payload = {
             "schema": "kairos.current-observed-sim-request.v1",
             "mode": MODE,
@@ -179,6 +183,9 @@ class ObservedSimulationRequests:
             "risk_evaluated_live": False,
             "actual_venue_order": False,
         }
+        if authorization_payload is not None:
+            payload["entry_authorization"] = authorization_payload
+            payload["entry_authorization_sha256"] = _sha(authorization_payload)
         path = _write_receipt(self.output, f"request-{payload['sequence']:02d}.json", payload)
         durable_ms = _now_ms()
         if durable_ms < request_ms:
@@ -192,6 +199,8 @@ class ObservedSimulationRequests:
         self.requests.append(payload)
         self._bodies.append(body)
         self._durable_bodies.append(durable_path.read_bytes())
+        if entry_authorization is not None:
+            self._entry_authorizations[payload["sequence"]] = entry_authorization
         return {"sequence": payload["sequence"], "state": "OBSERVED_REQUEST_NOT_RISK_ADMISSION"}
 
     def validate(self):
@@ -216,7 +225,40 @@ class ObservedSimulationRequests:
                 or not row["observed_request_ms"] <= durable["journal_durable_ms"] <= _now_ms()
             ):
                 raise ValueError("DEFERRED_DURABILITY_RECEIPT_CHRONOLOGY_CONFLICT")
+            # A deterministic entry authorization in CURRENT v3 is not a final
+            # LLM review. Reconstruct its complete retained plan/model/trigger
+            # proof before any native Risk evaluation, not merely its label.
+            intent = ObservedSimStrategyIntentV2.model_validate(row["intent"])
+            review = CandidateReviewV1.model_validate(row["review"])
+            certificate = _validate_plan_entry_authorization(
+                intent, review, self._entry_authorizations.get(index)
+            )
+            if certificate is not None and (
+                row.get("entry_authorization") != certificate
+                or row.get("entry_authorization_sha256") != _sha(certificate)
+            ):
+                raise ValueError("DEFERRED_PLAN_ENTRY_AUTHORIZATION_CONFLICT")
+            if certificate is None and ("entry_authorization" in row or "entry_authorization_sha256" in row):
+                raise ValueError("UNDECLARED_DEFERRED_PLAN_ENTRY_AUTHORIZATION")
         return tuple(self.requests)
+
+
+def _validate_plan_entry_authorization(intent, review, authorization):
+    from .current_plan import STRATEGY_ID, CurrentEntryAuthorization, revalidate_authorization
+
+    if intent.strategy_id != STRATEGY_ID:
+        if authorization is not None:
+            raise ValueError("PLAN_ENTRY_AUTHORIZATION_FOR_DIFFERENT_STRATEGY")
+        return None
+    if type(authorization) is not CurrentEntryAuthorization:
+        raise ValueError("CURRENT_PLAN_ENTRY_AUTHORIZATION_REQUIRED")
+    revalidate_authorization(authorization)
+    if (
+        authorization.intent.canonical_intent_bytes() != intent.canonical_intent_bytes()
+        or authorization.native_review.model_dump(mode="json") != review.model_dump(mode="json")
+    ):
+        raise ValueError("CURRENT_PLAN_ENTRY_AUTHORIZATION_BINDING_CONFLICT")
+    return authorization.payload()
 
 
 async def import_complete_tape(repository, *, tape_id, history, observed_bars, frames):
@@ -353,6 +395,9 @@ async def replay_observed_requests(repository, requests: ObservedSimulationReque
                 "fill_receipt": None,
                 "closing_receipt": None,
             }
+            if "entry_authorization_sha256" in item:
+                output["entry_authorization_sha256"] = item["entry_authorization_sha256"]
+                output["entry_review_semantics"] = "DETERMINISTIC_AFTER_RETAINED_PLAN_MODEL_REVIEW"
             outcomes[item["sequence"]] = output
             if admission is not None:
                 conservative_open_risk += requested_risk

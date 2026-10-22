@@ -6,7 +6,11 @@ from types import SimpleNamespace
 
 import pytest
 from adaptive_replay.catalyst_hypothesis_v1 import evaluate_hypothesis
-from kairos_core.contracts import SimulationAssumptionsV1, SimulationStrategyRefV1
+from kairos_core.contracts import (
+    ObservedSimStrategyIntentV2,
+    SimulationAssumptionsV1,
+    SimulationStrategyRefV1,
+)
 from kairos_strategy.candles import Candle
 from test_current_chain import NATIVE, START, prepared_plan, reviewed, sim_session
 
@@ -65,6 +69,79 @@ async def _original_request(tmp_path, monkeypatch, *, expired=False, final_windo
         requested_quantity=0.001,
     )
     return sink, final, bars, at
+
+
+@pytest.mark.asyncio
+async def test_plan_reviewed_entry_requires_and_rechecks_full_proof_before_native_risk(tmp_path, monkeypatch):
+    from test_current_plan import authorize, setup_plan
+
+    plan, plan_review, observations, bars = setup_plan()
+    authorization = authorize(plan, plan_review, observations, bars)
+    intent = ObservedSimStrategyIntentV2.model_validate(authorization.intent.model_dump(mode="json"))
+    at = authorization.authorized_at_ms + 1
+    monkeypatch.setattr(module, "_now_ms", lambda: at)
+    quote = observations[-1].quote
+    body = b"engineering-only quote; not real source evidence"
+    snapshot = FreshQuoteSnapshot(
+        intent.symbol,
+        quote,
+        body,
+        hashlib.sha256(body).hexdigest(),
+        quote.received_ms,
+        quote.received_ms,
+        quote.captured_ms,
+        1.0,
+        1.0,
+        tmp_path / "engineering-quote.receipt.json",
+    )
+    deferred = DeferredSimulationPlan(
+        "current-native-" + "b" * 32,
+        sim_session(intent).assumptions,
+        (
+            SimulationStrategyRefV1(
+                strategy_id=intent.strategy_id, strategy_revision=intent.strategy_revision
+            ),
+        ),
+        START,
+        START + 900_000,
+        intent.provenance.strategy_code_sha256,
+        intent.provenance.config_sha256,
+    )
+    sink = ObservedSimulationRequests(deferred, tmp_path / "plan-observed-requests")
+    arguments = dict(
+        intent=intent,
+        review=authorization.native_review,
+        quote=snapshot,
+        frame=None,
+        request_ms=at,
+        requested_quantity=0.001,
+    )
+    with pytest.raises(ValueError, match="CURRENT_PLAN_ENTRY_AUTHORIZATION_REQUIRED"):
+        await sink.record(**arguments)
+    assert not list(sink.output.glob("request-*.json"))
+    await sink.record(**arguments, entry_authorization=authorization)
+    retained = sink.validate()[0]
+    assert retained["entry_authorization_sha256"] == authorization.sha256
+    assert retained["entry_authorization"] == authorization.payload()
+    assert retained["review"]["reviewer"] == "DETERMINISTIC"
+    assert retained["review"]["model_provenance"] is None
+
+    # Even a forged frozen object must be detected before the sealed repository
+    # or native Risk is reached. No modified evidence receives SIM authority.
+    object.__setattr__(authorization.plan, "source_set_sha256", "f" * 64)
+
+    class NeverReachedRepository:
+        async def verify_tape(self, tape_id):
+            pytest.fail("tampered planning authorization reached the native repository")
+
+    with pytest.raises(ValueError, match="BINDING|IDENTITY|CONFLICT"):
+        await replay_observed_requests(
+            NeverReachedRepository(),
+            sink,
+            seal=SimpleNamespace(tape_id=deferred.tape_id, tape_sha256="d" * 64),
+            bars=dict.fromkeys(SYMBOLS, ()),
+            frames=(),
+        )
 
 
 @pytest.mark.asyncio

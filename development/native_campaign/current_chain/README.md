@@ -26,6 +26,40 @@ This refuses an empty/stale news snapshot before any paid stage. Never rerun
 paid Macro repeatedly merely because an otherwise valid no-signal cut did not
 exercise downstream stages. There is no automatic paid polling/retry here.
 
+## Separately approved plan-reviewed CURRENT v3
+
+```powershell
+python -I -m kairos_native_campaign.current_verify --execute --plan-reviewed-entry --text-feed https://cointelegraph.com/rss
+```
+
+This explicitly selects `CURRENT_PLAN_REVIEW_THEN_FRESH_QUOTE_NATIVE_SIM_V3`.
+The old mode and all frozen campaigns remain unchanged. The actual model
+reviews an immutable plan **before** a new closed-price confirmation and entry
+quote exist. This planning review does not approve an executable order.
+
+The first full minute beginning after the actual review must be observed on
+the original native market stream. Its contiguous source prefix, unchanged
+protections, current defense/regime, reviewed news/Macro and exact fresh quote
+are checked deterministically. A cash-only Macro allocation or no capital for
+this exact strategy blocks review/entry. The executable quote still expires
+within two seconds: there is no provider request after obtaining that quote,
+no refreshed old deadline and no final-intent LLM approval claim.
+
+Planning-only source lifetimes are separately declared and bounded; these do
+not grant execution freshness. Plan, actual model response and deterministic
+entry certificates have distinct hashes. Native independent Risk and sealed
+native SIM remain mandatory. This v3 run selects one existing technical or
+context candidate per instrument; it is not a four-arm matched-A/B experiment.
+
+If a request occurs, the run observes the remaining original fifteen-minute
+source epoch for natural exits. It never extends the epoch or forces a close.
+The maximum entry observation remains five minutes after the original cut.
+A verified entry and a complete trade lifecycle are separate results, and
+neither constitutes historical/blind, profitability or LIVE qualification.
+
+The legacy sections below concerning two post-quote model reviews and four
+Catalyst arm dispositions apply to the original mode, not this explicit v3.
+
 Traversal completion and acceptance are separate. `verification-acceptance.json`
 checks committed real provider responses, actual fresh news, Catalyst plans,
 native review, persisted Risk and SIM execution receipts. A completed quiet cut

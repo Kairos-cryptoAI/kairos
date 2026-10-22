@@ -55,6 +55,7 @@ PUBLIC_BOOK_ROOT = Path("C:/Users/loval/Documents/ChatGPT/Kairos/current-system-
 STRATEGY_ID = "closed-catalyst-hypothesis.research.v1"
 REVISION = "current-chain.observed-sim.v2"
 TEXT_FEED = "https://www.coindesk.com/arc/outboundfeeds/rss"
+PLAN_REVIEWED_MODE = "CURRENT_PLAN_REVIEW_THEN_FRESH_QUOTE_NATIVE_SIM_V3"
 
 
 class PhaseBoundedCapture:
@@ -185,12 +186,18 @@ class PhaseBoundedCapture:
             self._retain(phase)
 
 
-def scope(*, text_feed: str = TEXT_FEED):
+def scope(*, text_feed: str = TEXT_FEED, plan_reviewed_entry: bool = False):
     if text_feed not in TEXT_FEEDS:
         raise ValueError("EXISTING_CONFIGURED_NEWS_FEED_REQUIRED")
     return {
         "schema": "kairos.current-system-verification-plan.v1",
-        "mode": "CURRENT_OBSERVED_DECISIONS_THEN_SEALED_NATIVE_SIM_REPLAY",
+        "mode": PLAN_REVIEWED_MODE
+        if plan_reviewed_entry
+        else "CURRENT_OBSERVED_DECISIONS_THEN_SEALED_NATIVE_SIM_REPLAY",
+        "review_binding": "REAL_MODEL_PLAN_THEN_DETERMINISTIC_EXACT_ENTRY"
+        if plan_reviewed_entry
+        else "TWO_EXACT_MODEL_REVIEWS_AFTER_ORIGINAL_QUOTE",
+        "frozen_campaign_mutation": False,
         "components": [
             "current Catalyst",
             "TextScoutsService",
@@ -383,7 +390,13 @@ def installed_source_identity():
     return result
 
 
-async def execute(*, require_fresh_news: bool = True, capture_only: bool = False, text_feed: str = TEXT_FEED):
+async def execute(
+    *,
+    require_fresh_news: bool = True,
+    capture_only: bool = False,
+    text_feed: str = TEXT_FEED,
+    plan_reviewed_entry: bool = False,
+):
     from .current_live import CurrentLiveCapture
 
     identity = uuid4().hex
@@ -392,6 +405,12 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
     gateway = None
     exit_status = 0
     try:
+        strategy_id, revision = STRATEGY_ID, REVISION
+        if plan_reviewed_entry:
+            from .current_plan import STRATEGY_ID as plan_strategy_id
+            from .current_plan import STRATEGY_REVISION
+
+            strategy_id, revision = plan_strategy_id, STRATEGY_REVISION
         sources = installed_source_identity()
         source_sha = hashlib.sha256(canonical(sources)).hexdigest()
         model_routes = {key.value: asdict(value) for key, value in DEFAULT_WORKLOAD_ROUTES.items()}
@@ -400,7 +419,7 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
             output / "before.json",
             {
                 "plan": {
-                    **scope(text_feed=text_feed),
+                    **scope(text_feed=text_feed, plan_reviewed_entry=plan_reviewed_entry),
                     "require_fresh_news_before_paid_calls": require_fresh_news,
                     "capture_only_no_models": capture_only,
                 },
@@ -485,7 +504,7 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                         quantity_step=0.000001,
                     ),
                     strategy_allowlist=(
-                        SimulationStrategyRefV1(strategy_id=STRATEGY_ID, strategy_revision=REVISION),
+                        SimulationStrategyRefV1(strategy_id=strategy_id, strategy_revision=revision),
                     ),
                     started_at_ms=tape.capture_started_ms,
                     ends_at_ms=tape.capture_started_ms + 900_000,
@@ -518,7 +537,7 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                     cut_ms=cut,
                     source_set_sha256=source_sha,
                     model_config_sha256=model_sha,
-                    strategy_ids=(STRATEGY_ID,),
+                    strategy_ids=(strategy_id,),
                     run_id=identity,
                 )
                 observation = CurrentObservationSource(live, live, max_wait_ms=300_000, max_observations=5)
@@ -547,12 +566,21 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                     await capture.fetch_history(cut)
                     result = {"result": "SOURCE_TAPE_ONLY_NO_MODEL_OR_TRADE_VERIFICATION"}
                 else:
-                    result = await run_one_cut(config, services)
+                    if plan_reviewed_entry:
+                        from .current_plan_runner import run_one_plan_cut
+
+                        result = await run_one_plan_cut(config, services)
+                    else:
+                        result = await run_one_cut(config, services)
                 # Requests are already immutable. Only actual later source bars
                 # are observed; no forced price, trade, stop, or close is added.
-                future_until = min(
-                    session.ends_at_ms - 5_000,
-                    time.time_ns() // 1_000_000 + (120_000 if requests.requests else 0),
+                future_until = (
+                    session.ends_at_ms - 5_000
+                    if plan_reviewed_entry and requests.requests
+                    else min(
+                        session.ends_at_ms - 5_000,
+                        time.time_ns() // 1_000_000 + (120_000 if requests.requests else 0),
+                    )
                 )
                 while time.time_ns() // 1_000_000 < future_until:
                     live.assert_continuous_source()
@@ -657,11 +685,22 @@ def main():
     parser.add_argument("--require-fresh-news", action="store_true")
     parser.add_argument("--text-feed", choices=tuple(TEXT_FEEDS), default=TEXT_FEED)
     parser.add_argument(
+        "--plan-reviewed-entry",
+        action="store_true",
+        help="Separate approved CURRENT v3: plan model review before fresh deterministic entry",
+    )
+    parser.add_argument(
         "--capture-only", action="store_true", help="Real public tape preflight; no model calls"
     )
     args = parser.parse_args()
     if not args.execute:
-        print(json.dumps(scope(text_feed=args.text_feed), indent=2, ensure_ascii=False))
+        print(
+            json.dumps(
+                scope(text_feed=args.text_feed, plan_reviewed_entry=args.plan_reviewed_entry),
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
         return 0
     from adaptive_replay.public_book_capture import CaptureOwner
 
@@ -669,7 +708,12 @@ def main():
     # resumes/retries a failed run, and a concurrent run cannot duplicate it.
     with CaptureOwner(ROOT):
         return asyncio.run(
-            execute(require_fresh_news=True, capture_only=args.capture_only, text_feed=args.text_feed)
+            execute(
+                require_fresh_news=True,
+                capture_only=args.capture_only,
+                text_feed=args.text_feed,
+                plan_reviewed_entry=args.plan_reviewed_entry,
+            )
         )
 
 
