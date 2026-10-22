@@ -113,3 +113,13 @@ Signed main implementation: `7aa0c33`, `a672177`, `95c7dd6`, `13bd24d`, `b0a5c0c
 The source-only check/model attempt used attested `a672177`; the successful load
 receipt records exact corrected file hashes. Final local suite: **103 passed,
 1 explicitly opt-in durable test skipped**. Ruff/format and diff checks passed.
+
+## Later separately approved CURRENT profile
+
+The original runs and their two-post-quote-review semantics above are retained
+unchanged. A subsequent owner-approved version reviews the immutable plan
+before obtaining a new executable quote, while keeping the two-second entry
+freshness and independent Risk/SIM gates. See
+[the separate version and actual attempt](CURRENT-PLAN-REVIEW-2026-10-23.md).
+Its green engineering/CI checks and real free-news refusal are not credited as
+a completed real E2E test or a repair/rewrite of the old receipts.
