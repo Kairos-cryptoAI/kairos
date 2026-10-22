@@ -57,7 +57,7 @@ jobs:
         python: ["3.11.15", "3.14.7"]
         fixture_group: [regular, five-day-horizon]
     runs-on: ${{ matrix.os }}
-    # Exact disjoint union: 2,423 regular cases plus one complete 36,000-cell horizon.
+    # Exact disjoint union: 2,426 regular cases plus one complete 36,000-cell horizon.
     # The long case is a separate bounded job, never sampled or skipped.
     # Windows CPython 3.11 regular suite has repeatedly taken 33–55 minutes;
     # keep the normal cap elsewhere and leave this measured outlier headroom.
@@ -96,7 +96,7 @@ jobs:
             $expectedTotal = 1
           } elseif ($fixtureGroup -eq 'regular') {
             $fixtureArgs = @($testPath, '--deselect', $longNodeId)
-            $expectedTotal = 2423
+            $expectedTotal = 2426
           } else { throw 'Unrecognized fixture partition' }
           $reportPath = Join-Path $env:RUNNER_TEMP ('adaptive-offline-' + $fixtureGroup + '.xml')
           Set-Location $env:RUNNER_TEMP
@@ -136,7 +136,7 @@ jobs:
           if ($fixtureGroup -eq 'five-day-horizon' -and $skipped -ne 0) {
             throw 'The complete long horizon must actually pass without a skip'
           }
-          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2424"
+          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2427"
       - name: Check market-only research code and offline evidence guards (never paid)
         if: ${{ matrix.fixture_group == 'regular' }}
         shell: pwsh

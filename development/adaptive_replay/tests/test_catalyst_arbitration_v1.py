@@ -390,3 +390,25 @@ def test_macro_event_reuses_original_realized_vintage_availability_gate(realized
     else:
         with pytest.raises(ValueError, match="exact-version proof"):
             cp.CatalystEvent("macro-fixture", "macro-event", version, version.captured_ms, 10 * MINUTE)
+
+
+def test_real_local_receipt_before_capture_does_not_backdate_first_five_minute_cut():
+    version = replace(
+        f.historical_version(TARGET, captured=f.START + 10),
+        proof_kind="CONTEMPORANEOUS_LOCAL",
+        version_available_ms=f.START + 10,
+    )
+    event = cp.CatalystEvent("news-fixture", "event-boundary", version, f.START - 1, 10 * MINUTE)
+    assert event.first_received_ms < f.START < version.captured_ms
+    assert event.due_ms == f.START + cp.PERIOD
+    with pytest.raises(ValueError, match="future first eligible cut"):
+        f.catalyst_cell(TARGET, f.START, event=event)
+
+
+@pytest.mark.parametrize("invalid_receipt", [f.START, f.START - 10_000])
+def test_local_receipt_after_capture_or_before_publication_is_rejected(invalid_receipt):
+    version = replace(
+        f.historical_version(TARGET), proof_kind="CONTEMPORANEOUS_LOCAL", version_available_ms=f.START - 1
+    )
+    with pytest.raises(ValueError, match="exact-version proof"):
+        cp.CatalystEvent("news-fixture", "event-clock", version, invalid_receipt, 10 * MINUTE)
