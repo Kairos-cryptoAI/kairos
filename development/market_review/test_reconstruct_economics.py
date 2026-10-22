@@ -373,3 +373,228 @@ def test_deadline_is_bounded(seconds):
     if type(seconds) is not int or not 1 <= seconds <= 900:
         with pytest.raises(ValueError, match="deadline"):
             MODULE.run(type("Args", (), {"deadline_seconds": seconds})())
+
+
+def _account_row(arm, equity, trades=0):
+    return {
+        "window": "window-1",
+        "entry_mode": "STRICT_MINUTE_OPEN",
+        "cost_scenario": "base",
+        "arm": arm,
+        "report": {"final_equity_usd": equity, "closed_trades": trades},
+    }
+
+
+def test_reconciliation_arm_roster_is_unique_exactly_seven_arms():
+    assert len(MODULE.RECONCILIATION_ARMS) == 7
+    assert len(set(MODULE.RECONCILIATION_ARMS)) == 7
+    rows = [_account_row(arm, 10_000.0) for arm in MODULE.RECONCILIATION_ARMS]
+    indexed = MODULE._index_accounts(rows, set(MODULE.RECONCILIATION_ARMS), "test")
+    assert len(indexed) == 7
+    with pytest.raises(ValueError, match="duplicate or unexpected"):
+        MODULE._index_accounts(
+            rows + [rows[0]], set(MODULE.RECONCILIATION_ARMS), "test"
+        )
+
+
+def test_reconciliation_account_match_uses_absolute_tolerance_only():
+    actual = [_account_row("strategy_only", 9_999.999999995, 2)]
+    expected = [_account_row("strategy_only", 10_000.0, 2)]
+    MODULE._reconcile_accounts(actual, expected, "test")
+    actual[0]["report"]["final_equity_usd"] = 10_000.000000011
+    with pytest.raises(ValueError, match="reproduction mismatch"):
+        MODULE._reconcile_accounts(actual, expected, "test")
+
+
+def test_reconciliation_rejects_nonfinite_economic_output():
+    with pytest.raises(ValueError, match="nonfinite"):
+        MODULE._index_accounts(
+            [_account_row("cash_only", float("nan"))], {"cash_only"}, "test"
+        )
+
+
+def test_recorded_reviews_keep_defer_costs_and_never_create_missing_call():
+    candidates = [
+        (
+            {"slot_id": f"slot-{index}"},
+            SimpleNamespace(intent_id=f"id-{index}", decision_ts_ms=1_000 + index),
+        )
+        for index in range(3)
+    ]
+    observations = {
+        "id-0": {
+            "decision": "ALLOW",
+            "measured_pipeline_duration_ms": 40,
+            "actual_microusd": 700,
+        },
+        "id-1": {
+            "decision": "DEFER",
+            "measured_pipeline_duration_ms": 60,
+            "actual_microusd": 500,
+        },
+    }
+    clocks, costs = MODULE._recorded_review_inputs(candidates, observations, 100)
+    assert clocks == {"id-0": 1_140, "id-1": 1_161}
+    assert {cost.cost_id for cost in costs} == {"id-0", "id-1"}
+    assert sum(round(cost.amount_usd * 1_000_000) for cost in costs) == 1_200
+    assert "id-2" not in clocks  # Explicit no-call: no invented duration or debit.
+    with pytest.raises(ValueError, match="roster"):
+        MODULE._recorded_review_inputs(candidates, {**observations, "unknown": {}}, 100)
+
+
+def test_reconciliation_arm_inputs_preserve_cash_and_proxy_no_calls():
+    candidates = [
+        (
+            {"slot_id": f"slot-{index}"},
+            SimpleNamespace(
+                intent_id=f"id-{index}",
+                decision_ts_ms=1_000 + index,
+                side=SimpleNamespace(value="LONG"),
+            ),
+        )
+        for index in range(3)
+    ]
+    tape = {
+        1_001: [candidates[0][1]],
+        1_002: [candidates[1][1]],
+        1_003: [candidates[2][1]],
+    }
+    market = {
+        f"id-{i}": {
+            "decision": "ALLOW" if i == 0 else "DEFER",
+            "measured_pipeline_duration_ms": 10 + i,
+            "actual_microusd": 100 + i,
+        }
+        for i in range(3)
+    }
+    eligible = {"id-0", "id-1"}
+    proxy = {
+        candidate_id: {
+            "decision": "DEFER",
+            "measured_pipeline_duration_ms": 50,
+            "actual_microusd": 200,
+        }
+        for candidate_id in eligible
+    }
+    cash_tape, cash_clocks, cash_costs = MODULE._reconciliation_arm_inputs(
+        "cash_only", candidates, tape, market, proxy, eligible, 100
+    )
+    assert cash_tape == {} and cash_clocks is None and cash_costs == ()
+    source_tape, source_clocks, source_costs = MODULE._reconciliation_arm_inputs(
+        "proxy_source_eligibility_control",
+        candidates,
+        tape,
+        market,
+        proxy,
+        eligible,
+        100,
+    )
+    assert {
+        intent.intent_id for values in source_tape.values() for intent in values
+    } == eligible
+    assert source_clocks is None and source_costs == ()
+    timed_tape, timed_clocks, timed_costs = MODULE._reconciliation_arm_inputs(
+        "proxy_latency_cost_control", candidates, tape, market, proxy, eligible, 100
+    )
+    assert {
+        intent.intent_id for values in timed_tape.values() for intent in values
+    } == eligible
+    assert set(timed_clocks) == eligible
+    assert len(timed_costs) == 2  # All observed proxy calls, including DEFER.
+    filtered_tape, filtered_clocks, filtered_costs = MODULE._reconciliation_arm_inputs(
+        "proxy_review", candidates, tape, market, proxy, eligible, 100
+    )
+    assert filtered_tape == {} and filtered_clocks == {} and len(filtered_costs) == 2
+    assert "id-2" not in timed_clocks and all(
+        cost.cost_id != "id-2" for cost in timed_costs
+    )
+
+
+def test_reconciliation_deltas_are_explicit_against_cash_and_controls():
+    equity = {
+        "strategy_only": 10_000.0,
+        "cash_only": 10_000.0,
+        "market_latency_cost_control": 9_990.0,
+        "market_llm_review": 9_980.0,
+        "proxy_source_eligibility_control": 10_010.0,
+        "proxy_latency_cost_control": 10_005.0,
+        "proxy_review": 10_001.0,
+    }
+    rows = [_account_row(arm, value) for arm, value in equity.items()]
+    deltas = MODULE._account_deltas(rows)
+    assert len(deltas) == 11  # seven versus-cash, four declared pairwise contrasts
+    pair = next(
+        row
+        for row in deltas
+        if row.get("comparison") == "market_review_increment_vs_latency_cost_control"
+    )
+    assert pair["equity_delta_usd"] == -10.0
+    cash_rows = [row for row in deltas if "vs_cash_final_equity_usd" in row]
+    assert {row["arm"] for row in cash_rows} == set(equity)
+
+
+def test_candidate_audit_uses_bound_requests_not_native_row_window_field():
+    candidates = []
+    market = {}
+    proxy = {}
+    requests = {}
+    for index in range(12):
+        candidate_id = f"candidate-{index}"
+        candidates.append(
+            (
+                {
+                    "slot_id": f"slot-{index}"
+                },  # Original decision rows have no window_id.
+                SimpleNamespace(
+                    intent_id=candidate_id,
+                    decision_ts_ms=1_000 + index,
+                    side=SimpleNamespace(value="LONG"),
+                ),
+            )
+        )
+        requests[candidate_id] = {
+            "candidate_id": candidate_id,
+            "window_id": "window-a" if index < 6 else "window-b",
+            "slot_id": f"slot-{index}",
+            "historical_cut_ms": 1_000 + index,
+            "dispatch_eligible": index < 9,
+        }
+        market[candidate_id] = {
+            "state": MODULE.REVIEWED,
+            "decision": "DEFER",
+            "actual_microusd": 1,
+            "measured_pipeline_duration_ms": 1,
+        }
+        if index < 9:
+            proxy[candidate_id] = {
+                "state": MODULE.REVIEWED,
+                "decision": "DEFER",
+                "actual_microusd": 1,
+                "measured_pipeline_duration_ms": 1,
+            }
+    audit = MODULE._candidate_audit(candidates, market, proxy, requests)
+    assert len(audit) == 12
+    assert {row["window_id"] for row in audit} == {"window-a", "window-b"}
+    assert sum(not row["proxy_source_eligible"] for row in audit) == 3
+    assert all(
+        row["proxy_review"]["decision"] == "ABSTAIN"
+        for row in audit
+        if not row["proxy_source_eligible"]
+    )
+
+
+def test_real_empty_portfolio_report_preserves_no_service_cost_as_none():
+    from adaptive_replay.engine import CostScenario, Portfolio
+
+    account = Portfolio(
+        10_000.0,
+        CostScenario("test", 0, 0, 0, 0, 0, 0),
+        "STRICT_MINUTE_OPEN",
+    )
+    report = account.report({}, [])
+    assert report["final_equity_usd"] == 10_000.0
+    assert report["closed_trades"] == 0
+    assert report["model_calls"] == 0
+    assert report["model_cost_usd"] is None
+    assert report["terminal_unresolved_positions"] == []
+    assert account.events == []
