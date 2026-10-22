@@ -272,6 +272,35 @@ def _scheduled_wait_seconds(cut_ms: int, now_ms: int) -> float:
     return max(0, remaining_ms) / 1_000
 
 
+async def _submit_due_entry(controller, trade, *, created_at_ms: int, latency_ms: int):
+    """Use actual elapsed time, not the admission instant, for SIM command arrival.
+
+    The command retains its original submission and expiry. Waiting does not
+    refresh its quote, frame, protection, or permission. A clock regression or
+    stalled wall clock is a refusal, never an invented future ``as_of_ms``.
+    """
+    if (
+        type(created_at_ms) is not int
+        or created_at_ms < 0
+        or type(latency_ms) is not int
+        or not 0 <= latency_ms <= 60_000
+    ):
+        raise CurrentRunRefused("INVALID_BOUNDED_ENTRY_ARRIVAL")
+    arrival_ms = created_at_ms + latency_ms
+    last_ms = created_at_ms
+    deadline = time.monotonic() + latency_ms / 1_000 + 5.0
+    while True:
+        now_ms = _now_ms()
+        if now_ms < last_ms:
+            raise CurrentRunRefused("ENTRY_ARRIVAL_WALL_CLOCK_REGRESSION")
+        if now_ms >= arrival_ms:
+            return await controller.submit_entry(trade, as_of_ms=now_ms)
+        if time.monotonic() >= deadline:
+            raise CurrentRunRefused("ENTRY_ARRIVAL_WALL_CLOCK_STALLED")
+        last_ms = now_ms
+        await asyncio.sleep(min((arrival_ms - now_ms) / 1_000, 0.050))
+
+
 def _canonical_sha(value: Any) -> str:
     body = json.dumps(
         _receipt_value(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
@@ -1168,8 +1197,11 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                         )
                         execution = await _stage(
                             "simulation_submit_entry:" + symbol,
-                            lambda trade=trade, decided_ms=decided_ms: controller.submit_entry(
-                                trade, as_of_ms=decided_ms
+                            lambda trade=trade, decided_ms=decided_ms: _submit_due_entry(
+                                controller,
+                                trade,
+                                created_at_ms=decided_ms,
+                                latency_ms=cut_inputs.simulation_session.assumptions.latency_ms,
                             ),
                             services.usage_snapshot,
                             baseline,

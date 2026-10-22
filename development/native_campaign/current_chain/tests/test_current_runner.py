@@ -21,6 +21,7 @@ from kairos_native_campaign.current_runner import (
     _shared_gate,
     _stage,
     _stop_risk_microusd,
+    _submit_due_entry,
     _usage_delta,
     write_create_only,
 )
@@ -120,6 +121,39 @@ def test_account_stop_risk_is_rounded_up_and_rejects_invalid_quantity():
     assert _stop_risk_microusd(0.0000001, 100.0, 99.0) == 1
     with pytest.raises(CurrentRunRefused, match="RISK_INPUT_INVALID"):
         _stop_risk_microusd(0.0, 100.0, 90.0)
+
+
+@pytest.mark.asyncio
+async def test_sim_entry_waits_for_actual_arrival_without_rewriting_admission(monkeypatch):
+    from kairos_native_campaign import current_runner
+
+    clock, calls, sleeps = [1000], [], []
+    monkeypatch.setattr(current_runner, "_now_ms", lambda: clock[0])
+
+    async def wait(seconds):
+        sleeps.append(seconds)
+        clock[0] += round(seconds * 1000)
+
+    monkeypatch.setattr(current_runner.asyncio, "sleep", wait)
+
+    class Controller:
+        async def submit_entry(self, trade, *, as_of_ms):
+            calls.append((trade, as_of_ms))
+            return "actual-controller-result"
+
+    trade = object()
+    result = await _submit_due_entry(Controller(), trade, created_at_ms=1000, latency_ms=25)
+    assert result == "actual-controller-result"
+    assert calls == [(trade, 1025)] and sleeps == [0.025]
+
+
+@pytest.mark.asyncio
+async def test_sim_entry_clock_regression_is_not_repaired_with_a_future_timestamp(monkeypatch):
+    from kairos_native_campaign import current_runner
+
+    monkeypatch.setattr(current_runner, "_now_ms", lambda: 999)
+    with pytest.raises(CurrentRunRefused, match="WALL_CLOCK_REGRESSION"):
+        await _submit_due_entry(None, object(), created_at_ms=1000, latency_ms=25)
 
 
 def test_defensive_macro_blocks_combined_but_not_matched_technical_baseline():
