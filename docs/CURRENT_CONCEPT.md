@@ -71,6 +71,17 @@ of the current event-origin/countertrend Catalyst pipeline. Unknown historical
 source coverage and the full-system/economic qualification gaps remain explicit.
 No blind credit, runtime mutation, readiness promotion or real trading follows.
 
+The [cached attribution](RECONSTRUCTION-ATTRIBUTION-2026-10-22.md) subsequently
+completed 112 accounts on the same tape, adding explicit cash, source-eligibility
+and separate delay/cost controls without new provider calls. Market-only review
+selection worsens both base May/June cells after separating its delay/cost
+control. Publication-proxy review abstains from all trades and loses its small
+known service debit versus cash. No non-cash arm beats cash in the declared grid.
+The market/proxy prompts and dispatch rules differ: this is not matched causal
+NEWS/MACRO evidence or a financial test of the current independent Catalyst.
+Do not buy repeat historical answers merely to turn `DEFER` into `ALLOW`, relax
+entry expiry, relabel archive receipt evidence or report cash-only as alpha.
+
 ## Continuing owner scope — non-strategy launch engineering
 
 The owner now requests completion of the operational and engineering launch
