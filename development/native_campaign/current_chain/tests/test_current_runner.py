@@ -20,6 +20,7 @@ from kairos_native_campaign.current_runner import (
     UsageSnapshot,
     _arm_creation_status,
     _canonical_sha,
+    _expired_preview_receipt,
     _fold_worker,
     _run_cpu,
     _run_fold,
@@ -33,6 +34,26 @@ from kairos_native_campaign.current_runner import (
 )
 
 SHA = "a" * 64
+
+
+def test_expired_preview_records_actual_delay_without_renewing_or_dispatching():
+    from test_current_chain import prepared_plan
+
+    preview = prepared_plan()[-1]
+    original_expiry = preview.intent.entry_expires_ts_ms
+    original_quote = preview.observation.quote
+    assert _expired_preview_receipt(preview, actual_at_ms=original_expiry - 1) is None
+    assert _expired_preview_receipt(preview, actual_at_ms=original_expiry) is None
+    refusal = _expired_preview_receipt(preview, actual_at_ms=original_expiry + 1)
+    assert refusal["state"] == "ORIGINAL_PREVIEW_EXPIRED_BEFORE_MODEL_REVIEW"
+    assert refusal["actual_refused_ms"] == original_expiry + 1
+    assert refusal["original_expiry_ms"] == original_expiry
+    assert refusal["entry_quote_sha256"] == original_quote.sha256
+    assert refusal["intent_sha256"] == preview.intent.intent_id
+    assert refusal["provider_call_dispatched"] is False
+    assert refusal["deadline_renewed"] is False
+    assert preview.intent.entry_expires_ts_ms == original_expiry
+    assert preview.observation.quote == original_quote
 
 
 @pytest.mark.asyncio

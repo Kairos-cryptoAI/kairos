@@ -409,6 +409,16 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                 "at_ms": time.time_ns() // 1_000_000,
             },
         )
+        # This is a free public prerequisite, not a reason to create a SIM
+        # database, resolve a key or occupy a live source epoch first. Reuse
+        # these exact captured bytes below; neither its clocks nor the shared
+        # HTTP envelope are reset after the potentially slow setup.
+        capture = PhaseBoundedCapture(
+            output, require_fresh_news=require_fresh_news and not capture_only, text_feed=text_feed
+        )
+        started_ms = time.time_ns() // 1_000_000
+        if not capture_only:
+            await capture.capture_text()
         async with asyncio.timeout(1800), isolated_resources(output) as resources:
             # Resolve only the already-authorized existing key, in memory.
             key = read_existing_openai_key(Path("C:/Users/loval/Documents/keys.txt"))
@@ -450,17 +460,13 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                 print("Bounded current public capture started; models not called yet", flush=True)
                 initial = await live.capture_initial()
                 repository = resources.simulation_repository
-                # New actual source phase. Do not reset a spent capture's clock/budget.
-                capture = PhaseBoundedCapture(
-                    output, require_fresh_news=require_fresh_news and not capture_only, text_feed=text_feed
-                )
-                started_ms = time.time_ns() // 1_000_000
+                cut_selected_ms = time.time_ns() // 1_000_000
                 # A source-only proof needs no 5m strategy decision: the next
                 # complete minute suffices for its same 54h original-bar import.
                 # Actual model/Catalyst runs retain their original 5m cadence.
                 period = 60_000 if capture_only else 300_000
-                cut = ((started_ms + period - 1) // period) * period
-                if cut - started_ms < 30_000:
+                cut = ((cut_selected_ms + period - 1) // period) * period
+                if cut - cut_selected_ms < 30_000:
                     cut += period
                 # The source epoch began at the original verified handshake.
                 # Neither a later cut nor a slow setup renews its 900s budget.
@@ -584,29 +590,33 @@ async def execute(*, require_fresh_news: bool = True, capture_only: bool = False
                         "readiness_promotion": False,
                     },
                 )
-                if capture_only:
-                    print(
-                        json.dumps({"result": result["result"], "receipt_directory": str(output)}), flush=True
-                    )
-                    return 2
-                from .current_acceptance import assess_directory
+        # No positive final receipt before the owner contexts finish. A source
+        # or resource-cleanup failure must reach the outer fail-closed handler,
+        # rather than leaving a previously printed/written success behind.
+        if gateway is not None:
+            closing_gateway, gateway = gateway, None
+            await closing_gateway.close()
+        if capture_only:
+            print(json.dumps({"result": result["result"], "receipt_directory": str(output)}), flush=True)
+            return 2
+        from .current_acceptance import assess_directory
 
-                acceptance = assess_directory(output)
-                write_create_only(output / "verification-acceptance.json", acceptance)
-                if acceptance["missing_required_evidence"]:
-                    exit_status = 2
-                print(
-                    json.dumps(
-                        {
-                            "result": result["result"],
-                            "real_path_acceptance": acceptance["state"],
-                            "budget_delta": result.get("budget_delta"),
-                            "receipt_directory": str(output),
-                        },
-                        ensure_ascii=False,
-                    ),
-                    flush=True,
-                )
+        acceptance = assess_directory(output)
+        write_create_only(output / "verification-acceptance.json", acceptance)
+        if acceptance["missing_required_evidence"]:
+            exit_status = 2
+        print(
+            json.dumps(
+                {
+                    "result": result["result"],
+                    "real_path_acceptance": acceptance["state"],
+                    "budget_delta": result.get("budget_delta"),
+                    "receipt_directory": str(output),
+                },
+                ensure_ascii=False,
+            ),
+            flush=True,
+        )
     except BaseException as exc:
         # Preserve partial evidence without printing provider/credential/backend errors.
         path = output / "bootstrap-failure.json"

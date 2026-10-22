@@ -106,6 +106,51 @@ def test_absent_cache_field_is_not_proof_of_a_physical_model_call():
     assert not result["checks"]["traversal_completed"]
 
 
+def test_outer_bootstrap_only_failure_returns_sanitized_fail_closed_assessment(tmp_path):
+    bootstrap = tmp_path / "bootstrap-failure.json"
+    body = b'{"state":"FAILED_CLOSED","reason":"SOURCE_ERROR"}\n'
+    bootstrap.write_bytes(body)
+
+    result = assess_directory(tmp_path)
+
+    assert result["state"] == "FAILED_CLOSED_OUTER_BOOTSTRAP"
+    assert result["checks"]["outer_bootstrap_failure_absent"] is False
+    assert result["checks"]["inner_acceptance_inputs_available_or_valid"] is False
+    assert result["full_trade_lifecycle_verified"] is False
+    assert result["input_file_presence"]["before.json"] is False
+    assert result["input_file_presence"]["current-chain-result.json"] is False
+    assert result["input_file_presence"]["bootstrap-failure.json"] is True
+    assert result["input_sha256s"]["bootstrap-failure.json"] == hashlib.sha256(body).hexdigest()
+
+
+def test_outer_bootstrap_directory_path_is_present_and_disqualifying(tmp_path):
+    (tmp_path / "bootstrap-failure.json").mkdir()
+
+    result = assess_directory(tmp_path)
+
+    assert result["state"] == "FAILED_CLOSED_OUTER_BOOTSTRAP"
+    assert result["outer_bootstrap_failure_parse_status"] == "NON_REGULAR"
+    assert result["checks"]["outer_bootstrap_failure_absent"] is False
+    assert result["input_file_presence"]["bootstrap-failure.json"] is True
+    assert result["input_sha256s"]["bootstrap-failure.json"] is None
+
+
+def test_malformed_inner_run_with_outer_bootstrap_failure_is_sanitized(tmp_path):
+    bootstrap_body = b'{"state":"FAILED_CLOSED"}\n'
+    inner_body = b"{not-json"
+    (tmp_path / "bootstrap-failure.json").write_bytes(bootstrap_body)
+    (tmp_path / "before.json").write_text('{"plan":{}}', encoding="utf-8")
+    (tmp_path / "current-chain-result.json").write_bytes(inner_body)
+
+    result = assess_directory(tmp_path)
+
+    assert result["state"] == "FAILED_CLOSED_OUTER_BOOTSTRAP"
+    assert result["checks"]["outer_bootstrap_failure_absent"] is False
+    assert result["full_trade_lifecycle_verified"] is False
+    assert result["input_sha256s"]["bootstrap-failure.json"] == hashlib.sha256(bootstrap_body).hexdigest()
+    assert result["input_sha256s"]["current-chain-result.json"] == hashlib.sha256(inner_body).hexdigest()
+
+
 def test_synthetic_new_mode_receipts_are_labeled_and_never_gain_entry_credit(tmp_path):
     """Synthetic unit receipts exercise fail-closed handling, not real evidence."""
     (tmp_path / "before.json").write_text(
@@ -325,6 +370,37 @@ def test_synthetic_positive_deferred_receipt_contract_only(tmp_path):
     assert result["checks"]["later_native_sim_replay_bound"]
     assert result["full_trade_lifecycle_verified"] is False
     assert result["risk_and_controller_classification"] == "LATER_NATIVE_SIM_REPLAY_NOT_ACTUAL_LIVE_EXECUTION"
+    assert result["checks"]["outer_bootstrap_failure_absent"] is True
+    assert result["state"] == "OBSERVED_DECISIONS_WITH_LATER_NATIVE_SIM_ENTRY_VERIFIED"
+
+    bootstrap_path = tmp_path / "bootstrap-failure.json"
+    bootstrap_body = b'{"state":"FAILED_CLOSED","reason":"SOURCE_ERROR"}\n'
+    bootstrap_path.write_bytes(bootstrap_body)
+    outer_failure = assess_directory(tmp_path)
+    assert outer_failure["state"] == "PARTIAL_REQUIRED_STAGES_NOT_EXERCISED"
+    assert outer_failure["prior_acceptance_state"] == (
+        "OBSERVED_DECISIONS_WITH_LATER_NATIVE_SIM_ENTRY_VERIFIED"
+    )
+    assert outer_failure["checks"]["outer_bootstrap_failure_absent"] is False
+    assert "outer_bootstrap_failure_absent" in outer_failure["missing_required_evidence"]
+    assert outer_failure["full_trade_lifecycle_verified"] is False
+    assert outer_failure["input_file_presence"]["bootstrap-failure.json"] is True
+    assert (
+        outer_failure["input_sha256s"]["bootstrap-failure.json"] == hashlib.sha256(bootstrap_body).hexdigest()
+    )
+
+    for malformed_body, expected_status in ((b"", "EMPTY"), (b"{broken", "INVALID_JSON")):
+        bootstrap_path.write_bytes(malformed_body)
+        malformed = assess_directory(tmp_path)
+        assert malformed["state"] == "PARTIAL_REQUIRED_STAGES_NOT_EXERCISED"
+        assert malformed["checks"]["outer_bootstrap_failure_absent"] is False
+        assert "outer_bootstrap_failure_absent" in malformed["missing_required_evidence"]
+        assert malformed["full_trade_lifecycle_verified"] is False
+        assert malformed["outer_bootstrap_failure_parse_status"] == expected_status
+        assert (
+            malformed["input_sha256s"]["bootstrap-failure.json"] == hashlib.sha256(malformed_body).hexdigest()
+        )
+    bootstrap_path.unlink()
 
     replay["incomplete_lifecycles"] = []
     write_json(deferred / "native-replay-result.json", replay)

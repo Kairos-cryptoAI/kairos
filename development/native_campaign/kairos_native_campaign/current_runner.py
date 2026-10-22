@@ -46,6 +46,7 @@ from kairos_text.service import TextScoutsService
 from .current_capture import CapturedTextSnapshot, CurrentHistorySnapshot, FreshQuoteSnapshot
 from .current_chain import (
     CurrentCatalystChain,
+    HypothesisPreview,
     bind_scenario_review,
     build_final_route,
     build_hypothesis_preview,
@@ -570,6 +571,30 @@ def _stop_risk_microusd(quantity: float, entry_price: float, stop_price: float) 
     return int(risk.to_integral_value(rounding=ROUND_CEILING))
 
 
+def _expired_preview_receipt(preview: HypothesisPreview, *, actual_at_ms: int) -> dict | None:
+    """Explain an already expired original preview; never renew or authorize it.
+
+    The native Brain independently checks its deadline again. This adapter
+    guard makes delay before dispatch visible instead of attributing it to a
+    model response which was never requested.
+    """
+    if type(preview) is not HypothesisPreview or type(actual_at_ms) is not int or actual_at_ms < 0:
+        raise CurrentRunRefused("EXACT_PREVIEW_AND_ACTUAL_REFUSAL_CLOCK_REQUIRED")
+    if actual_at_ms <= preview.intent.entry_expires_ts_ms:
+        return None
+    quote = preview.observation.quote
+    return {
+        "state": "ORIGINAL_PREVIEW_EXPIRED_BEFORE_MODEL_REVIEW",
+        "scenario_id": preview.plan.scenario_id,
+        "intent_sha256": preview.intent.intent_id,
+        "entry_quote_sha256": quote.sha256 if quote is not None else None,
+        "original_expiry_ms": preview.intent.entry_expires_ts_ms,
+        "actual_refused_ms": actual_at_ms,
+        "deadline_renewed": False,
+        "provider_call_dispatched": False,
+    }
+
+
 def _shared_gate(arm_id: str, allocation: Any, *, macro_fallback: bool) -> str:
     if arm_id == "combined" and (
         macro_fallback or allocation.stable_reserve_pct >= 1.0 or not allocation.strategy_weights
@@ -613,6 +638,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
     _scheduled_wait_seconds(config.cut_ms, _now_ms())
     lock = config.output_path.with_suffix(config.output_path.suffix + ".lock")
     records: list[StageRecord] = []
+    preview_refusals: list[dict] = []
     began = time.monotonic()
     baseline = await services.usage_snapshot()
     if type(baseline) is not UsageSnapshot:
@@ -642,6 +668,7 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
         },
         "stages": [],
         "provider_attempts": [],
+        "preview_refusals": preview_refusals,
         "result": "INCOMPLETE",
         "readiness": {
             "paper_qualified": False,
@@ -1012,6 +1039,12 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                             code_sha256=config.source_set_sha256,
                             config_sha256=config.model_config_sha256,
                         )
+                        expired = _expired_preview_receipt(preview, actual_at_ms=_now_ms())
+                        if expired is not None:
+                            preview_refusals.append({"arm_id": arm_id, "origin": origin, **expired})
+                            plan_candidates[key] = None
+                            stage_coverage[f"{symbol}:{arm_id}:{origin}"] = expired["state"]
+                            continue
                         route = build_final_route(preview.intent, text_by_symbol[symbol])
                         context = build_native_context(
                             route,

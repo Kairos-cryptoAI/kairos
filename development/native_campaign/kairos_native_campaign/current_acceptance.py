@@ -349,15 +349,127 @@ def _read(path: Path) -> bytes:
     return path.read_bytes()
 
 
+def _bootstrap_failure_input(path: Path) -> tuple[bool, str, str | None]:
+    """Return bounded, sanitized metadata and the exact input hash.
+
+    Presence is itself disqualifying: this artifact records an outer bootstrap
+    failure that can supersede an inner traversal/replay completion marker.
+    Never include its contents or parser exception in an acceptance receipt.
+    """
+    if not path.exists():
+        return False, "ABSENT", _sha256(b"")
+    if not path.is_file():
+        return True, "NON_REGULAR", None
+    try:
+        size = path.stat().st_size
+        if size > 8 * 1024 * 1024:
+            return True, "OVERSIZED_HASH_UNAVAILABLE", None
+        body = path.read_bytes()
+    except OSError:
+        return True, "UNREADABLE_HASH_UNAVAILABLE", None
+    if not body:
+        return True, "EMPTY", _sha256(body)
+    try:
+        value = json.loads(body)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return True, "INVALID_JSON", _sha256(body)
+    return True, "VALID_JSON_OBJECT" if isinstance(value, dict) else "VALID_JSON_NON_OBJECT", _sha256(body)
+
+
+def _apply_bootstrap_failure_guard(result: dict, *, present: bool, parse_status: str) -> None:
+    result["checks"]["outer_bootstrap_failure_absent"] = not present
+    result["outer_bootstrap_failure_parse_status"] = parse_status
+    if not present:
+        return
+    result["prior_acceptance_state"] = result["state"]
+    result["prior_full_trade_lifecycle_verified"] = result["full_trade_lifecycle_verified"]
+    result["state"] = "PARTIAL_REQUIRED_STAGES_NOT_EXERCISED"
+    result["full_trade_lifecycle_verified"] = False
+    if "outer_bootstrap_failure_absent" not in result["missing_required_evidence"]:
+        result["missing_required_evidence"].append("outer_bootstrap_failure_absent")
+
+
+def _outer_bootstrap_only_failure(
+    root: Path,
+    bodies: dict[str, bytes],
+    *,
+    bootstrap_status: str,
+    bootstrap_sha: str | None,
+) -> dict:
+    names = ("before.json", "current-chain-result.json", "provider-results.jsonl", "budget.jsonl")
+    input_hashes = {name: _sha256(bodies.get(name, b"")) for name in names}
+    input_hashes["bootstrap-failure.json"] = bootstrap_sha
+    presence = {name: (root / name).is_file() for name in names}
+    presence["bootstrap-failure.json"] = True
+    return {
+        "schema": "kairos.current-real-path-acceptance.v1",
+        "state": "FAILED_CLOSED_OUTER_BOOTSTRAP",
+        "traversal_result": None,
+        "checks": {
+            "outer_bootstrap_failure_absent": False,
+            "inner_acceptance_inputs_available_or_valid": False,
+        },
+        "missing_required_evidence": [
+            "outer_bootstrap_failure_absent",
+            "inner_acceptance_inputs_available_or_valid",
+        ],
+        "outer_bootstrap_failure_parse_status": bootstrap_status,
+        "full_trade_lifecycle_verified": False,
+        "offline_fixture_credit": False,
+        "profitability_claim": False,
+        "historical_or_blind_credit": False,
+        "readiness_promotion": False,
+        "trading_authority": "NONE",
+        "input_sha256s": input_hashes,
+        "input_file_presence": presence,
+    }
+
+
 def assess_directory(root: Path) -> dict:
     names = ("before.json", "current-chain-result.json", "provider-results.jsonl", "budget.jsonl")
-    bodies = {name: _read(root / name) if (root / name).exists() else b"" for name in names}
+    bootstrap_present, bootstrap_status, bootstrap_sha = _bootstrap_failure_input(
+        root / "bootstrap-failure.json"
+    )
+    bodies = {}
+    try:
+        for name in names:
+            path = root / name
+            bodies[name] = _read(path) if path.exists() else b""
+    except (OSError, ValueError):
+        if not bootstrap_present:
+            raise
+        return _outer_bootstrap_only_failure(
+            root,
+            bodies,
+            bootstrap_status=bootstrap_status,
+            bootstrap_sha=bootstrap_sha,
+        )
+    if bootstrap_present:
+        try:
+            before_value = json.loads(bodies["before.json"]) if bodies["before.json"] else None
+            run_value = json.loads(bodies["current-chain-result.json"])
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return _outer_bootstrap_only_failure(
+                root,
+                bodies,
+                bootstrap_status=bootstrap_status,
+                bootstrap_sha=bootstrap_sha,
+            )
+        if not isinstance(before_value, dict) or not isinstance(run_value, dict):
+            return _outer_bootstrap_only_failure(
+                root,
+                bodies,
+                bootstrap_status=bootstrap_status,
+                bootstrap_sha=bootstrap_sha,
+            )
     before = json.loads(bodies["before.json"])
     run = json.loads(bodies["current-chain-result.json"])
     responses = [json.loads(line) for line in bodies["provider-results.jsonl"].splitlines() if line]
     budget = [json.loads(line) for line in bodies["budget.jsonl"].splitlines() if line]
     input_hashes = {name: hashlib.sha256(body).hexdigest() for name, body in bodies.items()}
+    input_hashes["bootstrap-failure.json"] = bootstrap_sha
     input_presence = {name: (root / name).is_file() for name in names}
+    input_presence["bootstrap-failure.json"] = bootstrap_present
 
     if before.get("plan", {}).get("mode") != _OBSERVED_MODE:
         result = assess(before, run, responses, budget)
@@ -424,6 +536,7 @@ def assess_directory(root: Path) -> dict:
             "inputs_within_byte_limit": deferred_inputs_within_byte_limit,
         }
         result = _deferred_acceptance(before, run, responses, budget, evidence)
+    _apply_bootstrap_failure_guard(result, present=bootstrap_present, parse_status=bootstrap_status)
     result["input_sha256s"] = input_hashes
     result["input_file_presence"] = input_presence
     return result

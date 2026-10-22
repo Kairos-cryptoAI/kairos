@@ -11,6 +11,38 @@ from kairos_native_campaign import current_verify as cv
 
 
 @pytest.mark.asyncio
+async def test_execute_refuses_empty_news_before_credentials_database_or_stream(tmp_path, monkeypatch):
+    touched = []
+
+    class EmptyCapture:
+        def __init__(self, output, **kwargs):
+            self.output = output
+            assert kwargs["require_fresh_news"] is True
+
+        async def capture_text(self):
+            touched.append("free_news_preflight")
+            raise ValueError("VERIFICATION_NEEDS_FRESH_NEWS_BEFORE_PAID_CALLS")
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("credentials, resource creation and live streams must follow source eligibility")
+
+    monkeypatch.setattr(cv, "ROOT", tmp_path)
+    monkeypatch.setattr(cv, "installed_source_identity", lambda: {"engineering_fixture": True})
+    monkeypatch.setattr(cv, "PhaseBoundedCapture", EmptyCapture)
+    monkeypatch.setattr(cv, "isolated_resources", forbidden)
+    monkeypatch.setattr(cv, "read_existing_openai_key", forbidden)
+    monkeypatch.setattr(cv, "build_existing_gateway", forbidden)
+    assert await cv.execute() == 1
+    output = next(tmp_path.glob("run-*"))
+    failure = json.loads((output / "bootstrap-failure.json").read_text(encoding="utf-8"))
+    assert failure["state"] == "FAILED_CLOSED"
+    assert failure["safe_category"] == "VERIFICATION_NEEDS_FRESH_NEWS_BEFORE_PAID_CALLS"
+    assert touched == ["free_news_preflight"]
+    assert not (output / "resources.jsonl").exists()
+    assert not (output / "budget.jsonl").exists()
+
+
+@pytest.mark.asyncio
 async def test_phase_wait_does_not_reset_an_old_capture(tmp_path, monkeypatch):
     phases = []
 
