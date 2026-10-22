@@ -1,5 +1,9 @@
 # CURRENT Catalyst system verification — 22 October 2026
 
+Later implementation and real-source results are recorded in
+[CURRENT native replay, 23 October](CURRENT-NATIVE-REPLAY-2026-10-23.md).
+The initial finite-tape diagnosis below is historical, not the current driver.
+
 **Result: PARTIAL_REQUIRED_STAGES_NOT_EXERCISED, not a full real E2E PASS.**
 
 This report concerns the CURRENT Catalyst/Text/Macro/Router/review/Risk/native
