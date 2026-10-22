@@ -1,0 +1,72 @@
+{
+  "adapter_sha256": "be449f223f40302290700916757036aae29f6fb867c31a33f44945e824f46cd1",
+  "admission_contexts_sha256": "bd514b2644c60ddfaa2d18b1668e934a79f41fbd9a7b3f95330917f33ec27b4f",
+  "admission_result_sha256": "2b40ffb75ee130fc46db034fc4b3d24731a05a8e5aa424a233e1d909ff2b05fe",
+  "baseline_hashes": {
+    "before.json": "da62e86346e8aa5ff24745e3dd384a160078e7446e6b5433f2ca137db3d7aefa",
+    "requests.json": "f781f261e317ce9043176654aac74a84d9f93351e483f0c425f03d56eb487cc6",
+    "result.json": "a4b217693172e0d7af2d5db062b646fca7476c9974bb271157fdceb1c8ef83e8",
+    "reviews.jsonl": "c980114f07384363526fdb5fa64154b968dd0aa1d6b7b2e05d413e5d3bb74d92",
+    "seal.json": "738dd015394101f66e1d4786ad861483a226449a930078f3f03f26048f4c6fc0",
+    "sealed-plan.json": "af551fd27fda4f17421d367bb85c47039e33369300087c40e7a41bae42e88987"
+  },
+  "created_utc": "2026-10-22T10:47:33.220952+00:00",
+  "filter_policy": "FIXED_EXPLORATORY_KEEP_ONLY_EXPLICIT_ALLOW_V1",
+  "proxy_file_hashes": {
+    "before.json": "8114f522e121b9e73eae9e3ada1bacdff2e3a5b433a4035469e4573adc4be17b",
+    "no-calls.jsonl": "9173e2343211b5849c323f58861d6652f02f0f450259ea6e12dc1c6f7d2517c6",
+    "proxy-diagnostic-result.json": "0f67b7f3e96a1ea0d070aef6c4f0422dc756ecabcfa996eba3a08ef847b3e6d9",
+    "requests.json": "eedca06384f23eef75cdd61dac2780142373aba3b9d145f29e0a6e6c4e3432fd",
+    "reviews.jsonl": "b9c5264e9df8645ec4bc90e85eb5bf64cf08071ff4bebb7a909657a0f9c2b25e",
+    "seal.json": "fa2b6ce1dacf8096f1f8fbc9311bee99afb746747d187be71f969990f564f06b",
+    "sealed-plan.json": "5fa87eb5c9ffe0dc5bf19302bb635f9e0ade3da04de7874dae4c2dbeb0c1ae8d",
+    "worker-start.json": "646c8bd5d60627455ffa02034b4d2f5109ddb9ea165e7d17f30d547cef5e7288"
+  },
+  "raw_input_signature": {
+    "bls-20220412-web-excerpt": "e15dd27bcdf5e9cab659394293d6d6c29df449a32638ef5561bbe28bea1cd7b7",
+    "bls-20220511-web-excerpt": "5e781f52b5efb6d95722569d74dbdba76ca0369a393b02d5a3a920b7693f8ccf",
+    "bls-20220610-web-excerpt": "5bbd8fdf89c805294b11b865d208e5741355534c4aa8b961782ba17f21754f50",
+    "celsius-1536169010877739009": "e47502a0b32150eb9e09ec6933d2e6b3386e6029b56140074fa369b8b6141f7d",
+    "fed-20220504": "c4f9149bc21fd93354d336e53ff104e81327da05739d583bfc3a45553542113d",
+    "lfg-1523512196965167104": "c408ab014e2a0fcd806f0d129d3a6c74a90e763082a7c9982f7a54e75f261681",
+    "lfg-1523512201088143360": "80a85205822a53095eb46fb6adb66f720419f227358002ea012909bbb9b730d8",
+    "manifest": "bdc747f4f587b00b5a799575f4094b9ee08e74939df73295217bea056b5b8b2f",
+    "projection": "40e090f81c1a56a92013f227a9deba752bc9c715b222abc53b44844b4b34f7b9"
+  },
+  "source_bundle_sha256": "40e090f81c1a56a92013f227a9deba752bc9c715b222abc53b44844b4b34f7b9",
+  "source_identity": {
+    "backtest_modules_sha256": {
+      "kairos_backtest.cost_risk": "234cf98a80756ec2c01b6cac2fb2361409d5e56692a2b79080cc0d12b95b3a9b",
+      "kairos_backtest.data": "a32dd255484ee301e6e458a4b290696219f4c1d52587fda4412296c0c7a92a0e",
+      "kairos_backtest.factor_data": "2e8ae6cf7de63aa7cee14927e56b275f92a1aa053483b5182bf61509795780ae",
+      "kairos_backtest.validation": "6f70e87bba21f5efe895f0ced44c25f16c3f443cf6a829d584ca355a351cd047"
+    },
+    "engine_projection": "CURRENT_TRACKED_COST_AND_COMPLETION_ENGINE_WITH_UNCHANGED_NATIVE_CANDIDATES",
+    "experiment_scripts_sha256": {
+      "model_worker.py": "5fd8b15332f007b59faad1eb7d24170009f62ac2b4b5b862d34b2de15306ce6e",
+      "reconstruct_economics.py": "be449f223f40302290700916757036aae29f6fb867c31a33f44945e824f46cd1",
+      "run_comparison.py": "3749ce2e50ead50456044b1b6ede4a7cf18d80833558046b6981cf91225b7a9f",
+      "test_comparison.py": "780bc210b5d8232a425c7314b40ef54729c95c87062bae64a8688d97ff5860f8",
+      "test_proxy_worker.py": "5dae14cc4f40a7b1b34f7d8a65fcf36adfebedad2c527b6ef4d6859879d758cd",
+      "test_reconstruct_context.py": "761d001a29e417d93ea637d1e3be32ce9faf6d97e9be1a675aadd14a2d2cefba",
+      "test_reconstruct_economics.py": "67bd7649cfd4d9efd48a367369d72821390eb267435caa8cc3d1208ad6fd56b9"
+    },
+    "input_loader_sha256": "503e18e6ec48a64e6a90bec70c23cba50cb58801d5310e29a655164f3181a9eb",
+    "installed_native_revisions": {
+      "kairos-backtest": "da1237854066fde381542e43c106d0de727448be",
+      "kairos-core": "6937eb4773fc00afaf5ba4e020b28b689f48e377",
+      "kairos-persistence": "fd2966761e84b32688c9aee73e00604965f5d7f2",
+      "kairos-quant-scouts": "927f5730d09383736c1dfc7dc5c400b06851019f",
+      "kairos-strategy-engine": "cde8e9c00af0cc19848e800ee76472a800a5fd5d"
+    },
+    "native_strategy": {
+      "config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "detector_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5",
+      "detector_config_sha256": "51781e00bee3664f260ff826c821234073b7a40deb1b7239e39f517be885901b",
+      "strategy_code_sha256": "836391ab708d4dc9bd4957c68f00724683569b7d5584debb1c368016d57ff0d5"
+    },
+    "original_reference_engine_sha256": "cf25940d8117155c7b06aaf97533b464679a77b10f613f99420b3ae00d0db85f",
+    "replay_engine_sha256": "112891680ab1e2b8d8202588fa6ddc68d21adff6e1e0b3c99f895e853eede4a3",
+    "strategy_logic_sha256": "67d22ebe969a372c91381884f1cfae2abeecf143eb0ac2282eaf9b4026aade15"
+  }
+}

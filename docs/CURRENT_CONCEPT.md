@@ -43,15 +43,33 @@ logs and the full source SHA were checked; superseded/cancelled revisions are
 not substituted for this evidence. These are engineering fixtures, not
 historical news/model economics or alpha qualification.
 
-GitHub also reported two **unresolved critical** `certifi` alerts in the retained
-research locks: [adaptive replay 2](https://github.com/Kairos-cryptoAI/kairos/security/dependabot/2)
+The separately signed dependency correction `97419e6e91fb29c12d3c159b78feedaa009f4942`
+updates only Certifi to 2026.10.19 in the adaptive and native research locks;
+uv 0.12.3, Git source pins and frozen historical receipts are unchanged.
+GitHub now marks both critical alerts **fixed**:
+[adaptive replay 2](https://github.com/Kairos-cryptoAI/kairos/security/dependabot/2)
 and [native campaign 3](https://github.com/Kairos-cryptoAI/kairos/security/dependabot/3).
-They recommend 2026.10.19. The automatic updater fails because it offers uv
-0.12.18 while those projects require exactly 0.12.3. This task changes neither
-lock nor tool pin and performs no nonfixture provider/network run in those
-environments. A separately versioned/revalidated safe dependency set is required
-before such runs; passing offline tests does not resolve these alerts or make a
-historical environment safe.
+Fresh non-editable environments prove the affected emSign ECC Root CA - G3 is
+absent, unaffected roots remain and TLS verification is required. These checks
+make zero network requests; they do not claim that old environments or host-wide
+CA stores were patched. Both locked-source checks, focused local compatibility
+checks and hosted native-campaign engineering passed. Full adaptive hosted
+regression acceptance is tracked separately; no readiness flag follows from a
+dependency correction.
+
+### October 22 approximate economic reconstruction — not current-system proof
+
+The owner accepted the explicit approximate scope. The
+[completed comparison](RECONSTRUCTION-COMPARISON-2026-10-22.md) reuses the original
+12 adaptive candidates, four fixed calendar windows and nine already-observed
+Luna/medium publication-proxy reviews, with no new paid calls or budget changes.
+Strict minute-open fills remain zero; the secondary candle proxy reproduces the
+original negative May/June baseline. Nine `DEFER` and three missing-context
+abstentions leave the filtered accounts in cash, less known model debits.
+That is not positive alpha, crash prediction, a new strategy champion or evidence
+of the current event-origin/countertrend Catalyst pipeline. Unknown historical
+source coverage and the full-system/economic qualification gaps remain explicit.
+No blind credit, runtime mutation, readiness promotion or real trading follows.
 
 ## Continuing owner scope — non-strategy launch engineering
 
