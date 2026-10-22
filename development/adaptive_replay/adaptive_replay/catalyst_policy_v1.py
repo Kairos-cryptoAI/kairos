@@ -88,6 +88,7 @@ class CatalystEvent:
             self.ttl_ms == 0
             or self.version.source_name != self.source_id
             or self.version.proof_kind not in {"TEST_FIXTURE", "CONTEMPORANEOUS_LOCAL"}
+            or not self.version.available_at(self.first_received_ms)
             or not self.version.version_available_ms <= self.first_received_ms <= self.version.captured_ms
         ):
             raise ValueError("actual first receipt and local exact-version proof required")

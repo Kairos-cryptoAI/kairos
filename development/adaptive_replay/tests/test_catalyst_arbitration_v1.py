@@ -9,7 +9,7 @@ from kairos_strategy.models import ExitPlan, SleeveIntent
 from kairos_strategy.provenance import candle_payload
 
 from adaptive_replay import catalyst_policy_v1 as cp
-from adaptive_replay.historical_context import digest
+from adaptive_replay.historical_context import canonical, digest
 from adaptive_replay.hypothesis_v3 import EntryQuote, HypothesisObservation
 from adaptive_replay.scenarios import MINUTE, ScenarioEvidence, ScenarioObservation, ScenarioReview
 
@@ -373,3 +373,20 @@ def test_unrelated_treatment_creation_clocks_do_not_change_an_isolated_arm(setup
         shared_gate="PASS",
     )
     assert decision.candidate is not None
+
+
+@pytest.mark.parametrize("realized,allowed", [(f.START - 10_000, True), (f.START + MINUTE, False)])
+def test_macro_event_reuses_original_realized_vintage_availability_gate(realized, allowed):
+    version = replace(
+        f.historical_version(TARGET),
+        source_name="macro-fixture",
+        kind="MACRO",
+        realized_ms=realized,
+        payload_json=canonical({"metric": "fixture-metric", "value": "1.0", "unit": "fixture"}),
+    )
+    if allowed:
+        event = cp.CatalystEvent("macro-fixture", "macro-event", version, version.captured_ms, 10 * MINUTE)
+        assert event.due_ms == f.START
+    else:
+        with pytest.raises(ValueError, match="exact-version proof"):
+            cp.CatalystEvent("macro-fixture", "macro-event", version, version.captured_ms, 10 * MINUTE)
