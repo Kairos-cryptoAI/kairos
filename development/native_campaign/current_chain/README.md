@@ -20,6 +20,28 @@ secret. All requests use the existing cumulative PostgreSQL campaign authority
 envelope of $1 and 24 attempts, no retries and conservative unknown holds.
 Registered prices are cost-accounting inputs, not a verified provider invoice.
 
+For the specific complete real-source check, add `--require-fresh-news`.
+This refuses an empty/stale news snapshot before any paid stage. Never rerun
+paid Macro repeatedly merely because an otherwise valid no-signal cut did not
+exercise downstream stages. There is no automatic paid polling/retry here.
+
+Traversal completion and acceptance are separate. `verification-acceptance.json`
+checks committed real provider responses, actual fresh news, Catalyst plans,
+native review, persisted Risk and SIM execution receipts. A completed quiet cut
+is `PARTIAL_REQUIRED_STAGES_NOT_EXERCISED`, with exit code 2; it is not a full
+path pass. Full trade-close evidence is reported separately. Fixtures have no
+credit toward either real-source acceptance or profitability.
+
+The initial finite-tape driver is currently **execution incompatible**: its
+fixed frames age before the cut, and the sealed initial bar prefix cannot
+contain the full later intent provenance. Before paid calls the bootstrap now
+retains `execution-compatibility.json` and refuses a roster in which no symbol
+can reach a native SIM entry. This is a diagnosed blocker, not a claim that a
+continuous forward/replay driver has been implemented. No flag bypasses it.
+Future native replay work must keep original tape identities, record full
+provenance before sealing, and distinguish logical replay from actual live
+decision times. It cannot renew the original two-second quote deadline.
+
 The bootstrap creates only a uniquely named isolated `kairos_sim_current_*`
 database/container. It never migrates an existing database or changes legacy
 queues/consumers. The owned SIM container is stopped and retained afterwards;

@@ -1,5 +1,7 @@
 """CLI/factual capture-envelope tests; no provider, socket or database."""
 
+from types import SimpleNamespace
+
 import pytest
 
 from kairos_native_campaign import current_verify as cv
@@ -51,3 +53,74 @@ def test_phase_cap_is_pre_request_and_plan_does_not_arm(tmp_path):
     assert plan["maximum_openai_calls"] == 24
     assert plan["local_cap_microusd"] == 1_000_000
     assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+async def test_full_verification_can_require_fresh_news_before_any_paid_stage(tmp_path, monkeypatch):
+    class EmptyNews:
+        requests = 1
+        bytes_used = 100
+        capture_id = "no-news"
+
+        async def capture_text(self):
+            return SimpleNamespace(news_items=())
+
+    capture = cv.PhaseBoundedCapture(tmp_path, require_fresh_news=True)
+    monkeypatch.setattr(capture, "_phase", lambda maximum_requests: EmptyNews())
+    with pytest.raises(ValueError, match="FRESH_NEWS_BEFORE_PAID_CALLS"):
+        await capture.capture_text()
+
+
+def test_initial_sealed_book_and_short_provenance_refuse_before_paid_calls():
+    now, cut = 1_800_000_070_000, 1_800_000_300_000
+    frames = tuple(
+        SimpleNamespace(
+            symbol=symbol,
+            tape_sequence=i,
+            tape_id="original-native:0002",
+            continuity="ADMITTED",
+            frame_sha256="a" * 64,
+            persisted_at_ms=now - 60_000,
+            exchange_at_ms=now - 60_100,
+        )
+        for i, symbol in enumerate(cv.UNIVERSE, 1)
+    )
+    initial = SimpleNamespace(
+        frames=frames,
+        closed_bars=tuple((symbol, (object(), object())) for symbol in cv.UNIVERSE),
+        tape_id="original-native:0002",
+    )
+    result = cv.initial_execution_compatibility(initial, cut_ms=cut, observed_ms=now)
+    assert result["state"] == "EXECUTION_INCOMPATIBLE"
+    assert result["no_symbol_can_reach_native_sim_entry"]
+    assert result["earliest_decision_ms"] == cut
+    for row in result["symbols"]:
+        assert row["age_at_earliest_decision_ms"] == 290_000
+        assert row["minimum_missing_history_bar_count"] == 3_238
+        assert "FROZEN_INITIAL_BOOK_ALREADY_STALE_AT_EARLIEST_DECISION" in row["reasons"]
+    assert frames[0].persisted_at_ms == now - 60_000  # Not refreshed by the check.
+
+
+def test_fresh_initial_book_and_full_counts_do_not_claim_actual_admission():
+    now = 1_800_000_000_000
+    initial = SimpleNamespace(
+        tape_id="original-native:0001",
+        frames=tuple(
+            SimpleNamespace(
+                symbol=symbol,
+                tape_sequence=i,
+                tape_id="original-native:0001",
+                continuity="ADMITTED",
+                frame_sha256="b" * 64,
+                persisted_at_ms=now - 100,
+                exchange_at_ms=now - 200,
+            )
+            for i, symbol in enumerate(cv.UNIVERSE, 1)
+        ),
+        closed_bars=tuple((symbol, (None,) * 3_240) for symbol in cv.UNIVERSE),
+    )
+    result = cv.initial_execution_compatibility(initial, cut_ms=now, observed_ms=now)
+    assert result["state"] == "NECESSARY_CHECKS_ONLY_NOT_ADMISSION"
+    assert not result["no_symbol_can_reach_native_sim_entry"]
+    assert not result["bar_identity_and_future_observation_coverage_proven"]
+    assert result["risk_authority"] == "NONE"

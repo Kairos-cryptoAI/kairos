@@ -53,13 +53,14 @@ class PhaseBoundedCapture:
     This facade additionally limits their total to 40 requests / 32 MiB.
     """
 
-    def __init__(self, output: Path):
+    def __init__(self, output: Path, *, require_fresh_news: bool = False):
         self.output = output
         self.requests = 0
         self.bytes_used = 0
         self._text = None
         self._history = None
         self._start = time.monotonic()
+        self.require_fresh_news = require_fresh_news
 
     def _phase(self, maximum_requests):
         if (
@@ -92,6 +93,8 @@ class PhaseBoundedCapture:
                 self._text = await phase.capture_text()
             finally:
                 self._retain(phase)
+        if self.require_fresh_news and not self._text.news_items:
+            raise ValueError("VERIFICATION_NEEDS_FRESH_NEWS_BEFORE_PAID_CALLS")
         return self._text
 
     async def fetch_history(self, cut_ms):
@@ -140,6 +143,75 @@ def scope():
         "initial_quant_window_seconds": 70,
         "blind_campaign_credit": False,
         "external_macro_release_coverage": "NOT_ESTABLISHED",
+        "initial_tape_compatibility_required_before_paid_calls": True,
+        "positive_forward_sim_support": "NOT_ESTABLISHED_FOR_FINITE_INITIAL_TAPE",
+    }
+
+
+def initial_execution_compatibility(initial, *, cut_ms: int, observed_ms: int) -> dict:
+    """Refuse permanent incompatibilities before spending on a finite tape.
+
+    This is a necessary-condition check, not a source/admission certificate.
+    No frame is retimed and a complete count is not proof of matching bar IDs.
+    Once sealed, this driver's initial tape cannot accept the later provenance
+    or future execution frames. Its ``latest`` source never advances either.
+    """
+    if any(type(value) is not int or value < 0 for value in (cut_ms, observed_ms)):
+        raise ValueError("EXACT_COMPATIBILITY_CLOCKS_REQUIRED")
+    earliest_ms = max(cut_ms, observed_ms)
+    bars = dict(initial.closed_bars)
+    rows = []
+    for symbol in UNIVERSE:
+        frames = [frame for frame in initial.frames if frame.symbol == symbol]
+        frame = max(frames, key=lambda item: item.tape_sequence, default=None)
+        reasons = []
+        age_ms = latency_ms = None
+        if frame is None:
+            reasons.append("NO_INITIAL_BOOK_FRAME")
+        else:
+            age_ms = earliest_ms - frame.persisted_at_ms
+            latency_ms = frame.persisted_at_ms - frame.exchange_at_ms
+            if frame.tape_id != initial.tape_id or frame.continuity != "ADMITTED":
+                reasons.append("INITIAL_BOOK_IDENTITY_OR_CONTINUITY_CONFLICT")
+            if frame.persisted_at_ms > observed_ms:
+                reasons.append("INITIAL_BOOK_PERSISTENCE_FROM_FUTURE")
+            if age_ms > 5_000:
+                reasons.append("FROZEN_INITIAL_BOOK_ALREADY_STALE_AT_EARLIEST_DECISION")
+            if not 0 <= latency_ms <= 1_000:
+                reasons.append("INITIAL_BOOK_SOURCE_LATENCY_EXCEEDED")
+        bar_count = len(bars.get(symbol, ()))
+        missing_lower_bound = max(0, 3_240 - bar_count)
+        if missing_lower_bound:
+            reasons.append("SEALED_INITIAL_TAPE_TOO_SHORT_FOR_54H_INTENT_PROVENANCE")
+        rows.append(
+            {
+                "symbol": symbol,
+                "latest_original_frame_sha256": frame.frame_sha256 if frame else None,
+                "latest_original_frame_persisted_ms": frame.persisted_at_ms if frame else None,
+                "age_at_earliest_decision_ms": age_ms,
+                "source_latency_ms": latency_ms,
+                "sealed_initial_closed_bar_count": bar_count,
+                "minimum_missing_history_bar_count": missing_lower_bound,
+                "reasons": reasons,
+            }
+        )
+    blocked = [row["symbol"] for row in rows if row["reasons"]]
+    return {
+        "schema": "kairos.current-initial-execution-compatibility.v1",
+        "state": "EXECUTION_INCOMPATIBLE" if blocked else "NECESSARY_CHECKS_ONLY_NOT_ADMISSION",
+        "observed_ms": observed_ms,
+        "earliest_decision_ms": earliest_ms,
+        "original_tape_id": initial.tape_id,
+        "initial_tape_sealed": True,
+        "latest_frame_source_advances": False,
+        "maximum_book_age_ms": 5_000,
+        "maximum_frame_latency_ms": 1_000,
+        "required_history_bars_per_symbol": 3_240,
+        "symbols": rows,
+        "blocked_symbols": blocked,
+        "no_symbol_can_reach_native_sim_entry": len(blocked) == len(UNIVERSE),
+        "bar_identity_and_future_observation_coverage_proven": False,
+        "risk_authority": "NONE",
     }
 
 
@@ -240,13 +312,14 @@ def installed_source_identity():
     return result
 
 
-async def execute():
+async def execute(*, require_fresh_news: bool = False):
     from .current_live import CurrentLiveCapture
 
     identity = uuid4().hex
     output = ROOT / ("run-" + identity)
     output.mkdir()  # No adoption, overwrite or resumption of old/partial evidence.
     gateway = None
+    exit_status = 0
     try:
         sources = installed_source_identity()
         source_sha = hashlib.sha256(canonical(sources)).hexdigest()
@@ -255,7 +328,7 @@ async def execute():
         write_create_only(
             output / "before.json",
             {
-                "plan": scope(),
+                "plan": {**scope(), "require_fresh_news_before_paid_calls": require_fresh_news},
                 "sources": sources,
                 "model_routes": model_routes,
                 "at_ms": time.time_ns() // 1_000_000,
@@ -310,11 +383,26 @@ async def execute():
                 if not await repository.verify_tape(initial.tape_id):
                     raise ValueError("CURRENT_NATIVE_TAPE_VERIFICATION_FAILED")
                 # New actual source phase. Do not reset a spent capture's clock/budget.
-                capture = PhaseBoundedCapture(output)
+                capture = PhaseBoundedCapture(output, require_fresh_news=require_fresh_news)
                 started_ms = time.time_ns() // 1_000_000
                 cut = ((started_ms + 299_999) // 300_000) * 300_000
                 if cut - started_ms < 30_000:
                     cut += 300_000
+                compatibility = initial_execution_compatibility(
+                    initial, cut_ms=cut, observed_ms=time.time_ns() // 1_000_000
+                )
+                write_create_only(
+                    output / "execution-compatibility.json",
+                    {
+                        **compatibility,
+                        "source_set_sha256": source_sha,
+                        "model_config_sha256": model_sha,
+                        "original_tape_sha256": seal.tape_sha256,
+                        "phase": "BEFORE_ANY_PAID_CALL",
+                    },
+                )
+                if compatibility["no_symbol_can_reach_native_sim_entry"]:
+                    raise ValueError("CURRENT_NATIVE_SIM_EXECUTION_INCOMPATIBLE_BEFORE_PAID_CALLS")
                 session = SimulationSessionV1(
                     source="kairos-current-system-verification",
                     tape_id=initial.tape_id,
@@ -386,10 +474,17 @@ async def execute():
                 )
                 print("Current chain starting at its declared cut; cumulative budget retained", flush=True)
                 result = await run_one_cut(config, services)
+                from .current_acceptance import assess_directory
+
+                acceptance = assess_directory(output)
+                write_create_only(output / "verification-acceptance.json", acceptance)
+                if acceptance["missing_required_evidence"]:
+                    exit_status = 2
                 print(
                     json.dumps(
                         {
                             "result": result["result"],
+                            "real_path_acceptance": acceptance["state"],
                             "budget_delta": result.get("budget_delta"),
                             "receipt_directory": str(output),
                         },
@@ -428,12 +523,13 @@ async def execute():
     finally:
         if gateway is not None:
             await gateway.close()
-    return 0
+    return exit_status
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--require-fresh-news", action="store_true")
     args = parser.parse_args()
     if not args.execute:
         print(json.dumps(scope(), indent=2, ensure_ascii=False))
@@ -443,7 +539,7 @@ def main():
     # One OS-owned full-run exclusion across output UUIDs. Stale metadata never
     # resumes/retries a failed run, and a concurrent run cannot duplicate it.
     with CaptureOwner(ROOT):
-        return asyncio.run(execute())
+        return asyncio.run(execute(require_fresh_news=args.require_fresh_news))
 
 
 if __name__ == "__main__":
