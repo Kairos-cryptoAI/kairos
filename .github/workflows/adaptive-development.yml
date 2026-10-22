@@ -16,6 +16,7 @@ on:
       - docs/STRATEGY-PRICE-*.md
       - docs/STRATEGY-INTRADAY-*.md
       - docs/STRATEGY-FILTER-*.md
+      - docs/STRATEGY-CATALYST-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
       - docs/HISTORICAL-CONTEXT-*.md
@@ -34,6 +35,7 @@ on:
       - docs/STRATEGY-PRICE-*.md
       - docs/STRATEGY-INTRADAY-*.md
       - docs/STRATEGY-FILTER-*.md
+      - docs/STRATEGY-CATALYST-*.md
       - docs/FULL-SYSTEM-EVALUATION-*.md
       - docs/NATIVE-OBSERVATION-IMPORT-*.md
       - docs/HISTORICAL-CONTEXT-*.md
@@ -55,7 +57,7 @@ jobs:
         python: ["3.11.15", "3.14.7"]
         fixture_group: [regular, five-day-horizon]
     runs-on: ${{ matrix.os }}
-    # Exact disjoint union: 2,318 regular cases plus one complete 36,000-cell horizon.
+    # Exact disjoint union: 2,418 regular cases plus one complete 36,000-cell horizon.
     # The long case is a separate bounded job, never sampled or skipped.
     # Windows CPython 3.11 regular suite has repeatedly taken 33–55 minutes;
     # keep the normal cap elsewhere and leave this measured outlier headroom.
@@ -94,7 +96,7 @@ jobs:
             $expectedTotal = 1
           } elseif ($fixtureGroup -eq 'regular') {
             $fixtureArgs = @($testPath, '--deselect', $longNodeId)
-            $expectedTotal = 2318
+            $expectedTotal = 2418
           } else { throw 'Unrecognized fixture partition' }
           $reportPath = Join-Path $env:RUNNER_TEMP ('adaptive-offline-' + $fixtureGroup + '.xml')
           Set-Location $env:RUNNER_TEMP
@@ -106,6 +108,17 @@ jobs:
           if ((Get-FileHash -LiteralPath $installedProfile -Algorithm SHA256).Hash -ne
               (Get-FileHash -LiteralPath $checkoutProfile -Algorithm SHA256).Hash) {
             throw 'Cached installed profile bytes differ from the checked-out source'
+          }
+          foreach ($module in @('catalyst_policy_v1', 'catalyst_hypothesis_v1')) {
+            $installed = uv run --no-sync --project $project python -I -c "import adaptive_replay.$module as p; print(p.__file__)"
+            if ($LASTEXITCODE -ne 0 -or $installed -notmatch 'site-packages') {
+              throw 'The new catalyst policy must be imported from the non-editable wheel'
+            }
+            $checkout = Join-Path $project ('adaptive_replay/' + $module + '.py')
+            if ((Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -ne
+                (Get-FileHash -LiteralPath $checkout -Algorithm SHA256).Hash) {
+              throw 'Cached installed catalyst policy differs from the checked-out source'
+            }
           }
           uv run --no-sync --project $project python -I -m pytest --rootdir=$project --import-mode=importlib @fixtureArgs -q -W error --durations=15 --junitxml=$reportPath
           if ($LASTEXITCODE -ne 0) { throw 'Offline adaptive development fixture gate failed' }
@@ -123,7 +136,7 @@ jobs:
           if ($fixtureGroup -eq 'five-day-horizon' -and $skipped -ne 0) {
             throw 'The complete long horizon must actually pass without a skip'
           }
-          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2319"
+          Write-Output "OFFLINE_FIXTURE_COUNTS group=$fixtureGroup total=$total passed=$passed skipped=$skipped failed=$failed full_universe=2419"
       - name: Check market-only research code and offline evidence guards (never paid)
         if: ${{ matrix.fixture_group == 'regular' }}
         shell: pwsh

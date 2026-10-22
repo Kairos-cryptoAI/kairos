@@ -1,10 +1,23 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-20 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-22 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
-## Current owner scope — non-strategy launch engineering
+## Current narrow strategy task — 2026-10-22
+
+The owner reopened one bounded research policy, not broad framework expansion:
+an independent, source-event-driven context hypothesis alongside the unchanged
+adaptive control. The [October 22 candidate](STRATEGY-CATALYST-POLICY-2026-10-22.md)
+supplies new typed NORMAL-regime context countertrend capability, deterministic
+geometry, closed-price/quote confirmation, candidate-scoped review and retained
+four-treatment decision arbitration. Historical versions remain frozen. This is
+not campaign enrollment, matched financial economics, a paid model run or a
+profitable production strategy; no runtime, DB/queue or trading is activated.
+The former workstream freeze below is lifted only for this named candidate.
+Production engineering blockers and all readiness gates remain unchanged.
+
+## Continuing owner scope — non-strategy launch engineering
 
 The owner now requests completion of the operational and engineering launch
 prerequisites while strategy selection, parameters and qualification remain

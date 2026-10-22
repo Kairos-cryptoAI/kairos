@@ -5,6 +5,25 @@ source/configuration. It neither searches thresholds nor enrolls/promotes a
 campaign. All trading readiness remains false and policy remains `REJECT_ALL`.
 Trial 15, V4/V5, the frozen Backtest repository and evaluator are never edited.
 
+## October 22 single event-origin policy
+
+`catalyst_policy_v1` and `catalyst_hypothesis_v1` add one separately identified
+research candidate: unchanged adaptive control plus genuinely event-triggered,
+source-bound independent context proposals. Context may be countertrend only
+in NORMAL BULL/BEAR/RANGE; actual regime is retained. Frozen geometry, current
+closed-price/quote/review gates, original response/observation prefixes and the
+first arbitration outcome are retained without late fallback or retries.
+All five-symbol slots remain explicit; new events during an arm's active plan
+or position are consumed, not queued. The caller must keep all returned event,
+creation and decision checkpoints; these are pure consistency folds, not a
+durable publisher or authentication proof. See the
+[exact contract and limitations](../../docs/STRATEGY-CATALYST-POLICY-2026-10-22.md).
+
+This is four **decision treatments**, not a new financial economist or provider
+driver. Old V3 capabilities/accounting and the October 14 price-epoch profile
+remain unchanged and are not silently adopted. No provider, runtime, DB/queue,
+trading call or evidence of net profitability follows from these tests.
+
 ## October 14 accounting and recovery continuation
 
 The previously unfinished native financial and archive consumers now have
