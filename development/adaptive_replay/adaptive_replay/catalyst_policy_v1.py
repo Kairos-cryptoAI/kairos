@@ -721,7 +721,9 @@ def resolve_arm(policy, prepared, ledger, *, decisions, symbol, arm_id, issued_m
     if type(runs) is not tuple or any(type(r) is not OriginRun for r in runs):
         raise ValueError("immutable original arm runs required")
     slot = next(s for s in prepared.slots if s.cell.price.symbol == symbol)
-    relevant = tuple(r for r in ledger.records if r.slot_sha256 == slot.sha256)
+    relevant = tuple(
+        r for r in ledger.records if r.slot_sha256 == slot.sha256 and r.origin in control.ARM_ORIGINS[arm_id]
+    )
     if any(r.outcome.actual_created_ms > issued_ms for r in relevant):
         raise ValueError("future creation outcome cannot inform earlier arbitration")
     prefixes, first_candidate, shared_bars = list(decisions.prefixes), None, {}

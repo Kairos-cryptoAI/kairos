@@ -341,3 +341,35 @@ def test_all_documents_of_new_root_share_the_batch_and_its_ttl():
 def test_event_cannot_impersonate_a_different_declared_publisher():
     with pytest.raises(ValueError, match="exact-version proof"):
         f.catalyst(TARGET, source_id="macro-fixture")
+
+
+@pytest.mark.parametrize("arm", ["strategy_only", "context_review", "independent_proposals"])
+def test_unrelated_treatment_creation_clocks_do_not_change_an_isolated_arm(setup, arm):
+    p, prepared, ledger, technical, context = setup
+    selected = context[arm] if arm == "independent_proposals" else technical[arm]
+    irrelevant = "TECHNICAL" if arm == "independent_proposals" else "CONTEXT_PROPOSAL"
+    records = tuple(
+        replace(record, outcome=replace(record.outcome, actual_created_ms=ISSUE + MINUTE))
+        if record.origin == irrelevant
+        else record
+        for record in ledger.records
+    )
+    isolated = replace(ledger, records=records)
+    runs = (
+        cp.OriginRun(
+            selected, (observation(selected, disposition=None if arm == "strategy_only" else "ALLOW"),)
+        ),
+    )
+    _, decision = cp.resolve_arm(
+        p,
+        prepared,
+        isolated,
+        decisions=cp.DecisionLedger(p.sha256),
+        symbol=TARGET,
+        arm_id=arm,
+        issued_ms=ISSUE,
+        runs=runs,
+        current_prepared=prepared,
+        shared_gate="PASS",
+    )
+    assert decision.candidate is not None
