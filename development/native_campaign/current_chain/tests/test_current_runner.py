@@ -20,7 +20,9 @@ from kairos_native_campaign.current_runner import (
     UsageSnapshot,
     _arm_creation_status,
     _canonical_sha,
+    _fold_worker,
     _run_cpu,
+    _run_fold,
     _scheduled_wait_seconds,
     _shared_gate,
     _stage,
@@ -72,6 +74,18 @@ async def test_cancelled_cpu_work_is_drained_before_resources_can_close():
     with pytest.raises(asyncio.CancelledError):
         await task
     assert ended.is_set()
+
+
+@pytest.mark.asyncio
+async def test_single_fold_worker_is_process_isolated_and_has_no_implicit_fallback():
+    import os
+
+    with pytest.raises(CurrentRunRefused, match="EXPLICIT_SINGLE_PURE_FOLD_WORKER"):
+        await _run_fold(os.getpid)
+    async with _fold_worker():
+        first = await _run_fold(os.getpid)
+        second = await _run_fold(os.getpid)
+    assert first == second and first != os.getpid()
 
 
 def _config(path, **overrides):

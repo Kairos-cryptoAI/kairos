@@ -21,7 +21,7 @@ from adaptive_replay.research_profile_v1 import PriceCell, ResearchProfile
 
 from .current_capture import _parse_candle_row
 from .current_chain import CurrentCatalystChain
-from .current_runner import ARM_IDS, _run_cpu, write_create_only
+from .current_runner import ARM_IDS, _fold_worker, _run_cpu, _run_fold, write_create_only
 from .current_tape import SYMBOLS, ContinuousNativeTape, run_capture
 from .current_verify import PUBLIC_BOOK_ROOT, ROOT
 
@@ -116,23 +116,24 @@ async def execute(recorded_run: Path):
     completed, started = 0, time.time_ns() // 1_000_000
     try:
         await asyncio.wait_for(ready.wait(), 20)
-        chain = await _run_cpu(CurrentCatalystChain.start, policy)
-        chain, prepared = await _run_cpu(chain.prepare, cells)
-        for symbol in sorted(SYMBOLS):
-            for arm in ARM_IDS:
-                if source.done():
-                    raise ValueError("ORIGINAL_SOURCE_ENDED_DURING_RETAINED_CPU_LOAD")
-                chain, _ = await _run_cpu(
-                    chain.resolve,
-                    prepared,
-                    symbol=symbol,
-                    arm_id=arm,
-                    issued_ms=policy.session.start_ms + 1,
-                    runs=(),
-                    shared_gate="BLOCKED",
-                    current_prepared=prepared,
-                )
-                completed += 1
+        async with _fold_worker():
+            chain = await _run_fold(CurrentCatalystChain.start, policy)
+            chain, prepared = await _run_fold(chain.prepare, cells)
+            for symbol in sorted(SYMBOLS):
+                for arm in ARM_IDS:
+                    if source.done():
+                        raise ValueError("ORIGINAL_SOURCE_ENDED_DURING_RETAINED_CPU_LOAD")
+                    chain, _ = await _run_fold(
+                        chain.resolve,
+                        prepared,
+                        symbol=symbol,
+                        arm_id=arm,
+                        issued_ms=policy.session.start_ms + 1,
+                        runs=(),
+                        shared_gate="BLOCKED",
+                        current_prepared=prepared,
+                    )
+                    completed += 1
         stop.set()
         source_receipt = await asyncio.wait_for(asyncio.shield(source), 20)
         result = {
