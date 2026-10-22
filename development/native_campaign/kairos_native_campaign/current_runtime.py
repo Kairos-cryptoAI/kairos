@@ -186,6 +186,7 @@ class RecordingCurrentGateway:
         self.evidence_root = evidence_root
         self._index = 0
         self._consecutive_failures = 0
+        self.source_guard = None
 
     @property
     def settings(self):
@@ -200,6 +201,8 @@ class RecordingCurrentGateway:
         return self.native.accountant
 
     async def complete(self, *, system, user, effort=None, workload=None, schema=None):
+        if self.source_guard is not None:
+            self.source_guard()
         if workload is None or self._consecutive_failures >= 2:
             raise ValueError("CURRENT_RUN_STOPPED_AFTER_FAILURE_LIMIT")
         route = self.router.resolve(effort, workload=workload)

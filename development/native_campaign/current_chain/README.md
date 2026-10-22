@@ -20,7 +20,8 @@ secret. All requests use the existing cumulative PostgreSQL campaign authority
 envelope of $1 and 24 attempts, no retries and conservative unknown holds.
 Registered prices are cost-accounting inputs, not a verified provider invoice.
 
-For the specific complete real-source check, add `--require-fresh-news`.
+The real-source check always requires fresh news (`--require-fresh-news` is
+retained as an explicit compatible spelling).
 This refuses an empty/stale news snapshot before any paid stage. Never rerun
 paid Macro repeatedly merely because an otherwise valid no-signal cut did not
 exercise downstream stages. There is no automatic paid polling/retry here.
@@ -32,15 +33,33 @@ is `PARTIAL_REQUIRED_STAGES_NOT_EXERCISED`, with exit code 2; it is not a full
 path pass. Full trade-close evidence is reported separately. Fixtures have no
 credit toward either real-source acceptance or profitability.
 
-The initial finite-tape driver is currently **execution incompatible**: its
-fixed frames age before the cut, and the sealed initial bar prefix cannot
-contain the full later intent provenance. Before paid calls the bootstrap now
-retains `execution-compatibility.json` and refuses a roster in which no symbol
-can reach a native SIM entry. This is a diagnosed blocker, not a claim that a
-continuous forward/replay driver has been implemented. No flag bypasses it.
-Future native replay work must keep original tape identities, record full
-provenance before sealing, and distinguish logical replay from actual live
-decision times. It cannot renew the original two-second quote deadline.
+The replaced initial-only driver was execution-incompatible: its sealed short
+prefix could not include full 54h provenance or later executable books. Its
+receipts and the diagnostic `initial_execution_compatibility` remain unchanged.
+The current default records one new original continuous V2 tape under a fresh
+identity declared before the first frame (at most 900 seconds, 60,000 frames and
+128 MiB raw payload). It does not stitch or re-root existing segment tapes.
+
+Actual source capture, Catalyst decisions and real model responses happen first.
+An observed request is a create-only journal entry, **not** a Risk approval or
+order. Once capture ends, the full historical/observed bar chain and original
+native frames are imported, then sealed and verified. Only then is a native
+SIM session created and the observed requests replayed. Replay preserves their
+original timestamps, selected-frame watermarks, expiries and account ceilings;
+actual replay wall clocks are recorded separately. It is explicitly later
+offline native SIM, not actual live Risk/execution. Missing future observations
+are reported as incomplete; positions are never artificially closed.
+
+Run `--execute --capture-only` for the zero-provider real-source tape preflight.
+It imports/verifies a real complete tape but earns no model or trade coverage.
+Its history cutoff is the next complete minute, not a strategy decision cut.
+For a model run, the existing configured feed can be chosen explicitly with
+`--text-feed https://cointelegraph.com/rss` (default is CoinDesk). There is no
+automatic feed fallback, altered publication date or relaxed 30-minute TTL.
+Paid calls additionally require the original remaining source horizon, healthy
+book/market streams and fresh news. A later cut never renews the original
+capture window. Both reviews still must fit the original two-second quote
+deadline; slow real responses cause refusal, not refreshed timestamps.
 
 The bootstrap creates only a uniquely named isolated `kairos_sim_current_*`
 database/container. It never migrates an existing database or changes legacy
@@ -73,18 +92,19 @@ runtime containers are not modified.
 - Hypothesis preview and final candidate have different identities and distinct
   reviews. Actual provider latency never renews the original two-second quote,
   hypothesis validity or protection. Stale evidence or a veto is a real refusal.
-- A sealed finite book capture may already be stale when a real model finishes.
-  The report must show that limitation; it must not force an executable trade.
+- An expired original intent remains expired even with a newer native book.
+  Slow reviews may therefore yield no executable trade; that is not a pass.
 - New public stream artifacts may use a fresh C: output parent to avoid D:
   flush latency. No prior artifact is moved. A bounded ordered recorder worker
-  separates socket delivery from segment validation while retaining every body
+  separates socket delivery from native validation while retaining every body
   and its actual delivery clock. The existing recorder, native source policy,
   persistence clocks and five-second gates remain unchanged.
-- The bootstrap declares a ten-second native-book window and a separate
-  seventy-second Quant observation window. SIM uses the latest complete
-  original native segment containing all five instruments. Segment tape IDs,
-  frame sequences and hashes are never flattened or rewritten. All unselected
-  source segments remain retained and the projection has its own receipt.
+- The bootstrap declares one at-most-fifteen-minute original native-book stream
+  and a seventy-second initial Quant window. Every retained TEXT delivery must
+  match one admitted original frame and its exact payload bytes. Overflow,
+  source silence, reconnect, clock regression or missing suffix is fail-closed.
+  The previous short-segment selection helper remains only for old callers and
+  receipts; the new bootstrap never uses it to manufacture continuity.
 - A positive PostgreSQL/controller fixture is labeled synthetic input/model
   mechanics, separate from actual source/model evidence and from profitability.
 - There are no EVEDEX requests/orders, DeepSeek/X calls, PAPER/LIVE services,

@@ -19,6 +19,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import asdict, dataclass, fields, is_dataclass
 from datetime import datetime
 from decimal import ROUND_CEILING, Decimal
+from functools import partial
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -49,6 +50,7 @@ from .current_chain import (
     native_intent,
     review_native,
 )
+from .current_deferred import DeferredSimulationPlan, ObservedSimulationRequests
 from .current_inputs import CurrentCutInputs, build_market_snapshot
 
 UNIVERSE = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT")
@@ -236,6 +238,7 @@ class CurrentRunServices:
     simulation_session: Any
     tape_id: str
     requested_quantities: tuple[tuple[str, float], ...]
+    deferred_requests: ObservedSimulationRequests | None = None
 
 
 class _CollectingMemoryBus(InMemoryBus):
@@ -537,6 +540,15 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
     original candidate and no REST snapshot is promoted into book continuity.
     """
     config.__post_init__()
+    deferred = type(services.simulation_session) is DeferredSimulationPlan
+    if deferred and (
+        type(services.deferred_requests) is not ObservedSimulationRequests
+        or services.deferred_requests.plan != services.simulation_session
+        or not callable(getattr(services.risk_frame_source, "request_snapshot", None))
+    ):
+        raise CurrentRunRefused("DECLARED_DEFERRED_PLAN_AND_OBSERVED_REQUEST_SINK_REQUIRED")
+    if not deferred and services.deferred_requests is not None:
+        raise CurrentRunRefused("SEALED_AND_DEFERRED_SIM_MODES_ARE_MUTUALLY_EXCLUSIVE")
     required = ("capture_text", "fetch_history", "fresh_quote")
     if (
         any(not callable(getattr(services.capture, name, None)) for name in required)
@@ -1096,6 +1108,16 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                         config_sha256=config.model_config_sha256,
                     )
                     final_route = build_final_route(intent, text_by_symbol[symbol])
+                    if _now_ms() > intent.entry_expires_ts_ms:
+                        sim_outcomes.append(
+                            {
+                                "symbol": symbol,
+                                "state": "ORIGINAL_CANDIDATE_EXPIRED_BEFORE_FINAL_REVIEW",
+                                "intent_sha256": intent.intent_id,
+                                "deadline_renewed": False,
+                            }
+                        )
+                        continue
                     final_observations = observations
                     final_receipts = _receipt_tail(
                         plan_context_receipts.get(key, receipts_by_symbol[symbol]),
@@ -1142,6 +1164,36 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                                 "requested_stop_risk_microusd": requested_risk_microusd,
                                 "aggregate_open_risk_microusd": aggregate_open_risk_microusd,
                                 "simulation_risk_policy_reached": False,
+                            }
+                        )
+                        continue
+                    if deferred:
+                        requested_ms, frame = await services.risk_frame_source.request_snapshot(symbol)
+                        lookup = getattr(services.observation_source, "quote_snapshot_for", None)
+                        quote = lookup(observations[-1].quote) if callable(lookup) else None
+                        captured_request = await _stage(
+                            "retain_observed_sim_request:" + symbol,
+                            partial(
+                                services.deferred_requests.record,
+                                intent=intent,
+                                review=final_review,
+                                quote=quote,
+                                frame=frame,
+                                request_ms=requested_ms,
+                                requested_quantity=quantities[symbol],
+                            ),
+                            services.usage_snapshot,
+                            baseline,
+                            records,
+                        )
+                        aggregate_open_risk_microusd += requested_risk_microusd
+                        sim_outcomes.append(
+                            {
+                                "symbol": symbol,
+                                "state": "OBSERVED_REQUEST_PENDING_LATER_NATIVE_SIM_REPLAY",
+                                "intent_sha256": intent.intent_id,
+                                "observed_request_sequence": captured_request["sequence"],
+                                "actual_live_risk_or_execution": False,
                             }
                         )
                         continue

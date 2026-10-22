@@ -34,6 +34,7 @@ from .current_capture import (
     _write_receipt,
 )
 from .current_inputs import CapturedClosedBar, QuantMeasurement, QuantMeasurements
+from .current_tape import ContinuousNativeTape, run_capture
 
 MAX_LIVE_SECONDS = 120
 MAX_LIVE_MARKET_BYTES = 16 * 1024 * 1024
@@ -78,6 +79,7 @@ class CurrentLiveCapture:
         quote_capture_factory: Callable[[], CurrentPublicCapture] | None = None,
         book_output_root: Path | None = None,
         book_seconds: int | None = None,
+        continuous_tape: ContinuousNativeTape | None = None,
     ) -> None:
         if not isinstance(output_root, Path) or not output_root.is_absolute():
             raise ValueError("absolute output root required")
@@ -118,12 +120,46 @@ class CurrentLiveCapture:
         self._quote_snapshots_by_identity: dict[tuple[str, str], FreshQuoteSnapshot] = {}
         self._quote_capture_count = 0
         self._quote_capture_bytes = 0
+        if continuous_tape is not None and type(continuous_tape) is not ContinuousNativeTape:
+            raise ValueError("explicit original continuous native tape required")
+        self.continuous_tape = continuous_tape
+        self._market_stop = asyncio.Event()
+        self._native_task = None
+        self._native_stop = asyncio.Event()
+        self._native_receipt = None
+        self._market_last_receive_ms = None
+        self.required_source_until_ms = None
 
     async def __aenter__(self) -> CurrentLiveCapture:
+        if self.continuous_tape is not None:
+            ready = asyncio.Event()
+            self._native_task = asyncio.create_task(
+                run_capture(self.continuous_tape, ready, self._native_stop),
+                name="kairos-current-original-native-tape",
+            )
+            waiter = asyncio.create_task(ready.wait())
+            try:
+                done, _ = await asyncio.wait(
+                    {waiter, self._native_task}, timeout=20, return_when=asyncio.FIRST_COMPLETED
+                )
+                if waiter not in done or not ready.is_set() or self._native_task.done():
+                    raise CurrentLiveRefused("CONTINUOUS_NATIVE_HANDSHAKE_OR_FIVE_SYMBOL_READY_FAILED")
+            except BaseException:
+                self._native_stop.set()
+                await asyncio.wait_for(asyncio.shield(self._native_task), 20)
+                raise
+            finally:
+                waiter.cancel()
+                await asyncio.gather(waiter, return_exceptions=True)
         return self
 
     async def __aexit__(self, exc_type, exc, tb) -> None:
-        await self._stop_market_task()
+        try:
+            await self._stop_market_task()
+        finally:
+            if self._native_task is not None and self._native_receipt is None:
+                self._native_stop.set()
+                self._native_receipt = await asyncio.wait_for(asyncio.shield(self._native_task), 20)
 
     async def _stop_market_task(self) -> None:
         if self._market_task is not None:
@@ -144,19 +180,29 @@ class CurrentLiveCapture:
         self._market_task = asyncio.create_task(
             self._capture_market_stream(), name="kairos-current-market-capture"
         )
-        book_task = asyncio.create_task(
-            _capture_v2_window(book_dir, seconds=self.book_seconds),
-            name="kairos-current-v2-book-capture",
-        )
-        book_results = await asyncio.gather(book_task, return_exceptions=True)
-        if isinstance(book_results[0], BaseException):
-            await self._stop_market_task()
-            raise CurrentLiveRefused(f"V2_BOOK_CAPTURE_FAILED:{type(book_results[0]).__name__}")
-        book_receipt = book_results[0]
+        if self.continuous_tape is None:
+            book_task = asyncio.create_task(
+                _capture_v2_window(book_dir, seconds=self.book_seconds),
+                name="kairos-current-v2-book-capture",
+            )
+            book_results = await asyncio.gather(book_task, return_exceptions=True)
+            if isinstance(book_results[0], BaseException):
+                await self._stop_market_task()
+                raise CurrentLiveRefused(f"V2_BOOK_CAPTURE_FAILED:{type(book_results[0]).__name__}")
+            book_receipt = book_results[0]
+        else:
+            if self.continuous_tape.failure or self.continuous_tape.closed:
+                raise CurrentLiveRefused("CONTINUOUS_NATIVE_TAPE_NOT_RECORDING")
+            book_receipt = {
+                "state": "RECORDING",
+                "tape_id": self.continuous_tape.tape_id,
+                "source_qualification": "NONE",
+                "risk_authority": "NONE",
+            }
         if type(book_receipt) is not dict:
             await self._stop_market_task()
             raise CurrentLiveRefused("V2_BOOK_CAPTURE_RECEIPT_INVALID")
-        if book_receipt.get("state") != "CAPTURED":
+        if book_receipt.get("state") not in {"CAPTURED", "RECORDING"}:
             # A failed source-book receipt is terminal evidence. Do not wait for
             # the independent Quant window future after this source has failed.
             await self._stop_market_task()
@@ -186,25 +232,30 @@ class CurrentLiveCapture:
         except Exception as exc:
             await self._stop_market_task()
             raise CurrentLiveRefused(f"MARKET_STREAM_CAPTURE_FAILED:{type(exc).__name__}") from None
-        all_frames = self._read_v2_frames(book_dir, book_receipt)
-        frames = _latest_complete_native_segment(all_frames)
-        _write_receipt(
-            book_dir,
-            "sim-segment-projection.receipt.json",
-            {
-                "schema": "kairos.current-native-segment-projection.v1",
-                "policy": "LATEST_COMPLETE_ORIGINAL_RETAINED_SEGMENT",
-                "source_capture_id": book_receipt["capture_id"],
-                "source_receipt_sha256": hashlib.sha256(_canonical_bytes(book_receipt)).hexdigest(),
-                "observed_source_frames": len(all_frames),
-                "selected_tape_id": frames[0].tape_id,
-                "selected_original_frame_sha256s": [frame.frame_sha256 for frame in frames],
-                "original_frames_rewritten": False,
-                "omitted_segments_retained": True,
-                "source_set_admitted": False,
-                "risk_authority": "NONE",
-            },
-        )
+        if self.continuous_tape is not None:
+            frames = self.continuous_tape.frames
+            if {frame.symbol for frame in frames} != set(UNIVERSE):
+                raise CurrentLiveRefused("CONTINUOUS_FIVE_SYMBOL_NATIVE_SOURCE_REQUIRED")
+        else:
+            all_frames = self._read_v2_frames(book_dir, book_receipt)
+            frames = _latest_complete_native_segment(all_frames)
+            _write_receipt(
+                book_dir,
+                "sim-segment-projection.receipt.json",
+                {
+                    "schema": "kairos.current-native-segment-projection.v1",
+                    "policy": "LATEST_COMPLETE_ORIGINAL_RETAINED_SEGMENT",
+                    "source_capture_id": book_receipt["capture_id"],
+                    "source_receipt_sha256": hashlib.sha256(_canonical_bytes(book_receipt)).hexdigest(),
+                    "observed_source_frames": len(all_frames),
+                    "selected_tape_id": frames[0].tape_id,
+                    "selected_original_frame_sha256s": [frame.frame_sha256 for frame in frames],
+                    "original_frames_rewritten": False,
+                    "omitted_segments_retained": True,
+                    "source_set_admitted": False,
+                    "risk_authority": "NONE",
+                },
+            )
         receipt_path = self._persist_market_receipt(market_result)
         completed_metrics = self._attach_force_order_metrics(metrics, market_result)
         # PublicBookRecorder generates its own actual capture identity; don't
@@ -292,6 +343,16 @@ class CurrentLiveCapture:
             raise CurrentLiveRefused("CLOSED_BAR_REQUEST_INVALID")
         if type(timeout_s) not in {int, float} or not math.isfinite(timeout_s) or not 0 < timeout_s <= 300:
             raise CurrentLiveRefused("CLOSED_BAR_WAIT_EXCEEDS_FIVE_MINUTES")
+        if self.continuous_tape is not None:
+            self.assert_continuous_source()
+            remaining = (
+                self.continuous_tape.capture_started_ms
+                + self.continuous_tape.maximum_seconds * 1_000
+                - time.time_ns() // 1_000_000
+            ) / 1_000
+            if remaining <= 0:
+                raise CurrentLiveRefused("ORIGINAL_SOURCE_WINDOW_ENDED")
+            timeout_s = min(timeout_s, remaining)
         cache = self._bars[symbol]
         available = [close for close in cache if close > after_close_ms]
         if available:
@@ -311,7 +372,58 @@ class CurrentLiveCapture:
     async def latest(self, symbol: str) -> Any | None:
         if symbol not in UNIVERSE:
             return None
+        if self.continuous_tape is not None:
+            return self.continuous_tape.latest(symbol)
         return self._latest_frames.get(symbol)
+
+    async def request_snapshot(self, symbol: str):
+        if self.continuous_tape is None:
+            raise CurrentLiveRefused("ORIGINAL_CONTINUOUS_REQUEST_SNAPSHOT_REQUIRED")
+        self.assert_continuous_source()
+        return self.continuous_tape.snapshot(symbol)
+
+    def assert_continuous_source(self):
+        if self.continuous_tape is None or (
+            self.continuous_tape.failure
+            or self.continuous_tape.closed
+            or self._native_task is None
+            or self._native_task.done()
+        ):
+            raise CurrentLiveRefused("ORIGINAL_CONTINUOUS_NATIVE_SOURCE_UNAVAILABLE")
+        now_ms = time.time_ns() // 1_000_000
+        self.continuous_tape.check_liveness(now_ms, time.monotonic_ns())
+        original_end = self.continuous_tape.capture_started_ms + self.continuous_tape.maximum_seconds * 1_000
+        if self.required_source_until_ms is not None and original_end < self.required_source_until_ms:
+            raise CurrentLiveRefused("ORIGINAL_SOURCE_HORIZON_INSUFFICIENT_BEFORE_PAID_CALL")
+        if (
+            self._market_task is None
+            or self._market_task.done()
+            or self._market_last_receive_ms is None
+            or not 0 <= now_ms - self._market_last_receive_ms <= MARKET_GAP_LIMIT_SECONDS * 1_000
+        ):
+            raise CurrentLiveRefused("ORIGINAL_MARKET_SOURCE_UNAVAILABLE_BEFORE_PAID_CALL")
+
+    async def finish_native(self):
+        if self._native_task is None:
+            raise CurrentLiveRefused("ORIGINAL_NATIVE_CAPTURE_NOT_STARTED")
+        self._native_stop.set()
+        self._native_receipt = await asyncio.wait_for(asyncio.shield(self._native_task), 20)
+        if self._native_receipt.get("state") != "CAPTURED":
+            raise CurrentLiveRefused("ORIGINAL_NATIVE_CAPTURE_FAILED_CLOSED")
+        return self._native_receipt
+
+    def closed_bar_roster(self):
+        return {
+            symbol: tuple(sorted(self._bars[symbol].values(), key=lambda row: row.event_ms))
+            for symbol in UNIVERSE
+        }
+
+    async def finish_observations(self):
+        """Gracefully close the one original source, never restart it."""
+        if self._market_task is None:
+            raise CurrentLiveRefused("ORIGINAL_MARKET_CAPTURE_NOT_STARTED")
+        self._market_stop.set()
+        return await asyncio.wait_for(asyncio.shield(self._market_task), 12.0)
 
     async def _capture_rest_metrics(self) -> tuple[tuple[str, _RESTQuantBase], ...]:
         result: list[tuple[str, _RESTQuantBase]] = []
@@ -455,18 +567,21 @@ class CurrentLiveCapture:
                     ) as socket:
                         market_window_start = time.time_ns() // 1_000_000
                         last_receive = market_window_start
+                        self._market_last_receive_ms = market_window_start
                         window_start_mono = time.monotonic()
                         initial_deadline = window_start_mono + self.max_seconds
                         observation_deadline = window_start_mono + self.observation_seconds
                         window_end_ms = market_window_start + self.max_seconds * 1_000
                         message_count = 0
-                        while time.monotonic() < observation_deadline:
+                        while time.monotonic() < observation_deadline and not self._market_stop.is_set():
                             remaining = observation_deadline - time.monotonic()
                             try:
                                 message = await asyncio.wait_for(
                                     socket.receive(), min(MARKET_GAP_LIMIT_SECONDS, remaining)
                                 )
                             except TimeoutError:
+                                if self._market_stop.is_set():
+                                    break
                                 raise CurrentLiveRefused("MARKET_STREAM_RECEIVE_GAP") from None
                             received_ms = time.time_ns() // 1_000_000
                             if message.type is not aiohttp.WSMsgType.TEXT or type(message.data) is not str:
@@ -510,6 +625,7 @@ class CurrentLiveCapture:
                             stream_bytes += len(row)
                             message_count += 1
                             last_receive = received_ms
+                            self._market_last_receive_ms = received_ms
                             event_ms = _integer(data.get("E"))
                             if event_ms is not None and event_ms > received_ms:
                                 raise CurrentLiveRefused("MARKET_EXCHANGE_CLOCK_AFTER_LOCAL_RECEIPT")
@@ -588,7 +704,16 @@ class CurrentLiveCapture:
                     "rows": message_count,
                 }
             )
-        return {"terminal_ms": ended_ms, "raw_sha256": stream_hash.hexdigest(), "raw_bytes": stream_bytes}
+        terminal = {
+            "terminal_ms": ended_ms,
+            "raw_sha256": stream_hash.hexdigest(),
+            "raw_bytes": stream_bytes,
+            "rows": message_count,
+            "graceful_stop": self._market_stop.is_set(),
+            "source_qualification": "NONE",
+        }
+        _write_receipt(self.capture.capture_dir, "market-observation-end.receipt.json", terminal)
+        return terminal
 
     def _capture_closed_bar(
         self, symbol: str, data: dict[str, Any], raw: str, received_ms: int, persisted_ms: int

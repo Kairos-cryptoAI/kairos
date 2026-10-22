@@ -5,6 +5,7 @@ import pytest
 from kairos_native_campaign.current_runtime import (
     _ACTIVE,
     CurrentScopedBudget,
+    RecordingCurrentGateway,
     read_existing_openai_key,
 )
 
@@ -95,3 +96,19 @@ def test_existing_journal_not_reused(tmp_path):
     path.write_text(json.dumps({"retained": True}))
     with pytest.raises(ValueError, match="CREATE_ONLY"):
         CurrentScopedBudget(Shared(), path)
+
+
+@pytest.mark.asyncio
+async def test_failed_original_source_prevents_even_provider_attempt_and_reservation(tmp_path):
+    from types import SimpleNamespace
+
+    gateway = RecordingCurrentGateway(SimpleNamespace(), tmp_path)
+
+    def failed_source():
+        raise ValueError("ORIGINAL_SOURCE_HORIZON_INSUFFICIENT_BEFORE_PAID_CALL")
+
+    gateway.source_guard = failed_source
+    with pytest.raises(ValueError, match="SOURCE_HORIZON"):
+        await gateway.complete(system="synthetic-test", user="synthetic-test", workload=object())
+    assert gateway._index == 0
+    assert not list(tmp_path.iterdir())

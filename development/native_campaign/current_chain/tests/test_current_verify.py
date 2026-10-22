@@ -55,6 +55,16 @@ def test_phase_cap_is_pre_request_and_plan_does_not_arm(tmp_path):
     assert not list(tmp_path.iterdir())
 
 
+def test_news_selection_is_only_existing_configured_feed_not_implicit_fallback(tmp_path):
+    chosen = "https://cointelegraph.com/rss"
+    capture = cv.PhaseBoundedCapture(tmp_path, text_feed=chosen)
+    assert cv.scope(text_feed=chosen)["text_feed"] == chosen
+    phase = capture._phase(1)
+    assert phase.text_feed == chosen
+    with pytest.raises(ValueError, match="CONFIGURED_NEWS_FEED"):
+        cv.scope(text_feed="https://unapproved.invalid/rss")
+
+
 @pytest.mark.asyncio
 async def test_full_verification_can_require_fresh_news_before_any_paid_stage(tmp_path, monkeypatch):
     class EmptyNews:

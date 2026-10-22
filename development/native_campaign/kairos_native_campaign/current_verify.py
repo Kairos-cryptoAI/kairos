@@ -21,13 +21,17 @@ from uuid import uuid4
 
 from kairos_core.contracts import (
     SimulationAssumptionsV1,
-    SimulationSessionV1,
     SimulationStrategyRefV1,
 )
 from kairos_llm.models import DEFAULT_WORKLOAD_ROUTES
-from kairos_strategy.runtime import candle_to_closed_bar
 
-from .current_capture import CurrentPublicCapture
+from .current_capture import TEXT_FEEDS, CurrentPublicCapture
+from .current_deferred import (
+    DeferredSimulationPlan,
+    ObservedSimulationRequests,
+    import_complete_tape,
+    replay_observed_requests,
+)
 from .current_inputs import UNIVERSE, CurrentObservationSource, _directional_prices, build_current_cut_inputs
 from .current_resources import isolated_resources
 from .current_runner import (
@@ -38,6 +42,7 @@ from .current_runner import (
     write_create_only,
 )
 from .current_runtime import append_evidence, build_existing_gateway, canonical, read_existing_openai_key
+from .current_tape import ContinuousNativeTape
 
 ROOT = Path("D:/Kairos/runtime/current-system-20261022")
 PUBLIC_BOOK_ROOT = Path("C:/Users/loval/Documents/ChatGPT/Kairos/current-system-public-capture-20261022")
@@ -53,8 +58,11 @@ class PhaseBoundedCapture:
     This facade additionally limits their total to 40 requests / 32 MiB.
     """
 
-    def __init__(self, output: Path, *, require_fresh_news: bool = False):
+    def __init__(self, output: Path, *, require_fresh_news: bool = False, text_feed: str = TEXT_FEED):
+        if text_feed not in TEXT_FEEDS:
+            raise ValueError("EXISTING_CONFIGURED_NEWS_FEED_REQUIRED")
         self.output = output
+        self.text_feed = text_feed
         self.requests = 0
         self.bytes_used = 0
         self._text = None
@@ -70,7 +78,7 @@ class PhaseBoundedCapture:
         ):
             raise ValueError("CURRENT_TOTAL_PUBLIC_CAPTURE_ENVELOPE_EXCEEDED")
         return CurrentPublicCapture(
-            self.output, text_feed=TEXT_FEED, byte_limit=32 * 1024 * 1024 - self.bytes_used
+            self.output, text_feed=self.text_feed, byte_limit=32 * 1024 * 1024 - self.bytes_used
         )
 
     def _retain(self, phase):
@@ -117,10 +125,12 @@ class PhaseBoundedCapture:
             self._retain(phase)
 
 
-def scope():
+def scope(*, text_feed: str = TEXT_FEED):
+    if text_feed not in TEXT_FEEDS:
+        raise ValueError("EXISTING_CONFIGURED_NEWS_FEED_REQUIRED")
     return {
         "schema": "kairos.current-system-verification-plan.v1",
-        "mode": "CURRENT_PROSPECTIVE_ENGINEERING_SIM_ONLY",
+        "mode": "CURRENT_OBSERVED_DECISIONS_THEN_SEALED_NATIVE_SIM_REPLAY",
         "components": [
             "current Catalyst",
             "TextScoutsService",
@@ -130,7 +140,8 @@ def scope():
             "SimulationRiskPolicy",
             "SimulationExecutionController",
         ],
-        "sources": "fixed-five public Binance USD-M plus one existing configured CoinDesk RSS snapshot",
+        "sources": "fixed-five public Binance USD-M plus one existing configured RSS snapshot",
+        "text_feed": text_feed,
         "maximum_openai_calls": 24,
         "local_cap_microusd": 1_000_000,
         "existing_cumulative_cap_microusd": 12_000_000,
@@ -139,12 +150,12 @@ def scope():
         "readiness_promotion": False,
         "real_venue_orders": False,
         "historical_test": False,
-        "initial_native_book_window_seconds": 10,
+        "maximum_continuous_native_book_window_seconds": 900,
         "initial_quant_window_seconds": 70,
         "blind_campaign_credit": False,
         "external_macro_release_coverage": "NOT_ESTABLISHED",
-        "initial_tape_compatibility_required_before_paid_calls": True,
-        "positive_forward_sim_support": "NOT_ESTABLISHED_FOR_FINITE_INITIAL_TAPE",
+        "continuous_original_tape_and_full_provenance_required": True,
+        "actual_live_risk_or_execution": False,
     }
 
 
@@ -312,7 +323,7 @@ def installed_source_identity():
     return result
 
 
-async def execute(*, require_fresh_news: bool = False):
+async def execute(*, require_fresh_news: bool = True, capture_only: bool = False, text_feed: str = TEXT_FEED):
     from .current_live import CurrentLiveCapture
 
     identity = uuid4().hex
@@ -328,7 +339,11 @@ async def execute(*, require_fresh_news: bool = False):
         write_create_only(
             output / "before.json",
             {
-                "plan": {**scope(), "require_fresh_news_before_paid_calls": require_fresh_news},
+                "plan": {
+                    **scope(text_feed=text_feed),
+                    "require_fresh_news_before_paid_calls": require_fresh_news,
+                    "capture_only_no_models": capture_only,
+                },
                 "sources": sources,
                 "model_routes": model_routes,
                 "at_ms": time.time_ns() // 1_000_000,
@@ -353,6 +368,9 @@ async def execute(*, require_fresh_news: bool = False):
             book_output = PUBLIC_BOOK_ROOT / identity
             book_output.mkdir()
             metric_capture = CurrentPublicCapture(book_output)
+            tape = ContinuousNativeTape(
+                book_output / "original-continuous-native", "current-native-" + identity
+            )
             write_create_only(
                 output / "public-book-location.json",
                 {"public_book_parent": str(book_output), "old_evidence_moved": False},
@@ -366,47 +384,30 @@ async def execute(*, require_fresh_news: bool = False):
                 quote_capture_factory=lambda: CurrentPublicCapture(book_output),
                 book_output_root=book_output,
                 book_seconds=10,
+                continuous_tape=tape,
             ) as live:
+                gateway.source_guard = live.assert_continuous_source
                 print("Bounded current public capture started; models not called yet", flush=True)
                 initial = await live.capture_initial()
                 repository = resources.simulation_repository
-                for frame in initial.frames:
-                    await repository.record_book_frame(frame)
-                for _symbol, bars in initial.closed_bars:
-                    if not bars:
-                        raise ValueError("INITIAL_FIVE_SYMBOL_CLOSED_BARS_REQUIRED")
-                    for captured in bars:
-                        await repository.record_closed_bar(
-                            initial.tape_id, candle_to_closed_bar(captured.candle)
-                        )
-                seal = await repository.seal_tape(initial.tape_id, sealed_at_ms=time.time_ns() // 1_000_000)
-                if not await repository.verify_tape(initial.tape_id):
-                    raise ValueError("CURRENT_NATIVE_TAPE_VERIFICATION_FAILED")
                 # New actual source phase. Do not reset a spent capture's clock/budget.
-                capture = PhaseBoundedCapture(output, require_fresh_news=require_fresh_news)
+                capture = PhaseBoundedCapture(
+                    output, require_fresh_news=require_fresh_news and not capture_only, text_feed=text_feed
+                )
                 started_ms = time.time_ns() // 1_000_000
-                cut = ((started_ms + 299_999) // 300_000) * 300_000
+                # A source-only proof needs no 5m strategy decision: the next
+                # complete minute suffices for its same 54h original-bar import.
+                # Actual model/Catalyst runs retain their original 5m cadence.
+                period = 60_000 if capture_only else 300_000
+                cut = ((started_ms + period - 1) // period) * period
                 if cut - started_ms < 30_000:
-                    cut += 300_000
-                compatibility = initial_execution_compatibility(
-                    initial, cut_ms=cut, observed_ms=time.time_ns() // 1_000_000
-                )
-                write_create_only(
-                    output / "execution-compatibility.json",
-                    {
-                        **compatibility,
-                        "source_set_sha256": source_sha,
-                        "model_config_sha256": model_sha,
-                        "original_tape_sha256": seal.tape_sha256,
-                        "phase": "BEFORE_ANY_PAID_CALL",
-                    },
-                )
-                if compatibility["no_symbol_can_reach_native_sim_entry"]:
-                    raise ValueError("CURRENT_NATIVE_SIM_EXECUTION_INCOMPATIBLE_BEFORE_PAID_CALLS")
-                session = SimulationSessionV1(
-                    source="kairos-current-system-verification",
+                    cut += period
+                # The source epoch began at the original verified handshake.
+                # Neither a later cut nor a slow setup renews its 900s budget.
+                live.required_source_until_ms = cut + (0 if capture_only else 300_000 + 120_000)
+                live.assert_continuous_source()
+                session = DeferredSimulationPlan(
                     tape_id=initial.tape_id,
-                    tape_sha256=seal.tape_sha256,
                     assumptions=SimulationAssumptionsV1(
                         latency_ms=25,
                         maximum_book_age_ms=5_000,
@@ -420,22 +421,22 @@ async def execute(*, require_fresh_news: bool = False):
                     strategy_allowlist=(
                         SimulationStrategyRefV1(strategy_id=STRATEGY_ID, strategy_revision=REVISION),
                     ),
-                    started_at_ms=started_ms,
-                    ends_at_ms=cut + 15 * 60_000,
+                    started_at_ms=tape.capture_started_ms,
+                    ends_at_ms=tape.capture_started_ms + 900_000,
+                    source_set_sha256=source_sha,
+                    model_config_sha256=model_sha,
                 )
-                await repository.create_session(session)
+                requests = ObservedSimulationRequests(session, output / "deferred-sim-requests")
 
                 async def open_risk_snapshot():
                     async with resources.sim_database.pool.acquire() as connection:
                         async with connection.transaction(readonly=True):
-                            count = await connection.fetchval(
-                                "SELECT count(*) FROM sim_trades WHERE session_id=$1", session.session_id
-                            )
+                            count = await connection.fetchval("SELECT count(*) FROM sim_trades")
                     if count:
                         raise ValueError("CURRENT_NEW_SESSION_NOT_EMPTY")
                     at = time.time_ns() // 1_000_000
                     payload = {
-                        "session_id": session.session_id,
+                        "deferred_plan_sha256": session.sha256,
                         "trade_rows": 0,
                         "equity_usd": 10_000,
                         "open_risk_microusd": 0,
@@ -471,9 +472,63 @@ async def execute(*, require_fresh_news: bool = False):
                     simulation_session=session,
                     tape_id=initial.tape_id,
                     requested_quantities=tuple((symbol, 0.000001) for symbol in UNIVERSE),
+                    deferred_requests=requests,
                 )
                 print("Current chain starting at its declared cut; cumulative budget retained", flush=True)
-                result = await run_one_cut(config, services)
+                if capture_only:
+                    while (remaining := (cut - time.time_ns() // 1_000_000) / 1_000) > 0:
+                        await asyncio.sleep(min(10.0, remaining))
+                    await capture.fetch_history(cut)
+                    result = {"result": "SOURCE_TAPE_ONLY_NO_MODEL_OR_TRADE_VERIFICATION"}
+                else:
+                    result = await run_one_cut(config, services)
+                # Requests are already immutable. Only actual later source bars
+                # are observed; no forced price, trade, stop, or close is added.
+                future_until = min(
+                    session.ends_at_ms - 5_000,
+                    time.time_ns() // 1_000_000 + (120_000 if requests.requests else 0),
+                )
+                while time.time_ns() // 1_000_000 < future_until:
+                    live.assert_continuous_source()
+                    await asyncio.sleep(min(5.0, (future_until - time.time_ns() // 1_000_000) / 1_000))
+                await live.finish_observations()
+                native_receipt = await live.finish_native()
+                write_create_only(output / "continuous-source-receipt.json", native_receipt)
+                if capture._history is None:
+                    raise ValueError("FULL_CAPTURED_HISTORY_REQUIRED_BEFORE_NATIVE_SEAL")
+                print("Importing complete original source tape; no provider calls in replay", flush=True)
+                bar_counts, replay_bars = await import_complete_tape(
+                    repository,
+                    tape_id=tape.tape_id,
+                    history=capture._history,
+                    observed_bars=live.closed_bar_roster(),
+                    frames=tape.frames,
+                )
+                seal = await repository.seal_tape(tape.tape_id, sealed_at_ms=time.time_ns() // 1_000_000)
+                replay = await replay_observed_requests(
+                    repository, requests, seal=seal, bars=replay_bars, frames=tape.frames
+                )
+                write_create_only(
+                    output / "native-tape-verification.json",
+                    {
+                        "state": "PASS_RECORDED_NATIVE_SOURCE_TAPE_ONLY",
+                        "tape_sha256": seal.tape_sha256,
+                        "tape_id": tape.tape_id,
+                        "plan_sha256": session.sha256,
+                        "session_id": replay["session_id"],
+                        "full_closed_bar_counts": bar_counts,
+                        "original_v2_frame_count": len(tape.frames),
+                        "observed_request_count": len(requests.requests),
+                        "capture_only_no_models": capture_only,
+                        "replay_mode": replay["mode"],
+                        "readiness_promotion": False,
+                    },
+                )
+                if capture_only:
+                    print(
+                        json.dumps({"result": result["result"], "receipt_directory": str(output)}), flush=True
+                    )
+                    return 2
                 from .current_acceptance import assess_directory
 
                 acceptance = assess_directory(output)
@@ -530,16 +585,22 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--require-fresh-news", action="store_true")
+    parser.add_argument("--text-feed", choices=tuple(TEXT_FEEDS), default=TEXT_FEED)
+    parser.add_argument(
+        "--capture-only", action="store_true", help="Real public tape preflight; no model calls"
+    )
     args = parser.parse_args()
     if not args.execute:
-        print(json.dumps(scope(), indent=2, ensure_ascii=False))
+        print(json.dumps(scope(text_feed=args.text_feed), indent=2, ensure_ascii=False))
         return 0
     from adaptive_replay.public_book_capture import CaptureOwner
 
     # One OS-owned full-run exclusion across output UUIDs. Stale metadata never
     # resumes/retries a failed run, and a concurrent run cannot duplicate it.
     with CaptureOwner(ROOT):
-        return asyncio.run(execute(require_fresh_news=args.require_fresh_news))
+        return asyncio.run(
+            execute(require_fresh_news=True, capture_only=args.capture_only, text_feed=args.text_feed)
+        )
 
 
 if __name__ == "__main__":

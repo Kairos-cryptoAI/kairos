@@ -52,6 +52,7 @@ from .current_capture import (
 from .current_capture import (
     UNIVERSE as CAPTURE_UNIVERSE,
 )
+from .current_deferred import DeferredSimulationPlan
 
 UNIVERSE = tuple(sorted(CAPTURE_UNIVERSE))
 PERIOD_MS = 5 * BAR_MS
@@ -159,7 +160,7 @@ class CurrentCutInputs:
     input_bars: tuple[tuple[str, tuple[ClosedBarEventV1, ...]], ...]
     directional_payloads: tuple[tuple[str, str], ...]
     requested_quantities: tuple[tuple[str, float], ...]
-    simulation_session: SimulationSessionV1
+    simulation_session: SimulationSessionV1 | DeferredSimulationPlan
     tape_id: str
     permitted_evidence_ids: tuple[tuple[str, tuple[str, ...]], ...]
 
@@ -181,11 +182,14 @@ class CurrentCutInputs:
             ("permitted_evidence_ids", self.permitted_evidence_ids),
         ):
             _five_symbol_pairs(name, values)
-        if type(self.simulation_session) is not SimulationSessionV1:
-            raise CurrentInputRefused("SIMULATION_SESSION_REQUIRED")
-        self.simulation_session.__class__.model_validate(
-            self.simulation_session.model_dump(mode="python"), strict=True
-        )
+        if type(self.simulation_session) is SimulationSessionV1:
+            self.simulation_session.__class__.model_validate(
+                self.simulation_session.model_dump(mode="python"), strict=True
+            )
+        elif type(self.simulation_session) is DeferredSimulationPlan:
+            self.simulation_session.__post_init__()
+        else:
+            raise CurrentInputRefused("EXPLICIT_SEALED_SESSION_OR_DECLARED_DEFERRED_PLAN_REQUIRED")
         if self.simulation_session.tape_id != self.tape_id or not _IDENTIFIER.fullmatch(self.tape_id):
             raise CurrentInputRefused("SIMULATION_TAPE_ID_CONFLICT")
         for _symbol, aggregate in self.text_aggregates:
@@ -452,7 +456,7 @@ def build_current_cut_inputs(
     allocation_received_ms: int,
     signal_received_ms: int,
     quant_measurements_by_symbol: tuple[tuple[str, QuantMeasurements], ...],
-    simulation_session: SimulationSessionV1,
+    simulation_session: SimulationSessionV1 | DeferredSimulationPlan,
     tape_id: str,
     requested_quantities: tuple[tuple[str, float], ...],
 ) -> CurrentCutInputs:
@@ -513,7 +517,10 @@ def build_current_cut_inputs(
         or tuple(symbol for symbol, _ in requested_quantities) != UNIVERSE
     ):
         raise CurrentInputRefused("EXACT_FIVE_SYMBOL_SIM_QUANTITY_ROSTER_REQUIRED")
-    if type(simulation_session) is not SimulationSessionV1 or simulation_session.tape_id != tape_id:
+    if (
+        type(simulation_session) not in {SimulationSessionV1, DeferredSimulationPlan}
+        or simulation_session.tape_id != tape_id
+    ):
         raise CurrentInputRefused("CURRENT_SIMULATION_SESSION_TAPE_BINDING_REQUIRED")
 
     text_source_id = text_snapshot.source_name

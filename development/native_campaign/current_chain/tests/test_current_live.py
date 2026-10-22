@@ -45,6 +45,36 @@ class _DepthTransport:
         return HTTPResponse(url, 200, body, len(body), "identity")
 
 
+def test_original_source_guard_refuses_spent_horizon_and_market_failure(tmp_path, monkeypatch):
+    import kairos_native_campaign.current_live as module
+
+    now = 1_800_000_000_000
+    calls = []
+    tape = SimpleNamespace(
+        failure=None,
+        closed=False,
+        capture_started_ms=now - 100_000,
+        maximum_seconds=900,
+        check_liveness=lambda utc, mono: calls.append((utc, mono)),
+    )
+    capture = CurrentPublicCapture(tmp_path, transport=_DepthTransport(now))
+    live = CurrentLiveCapture(tmp_path, capture=capture, tape_id="synthetic-guard-test")
+    live.continuous_tape = tape
+    live._native_task = SimpleNamespace(done=lambda: False)
+    live._market_task = SimpleNamespace(done=lambda: False)
+    live._market_last_receive_ms = now
+    monkeypatch.setattr(module.time, "time_ns", lambda: now * 1_000_000)
+    live.required_source_until_ms = now + 800_001
+    with pytest.raises(module.CurrentLiveRefused, match="HORIZON_INSUFFICIENT"):
+        live.assert_continuous_source()
+    assert calls
+    live.required_source_until_ms = now + 800_000
+    live.assert_continuous_source()
+    live._market_task = SimpleNamespace(done=lambda: True)
+    with pytest.raises(module.CurrentLiveRefused, match="MARKET_SOURCE_UNAVAILABLE"):
+        live.assert_continuous_source()
+
+
 @pytest.mark.asyncio
 async def test_trigger_quote_lookup_returns_its_exact_retained_snapshot_not_stale_prefetch(
     tmp_path: Path,
