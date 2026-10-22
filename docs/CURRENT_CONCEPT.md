@@ -17,6 +17,42 @@ profitable production strategy; no runtime, DB/queue or trading is activated.
 The former workstream freeze below is lifted only for this named candidate.
 Production engineering blockers and all readiness gates remain unchanged.
 
+### October 22 engineering verification — separate from economics
+
+The code source is GPG-signed `08205aa7a5fa6136f8c664d0ea8153b7c7fa93ab`
+(preceded by signed `da8d282`, `65dec01` and `d274a5a`). A fresh non-editable wheel,
+unchanged lock, uv 0.12.3 and CPython 3.11.15 passed **187/187, zero skipped**
+in 331.73 seconds: 108 new cases plus 79 preserved lifecycle/profile cases.
+Both new modules were imported with `python -I` outside the checkout and their
+installed bytes matched. Whole-package Ruff lint/format checks passed (217 files).
+The source-identity verifier passed across all 14 clean signed main repositories.
+No dependency revision, old source profile or readiness flag changed.
+Receipt and capture clocks remain distinct: capture determines the first 5m
+opportunity, never an earlier receipt/publication timestamp. MACRO realization
+must not postdate receipt; the retained exact-version proof is unchanged.
+
+All three exact-source hosted workflows completed successfully:
+[adaptive-development](https://github.com/Kairos-cryptoAI/kairos/actions/runs/39751666144),
+[Validate](https://github.com/Kairos-cryptoAI/kairos/actions/runs/39751666087) and
+[CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/39751665719).
+All eight matrix jobs passed. Each Windows/Linux and Python 3.11/3.14 pair
+reported 2,426/2,426 regular cases plus the unchanged complete 36,000-cell horizon
+case (1/1), for an exact union of 2,427, with zero failures or skips. Each of the
+four regular jobs also passed all 38 market-review evidence guards. Terminal
+logs and the full source SHA were checked; superseded/cancelled revisions are
+not substituted for this evidence. These are engineering fixtures, not
+historical news/model economics or alpha qualification.
+
+GitHub also reported two **unresolved critical** `certifi` alerts in the retained
+research locks: [adaptive replay 2](https://github.com/Kairos-cryptoAI/kairos/security/dependabot/2)
+and [native campaign 3](https://github.com/Kairos-cryptoAI/kairos/security/dependabot/3).
+They recommend 2026.10.19. The automatic updater fails because it offers uv
+0.12.18 while those projects require exactly 0.12.3. This task changes neither
+lock nor tool pin and performs no nonfixture provider/network run in those
+environments. A separately versioned/revalidated safe dependency set is required
+before such runs; passing offline tests does not resolve these alerts or make a
+historical environment safe.
+
 ## Continuing owner scope — non-strategy launch engineering
 
 The owner now requests completion of the operational and engineering launch
