@@ -769,9 +769,16 @@ async def run_capture(
     except BaseException as exc:
         failure = tape.failure or tape._sanitize(exc)
         tape._fail(failure)
-        if consumer is not None and not consumer.done():
+        if consumer is not None:
+            if not consumer.done():
+                try:
+                    await drain_and_stop(consumer)
+                except BaseException:
+                    pass
+            # Always retrieve the terminal task result, including the race
+            # where a worker fails while receive() is itself unwinding.
             try:
-                await drain_and_stop(consumer)
+                await consumer
             except BaseException:
                 pass
     if failure is not None:

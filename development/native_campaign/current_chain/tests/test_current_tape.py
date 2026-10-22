@@ -247,6 +247,83 @@ async def test_capture_queue_overflow_fails_closed_with_every_delivery_receipted
     assert not ready.is_set()
 
 
+@pytest.mark.asyncio
+async def test_receive_failure_retrieves_already_failed_consumer_task(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import aiohttp
+
+    clocks = _Clocks()
+    tape = ContinuousNativeTape(
+        tmp_path / "synthetic-tape",
+        "synthetic-offline-tape",
+        wall_clock=clocks.wall,
+        monotonic_clock=clocks.mono,
+    )
+    consumer_failed = asyncio.Event()
+
+    class _Socket:
+        _response = SimpleNamespace(url=current_tape_module.ENDPOINT)
+
+        def __init__(self) -> None:
+            self.receives = 0
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def receive(self):
+            self.receives += 1
+            if self.receives == 1:
+                received_ms, _ = clocks.tick()
+                return SimpleNamespace(
+                    type=aiohttp.WSMsgType.TEXT,
+                    data=_wire("BTCUSDT", 1, received_ms),
+                )
+            await consumer_failed.wait()
+            await asyncio.sleep(0.01)
+            raise RuntimeError("synthetic socket receive failure")
+
+    class _Session:
+        def __init__(self, **_kwargs):
+            self.socket = _Socket()
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        def ws_connect(self, *_args, **_kwargs):
+            return self.socket
+
+    async def failing_to_thread(_fn, *_args, **_kwargs):
+        tape._fail("SYNTHETIC_WRITER_FAILURE")
+        consumer_failed.set()
+        raise ValueError("synthetic native writer failure")
+
+    monkeypatch.setattr(aiohttp, "ClientSession", _Session)
+    monkeypatch.setattr(asyncio, "to_thread", failing_to_thread)
+    loop = asyncio.get_running_loop()
+    previous_handler = loop.get_exception_handler()
+    unhandled: list[dict] = []
+    loop.set_exception_handler(lambda _loop, context: unhandled.append(context))
+    try:
+        receipt = await asyncio.wait_for(run_capture(tape, asyncio.Event(), asyncio.Event()), timeout=5)
+        await asyncio.sleep(0)
+    finally:
+        loop.set_exception_handler(previous_handler)
+
+    assert receipt["state"] == "FAILED"
+    assert receipt["failure"] == "SYNTHETIC_WRITER_FAILURE"
+    assert receipt["delivery_count"] == receipt["text_delivery_count"] == 1
+    assert receipt["frame_count"] == 0
+    assert len(tape.frames) == 0
+    assert not any("Task exception was never retrieved" in str(item.get("message")) for item in unhandled)
+
+
 def test_terminal_gap_fails_closed_and_records_failed_receipt(tmp_path: Path) -> None:
     clocks = _Clocks()
     tape = _start(tmp_path, clocks)
