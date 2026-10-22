@@ -19,16 +19,16 @@ package = false
 required-version = "==0.12.3"
 override-dependencies = [
   "kairos-core @ git+https://github.com/Kairos-cryptoAI/kairos-core.git@ff3af7592cbd47be985d794d8d9903aaa8e5df07",
-  "kairos-persistence @ git+https://github.com/Kairos-cryptoAI/kairos-persistence.git@752c984ca276ccbb7fcbd1b60a6c75d95fe6f108",
-  "kairos-strategy-engine @ git+https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git@236361a40788ab80d857c7b2cd6a6a57d4440010",
-  "kairos-router @ git+https://github.com/Kairos-cryptoAI/kairos-router.git@6c3c69b8b45b27e0f8f6e7caa15a193e78d5d920",
+  "kairos-persistence @ git+https://github.com/Kairos-cryptoAI/kairos-persistence.git@c6773575a09f918b4d495848705b4234f73f3a32",
+  "kairos-strategy-engine @ git+https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git@30d1315fdcd96b277a87cb59c1819c476344a83c",
+  "kairos-router @ git+https://github.com/Kairos-cryptoAI/kairos-router.git@e7c7ddd71125abff0e5d5af0b116301bc3921890",
   "kairos-llm @ git+https://github.com/Kairos-cryptoAI/kairos-llm.git@f67ca208d65c430d93dd6e5e242797191b4017f2",
-  "kairos-aggregator @ git+https://github.com/Kairos-cryptoAI/kairos-aggregator.git@12980c1eee7d0985057db2048afab9a5e8ac4581",
-  "kairos-risk-manager @ git+https://github.com/Kairos-cryptoAI/kairos-risk-manager.git@4cb86b84ff0d62f309fca5f67643dbbc3404ada8",
-  "kairos-execution-engine @ git+https://github.com/Kairos-cryptoAI/kairos-execution-engine.git@6570747f9e277084dec4d1bfe6a0707ada83722b",
-  "kairos-text-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-text-scouts.git@50f9f66d9114d930eb95d901bc09e03d6ba149b6",
-  "kairos-macro-strategist @ git+https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git@a49487e9872e9fc66f5183cedaa80ee43e8cf8b5",
-  "kairos-quant-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git@79e71fd5f2c1da7164fd0c9a90b4fffd7a52c65f",
+  "kairos-aggregator @ git+https://github.com/Kairos-cryptoAI/kairos-aggregator.git@edff2f56a7de4c7065d8d86d2ce2a8997d1b3133",
+  "kairos-risk-manager @ git+https://github.com/Kairos-cryptoAI/kairos-risk-manager.git@4eb6de55ee68d742b2583932c2e0d8f98b65949d",
+  "kairos-execution-engine @ git+https://github.com/Kairos-cryptoAI/kairos-execution-engine.git@fdc7a46609d81081fe3f7c268010f05f6c0749b5",
+  "kairos-text-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-text-scouts.git@23654f101f43dba7d73f5417a22737c32b7c8afa",
+  "kairos-macro-strategist @ git+https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git@91af931a21d956d2b7b310d4d85456254da59c03",
+  "kairos-quant-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git@cbd8e60b05952c4238aa51a13bc4327350b8e643",
   "kairos-backtest @ git+https://github.com/Kairos-cryptoAI/kairos-backtest.git@da1237854066fde381542e43c106d0de727448be",
 ]
 
