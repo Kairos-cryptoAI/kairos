@@ -410,6 +410,21 @@ def write_create_only(path: Path, payload: dict[str, Any]) -> None:
         os.fsync(stream.fileno())
 
 
+async def _run_cpu(operation, /, *args, **kwargs):
+    """Keep source readers schedulable during pure folds and durable file I/O.
+
+    Await transitions sequentially: this is not parallel strategy arbitration.
+    Drain an in-flight worker on cancellation before resources may be closed.
+    No provider/database coroutine or clock is transferred to the worker.
+    """
+    task = asyncio.create_task(asyncio.to_thread(operation, *args, **kwargs))
+    try:
+        return await asyncio.shield(task)
+    except asyncio.CancelledError:
+        await asyncio.gather(task, return_exceptions=True)
+        raise
+
+
 async def _stage(
     name: str,
     operation: Callable[[], Awaitable[Any]],
@@ -431,7 +446,7 @@ async def _stage(
                 "COMPLETED",
                 started,
                 completed,
-                _canonical_sha(result),
+                await _run_cpu(_canonical_sha, result),
                 tuple(item.reservation_id for item in new),
                 sum(item.actual_microusd for item in new),
             )
@@ -694,7 +709,8 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                     record for record in reversed(records) if record.name == "macro_strategist_allocate"
                 )
                 macro_fallback = allocation.rationale.startswith("defensive fallback:")
-                cut_inputs = services.build_cut_inputs(
+                cut_inputs = await _run_cpu(
+                    services.build_cut_inputs,
                     config=config,
                     history=history,
                     text_snapshot=text_snapshot,
@@ -728,8 +744,8 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                 permitted_by_symbol = _by_symbol(cut_inputs.permitted_evidence_ids, "permitted_evidence_ids")
                 quote_by_symbol = {item.symbol: item for item in quotes}
 
-                chain = CurrentCatalystChain.start(cut_inputs.policy)
-                chain, prepared = chain.prepare(cells)
+                chain = await _run_cpu(CurrentCatalystChain.start, cut_inputs.policy)
+                chain, prepared = await _run_cpu(chain.prepare, cells)
                 created_plans: dict[tuple[str, str, str], Any] = {}
                 creation_receipts: list[dict[str, Any]] = []
                 slot_receipts: list[dict[str, Any]] = []
@@ -753,7 +769,8 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                             _canonical_sha(asdict(slot.technical)),
                             slot.cell.price.observed_ms,
                         )
-                        chain, plans = chain.materialize(
+                        chain, plans = await _run_cpu(
+                            chain.materialize,
                             prepared,
                             symbol=symbol,
                             origin="TECHNICAL",
@@ -822,7 +839,8 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                             created_ms = _now_ms()
                             outcome = CreationOutcome("UNKNOWN", response_sha, created_ms)
                             proposal = "UNKNOWN"
-                        chain, plans = chain.materialize(
+                        chain, plans = await _run_cpu(
+                            chain.materialize,
                             prepared,
                             symbol=symbol,
                             origin="CONTEXT_PROPOSAL",
@@ -1047,7 +1065,8 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
                             for key in keys
                             if key in created_plans and key in plan_observations
                         )
-                        chain, arm_decision = chain.resolve(
+                        chain, arm_decision = await _run_cpu(
+                            chain.resolve,
                             prepared,
                             symbol=symbol,
                             arm_id=arm_id,
@@ -1336,10 +1355,10 @@ async def run_one_cut(config: CurrentRunConfig, services: CurrentRunServices) ->
             receipt["provider_ledger_status"] = "UNAVAILABLE_AFTER_FAILURE"
         receipt["stages"] = [asdict(item) for item in records]
         try:
-            write_create_only(config.output_path, receipt)
+            await _run_cpu(write_create_only, config.output_path, receipt)
         except BaseException:
             pass
         raise CurrentRunRefused(_safe_exception(exc)) from None
     receipt["stages"] = [asdict(item) for item in records]
-    write_create_only(config.output_path, receipt)
+    await _run_cpu(write_create_only, config.output_path, receipt)
     return receipt

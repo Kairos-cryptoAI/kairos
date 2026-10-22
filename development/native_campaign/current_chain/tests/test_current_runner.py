@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
+import threading
+import time
 from dataclasses import asdict
 from types import SimpleNamespace
 
@@ -17,6 +20,7 @@ from kairos_native_campaign.current_runner import (
     UsageSnapshot,
     _arm_creation_status,
     _canonical_sha,
+    _run_cpu,
     _scheduled_wait_seconds,
     _shared_gate,
     _stage,
@@ -27,6 +31,47 @@ from kairos_native_campaign.current_runner import (
 )
 
 SHA = "a" * 64
+
+
+@pytest.mark.asyncio
+async def test_cpu_fold_preserves_arguments_without_starving_source_reader():
+    owner = threading.get_ident()
+    pulses = []
+
+    def fold(original_clock, original_bytes):
+        assert threading.get_ident() != owner
+        deadline = time.monotonic() + 0.15
+        while time.monotonic() < deadline:
+            pass
+        return original_clock, original_bytes
+
+    task = asyncio.create_task(_run_cpu(fold, 123_456, b"immutable-original"))
+    while not task.done():
+        pulses.append(time.monotonic())
+        await asyncio.sleep(0.005)
+    assert await task == (123_456, b"immutable-original")
+    assert len(pulses) >= 3
+
+
+@pytest.mark.asyncio
+async def test_cancelled_cpu_work_is_drained_before_resources_can_close():
+    entered, release, ended = threading.Event(), threading.Event(), threading.Event()
+
+    def fold():
+        entered.set()
+        release.wait(2.0)
+        ended.set()
+
+    task = asyncio.create_task(_run_cpu(fold))
+    while not entered.is_set():
+        await asyncio.sleep(0.001)
+    task.cancel()
+    await asyncio.sleep(0.01)
+    assert not task.done()
+    release.set()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    assert ended.is_set()
 
 
 def _config(path, **overrides):

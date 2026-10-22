@@ -15,6 +15,7 @@ import json
 import re
 import time
 from dataclasses import asdict
+from datetime import UTC, datetime
 from functools import partial
 from pathlib import Path
 from uuid import uuid4
@@ -24,6 +25,11 @@ from kairos_core.contracts import (
     SimulationStrategyRefV1,
 )
 from kairos_llm.models import DEFAULT_WORKLOAD_ROUTES
+from kairos_text.config import TextSettings
+from kairos_text.dedup import EventDeduplicator
+from kairos_text.filter import LocalRelevanceFilter
+from kairos_text.freshness import EventFreshnessFilter
+from kairos_text.normalize import EventNormalizer
 
 from .current_capture import TEXT_FEEDS, CurrentPublicCapture
 from .current_deferred import (
@@ -66,6 +72,7 @@ class PhaseBoundedCapture:
         self.requests = 0
         self.bytes_used = 0
         self._text = None
+        self._news_model_eligibility = None
         self._history = None
         self._start = time.monotonic()
         self.require_fresh_news = require_fresh_news
@@ -101,9 +108,62 @@ class PhaseBoundedCapture:
                 self._text = await phase.capture_text()
             finally:
                 self._retain(phase)
-        if self.require_fresh_news and not self._text.news_items:
+        if self._news_model_eligibility is None:
+            self._news_model_eligibility = self._assess_news_model_eligibility(self._text)
+            write_create_only(self.output / "news-model-eligibility.json", self._news_model_eligibility)
+        if self.require_fresh_news and not self._news_model_eligibility["eligible"]:
             raise ValueError("VERIFICATION_NEEDS_FRESH_NEWS_BEFORE_PAID_CALLS")
         return self._text
+
+    @staticmethod
+    def _assess_news_model_eligibility(snapshot) -> dict:
+        settings = TextSettings(
+            _env_file=None,
+            bus_backend="memory",
+            service_name="kairos-current-chain-text",
+            enable_gdelt=False,
+            enable_rss=False,
+        )
+        actual_at_ms = time.time_ns() // 1_000_000
+        actual_now = datetime.fromtimestamp(actual_at_ms / 1_000, tz=UTC)
+        captured = tuple(snapshot.news_items)
+        normalized = EventNormalizer().normalize(captured)
+        timely = EventFreshnessFilter(
+            settings.max_event_age_s,
+            settings.max_future_skew_s,
+            allow_estimated_timestamps=settings.allow_estimated_timestamps,
+            clock=lambda: actual_now,
+        ).select(normalized)
+        deduplicator = EventDeduplicator(settings.dedup_window_s)
+        collapsed = deduplicator.collapse_batch(timely)
+        unseen = deduplicator.filter_unseen(collapsed)
+        selected = LocalRelevanceFilter(settings.relevance_threshold, settings.top_k).select(unseen)
+        capture_sha256 = getattr(snapshot, "sha256", None)
+        if not isinstance(capture_sha256, str) or re.fullmatch(r"[0-9a-f]{64}", capture_sha256) is None:
+            raise ValueError("EXACT_CAPTURED_TEXT_SNAPSHOT_HASH_REQUIRED")
+        return {
+            "schema": "kairos.current-news-model-eligibility.v1",
+            "state": "ELIGIBLE" if selected else "NO_ELIGIBLE_NEWS",
+            "eligible": bool(selected),
+            "required_selected_item_count": 1,
+            "captured_item_count": len(captured),
+            "normalized_item_count": len(normalized),
+            "timely_item_count": len(timely),
+            "collapsed_unique_item_count": len(collapsed),
+            "unseen_item_count": len(unseen),
+            "selected_item_count": len(selected),
+            "relevance_threshold": settings.relevance_threshold,
+            "top_k": settings.top_k,
+            "settings_bounds": {
+                "max_event_age_s": settings.max_event_age_s,
+                "max_future_skew_s": settings.max_future_skew_s,
+                "allow_estimated_timestamps": settings.allow_estimated_timestamps,
+                "dedup_window_s": settings.dedup_window_s,
+            },
+            "capture_sha256": capture_sha256,
+            "actual_at_ms": actual_at_ms,
+            "secrets_included": False,
+        }
 
     async def fetch_history(self, cut_ms):
         if self._history is not None:

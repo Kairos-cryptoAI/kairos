@@ -1,8 +1,11 @@
 """CLI/factual capture-envelope tests; no provider, socket or database."""
 
+import json
+from datetime import UTC, datetime
 from types import SimpleNamespace
 
 import pytest
+from kairos_text.models import NewsItem
 
 from kairos_native_campaign import current_verify as cv
 
@@ -20,7 +23,7 @@ async def test_phase_wait_does_not_reset_an_old_capture(tmp_path, monkeypatch):
 
         async def capture_text(self):
             self.requests, self.bytes_used = 1, 100
-            return object()
+            return SimpleNamespace(news_items=(), sha256="c" * 64)
 
         async def fetch_history(self, cut):
             self.requests, self.bytes_used = 15, 1000
@@ -73,12 +76,96 @@ async def test_full_verification_can_require_fresh_news_before_any_paid_stage(tm
         capture_id = "no-news"
 
         async def capture_text(self):
-            return SimpleNamespace(news_items=())
+            return SimpleNamespace(news_items=(), sha256="d" * 64)
 
     capture = cv.PhaseBoundedCapture(tmp_path, require_fresh_news=True)
     monkeypatch.setattr(capture, "_phase", lambda maximum_requests: EmptyNews())
     with pytest.raises(ValueError, match="FRESH_NEWS_BEFORE_PAID_CALLS"):
         await capture.capture_text()
+    receipt = json.loads((tmp_path / "news-model-eligibility.json").read_text(encoding="utf-8"))
+    assert receipt["captured_item_count"] == 0
+    assert receipt["selected_item_count"] == 0
+    assert receipt["capture_sha256"] == "d" * 64
+    assert type(receipt["actual_at_ms"]) is int
+
+
+@pytest.mark.asyncio
+async def test_prepaid_news_eligibility_rejects_irrelevant_fresh_story(tmp_path, monkeypatch):
+    story = NewsItem(
+        title="Dune production schedule updated",
+        body="The studio announced a new filming window for the science-fiction sequel.",
+        url="https://www.coindesk.com/story/dune-schedule",
+        source="coindesk",
+        source_kind="rss",
+        published_at=datetime.now(UTC),
+        timestamp_is_estimated=False,
+    )
+
+    class FreshStory:
+        requests = 1
+        bytes_used = 256
+        capture_id = "synthetic-irrelevant-news"
+
+        async def capture_text(self):
+            return SimpleNamespace(news_items=(story,), sha256="e" * 64)
+
+    capture = cv.PhaseBoundedCapture(tmp_path, require_fresh_news=True)
+    monkeypatch.setattr(capture, "_phase", lambda maximum_requests: FreshStory())
+    monkeypatch.setattr(
+        cv,
+        "build_existing_gateway",
+        lambda **kwargs: pytest.fail("paid provider gateway must not be touched by eligibility"),
+    )
+
+    with pytest.raises(ValueError, match="FRESH_NEWS_BEFORE_PAID_CALLS"):
+        await capture.capture_text()
+    receipt = json.loads((tmp_path / "news-model-eligibility.json").read_text(encoding="utf-8"))
+    assert receipt["captured_item_count"] == 1
+    assert receipt["timely_item_count"] == 1
+    assert receipt["unseen_item_count"] == 1
+    assert receipt["selected_item_count"] == 0
+    assert receipt["capture_sha256"] == "e" * 64
+    assert not (tmp_path / "provider-results.jsonl").exists()
+
+
+@pytest.mark.asyncio
+async def test_prepaid_news_eligibility_accepts_fresh_native_compatible_btc_story(tmp_path, monkeypatch):
+    story = NewsItem(
+        title="Bitcoin BTC spot ETF inflows surge",
+        body="Fresh institutional inflows reach a new record.",
+        url="https://www.coindesk.com/story/bitcoin-etf-inflows",
+        source="coindesk",
+        source_kind="rss",
+        published_at=datetime.now(UTC),
+        timestamp_is_estimated=False,
+    )
+
+    class FreshStory:
+        requests = 1
+        bytes_used = 256
+        capture_id = "synthetic-btc-news"
+
+        async def capture_text(self):
+            return SimpleNamespace(news_items=(story,), sha256="f" * 64)
+
+    capture = cv.PhaseBoundedCapture(tmp_path, require_fresh_news=True)
+    monkeypatch.setattr(capture, "_phase", lambda maximum_requests: FreshStory())
+    monkeypatch.setattr(
+        cv,
+        "build_existing_gateway",
+        lambda **kwargs: pytest.fail("paid provider gateway must not be touched by eligibility"),
+    )
+
+    snapshot = await capture.capture_text()
+    receipt = json.loads((tmp_path / "news-model-eligibility.json").read_text(encoding="utf-8"))
+    assert snapshot.news_items == (story,)
+    assert receipt["eligible"] is True
+    assert receipt["selected_item_count"] == 1
+    assert receipt["relevance_threshold"] == 3.0
+    assert receipt["settings_bounds"]["allow_estimated_timestamps"] is False
+    assert receipt["capture_sha256"] == "f" * 64
+    assert type(receipt["actual_at_ms"]) is int
+    assert not (tmp_path / "provider-results.jsonl").exists()
 
 
 def test_initial_sealed_book_and_short_provenance_refuse_before_paid_calls():
