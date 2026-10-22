@@ -1,0 +1,51 @@
+name: Current chain offline verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'development/native_campaign/kairos_native_campaign/current_*.py'
+      - 'development/native_campaign/current_chain/**'
+      - '.github/workflows/current-chain.yml'
+  pull_request:
+    paths:
+      - 'development/native_campaign/kairos_native_campaign/current_*.py'
+      - 'development/native_campaign/current_chain/**'
+      - '.github/workflows/current-chain.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: current-chain-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  offline:
+    name: Current source / ${{ matrix.os }} / Python 3.11
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          version: '0.12.3'
+          python-version: '3.11'
+          enable-cache: true
+          cache-dependency-glob: development/native_campaign/current_chain/uv.lock
+      - name: Install exact opt-in sources noneditable
+        working-directory: development/native_campaign/current_chain
+        run: uv sync --locked --no-editable
+      - name: Offline regression tests (no execution flag, key or database)
+        working-directory: development/native_campaign/current_chain
+        run: uv run --locked --no-editable python -I -m pytest tests -q -p no:cacheprovider
+      - name: Lint opt-in modules and tests
+        working-directory: development/native_campaign/current_chain
+        run: uv run --locked ruff check ../kairos_native_campaign tests
+      - name: Format check
+        working-directory: development/native_campaign/current_chain
+        run: uv run --locked ruff format --check ../kairos_native_campaign tests
