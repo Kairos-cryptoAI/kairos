@@ -49,7 +49,7 @@ jobs:
       KAIROS_NATIVE_CAMPAIGN_TEST_DATABASE_URL: postgresql://kairos:native_engineering_fixture@localhost:5432/kairos_sim_test_campaign_159a87c218f64eb0ba3f5deefb167c2c
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           version: '0.12.3'
           python-version: ${{ matrix.python }}
