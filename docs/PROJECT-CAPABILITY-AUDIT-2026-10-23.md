@@ -138,6 +138,10 @@ review, рыночного подтверждения и независимог�
    [engineering-продолжение](PRODUCTION-LIFECYCLE-2026-10-23.md) связывает
    существующий lifecycle с managed-путём и terminal evidence и проверяет native
    PostgreSQL fixture. Это ещё не действительный PROD lifecycle на EVEDEX.
+   [Следующее продолжение](PRODUCTION-SOURCES-ACCOUNTING-2026-10-23.md) добавляет
+   транспорт закреплённого SDK, сбор исходной истории и освобождение резерва
+   в отдельной свежей схеме после принятой сверки. Реальная история пока не
+   доказывает exposure/settlement authority; LIVE-производителя Risk нет.
 2. **Текущий авторитетный риск и обратная связь счёта.** Реальный GET-only
    PROD read прошёл, но последовательность REST-ответов не atomic snapshot и
    не ExposureSnapshot authority. Резервации нельзя освобождать по HTTP ACK,
