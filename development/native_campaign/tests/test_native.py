@@ -612,33 +612,29 @@ async def test_native_candidate_review_risk_budget_restart_on_disposable_campaig
             ):
                 case = await setup_case(name, **options)
                 cases[name] = case
+                evaluator_errors = []
+                case["evaluator_errors"] = evaluator_errors
                 if name == "budget-denied":
                     case["scheduler"].gateway.monthly_budgets_microusd[Provider.OPENAI] = _HISTORICAL_COST - 1
-                    evaluator_errors = []
-                    case["evaluator_errors"] = evaluator_errors
-                    previous_trace = sys.gettrace()
+                previous_trace = sys.gettrace()
 
-                    def capture_scheduler_exception(frame, event, args, errors=evaluator_errors):
-                        if (
-                            event == "exception"
-                            and frame.f_code.co_name == "run_once"
-                            and frame.f_code.co_filename.replace("\\", "/").endswith(
-                                "/kairos_llm/campaign.py"
-                            )
-                            and 155 <= frame.f_lineno <= 167
-                        ):
-                            # Record only a source line and exception class; exception text can
-                            # contain SQL, connection details, or credentials.
-                            errors.append(f"line-{frame.f_lineno}:{args[0].__name__}")
-                        return capture_scheduler_exception
+                def capture_scheduler_exception(frame, event, args, errors=evaluator_errors):
+                    if (
+                        event == "exception"
+                        and frame.f_code.co_name == "run_once"
+                        and frame.f_code.co_filename.replace("\\", "/").endswith("/kairos_llm/campaign.py")
+                        and 155 <= frame.f_lineno <= 167
+                    ):
+                        # Record only a source line and exception class; exception text can
+                        # contain SQL, connection details, or credentials.
+                        errors.append(f"line-{frame.f_lineno}:{args[0].__name__}")
+                    return capture_scheduler_exception
 
-                    sys.settrace(capture_scheduler_exception)
-                    try:
-                        results[name] = await case["scheduler"].run_once(case["campaign_id"])
-                    finally:
-                        sys.settrace(previous_trace)
-                else:
+                sys.settrace(capture_scheduler_exception)
+                try:
                     results[name] = await case["scheduler"].run_once(case["campaign_id"])
+                finally:
+                    sys.settrace(previous_trace)
                 denominator = await case["scheduler"].repository.seal_denominator(case["campaign_id"])
                 assert denominator.expected_outcomes == 3
                 assert denominator.qualification == "SCHEDULED_DENOMINATOR_ONLY"
@@ -648,17 +644,41 @@ async def test_native_candidate_review_risk_budget_restart_on_disposable_campaig
             def outcome_statuses(name):
                 return tuple(item.status for item in results[name])
 
-            assert outcome_statuses("allow") == ("BASELINE", "ALLOW", "PROPOSAL")
-            assert outcome_statuses("veto") == ("BASELINE", "VETO", "PROPOSAL")
-            assert outcome_statuses("defer") == ("BASELINE", "DEFER", "PROPOSAL")
-            assert outcome_statuses("conflict") == ("BASELINE", "DEFER", "PROPOSAL")
-            assert outcome_statuses("quiet") == ("NO_INTENT", "NO_INTENT", "PROPOSAL")
+            assert outcome_statuses("allow") == (
+                "BASELINE",
+                "ALLOW",
+                "PROPOSAL",
+            ), f"sanitized evaluator diagnostics={cases['allow']['evaluator_errors']}"
+            assert outcome_statuses("veto") == (
+                "BASELINE",
+                "VETO",
+                "PROPOSAL",
+            ), f"sanitized evaluator diagnostics={cases['veto']['evaluator_errors']}"
+            assert outcome_statuses("defer") == (
+                "BASELINE",
+                "DEFER",
+                "PROPOSAL",
+            ), f"sanitized evaluator diagnostics={cases['defer']['evaluator_errors']}"
+            assert outcome_statuses("conflict") == (
+                "BASELINE",
+                "DEFER",
+                "PROPOSAL",
+            ), f"sanitized evaluator diagnostics={cases['conflict']['evaluator_errors']}"
+            assert outcome_statuses("quiet") == (
+                "NO_INTENT",
+                "NO_INTENT",
+                "PROPOSAL",
+            ), f"sanitized evaluator diagnostics={cases['quiet']['evaluator_errors']}"
             assert outcome_statuses("budget-denied") == (
                 "BASELINE",
                 "BUDGET_BLOCKED",
                 "BUDGET_BLOCKED",
             ), f"sanitized evaluator diagnostics={cases['budget-denied']['evaluator_errors']}"
-            assert outcome_statuses("ambiguous") == ("BASELINE", "UNKNOWN", "UNKNOWN")
+            assert outcome_statuses("ambiguous") == (
+                "BASELINE",
+                "UNKNOWN",
+                "UNKNOWN",
+            ), f"sanitized evaluator diagnostics={cases['ambiguous']['evaluator_errors']}"
             ambiguous = cases["ambiguous"]
             assert len(ambiguous["transport"].calls) == 2
             unknown_usage = await source_state.campaign_usage("openai")
