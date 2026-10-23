@@ -16,6 +16,9 @@ from .current_capture import (
     BAR_COUNT,
     BAR_MS,
     MAX_CAPTURE_BYTES,
+    MAX_PAGE_BYTES,
+    MAX_QUOTE_BYTES,
+    MAX_TEXT_BYTES,
     PAGE_LIMIT,
     TEXT_FEEDS,
     UNIVERSE,
@@ -87,7 +90,10 @@ def _feed_roster() -> tuple[str, ...]:
         source_id = configuration[0]
         if source_id not in seen:
             seen.add(source_id)
-            feeds.append(url)
+            # Prefer only the explicitly configured canonical alias. The
+            # transport still refuses redirects and never invents a new URL.
+            canonical = url[:-1] if url.endswith("/") and TEXT_FEEDS.get(url[:-1]) == configuration else url
+            feeds.append(canonical)
     return tuple(feeds)
 
 
@@ -119,6 +125,15 @@ def _ensure_request_capacity(used: int, planned: int) -> None:
         raise ValueError("AGGREGATE_REQUEST_BOUND_EXCEEDED")
 
 
+def _failed_reply_allowance(capture: CurrentPublicCapture | None, maximum_body: int) -> int:
+    # The native reader increments accepted bytes only after HTTP validation.
+    # A refused response may already have delivered a bounded body. Charge its
+    # worst case before another independent source is allowed to use the budget.
+    if capture is None or capture.requests == 0:
+        return 0
+    return min(maximum_body, max(0, capture.byte_limit - capture.bytes_used))
+
+
 def _is_global_bound_failure(
     exc: Exception,
     *,
@@ -129,6 +144,7 @@ def _is_global_bound_failure(
     reason = str(exc)
     return (
         isinstance(exc, CreateOnlyPublicationError)
+        or isinstance(exc, (AttributeError, NameError, ImportError))
         or "CREATE_ONLY_WRITE_FAILED" in reason
         or "RECEIPT_INTEGRITY_FAILURE" in reason
         or "RECEIPT_NOT_OBJECT" in reason
@@ -171,6 +187,7 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     # is shared by both RSS feeds, Binance bars, and depth snapshots.
     for feed in feeds:
         capture: CurrentPublicCapture | None = None
+        refused_reply_allowance = 0
         result: dict[str, Any] = {"source_id": TEXT_FEEDS[feed][0], "url": feed, "state": "UNAVAILABLE"}
         try:
             _ensure_request_capacity(total_requests, 1)
@@ -205,10 +222,12 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             ):
                 raise
             result.update({"state": "REFUSED", "error_type": type(exc).__name__})
+            refused_reply_allowance = _failed_reply_allowance(capture, MAX_TEXT_BYTES)
             source_failures.append({"stage": result["source_id"], "error_type": type(exc).__name__})
         finally:
             if capture is not None:
                 total_bytes += capture.bytes_used
+                total_bytes += refused_reply_allowance
                 total_requests += capture.requests
         feed_results.append(result)
 
@@ -237,12 +256,12 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     macro_bytes = (
         sum(int(row.get("raw_bytes") or 0) for row in macro_receipt.get("source_results", []))
         if macro_receipt
-        else 0
+        else OFFICIAL_CONTEXT_MAX_BYTES
     )
     macro_requests = (
         sum(int(row.get("attempts") or 0) for row in macro_receipt.get("source_results", []))
         if macro_receipt
-        else 0
+        else 2
     )
     if macro_bytes > OFFICIAL_CONTEXT_MAX_BYTES or total_bytes + macro_bytes > MAX_CAPTURE_BYTES:
         raise ValueError("AGGREGATE_BYTE_BOUND_EXCEEDED")
@@ -254,6 +273,7 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     quote_results: list[dict[str, Any]] = []
     for symbol in UNIVERSE:
         capture = None
+        refused_reply_allowance = 0
         row: dict[str, Any] = {"symbol": symbol, "state": "UNAVAILABLE"}
         try:
             _ensure_request_capacity(total_requests, 1)
@@ -266,7 +286,7 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
                     "requested_ms": quote.requested_ms,
                     "received_ms": quote.received_ms,
                     "captured_ms": quote.captured_ms,
-                    "source_event_age_ms": quote.received_ms - quote.entry_quote.observed_at_ms,
+                    "source_event_age_ms": quote.received_ms - quote.entry_quote.event_ms,
                     "live_two_second_authorization_equivalent": False,
                     "receipt": str(quote.receipt_path),
                 }
@@ -277,10 +297,12 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             ):
                 raise
             row.update({"state": "REFUSED", "error_type": type(exc).__name__})
+            refused_reply_allowance = _failed_reply_allowance(capture, MAX_QUOTE_BYTES)
             source_failures.append({"stage": f"depth:{symbol}", "error_type": type(exc).__name__})
         finally:
             if capture is not None:
                 total_bytes += capture.bytes_used
+                total_bytes += refused_reply_allowance
                 total_requests += capture.requests
         quote_results.append(row)
 
@@ -289,6 +311,7 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     bar_counts: dict[str, int] | None = None
     page_receipts: list[str] = []
     capture = None
+    refused_reply_allowance = 0
     try:
         _ensure_request_capacity(total_requests, len(UNIVERSE) * ((BAR_COUNT + PAGE_LIMIT - 1) // PAGE_LIMIT))
         capture = _new_capture(output, feeds[0], started=started_monotonic, consumed_bytes=total_bytes)
@@ -300,10 +323,12 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
         if _is_global_bound_failure(exc, started=started_monotonic, used_bytes=total_bytes, capture=capture):
             raise
         history_result.update({"state": "REFUSED", "error_type": type(exc).__name__})
+        refused_reply_allowance = _failed_reply_allowance(capture, MAX_PAGE_BYTES)
         source_failures.append({"stage": "closed_bar_history", "error_type": type(exc).__name__})
     finally:
         if capture is not None:
             total_bytes += capture.bytes_used
+            total_bytes += refused_reply_allowance
             total_requests += capture.requests
 
     elapsed = time.monotonic() - started_monotonic
@@ -333,6 +358,8 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             "requests_used": total_requests,
             "bytes_max": MAX_CAPTURE_BYTES,
             "bytes_used": total_bytes,
+            "bytes_accounting": "CONSERVATIVE_UPPER_BOUND_INCLUDING_REFUSED_RESPONSE_BODIES",
+            "requests_used_is_upper_bound": macro_receipt is None,
             "wall_seconds_max": MAX_TOTAL_SECONDS,
             "paid_calls": 0,
             "retries": 0,
@@ -359,8 +386,9 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             "source_statuses": macro["source_statuses"],
             "receipt": str(macro_receipt_path) if macro_receipt_path.is_file() else None,
             "context": str(macro_path) if macro_path.is_file() else None,
-            "request_count": macro_requests,
-            "raw_bytes": macro_bytes,
+            "request_count": macro_requests if macro_receipt is not None else None,
+            "raw_bytes": macro_bytes if macro_receipt is not None else None,
+            "missing_receipt_budget_reserved": macro_receipt is None,
             "numeric_macro_values_are_not_inferred": True,
         },
         "unestablished_stages": [

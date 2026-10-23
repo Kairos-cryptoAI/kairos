@@ -10,10 +10,51 @@ from kairos_native_campaign import current_macro
 from kairos_native_campaign import current_source_probe as probe
 
 
+def _native_bbo_quote(symbol: str, event_ms: int, received_ms: int, captured_ms: int):
+    import hashlib
+
+    from adaptive_replay.quote_capture import PAYLOAD_SCHEMA, BboCapture
+
+    payload = json.dumps(
+        {
+            "schema_id": PAYLOAD_SCHEMA,
+            "timestamp_unit": "ms",
+            "source_id": "binance_um_rest_depth_snapshot",
+            "symbol": symbol,
+            "event_ms": event_ms,
+            "bid": 99.0,
+            "ask": 100.0,
+            "bid_quantity": 2.0,
+            "ask_quantity": 2.0,
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    return BboCapture(
+        payload,
+        hashlib.sha256(payload).hexdigest(),
+        received_ms,
+        captured_ms,
+        5_000,
+        "CALLER_ATTESTED_POINT_IN_TIME",
+    ).quote
+
+
 def test_feed_roster_uses_each_existing_source_once():
     roster = probe._feed_roster()
     assert len(roster) == 2
     assert {probe.TEXT_FEEDS[url][0] for url in roster} == {"cointelegraph_rss", "coindesk_rss"}
+    assert "https://www.coindesk.com/arc/outboundfeeds/rss" in roster
+    assert "https://www.coindesk.com/arc/outboundfeeds/rss/" not in roster
+
+
+def test_refused_response_is_charged_before_another_source_uses_remaining_budget():
+    capture = SimpleNamespace(requests=1, byte_limit=50, bytes_used=20)
+    assert probe._failed_reply_allowance(capture, maximum_body=100) == 30
+    assert probe._failed_reply_allowance(capture, maximum_body=10) == 10
+    capture.requests = 0
+    assert probe._failed_reply_allowance(capture, maximum_body=100) == 0
+    assert probe._failed_reply_allowance(None, maximum_body=100) == 0
 
 
 @pytest.mark.asyncio
@@ -27,6 +68,7 @@ async def test_probe_writes_create_only_source_only_summary(tmp_path: Path, monk
         def __init__(self, root, *, text_feed, byte_limit, deadline_seconds):
             self.root = root
             self.text_feed = text_feed
+            self.byte_limit = byte_limit
             self.bytes_used = 123
             self.requests = 1
 
@@ -62,7 +104,7 @@ async def test_probe_writes_create_only_source_only_summary(tmp_path: Path, monk
                 requested_ms=now - 100,
                 received_ms=now,
                 captured_ms=now + 1,
-                entry_quote=SimpleNamespace(observed_at_ms=now - 100),
+                entry_quote=_native_bbo_quote(symbol, now - 100, now, now + 1),
                 receipt_path=receipt,
             )
 
@@ -203,11 +245,15 @@ async def test_rss_refusal_does_not_suppress_other_planned_checks(tmp_path: Path
     output.mkdir()
     macro_calls: list[Path] = []
     other_feed_completed: list[str] = []
+    quote_attempts: list[str] = []
 
     class OneFeedRefuses:
+        broken_quote = False
+
         def __init__(self, root, *, text_feed, byte_limit, deadline_seconds):
             self.root = root
             self.text_feed = text_feed
+            self.byte_limit = byte_limit
             self.bytes_used = 0
             self.requests = 0
 
@@ -230,6 +276,16 @@ async def test_rss_refusal_does_not_suppress_other_planned_checks(tmp_path: Path
 
         async def fresh_quote(self, symbol):
             self.requests = 1
+            quote_attempts.append(symbol)
+            if self.broken_quote:
+                return SimpleNamespace(
+                    raw_sha256="d" * 64,
+                    requested_ms=1_800_000_000_000,
+                    received_ms=1_800_000_000_000,
+                    captured_ms=1_800_000_000_001,
+                    entry_quote=SimpleNamespace(),
+                    receipt_path=self.root / f"{symbol}.receipt.json",
+                )
             now = 1_800_000_000_000
             receipt = self.root / f"{symbol}.receipt.json"
             receipt.write_text("{}", encoding="utf-8")
@@ -238,7 +294,7 @@ async def test_rss_refusal_does_not_suppress_other_planned_checks(tmp_path: Path
                 requested_ms=now,
                 received_ms=now,
                 captured_ms=now,
-                entry_quote=SimpleNamespace(observed_at_ms=now),
+                entry_quote=_native_bbo_quote(symbol, now, now, now),
                 receipt_path=receipt,
             )
 
@@ -277,3 +333,11 @@ async def test_rss_refusal_does_not_suppress_other_planned_checks(tmp_path: Path
     assert len(macro_calls) == 1
     assert all(row["state"] == "CAPTURED" for row in result["market"]["depth_snapshots"])
     assert result["market"]["closed_history"]["state"] == "CAPTURED"
+
+    broken_output = tmp_path / "broken-interface"
+    broken_output.mkdir()
+    quote_attempts.clear()
+    OneFeedRefuses.broken_quote = True
+    with pytest.raises(AttributeError):
+        await probe._capture_probe(broken_output)
+    assert quote_attempts == [probe.UNIVERSE[0]]

@@ -59,9 +59,45 @@ previous sent inquiries, with no received answer. No new message was sent.
 
 ## Real free-source availability, not LIVE input authority
 
-This implementation checkpoint does not yet assert a successful public-source
-run; the subsequent finite run's actual per-source outcomes must be recorded
-before any capture-result claim is made.
+One finite real cut ran at **01:09:38–01:10:38 Moscow**, 60.25 seconds, under
+signed Meta `64e68276d0c099e4ad5c48537f3cbd1298a23cbb`. It made 24 public GET
+attempts and zero paid calls, orders or SIM/database operations. The original
+summary remains unchanged with SHA-256
+`55dcafe188fabc637d7abfd8681a9a9dcf1900d0b209a73fd3fc69d76a0b712a`.
+
+| Real source | Observed result and limit |
+| --- | --- |
+| Binance closed bars | All five symbols have 3,240 validated, gap-free closed 1m bars each: 16,200 bars and 15 original page receipts. This is the returned 54-hour window only. |
+| Binance REST depth | Five original responses and native depth receipts were retained. A new report-field bug raised `AttributeError` after successful capture; separate offline adjudication below verifies the original bytes, not a new quote. |
+| Cointelegraph RSS | 30 original items retained; zero within the original 30-minute window and zero selected by native Text. Nothing was made fresh and no model was called. |
+| CoinDesk RSS | The first configured trailing-slash endpoint was refused by the native reader. No raw response body/status was retained for that refusal, so its exact HTTP cause is not asserted. |
+| Federal Reserve | The existing official monetary-publication feed returned HTTP 200 and parsed. It supplies publication summaries, not a complete numeric macro feed. |
+| BLS CPI | HTTP 403; explicitly unavailable, never a zero/neutral CPI measurement. No challenge, proxy, redirect or access-control bypass was attempted. |
+
+The depth report bug used nonexistent `EntryQuote.observed_at_ms`; the native
+DTO exposes `event_ms`. The report now uses that actual field and its regression
+fixtures construct a real `BboCapture.quote` instead of inventing the missing
+attribute. Implementation exceptions now abort the probe rather than being
+misreported as source unavailability for each next symbol.
+
+An independent, signed offline actor rechecked exactly the five original depth
+receipt/body hashes, E/T clocks, BBO geometry and native BBO construction. All
+passed with original event-to-receive ages **103–113 ms**. Its receipt is
+`depth-adjudication-20261024/original-depth-adjudication.json`; it made no network
+request, changed no old receipt and explicitly cannot be a fresh execution
+quote, continuous-book proof or LIVE admission. No full cut was rerun to obtain
+a more favorable outcome.
+
+The probe also now chooses the exact already-configured canonical CoinDesk
+alias, without following redirects or inventing an endpoint. Its new path is
+not presumed available merely because selection was corrected.
+
+The first reader counter reported 2,165,017 accepted bytes; it excludes a
+refused response body. Including that response's existing 2 MiB maximum gives
+a conservative 4,262,169-byte upper bound, not an exact ingress measurement.
+The corrected probe charges refused bodies conservatively before admitting
+another independent request, reserves missing official-capture accounting
+rather than recording zero, and labels the byte counter as an upper bound.
 
 The separate opt-in `current_source_probe` reuses the configured public
 capture/normalizer/official-context components without constructing a model,
