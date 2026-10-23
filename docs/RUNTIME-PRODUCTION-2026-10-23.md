@@ -122,22 +122,67 @@ The refusal was not converted to an empty-process assertion.
 The admitted successor is owned by `1ec512799b23422190a1f3360ba60996`, started
 from signed, green Deploy `75c4b1ad1cff5aa723a0376bfa422eea1d3fa947`, under
 `D:/Kairos/runtime/nontrading-successor-20261023/run-1ec512799b23422190a1f3360ba60996`.
-As of 07:29 UTC it is still in native historical catch-up. Completion, a fresh
-backup, isolated restore/amcheck, qualification and drained restart are **not
-yet credited** by this interim report. No second live controller is launched.
+The finite controller completed at 07:44 UTC with
+`PASS_NONTRADING_RUNTIME_EPOCH`. No second live controller was launched.
+
+Accepted native facts:
+
+- Two bounded historical catch-up batches added 242,230 real closed bars to the
+  verified seed. The audit backup contains 415,394 bars across all five symbols;
+  XRP retains its one-bar-later historical start rather than an invented bar.
+- The fresh binary dump was restored into the separate owned clone. All 32
+  public tables and their ordered digests, sequences and history anchors matched;
+  native `pg_amcheck --heapallindexed --parent-check --rootdescend` exited cleanly.
+- A final 160-bar audit-only catch-up bridged the time spent verifying the clone.
+  Qualification proved same-ID Redis acceptance replay, duplicate delivery
+  acknowledgement without a new inbox row, and hash-conflict refusal.
+- The serving worker passed a drained same-container restart. A subsequent
+  independent observation at 07:46 UTC found eight serving cycles, 20 completed
+  inbox records, equal advancing five-symbol watermarks, fresh sources and zero
+  pending outbox, unresolved inbox, uncompleted publications or Redis transport
+  failures. The existing owner-bound metrics parser independently reported
+  `running`, non-stale. This is a bounded observation, not a long uptime claim.
+- Both source and restore clones are stopped and retained. The exact five old
+  failed/stopped container identities and historical lease were unchanged before
+  and after the controller. Old data, queues and partial failures were not reset.
+
+The create-only final receipt is
+`runtime-epoch-successor-receipt.json`, SHA-256
+`be08ab9803836132178c3f684af928b95d5ba44e7c77df17996adfb2d6deff89`.
+Its detached GPG signature verifies against
+`40AF365C6682B73D056A6A274DBFF6B65BE9F827`.
+The retained `epoch-history.dump` SHA-256 is
+`e65066d5a537437f8faaea20a1d3d80bcc25d560899e6ae45e5ec886d8e801b8`.
+
+The result restores an independently owned **historical-profile non-trading
+runtime**, not full production execution. It explicitly records
+`root_cause_fixed=false` and `production_qualification=false`. It does not prove
+that the old Redis failure cannot recur or deploy the current production-state
+schema. Existing boot and Telegram tasks remain bound to their earlier owners;
+no automatic startup/notification qualification for this successor is claimed.
 
 ## Checks and remaining engineering boundary
 
 - Execution Windows regression suite: 785 passed, one skipped, 48 opt-in native
   integration tests deselected, seven subtests passed. Native component gates
   are separate hosted CI evidence, not real EVEDEX order acceptance.
-- Execution Ruff, format and mypy passed; Bandit passed for the new composition
-  and observation source set before the final narrow normalization fix.
+- Execution Ruff, format and mypy passed; Bandit passed for the final production
+  composition and observation source set, including the normalization fix.
 - Deploy: 1,094 offline tests passed (eight skipped), including 30 successor
   admission/retention/network tests. All eleven deployment validators passed.
 - Active source pins/locks are updated without altering frozen campaigns.
   Current-source identity verification must be repeated after the final report
   commit; a green earlier source set is not silently promoted to a new one.
+
+Hosted Execution and Deploy gates passed for `3fa6dd2` and `626a3be` respectively.
+Meta CURRENT offline verification passed on Windows and Linux for `1a9ab2e`.
+The separate native-campaign test failed there with a swallowed evaluator error
+in the veto/conflict cases. Signed test-only commit
+`cc1e97a537348c09aff0ba6b35556310e3566c82` extends the existing sanitized
+exception-line/class diagnostic to every case; no evaluator, timing bound,
+expected result or strategy changed. Its Python 3.11 and 3.14 native jobs passed
+in run `39919682895`. This pass is not a proven root-cause fix for the earlier
+intermittent failure.
 
 Actual remaining production execution work includes accepted PROD signing
 chain/domain identity; independently sourced coherent operator/risk/exposure

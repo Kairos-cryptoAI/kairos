@@ -5,7 +5,16 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
-**Latest implementation:** [October 21 checkpoint](ENGINEERING-2026-10-21.md).
+**Latest implementation:** [October 23 runtime / production checkpoint](RUNTIME-PRODUCTION-2026-10-23.md).
+The independently owned historical-profile non-trading successor passed fresh
+backup/isolated restore, integrity checks, queue qualification and one drained
+restart on October 23. The failed Oct21 DB/queue/worker remain preserved.
+Account-bound PROD GET-only observation and scoped signing/dispatch composition
+are implemented and tested, but are not authoritative exposure reconciliation,
+accepted PROD signing, reservation release or a complete production service.
+All readiness flags remain false; no owner arm or real dispatch was issued.
+The earlier dated checkpoint follows for provenance:
+[October 21 checkpoint](ENGINEERING-2026-10-21.md).
 The dedicated signer's full public address is now present in the PROD API's
 delegate list, and an encrypted local candidate has a fresh-process roundtrip
 proof. Async PostgreSQL evidence readers, separate immutable state writers,
