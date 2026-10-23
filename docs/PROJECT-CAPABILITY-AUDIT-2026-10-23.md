@@ -141,7 +141,10 @@ review, рыночного подтверждения и независимог�
    [Следующее продолжение](PRODUCTION-SOURCES-ACCOUNTING-2026-10-23.md) добавляет
    транспорт закреплённого SDK, сбор исходной истории и освобождение резерва
    в отдельной свежей схеме после принятой сверки. Реальная история пока не
-   доказывает exposure/settlement authority; LIVE-производителя Risk нет.
+   доказывает exposure/settlement authority. Последующее
+   [продолжение LIVE Risk](PRODUCTION-LIVE-RISK-2026-10-23.md) добавляет отдельный
+   opt-in evaluator/publisher; реальный источник счёта и deployed LIVE-путь
+   этим не квалифицированы.
 2. **Текущий авторитетный риск и обратная связь счёта.** Реальный GET-only
    PROD read прошёл, но последовательность REST-ответов не atomic snapshot и
    не ExposureSnapshot authority. Резервации нельзя освобождать по HTTP ACK,

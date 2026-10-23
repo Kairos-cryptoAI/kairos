@@ -20,7 +20,10 @@ fixtures; it is not a deployed/qualified EVEDEX executor or LIVE admission.
 The [transport/accounting continuation](PRODUCTION-SOURCES-ACCOUNTING-2026-10-23.md)
 adds a pinned SDK sender, bounded parsed history and explicit fresh-v3 reserve
 release after accepted reconciliation. Its real EVEDEX source refuses exposure
-and settlement authority; the shipped Risk producer remains PAPER/DEV-only.
+and settlement authority. The subsequent
+[independent LIVE Risk continuation](PRODUCTION-LIVE-RISK-2026-10-23.md) adds a
+separate opt-in evaluator and exact-request publisher, without enabling LIVE
+services or qualifying the real account/upstream sources.
 Actual account-bound PROD GET-only capture passed, but is not an atomic snapshot
 or authoritative reconciliation. Complete production signing/risk/exposure/
 order lifecycle and current-owner operations acceptance remain open. The new
