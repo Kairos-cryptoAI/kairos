@@ -134,8 +134,10 @@ review, рыночного подтверждения и независимог�
 1. **Одна production-композиция из существующих компонентов.** LIVE пока
    отклоняется конфигом/factory. `ProductionExecutionRuntime` — один эффект;
    ответ TRANSPORT_RESPONSE_UNRECONCILED и lifecycle_complete=false не являются
-   подтверждением ордера, fill или закрытия. Нужны существующие lifecycle/
-   reconciliation компоненты, связанные с точным PROD account/effect/parent.
+   подтверждением ордера, fill или закрытия. Последующее
+   [engineering-продолжение](PRODUCTION-LIFECYCLE-2026-10-23.md) связывает
+   существующий lifecycle с managed-путём и terminal evidence и проверяет native
+   PostgreSQL fixture. Это ещё не действительный PROD lifecycle на EVEDEX.
 2. **Текущий авторитетный риск и обратная связь счёта.** Реальный GET-only
    PROD read прошёл, но последовательность REST-ответов не atomic snapshot и
    не ExposureSnapshot authority. Резервации нельзя освобождать по HTTP ACK,
