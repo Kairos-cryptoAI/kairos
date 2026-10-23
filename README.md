@@ -11,17 +11,27 @@ Current scope and implementation priorities are defined in
 candidate contract path, not an accepted continuously running adaptive deployment.
 The existing PAPER Compose profile is a bounded technical DEV-canary profile.
 
-Current [non-strategy launch engineering](docs/ENGINEERING-2026-10-21.md)
+The [whole-project capability audit](docs/PROJECT-CAPABILITY-AUDIT-2026-10-23.md)
+separates implemented components, CURRENT research SIM, the non-trading runtime
+and still-incomplete production trading. Kairos is not yet established as an
+autonomous professional trader or a profitable complete system.
+
+Current [non-strategy launch engineering](docs/RUNTIME-PRODUCTION-2026-10-23.md)
 adds native lifecycle/claim checks, encrypted local signing and a separate
 single-server evidence profile. DEMO books/campaigns, independent backup hosting
 and cloud KMS are not mandatory gates of that revised engineering profile;
 full-host-loss resilience is not claimed. The complete real-money system is not
-ready: the latest non-trading runtime failed at 22:47 MSK October 20, and actual
-PROD authorization/execution composition, dedicated signer/chain and target-host
-acceptance remain open. Existing PROD account/API/owner-wallet identity and the
+ready: the separately owned October 23 historical-profile non-trading successor
+passed fresh backup/isolated restore, queue qualification and a drained restart.
+Earlier failed DB/queues remain preserved; their root cause is not claimed fixed.
+Full PROD lifecycle/reconciliation, signer/chain and target-host acceptance remain
+open. Existing PROD account/API/owner-wallet identity and the
 dedicated signer's full API-reported delegation are now verified read-only.
 The encrypted delegate candidate has a fresh-process restore check; the signing
-policy is tested but has no deployed PROD state reader. No new key is requested.
+policy and PostgreSQL state-reader components are tested, but qualified independent
+PROD risk/exposure producers and a complete service are not deployed. The actual
+account-bound PROD GET-only observation passed; it is not authoritative atomic
+reconciliation. No new key is requested.
 See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
 **Verified bounded milestone (2026-10-15):** one existing-component adaptive
@@ -34,7 +44,13 @@ intact. See the [active disposition table](docs/CURRENT_CONCEPT.md). A passing
 fixture is not a running adaptive deployment, economic A/B or permission to
 trade; current readiness remains false and policy stays `REJECT_ALL`.
 
-### Strategy Parity → EVEDEX DEV PAPER
+### Existing Strategy Parity → EVEDEX DEV PAPER profile
+
+This diagram describes the preserved technical PAPER profile, not the sole
+target architecture or a running production service. CURRENT v3 separately
+supports technical and independent context origins, plan review, then a new
+confirmation/fresh quote and later native SIM replay. See its
+[exact version and acceptance boundary](docs/CURRENT-PLAN-REVIEW-2026-10-23.md).
 
 ```mermaid
 flowchart TB
@@ -106,7 +122,7 @@ and the missing evaluation gates.
 | repository | role |
 | --- | --- |
 | [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | typed contracts, Redis Streams bus, config and logging |
-| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI Responses / DeepSeek gateway, strict output validation, cost and health events |
+| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI-only default gateway, optional provider compatibility, strict output validation, cost and health events |
 | [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | complete closed Binance bars, gap recovery, indicators and EVEDEX quality polling |
 | [kairos-strategy-engine](https://github.com/Kairos-cryptoAI/kairos-strategy-engine) | pure strategy generators shared byte-for-byte by research and runtime |
 | [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | text ingestion, local filtering, sentiment and local fallback |
@@ -114,7 +130,7 @@ and the missing evaluation gates.
 | [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | immutable `ALLOW/VETO/DEFER` candidate review plus legacy DRY_RUN tactical decisions |
 | [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
 | [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | loss-at-stop sizing and deterministic account, portfolio and venue admission |
-| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | EVEDEX DEV SDK sidecar, protected PAPER lifecycle, reconciliation and effect journal |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | protected PAPER/SIM lifecycle and journals; separate guarded PROD custody/state/one-effect dispatch components, not a complete PROD service |
 | [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale inbox/outbox, facts, lifecycle, TCA, budgets, equity and readiness metrics |
 | [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic replay using the exact Strategy Engine generators and fill modelling |
 | [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned DRY_RUN and isolated `kairos-paper` Compose projects, monitoring and recovery tools |
@@ -222,7 +238,7 @@ later code or a new model route. Source pins identify code, not running services
 | flag | value | exact meaning |
 | --- | --- | --- |
 | `TECHNICAL_PAPER_READY` | `false` | the current engineering source set has no accepted complete matching release gate |
-| `PAPER_QUALIFIED` | `false` | the complete real DEV observation, canary and soak evidence has not been accepted |
+| `PAPER_QUALIFIED` | `false` | historical technical DEV qualification is not accepted; it is not an extra mandatory DEMO campaign for the revised single-server PROD engineering scope |
 | `ALPHA_READY` | `false` | a concrete adaptive development candidate is selected; its complete campaign/evaluator is not accepted and frozen, and no independent alpha pass exists |
 | `LIVE_READY` | `false` | PROD wiring and production qualification remain blocked |
 
@@ -245,12 +261,15 @@ The OpenAI-only defaults and their qualification boundary are in
 spending observations are historical evidence, not qualification of the current
 model routes or permission to reset the shared budget. See [BUDGET.md](docs/BUDGET.md).
 
-The latest [runtime recovery receipt](docs/RECOVERY-2026-10-05.md) accepts an
-isolated archive diagnostic, not primary recovery, outbox dispatch or consumer
-restart. Actual DEV credentials, books and account pairing must be established
-by current preflight evidence; the old August venue snapshot is not a current
-availability or credential claim. Production security, backup/restore, alerts
-and elapsed qualification remain independent requirements.
+The latest [runtime/production checkpoint](docs/RUNTIME-PRODUCTION-2026-10-23.md)
+accepts a separately owned non-trading successor, not recovery/adoption of old
+DB/queue state or trading positions. Its historical 18-migration source profile
+is distinct from the current production source set. Real venue safety,
+account/effect reconciliation, protected custody, local restore, alerts and
+manual limits remain required. DEMO books/soak, off-host hosting and cloud KMS
+are not mandatory engineering prerequisites under the revised owner scope;
+full-host-loss resilience is not established. Research admission and any separate
+early owner-funded experiment remain distinct; no real-money arm follows.
 
 See [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md), the
 [ADRs](docs/adr/) and [budget assumptions](docs/BUDGET.md). MIT licensed.

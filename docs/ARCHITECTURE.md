@@ -12,6 +12,28 @@ target, capability boundaries and critical path are in
 [the current manifest](../config/current-release.json). The candidate path below
 is not a claim that the technical-canary Compose profile launches every component.
 
+## Current path taxonomy — 2026-10-23
+
+The [whole-project audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md) reconciles
+capability and acceptance across the source set. Do not collapse these paths:
+
+- The diagram below is the existing strict technical DEV PAPER contract path.
+- [CURRENT v3](CURRENT-PLAN-REVIEW-2026-10-23.md) supports technical and independent
+  context proposals; it reviews a plan before later price confirmation/fresh
+  quote and sealed native SIM replay. It is not the legacy tactical decider or
+  the frozen four-account research evaluator, and is not production execution.
+- The October 23 historical-profile non-trading successor serves bars and
+  demonstrates isolated recovery/queue mechanics, not trading positions.
+- Guarded PROD state/custody/one-effect dispatch components are implemented;
+  full authoritative risk/exposure/lifecycle composition is still incomplete.
+
+PAPER has loss-at-stop sizing; legacy TacticalCommand sizing and caller-quantity
+SIM admission have different semantics. The generic Macro service's unavailable
+release/on-chain factors do not mean CURRENT has no official context: CURRENT
+also captures bounded Fed/BLS publications, with explicit missing/partial fields.
+The latest engineering evidence is the
+[October 23 checkpoint](RUNTIME-PRODUCTION-2026-10-23.md), not a LIVE approval.
+
 ## Data and control flow
 
 ```mermaid

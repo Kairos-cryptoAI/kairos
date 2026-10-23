@@ -2,7 +2,35 @@
 
 _Evidence boundary: 2026-08-27. This document records capability and permission separately._
 
-## Current engineering and runtime boundary — 2026-10-20
+## Current scope and readiness reconciliation — 2026-10-23
+
+The current [capability audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md) and
+[runtime/production checkpoint](RUNTIME-PRODUCTION-2026-10-23.md) supersede older
+"current/latest" wording below. Historical DEV qualification tables retain their
+original contracts; they are not additional mandatory DEMO campaigns for the
+revised single-server production engineering target. Off-host hosting and cloud
+KMS are likewise not mandatory purchases; full-host-loss resilience is unproved.
+
+The separately owned historical-profile non-trading successor passed fresh
+backup/clone restore, integrity, queue qualification and drained restart.
+Actual account-bound PROD GET-only capture passed, but is not an atomic snapshot
+or authoritative reconciliation. Complete production signing/risk/exposure/
+order lifecycle and current-owner operations acceptance remain open. The new
+runtime is not an adopted old queue, a current production schema or a trader.
+
+CURRENT v3 code/fixtures, real bootstrap refusal, source-only capture, successful
+SIM entry and complete natural SIM lifecycle are distinct outcomes. No full
+authentic current-system entry/lifecycle is credited here. Fresh-news waiting
+was stopped by the owner and is not restarted by documentation.
+
+The [manifest](../config/current-release.json) remains authoritative for source
+identity and false readiness flags/REJECT_ALL, not permission to trade. A separate
+early owner-funded experiment remains distinct from the historical research
+365-day/500-natural-close LIVE admission; neither is armed by this reconciliation.
+Actual venue/account safety, protected local custody/restore, operator limits
+and manual arming remain required even without DEMO/off-host prerequisites.
+
+## Previous engineering and runtime boundary — 2026-10-20
 
 The [current continuation](ENGINEERING-CONTINUATION-2026-10-20.md) records durable
 news no-resend, real PostgreSQL Text acceptance, owner-signed request validation,

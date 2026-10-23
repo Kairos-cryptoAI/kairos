@@ -1,8 +1,40 @@
 # Current Kairos trading concept and implementation scope
 
-Updated: 2026-10-22 Europe/Moscow. This is the living target and scope index, not a research
+Updated: 2026-10-23 Europe/Moscow. This is the living target and scope index, not a research
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
+
+## Current capability and operating-scope reconciliation — 2026-10-23
+
+The [whole-project audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md) covers all 14
+repositories and is the current capability matrix. It separates code, fixture
+acceptance, authentic observations, deployment and economic qualification.
+These are not interchangeable descriptions of a professional trading system.
+
+The separately approved [CURRENT v3](CURRENT-PLAN-REVIEW-2026-10-23.md) reviews
+an immutable plan first, then requires a new full closed-bar confirmation and
+fresh quote before independent native Risk/SIM. It supports CONTEXT_ONLY when
+technical evaluation has no candidate, technical priority for same-side ideas,
+and abstention for opposite candidates. It is a bounded single-path research
+verification, not the frozen four-arm financial evaluator or a production driver.
+No accepted authentic complete news/model/Risk/native-SIM lifecycle is claimed.
+The owner stopped the fresh-news waiting work; this index does not resume it.
+
+The [October 23 runtime/production checkpoint](RUNTIME-PRODUCTION-2026-10-23.md)
+records actual account-bound PROD GET-only acceptance and a separately owned
+historical-profile non-trading successor passing backup/clone restore, integrity,
+queue qualification and drained restart. Old failures remain unchanged. These
+proofs neither establish authoritative PROD exposure nor complete its lifecycle.
+Its old Redis root cause, production schema deployment and new-owner boot/alert
+qualification are not claimed solved.
+
+The revised owner scope targets one server. DEMO books/campaigns, independent
+off-host hosting and cloud KMS are not mandatory engineering gates. Existing
+DEV PAPER guards are not removed; real venue/account safety, protected custody,
+local restore, operator limits and manual arming remain. Historical research
+365-day/500-close admission and any separately approved early owner-funded test
+are different contracts; this update approves neither trading nor a gate waiver.
+The dated material below is retained context, not a second current work order.
 
 ## Current narrow strategy task — 2026-10-22
 
@@ -88,7 +120,7 @@ The owner now requests completion of the operational and engineering launch
 prerequisites while strategy selection, parameters and qualification remain
 untouched. Reuse the existing components; do not reopen the frozen research/UI
 workstreams below or call a fixture an operational deployment. The
-[October 20 continuation](ENGINEERING-CONTINUATION-2026-10-20.md) is the current
+[October 23 checkpoint](RUNTIME-PRODUCTION-2026-10-23.md) is the current
 implementation and blocker register. The revised target is one server: DEMO
 books/campaigns, independent backup hosting and cloud KMS are not mandatory
 engineering gates. Existing SIM supplies finite lifecycle checks. Full-host-loss
@@ -246,8 +278,9 @@ prove an actual capture, news/macro/bar coverage, continuous SIM or economics.
 UI/UX remains deferred. Risk ceilings, provider routes, budgets, release runtime
 pins and default rejection are unchanged. Code and fixture completion are not
 runtime, venue, operational-security or economic qualification. Trading-account
-effect/protection recovery, off-host backup/custody, production alert qualification
-and venue acceptance remain required. The separate R7 technical recovery and
+effect/protection recovery, protected local custody/restore, production alert
+qualification and actual venue acceptance remain required. Independent off-host
+hosting is not mandatory in the revised single-server scope. The separate R7 technical recovery and
 delivered notice above are accepted dated scopes, not unperformed tasks.
 No readiness flag or trading authority follows.
 
@@ -423,8 +456,11 @@ allocation creates authority without the existing independent risk gates.
 - Existing own-campaign 365 future days plus 500 naturally closed simulated
   trades, one sealed evaluator and the preregistered crash/net-risk checks.
   These are the approved policy, not a mathematical profitability guarantee.
-- Independent real EVEDEX DEV read-only/canary/soak and production safety gates.
-  Binance data does not qualify EVEDEX liquidity or actual execution.
+- Actual production venue/account/execution safety and qualification. Historical
+  DEV read-only/canary/soak guards still govern that technical PAPER profile,
+  but DEMO book availability/campaigns are not mandatory engineering prerequisites
+  for the revised single-server target. Binance data does not qualify EVEDEX
+  liquidity or actual execution.
 - Existing shared paid-budget history and fixed limits; OpenAI-only defaults.
 - Actual recoverability, reconciliation, critical alert delivery and secret
   isolation before trading authority. UI/UX remains deferred.

@@ -1,8 +1,33 @@
 # Kairos — Project Status
 
-_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-21_
+_Organization: [Kairos-cryptoAI](https://github.com/Kairos-cryptoAI) · updated 2026-10-23_
 
-## Current non-strategy engineering — 2026-10-21
+## Current cross-project status — 2026-10-23
+
+The [whole-project capability audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md)
+separates the target trading workflow from code/components, synthetic integration,
+actual observations and a complete deployed service. An autonomous professional
+trader and positive full-system net edge are not established.
+
+The [October 23 checkpoint](RUNTIME-PRODUCTION-2026-10-23.md) records a new owned
+non-trading successor with accepted fresh backup/isolated restore, integrity,
+queue qualification and drained restart; old failed DB/queues are preserved.
+Actual account-bound PROD GET-only observation also passed. This does not
+establish authoritative exposure, accepted signing or a complete PROD lifecycle.
+
+[CURRENT v3](CURRENT-PLAN-REVIEW-2026-10-23.md) implements plan-first review and
+later fresh confirmation/quote into native SIM. Technical NO_INTENT can coexist
+with a context-only LLM proposal; opposite candidates abstain. Its complete
+authentic entry/lifecycle is unaccepted. Fresh-news waiting is no longer the
+owner's active work; this status does not restart it or spend provider funds.
+
+The single-server scope does not require DEMO campaigns, independent off-host
+hosting or cloud KMS purchases. It still requires real venue/account safety,
+protected custody, recovery and operator limits. All readiness flags remain
+false and policy stays REJECT_ALL. Historical sections below retain their dates;
+they do not supersede the current checkpoint or authorize an early money test.
+
+## Previous non-strategy engineering checkpoint — 2026-10-21
 
 See [the latest checkpoint](ENGINEERING-2026-10-21.md) and
 [active remaining list](LAUNCH-REMAINING-2026-10-18.md). Native lifecycle/claim
