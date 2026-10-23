@@ -99,6 +99,24 @@ from .native_fixtures import (
 _DB_PREFIX = "kairos_sim_test_campaign_"
 _HISTORICAL_COST = 6_000_000
 _OPENAI_CAP = 12_000_000
+_FIVE_MINUTE_BUCKET_MS = 300_000
+_TAPE_EXPIRY_HEADROOM_MS = 90_000
+
+
+def _tape_bucket_wait_target(now_ms: int) -> int | None:
+    """Keep the sequential native cases inside the reused tape's entry lifetime."""
+    phase_ms = now_ms % _FIVE_MINUTE_BUCKET_MS
+    if phase_ms <= _FIVE_MINUTE_BUCKET_MS - _TAPE_EXPIRY_HEADROOM_MS:
+        return None
+    return now_ms - phase_ms + _FIVE_MINUTE_BUCKET_MS + 1
+
+
+def test_tape_bucket_wait_target_preserves_expiry_headroom_at_boundary():
+    assert _tape_bucket_wait_target(0) is None
+    assert _tape_bucket_wait_target(210_000) is None
+    assert _tape_bucket_wait_target(210_001) == 300_001
+    assert _tape_bucket_wait_target(299_999) == 300_001
+    assert _tape_bucket_wait_target(510_001) == 600_001
 
 
 def _router(*, conflict: bool) -> ModelRouter:
@@ -489,11 +507,12 @@ async def test_native_candidate_review_risk_budget_restart_on_disposable_campaig
             assert initial_usage.committed_cost_microusd == initial_usage.reserved_cost_microusd == 0
 
             now = await unbound_repository.clock()
-            if now % 300_000 >= 285_000:
+            wait_target = _tape_bucket_wait_target(now)
+            if wait_target is not None:
                 await _wait_for_database_clock(
                     unbound_repository,
-                    now // 300_000 * 300_000 + 300_001,
-                    timeout_s=16,
+                    wait_target,
+                    timeout_s=91,
                 )
                 now = await unbound_repository.clock()
             matching_tape_id = f"native-match-{uuid4().hex}"

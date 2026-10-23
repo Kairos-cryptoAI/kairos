@@ -168,6 +168,24 @@ rewritten. The current-chain dependency lock is aligned without installing or
 resuming its paused real-news campaign. Existing moderate Dependabot notices
 on retained meta/deploy source sets are not represented as fixed.
 
+On that Deploy revision the
+[general CI and image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40009610805),
+[current-release REJECT_ALL gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40009610839),
+[full-path isolated SIM gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40009610791)
+and [Text/Macro/Router/Review/Risk composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40009610779)
+all passed. Remote image builds did not start local PAPER or LIVE services.
+
+Meta's first source checkpoint `d2eee06` passed static validation, CodeQL and
+[installed current-chain offline Windows/Linux verification](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40009748476)
+on these exact dependencies.
+Its old native-campaign Python 3.14 fixture exposed a five-minute clock-edge
+race: late test cases reused a sealed tape after the original strategy entry
+expiry. The failed [run](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40009748386)
+is retained. The correction admits the synthetic fixture only with sufficient
+original lifetime before creating its tapes, waiting for the next actual DB
+clock boundary otherwise. It does not change strategy/evaluator source, TTL,
+tape timestamps, budget assertions, real news or any frozen campaign.
+
 | Final artifact | SHA-256 |
 | --- | --- |
 | `risk-unit-final.xml` | `acb267f99570638b776df1b8ac2dfac67ab68c602c2c6a4d28060aea9e3cc2cb` |
