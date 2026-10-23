@@ -25,7 +25,7 @@ override-dependencies = [
   "kairos-llm @ git+https://github.com/Kairos-cryptoAI/kairos-llm.git@f67ca208d65c430d93dd6e5e242797191b4017f2",
   "kairos-aggregator @ git+https://github.com/Kairos-cryptoAI/kairos-aggregator.git@edff2f56a7de4c7065d8d86d2ce2a8997d1b3133",
   "kairos-risk-manager @ git+https://github.com/Kairos-cryptoAI/kairos-risk-manager.git@4eb6de55ee68d742b2583932c2e0d8f98b65949d",
-  "kairos-execution-engine @ git+https://github.com/Kairos-cryptoAI/kairos-execution-engine.git@9f89d971c584f6ff0328ac4d1bf8893029c96f41",
+  "kairos-execution-engine @ git+https://github.com/Kairos-cryptoAI/kairos-execution-engine.git@7c731a4e2302c4a21c1f1f4316452a6c9d808957",
   "kairos-text-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-text-scouts.git@23654f101f43dba7d73f5417a22737c32b7c8afa",
   "kairos-macro-strategist @ git+https://github.com/Kairos-cryptoAI/kairos-macro-strategist.git@91af931a21d956d2b7b310d4d85456254da59c03",
   "kairos-quant-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git@cbd8e60b05952c4238aa51a13bc4327350b8e643",
