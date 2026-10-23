@@ -139,6 +139,26 @@ paused campaign. The meta repository uses `SELF` in the release manifest.
 Implementation contract:
 [production sources and accounting](https://github.com/Kairos-cryptoAI/kairos-execution-engine/blob/d544ae9d9ac4eaa1670f02c7772899c42946756c/docs/PRODUCTION-SOURCES-ACCOUNTING.md).
 
+Accepted affected gates on that source set:
+
+- Deploy [general CI and image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40000632254),
+  [current-release REJECT_ALL gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40000631971),
+  [full-path isolated SIM gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40000632003)
+  and [Text/Macro/Router/Review/Risk composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40000632307)
+  all passed. Remote CI builds do not start local PAPER or LIVE services.
+- Meta [offline current-chain Windows/Linux verification](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40000890497),
+  [native campaign engineering](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40000890493)
+  and [manifest/docs validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40000890503)
+  passed on signed `356558e683d5eda86eac4d351676fc1ea7deb3f0`, which records
+  these exact dependencies. This final documentation-only checkpoint does not
+  change that code/source set.
+- Local `Test-CurrentRelease.ps1` verified all 14 clean `main` repositories,
+  exact local `origin/main` matches, trusted HEAD signatures and active source
+  projections. Local `Test-Meta.Static.ps1` and source-projection regressions
+  passed. Existing moderate Dependabot notices on retained meta/deploy source
+  sets were not represented as resolved or used to justify rewriting frozen
+  evidence/dependency locks.
+
 ## Exact reviewed source artifacts
 
 Paths below are relative to the installed `@evedex/exchange-api/dist/mjs`
