@@ -173,3 +173,27 @@ and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40026
 passed. No local service was started and the historical release-gate locks
 were left untouched. Meta's current-chain lock is aligned without installing
 or resuming its paused real-news campaign environment.
+
+## Final source checkpoint
+
+Meta source `19035d10cd38b4b8aca72372795b0d895ab75395` is trusted-GPG-signed
+and passed [static validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40027299622),
+[native-campaign engineering](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40027299556),
+[installed current-chain offline verification on Windows and Linux](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40027299835)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40027298615).
+These checks use no paid provider or real venue execution. The subsequent
+receipt-only commit records these already completed checks; it does not change
+the verified implementation or source pins.
+
+`scripts/Test-CurrentRelease.ps1` verified the release identity across all
+14 clean `main` repositories, matching their `origin/main` references with
+trusted signatures and aligned active projections. Release
+`engineering-main-20261023T212353Z` retains every readiness flag as false and
+`STRATEGY_POLICY=REJECT_ALL`. Source identity is not operational acceptance,
+capital authorization or permission to trade.
+
+The existing moderate OpenTelemetry advisory GHSA-xcq7-p3pf-p88h belongs to
+the separate historical `development/adaptive_replay/uv.lock` (1.45.0).
+The updated active current-chain lock already contains the patched 1.45.1.
+The historical replay lock was not changed, and this receipt does not claim
+a repository-wide vulnerability-free state.
