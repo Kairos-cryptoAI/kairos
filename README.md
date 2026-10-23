@@ -34,6 +34,13 @@ account-bound PROD GET-only observation passed; it is not authoritative atomic
 reconciliation. No new key is requested.
 See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
+The [October 24 real-source and current-PC checks](docs/REAL-SOURCE-HOST-QUALIFICATION-2026-10-24.md)
+retain actual account/public-data captures and distinguish historical-worker
+samples from a deployed current-release PROD service. An unexplained invalid
+status sample prevents claiming runtime stability. The installed entrypoint
+still refuses LIVE; source availability is not authoritative account/upstream
+qualification, positive startup acceptance or permission to trade.
+
 The [LIVE Risk/lifecycle wiring continuation](docs/PRODUCTION-PATH-WIRING-2026-10-23.md)
 connects the actual entry evaluator and independent per-effect protective/exit
 publishers to that existing protected FSM. It is explicit engineering

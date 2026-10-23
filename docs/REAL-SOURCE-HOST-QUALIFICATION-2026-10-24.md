@@ -89,15 +89,25 @@ quote, continuous-book proof or LIVE admission. No full cut was rerun to obtain
 a more favorable outcome.
 
 The probe also now chooses the exact already-configured canonical CoinDesk
-alias, without following redirects or inventing an endpoint. Its new path is
-not presumed available merely because selection was corrected.
+alias, without following redirects or inventing an endpoint. A separate signed,
+one-GET diagnostic of that alias returned HTTP 200 at **01:17:51–01:17:54
+Moscow**, retained 25 items and selected zero under unchanged native freshness
+and relevance rules. Its raw response SHA-256 is
+`45efc2155402c30c9265eab9bdf4e154679ffbc89facda6301f629ad0982676b`.
+The diagnostic does not replace the initial refusal, refresh old news, rerun
+the full cut or prove the first endpoint's unrecorded HTTP status.
 
 The first reader counter reported 2,165,017 accepted bytes; it excludes a
-refused response body. Including that response's existing 2 MiB maximum gives
-a conservative 4,262,169-byte upper bound, not an exact ingress measurement.
+refused response body. Including that response's existing 2 MiB maximum and
+one possible overflowing 64 KiB read chunk gives a conservative 4,327,705-byte
+application-read payload upper bound, not a socket/TLS ingress measurement.
 The corrected probe charges refused bodies conservatively before admitting
 another independent request, reserves missing official-capture accounting
-rather than recording zero, and labels the byte counter as an upper bound.
+rather than recording zero, and reserves chunk-overflow headroom before a GET.
+The unchanged official-context reader also gets one reserved overflow chunk
+per attempted source. Its retained-byte count remains distinct from this
+conservative application-body budget; network buffers/protocol bytes are not
+measured or described as bounded ingress.
 
 The separate opt-in `current_source_probe` reuses the configured public
 capture/normalizer/official-context components without constructing a model,
@@ -144,6 +154,18 @@ test. No old task was enabled or silently rebound, no new boot task installed,
 and no reboot/cold-start qualification is claimed. The existing technical
 alert task was not changed or treated as monitoring of this different owner.
 
+A later current-parser call returned `invalid`, age 7.423189 seconds and
+`stale=false`. Its exact input bytes were not retained, so the failed invariant
+is unknown; it is not reclassified as a pass. One separate bounded, immutable
+820-byte sample was retained at **01:25:30 Moscow**, SHA-256
+`743370122540096ab6713d746718dfe2497c297e2b6c2ebc4cb7b28cc3be4945`.
+The current-source parser accepted that sample as `running`, age 11.019497
+seconds: 3,254 cycles, 4,415 completed records, five equal watermarks and zero
+pending/unresolved/uncompleted counters. No repeated sampling until success
+was performed. This later sample cannot adjudicate the earlier missing input
+or establish stable operation over an interval. The diagnostic preserves both
+facts; runtime stability acceptance remains open.
+
 ## Actual installed entrypoint refusal
 
 A finite, credential-free child invoked the actual installed
@@ -167,10 +189,61 @@ Real-money startup is **not complete**. It still requires a qualified venue
 account/history/settlement/parent source and an authenticated complete native
 upstream decision chain, then a current-source deployed service and its owned
 boot/recovery/monitoring acceptance. Source availability, account credentials,
-green engineering CI and a healthy historical worker do not replace these.
+green engineering CI and individual passing historical-worker samples do not
+replace these. The unadjudicated invalid status sample also prevents claiming
+that this observation established stable runtime operation.
 Concrete capital limits and owner arming remain separate from this work.
 
 Every readiness flag remains false; `STRATEGY_POLICY=REJECT_ALL`. The retained
 evidence parent is `D:/Kairos/runtime/real-source-host-qualification-20261024`.
 Old failures, partial artifacts, database/queue state, campaign environments and
 all original research evidence remain preserved.
+
+## Local verification and retained artifacts
+
+The final bounded-probe implementation is signed Meta
+`4695a51c0dddc0b7bbcde3375de46b8b1d48be77`; its installed noneditable module
+matches the source after Git line-ending normalization, SHA-256
+`27a2adb8afa06ebe4407eb42d729faaeed6cf0cdaea3e2f47b45025662f28246`.
+This does not change the original real cut's implementation identity or
+retroactively rerun that cut with corrected code.
+
+The corrected noneditable source package passed **17 focused tests with one
+Windows directory-symlink privilege skip**, plus Ruff lint/format. Tests cover
+native BBO DTO compatibility, original event clocks, canonical approved feed
+selection, conservative charging of refused HTTP bodies and pre-request
+overflow headroom, no extra requests
+after implementation failure, independent one-shot source refusals, no
+overwrite, failed-write partials and preservation of the original exception.
+Native capture/macro tests remain separate from actual source observations.
+The symlink case is still a platform skip locally, not a claimed Windows pass.
+The real output paths passed the unchanged ancestor/reparse checks.
+
+The first wheel-cache collection failure and earlier failed assertion are not
+relabeled as passes. A forced noneditable rebuild fixed the stale local package;
+the failed overwrite assertion was updated for the explicit publication-error
+wrapper while retaining its no-overwrite check. Earlier JUnit artifacts remain.
+The final focused result is `source-probe-tests-v5.xml`. No running campaign
+environment was modified and no installed package was patched by hand.
+That JUnit artifact is signed, SHA-256
+`67328f3e9e960f2257cf839481cab0363e0faa3b075f1fdf0625ae61e9c4e49e`.
+
+CI evidence for the exact final implementation is linked independently:
+[Windows/Linux current-chain regression](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40033690256),
+[native engineering](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40033690340),
+[meta validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40033690238)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40033690554).
+Those engineering workflows do not produce real-source authority, stable-host
+acceptance or trading permission. The documentation-only handoff does not
+change the implementation's source identity or original source captures.
+
+| Artifact below the retained evidence parent | Meaning |
+| --- | --- |
+| `account-20261024-first/observation.report.json` | Signed real account-bound GET observation, no reconciliation authority. |
+| `host-initial-20261024.json` | Signed exact-owner historical-runtime observation and image/profile mismatch. |
+| `host-status-adjudication-20261024/status-diagnostic.json` | One retained passing sample; the earlier invalid sample has unknown cause and is not replaced by this pass. |
+| `sources-20261024-first/source-qualification.json` | Unchanged first real public cut, including the report-field failure. |
+| `depth-adjudication-20261024/original-depth-adjudication.json` | Signed offline validation of original real depth receipts, never fresh quotes. |
+| `coindesk-canonical-20261024/canonical-feed.report.json` | Signed one-GET native capture of the existing canonical alias. |
+| `launch-20261024-first/launch.report.json` | Preserved original finite refusal-harness failure. |
+| `launch-import-diagnostic-20261024/import-diagnostic.json` | Signed attribution of blocked import-time Windows metadata probes. |

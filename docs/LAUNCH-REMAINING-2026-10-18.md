@@ -5,6 +5,16 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
+**Latest real checks:** [October 24 source/current-PC qualification boundary](REAL-SOURCE-HOST-QUALIFICATION-2026-10-24.md).
+Actual free market/news/official data and a fresh account-bound observation were
+checked without models or orders. This does not supply authoritative venue
+history/settlement or a complete authenticated upstream decision chain. The
+existing worker is historical-profile; current-owner boot and positive current
+PROD service startup remain unqualified, and LIVE startup correctly refuses.
+One unretained invalid status sample remains unexplained despite separately
+retained passing samples; stable runtime acceptance was not established.
+No old boot task was rebound or activated.
+
 **Latest implementation:** [October 23 unified LIVE Risk/lifecycle wiring](PRODUCTION-PATH-WIRING-2026-10-23.md).
 The actual entry evaluator and independent per-effect exit Risk producers now
 have an explicit caller through the existing protected FSM. Fresh-v3 accounting

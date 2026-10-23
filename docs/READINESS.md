@@ -1,7 +1,18 @@
 # EVEDEX DEV PAPER readiness
 
 _Original baseline: 2026-08-27; current scope reconciliation: 2026-10-23.
+Latest source/host evidence: 2026-10-24.
 This document records capability and permission separately._
+
+The [October 24 real-source/current-PC checkpoint](REAL-SOURCE-HOST-QUALIFICATION-2026-10-24.md)
+records a fresh installed GET-only PROD account observation, actual public
+bars/news/official publications and original-depth adjudication. Individual
+historical-worker samples passed, but an unexplained invalid sample leaves
+stability unqualified. BLS remains unavailable, the complete upstream LIVE
+proof and authoritative EVEDEX account/settlement sources remain unqualified,
+and the current service correctly refuses LIVE startup. This is not positive
+current-release deployment or Windows cold-start acceptance. No readiness flag,
+boot task, strategy or trading permission was promoted.
 
 ## Current scope and readiness reconciliation — 2026-10-23
 
