@@ -185,6 +185,17 @@ is retained. The correction admits the synthetic fixture only with sufficient
 original lifetime before creating its tapes, waiting for the next actual DB
 clock boundary otherwise. It does not change strategy/evaluator source, TTL,
 tape timestamps, budget assertions, real news or any frozen campaign.
+The signed correction `9bb0a88de53a286693b44ef5592d2fa6838dc694` passed the
+[native acceptance matrix](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40010709195)
+on Python 3.11 and 3.14, including explicit boundary-helper assertions and
+exactly one non-skipped PostgreSQL acceptance per job. Meta
+[manifest/docs validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40010709091)
+passed as well. `Test-CurrentRelease.ps1` independently verified all 14 clean
+`main` checkouts, local `origin/main` matches, trusted HEAD signatures and active
+source projections. This last report update changes no executable source,
+dependency, frozen identity, readiness flag or trading permission.
+The correction's [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40010708560)
+also passed; the earlier failing native run is not hidden or counted as PASS.
 
 | Final artifact | SHA-256 |
 | --- | --- |
