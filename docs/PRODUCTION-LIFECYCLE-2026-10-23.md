@@ -86,7 +86,7 @@ credentials; no user key file was read.
   Exact dollar caps and a current signed owner arm are still required.
 
 Implementation details and test entrypoints:
-[Execution lifecycle contract](../../kairos-execution-engine/docs/PRODUCTION-LIFECYCLE.md).
+[Execution lifecycle contract](https://github.com/Kairos-cryptoAI/kairos-execution-engine/blob/cb07cfa0caf2d7cabc25f60ca63722ba7d9edac7/docs/PRODUCTION-LIFECYCLE.md).
 
 ## Reproducible source set and checks
 
