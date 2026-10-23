@@ -27,7 +27,12 @@ from .current_capture import (
 )
 
 MAX_TOTAL_SECONDS = 900
-OFFICIAL_CONTEXT_MAX_BYTES = 4 * 1024 * 1024
+# Both existing readers request chunks of at most 64 KiB. A refused body can
+# cross its retention limit by one chunk before the reader detects overflow.
+# These are application-read payload bounds, not socket/TLS ingress metrics.
+HTTP_READ_CHUNK_BYTES = 64 * 1024
+OFFICIAL_CONTEXT_BODY_BYTES = 4 * 1024 * 1024
+OFFICIAL_CONTEXT_MAX_BYTES = OFFICIAL_CONTEXT_BODY_BYTES + 2 * HTTP_READ_CHUNK_BYTES
 SOURCE_HTTP_MAX_BYTES = MAX_CAPTURE_BYTES - OFFICIAL_CONTEXT_MAX_BYTES
 MAX_TOTAL_REQUESTS = 40
 
@@ -107,7 +112,8 @@ def _eligibility(snapshot: Any) -> dict[str, Any]:
 
 def _new_capture(output: Path, feed: str, *, started: float, consumed_bytes: int) -> CurrentPublicCapture:
     remaining_seconds = MAX_TOTAL_SECONDS - (time.monotonic() - started)
-    remaining_bytes = SOURCE_HTTP_MAX_BYTES - consumed_bytes
+    # Reserve overflow headroom BEFORE constructing a reader/admitting a GET.
+    remaining_bytes = SOURCE_HTTP_MAX_BYTES - consumed_bytes - HTTP_READ_CHUNK_BYTES
     if remaining_seconds <= 0:
         raise ValueError("AGGREGATE_TIME_BOUND_EXCEEDED")
     if remaining_bytes <= 0:
@@ -131,7 +137,7 @@ def _failed_reply_allowance(capture: CurrentPublicCapture | None, maximum_body: 
     # worst case before another independent source is allowed to use the budget.
     if capture is None or capture.requests == 0:
         return 0
-    return min(maximum_body, max(0, capture.byte_limit - capture.bytes_used))
+    return min(maximum_body, max(0, capture.byte_limit - capture.bytes_used)) + HTTP_READ_CHUNK_BYTES
 
 
 def _is_global_bound_failure(
@@ -182,9 +188,9 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     if request_ceiling > MAX_TOTAL_REQUESTS:
         raise ValueError("AGGREGATE_REQUEST_PLAN_EXCEEDED")
 
-    # Four MiB is reserved for the existing official-context capture's fixed
-    # two-source roster (2 MiB per body); the remaining original 32 MiB budget
-    # is shared by both RSS feeds, Binance bars, and depth snapshots.
+    # Reserve the existing official-context capture's fixed two-source roster
+    # (2 MiB per body plus a possible overflowing chunk each). Both RSS feeds,
+    # Binance bars and depth snapshots share the remaining 32 MiB budget.
     for feed in feeds:
         capture: CurrentPublicCapture | None = None
         refused_reply_allowance = 0
@@ -253,15 +259,20 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
     macro_receipt: dict[str, Any] | None = None
     if macro_receipt_path.is_file():
         macro_receipt = _load_json(macro_receipt_path)
-    macro_bytes = (
+    macro_body_bytes = (
         sum(int(row.get("raw_bytes") or 0) for row in macro_receipt.get("source_results", []))
         if macro_receipt
-        else OFFICIAL_CONTEXT_MAX_BYTES
+        else None
     )
     macro_requests = (
         sum(int(row.get("attempts") or 0) for row in macro_receipt.get("source_results", []))
         if macro_receipt
         else 2
+    )
+    macro_bytes = (
+        macro_body_bytes + macro_requests * HTTP_READ_CHUNK_BYTES
+        if macro_body_bytes is not None
+        else OFFICIAL_CONTEXT_MAX_BYTES
     )
     if macro_bytes > OFFICIAL_CONTEXT_MAX_BYTES or total_bytes + macro_bytes > MAX_CAPTURE_BYTES:
         raise ValueError("AGGREGATE_BYTE_BOUND_EXCEEDED")
@@ -358,7 +369,7 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             "requests_used": total_requests,
             "bytes_max": MAX_CAPTURE_BYTES,
             "bytes_used": total_bytes,
-            "bytes_accounting": "CONSERVATIVE_UPPER_BOUND_INCLUDING_REFUSED_RESPONSE_BODIES",
+            "bytes_accounting": "CONSERVATIVE_APPLICATION_BODY_READ_UPPER_BOUND_NOT_WIRE_INGRESS",
             "requests_used_is_upper_bound": macro_receipt is None,
             "wall_seconds_max": MAX_TOTAL_SECONDS,
             "paid_calls": 0,
@@ -387,7 +398,8 @@ async def _capture_probe(output: Path) -> dict[str, Any]:
             "receipt": str(macro_receipt_path) if macro_receipt_path.is_file() else None,
             "context": str(macro_path) if macro_path.is_file() else None,
             "request_count": macro_requests if macro_receipt is not None else None,
-            "raw_bytes": macro_bytes if macro_receipt is not None else None,
+            "raw_bytes": macro_body_bytes,
+            "application_body_budget_charged": macro_bytes,
             "missing_receipt_budget_reserved": macro_receipt is None,
             "numeric_macro_values_are_not_inferred": True,
         },

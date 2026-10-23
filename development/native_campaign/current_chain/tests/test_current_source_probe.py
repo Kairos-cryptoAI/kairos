@@ -50,11 +50,40 @@ def test_feed_roster_uses_each_existing_source_once():
 
 def test_refused_response_is_charged_before_another_source_uses_remaining_budget():
     capture = SimpleNamespace(requests=1, byte_limit=50, bytes_used=20)
-    assert probe._failed_reply_allowance(capture, maximum_body=100) == 30
-    assert probe._failed_reply_allowance(capture, maximum_body=10) == 10
+    assert probe._failed_reply_allowance(capture, maximum_body=100) == 30 + probe.HTTP_READ_CHUNK_BYTES
+    assert probe._failed_reply_allowance(capture, maximum_body=10) == 10 + probe.HTTP_READ_CHUNK_BYTES
     capture.requests = 0
     assert probe._failed_reply_allowance(capture, maximum_body=100) == 0
     assert probe._failed_reply_allowance(None, maximum_body=100) == 0
+
+
+def test_capture_reserves_overflow_before_any_request(tmp_path: Path, monkeypatch):
+    admitted: list[int] = []
+
+    def record_capture(_output, *, text_feed, byte_limit, deadline_seconds):
+        admitted.append(byte_limit)
+        return SimpleNamespace(byte_limit=byte_limit)
+
+    monkeypatch.setattr(probe, "CurrentPublicCapture", record_capture)
+    started = probe.time.monotonic()
+    with pytest.raises(ValueError, match="AGGREGATE_BYTE_BOUND_EXCEEDED"):
+        probe._new_capture(
+            tmp_path,
+            probe._feed_roster()[0],
+            started=started,
+            consumed_bytes=probe.SOURCE_HTTP_MAX_BYTES - probe.HTTP_READ_CHUNK_BYTES,
+        )
+    assert admitted == []
+    capture = probe._new_capture(
+        tmp_path,
+        probe._feed_roster()[0],
+        started=started,
+        consumed_bytes=probe.SOURCE_HTTP_MAX_BYTES - probe.HTTP_READ_CHUNK_BYTES - 1,
+    )
+    capture.requests = 1
+    capture.bytes_used = 0
+    assert admitted == [1]
+    assert probe._failed_reply_allowance(capture, 100) == probe.HTTP_READ_CHUNK_BYTES + 1
 
 
 @pytest.mark.asyncio
@@ -138,6 +167,11 @@ async def test_probe_writes_create_only_source_only_summary(tmp_path: Path, monk
     assert result["market"]["live_market_authorization_limit_ms"] == 2_000
     assert result["aggregate_limits"]["paid_calls"] == 0
     assert result["aggregate_limits"]["sim_resources"] is False
+    assert result["official_macro_capture"]["raw_bytes"] == 50
+    assert result["official_macro_capture"]["application_body_budget_charged"] == (
+        50 + probe.HTTP_READ_CHUNK_BYTES
+    )
+    assert result["aggregate_limits"]["bytes_used"] == 8 * 123 + 50 + probe.HTTP_READ_CHUNK_BYTES
     expected_cut = (fixed_now_ms // probe.BAR_MS) * probe.BAR_MS
     assert cut_values == [expected_cut]
     assert cut_values[0] <= fixed_now_ms
