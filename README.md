@@ -34,6 +34,12 @@ account-bound PROD GET-only observation passed; it is not authoritative atomic
 reconciliation. No new key is requested.
 See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
+The [LIVE Risk/lifecycle wiring continuation](docs/PRODUCTION-PATH-WIRING-2026-10-23.md)
+connects the actual entry evaluator and independent per-effect protective/exit
+publishers to that existing protected FSM. It is explicit engineering
+composition, not a deployed trader: real EVEDEX account/terminal authority and
+qualified upstream inputs remain mandatory and fail closed.
+
 **Verified bounded milestone (2026-10-15):** one existing-component adaptive
 observation -> current causal review -> stop-sized SIM -> durable simulator
 path passes on explicit synthetic/no-network inputs. The actual isolated

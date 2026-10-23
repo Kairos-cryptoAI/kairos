@@ -24,6 +24,10 @@ and settlement authority. The subsequent
 [independent LIVE Risk continuation](PRODUCTION-LIVE-RISK-2026-10-23.md) adds a
 separate opt-in evaluator and exact-request publisher, without enabling LIVE
 services or qualifying the real account/upstream sources.
+The later [unified Risk/lifecycle wiring](PRODUCTION-PATH-WIRING-2026-10-23.md)
+invokes those publishers from the actual entry/new-PREPARED exit path, preserving
+independent authorization and recovery. This closes the isolated composition
+gap, not real EVEDEX source qualification or service/LIVE admission.
 Actual account-bound PROD GET-only capture passed, but is not an atomic snapshot
 or authoritative reconciliation. Complete production signing/risk/exposure/
 order lifecycle and current-owner operations acceptance remain open. The new

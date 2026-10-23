@@ -5,7 +5,16 @@ direction, execution plan, order authorization or relaxed acceptance policy.
 Strategy selection, economic optimization and long trading tests are excluded
 from the work list below, not waived from eventual LIVE admission.
 
-**Latest implementation:** [October 23 runtime / production checkpoint](RUNTIME-PRODUCTION-2026-10-23.md).
+**Latest implementation:** [October 23 unified LIVE Risk/lifecycle wiring](PRODUCTION-PATH-WIRING-2026-10-23.md).
+The actual entry evaluator and independent per-effect exit Risk producers now
+have an explicit caller through the existing protected FSM. Fresh-v3 accounting
+remains reconciliation-gated and once-only. Real qualified account/upstream/
+terminal sources, operator limits, owner arm and venue/service acceptance are
+still required; the default LIVE startup refusal is not removed. Earlier
+component-only and no-release findings below refer to their original source
+sets, not the later isolated engineering composition.
+
+**Earlier checkpoint:** [October 23 runtime / production checkpoint](RUNTIME-PRODUCTION-2026-10-23.md).
 The independently owned historical-profile non-trading successor passed fresh
 backup/isolated restore, integrity checks, queue qualification and one drained
 restart on October 23. The failed Oct21 DB/queue/worker remain preserved.
