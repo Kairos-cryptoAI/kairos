@@ -144,6 +144,29 @@ runtime containers are not modified.
 - There are no EVEDEX requests/orders, DeepSeek/X calls, PAPER/LIVE services,
   real-money orders or readiness promotions in this target.
 
+## Free source availability without models or SIM
+
+The separate, opt-in `current_source_probe` performs one bounded read of both
+already configured RSS sources, the existing five-symbol closed-bar/depth
+capture, and the fixed official-context roster. It does not start the CURRENT
+campaign, wait for a favorable story, call a model, read credentials, or create
+SIM/database resources. Use the locked noneditable environment and a new output
+directory whose parent already exists:
+
+```powershell
+python -I -m kairos_native_campaign.current_source_probe --execute --output D:/Kairos/runtime/real-source-host-qualification-20261024/new-source-run
+```
+
+The receipts retain original bodies and timestamps; source-specific refusals
+and unavailable fields remain explicit. This is availability/integrity evidence
+only, not authenticated LIVE input qualification, macro completeness, a model
+review, continuous-book acceptance, or readiness. The original source freshness
+checks and stricter LIVE authorization limits remain distinct. Missing native
+Macro/Router/review/verifier stages cannot be inferred from source hashes.
+
+Unlike `current_verify --capture-only`, this command does not construct the
+isolated native SIM infrastructure. Neither command is permission to trade.
+
 ## Checks
 
 The default test suite uses no external provider/database. The durable positive
