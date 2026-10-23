@@ -1,6 +1,7 @@
 # EVEDEX DEV PAPER readiness
 
-_Evidence boundary: 2026-08-27. This document records capability and permission separately._
+_Original baseline: 2026-08-27; current scope reconciliation: 2026-10-23.
+This document records capability and permission separately._
 
 ## Current scope and readiness reconciliation — 2026-10-23
 

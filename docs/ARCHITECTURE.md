@@ -341,12 +341,16 @@ fault/race, Windows, Docker integration and GitHub CI gates. Even then it would 
 mean that any elapsed or external qualification had passed. Historical true
 values in dated receipts are not current-source approval.
 
-`PAPER_QUALIFIED=false`: authenticated EVEDEX DEV reconciliation and venue semantics, the
-24-hour read-only gate, the manually armed five-symbol protected canary set, and the seven-day
-soak remain pending. `ALPHA_READY=false` and runtime `REJECT_ALL` remain independent because the
-Trial 15 is merely `FORWARD_FROZEN`. The separate `adaptive_pullback_range_v1`
-candidate is now selected and implemented, but not economically qualified or
-campaign-frozen; its matched economic evaluator remains required.
-`LIVE_READY=false`; production endpoints, credentials and mutation
-authority remain blocked. The exact evidence boundary and reviewed SHAs are in
+`PAPER_QUALIFIED=false`: the historical technical DEV profile's 24-hour,
+protected-canary and seven-day evidence remains unaccepted. Those DEMO campaigns
+are not mandatory engineering prerequisites for the revised single-server PROD
+target; its actual venue/account/effect safety is still required.
+`ALPHA_READY=false` and runtime `REJECT_ALL` remain independent of those DEV
+tables: Trial 15 is a separate baseline, and the adaptive/Catalyst research
+candidates have no accepted complete-system alpha qualification.
+`LIVE_READY=false`: actual account-bound PROD GET-only observation passed,
+but it does not admit signing, authoritative exposure or the full order lifecycle.
+Production mutation authority remains blocked. The current checkpoint is
+[October 23 runtime/production](RUNTIME-PRODUCTION-2026-10-23.md);
+the exact historical evidence boundaries and reviewed SHAs are in
 [READINESS.md](READINESS.md).

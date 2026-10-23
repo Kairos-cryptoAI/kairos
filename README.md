@@ -75,7 +75,8 @@ flowchart TB
     C["Reconciled AccountSnapshotV2"] -. "account authority" .-> K
 ```
 
-The Strategy Engine is the one source of candidate logic for both offline replay and runtime.
+In this preserved PAPER profile, the Strategy Engine is the one source of candidate logic
+for offline replay and runtime. The separate CURRENT context-origin branch is described above.
 The Aggregator may review an intent, but cannot mutate it; `VETO`, `DEFER`, a timeout or an error
 ends that intent. Risk alone calculates quantity from worst-case loss at the fixed stop and
 checks Macro allocation, the reconciled account, one-position-per-symbol policy and fresh venue
@@ -239,7 +240,7 @@ later code or a new model route. Source pins identify code, not running services
 | --- | --- | --- |
 | `TECHNICAL_PAPER_READY` | `false` | the current engineering source set has no accepted complete matching release gate |
 | `PAPER_QUALIFIED` | `false` | historical technical DEV qualification is not accepted; it is not an extra mandatory DEMO campaign for the revised single-server PROD engineering scope |
-| `ALPHA_READY` | `false` | a concrete adaptive development candidate is selected; its complete campaign/evaluator is not accepted and frozen, and no independent alpha pass exists |
+| `ALPHA_READY` | `false` | adaptive/Catalyst research candidates exist, but no qualified production champion or independent complete-system alpha pass is established |
 | `LIVE_READY` | `false` | PROD wiring and production qualification remain blocked |
 
 The strategy policy is `REJECT_ALL`. Trial 15 is a separate forward-frozen
