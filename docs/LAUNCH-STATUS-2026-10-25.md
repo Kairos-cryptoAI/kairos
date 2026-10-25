@@ -1,8 +1,11 @@
 # Kairos launch status
 
 The current source release is internally consistent and passes the checks below,
-but it is **not cleared for real-money operation**. The complete independently
-qualified producer, account, signing and service path is still absent. Do not
+but it is **not cleared for real-money operation**. The final non-trading worker
+subsequently failed closed at `2026-10-25T22:42:58.328447Z`; its real emergency
+notification was accepted by Telegram. Earlier bounded acceptance does not
+establish present runtime health. The complete independently qualified producer,
+account, signing and deployed service path is still absent. Do not
 replace those proofs with `LIVE_READY=true`, an environment switch or a caller
 signature. All readiness flags remain false and policy remains `REJECT_ALL`.
 
@@ -73,7 +76,7 @@ engineering tests are not a trading admission.
 | Local Text | 115 passed, one existing deselection |
 | Local Execution, including final causality correction | 1126 passed, six skipped, 54 integration deselections, eight subtests passed |
 | Local Deploy after validator correction | 1163 tests, six skipped |
-| Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; actual task qualification is separate |
+| Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; real reviewed-V2 scheduled action, CURRENT monitoring polls and Telegram delivery were separately checked below |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 
@@ -92,7 +95,8 @@ are retained under
 The final source-aligned observation is `final-public-rss-native.report.json`
 and its create-only `final-public-rss-native-session`; the earlier inspection
 is retained separately, not relabeled as the final installed version.
-`installed-launch-guards.report.json` is a signed refusal/identity check, not
+`installed-final-launch-guards.report.json` is the final source-aligned signed
+refusal/identity check, not
 an admission to trade.
 
 Hosted results for the first native implementation:
@@ -109,9 +113,16 @@ are retained in their failed CI runs; neither validation rule was disabled.
 The final causal correction additionally passed
 [all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536164)
 and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536231).
-Final Deploy projection checks are tracked on revision
-`bfcfd18a1edbf2b54bebfb2c477b7883655435b6`; earlier green runs are not
-relabelled as tests of that revision.
+Final Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` passed
+[CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160482),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160405),
+[current release](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160406),
+[simulator full path](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160400)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160018).
+The final reviewed task-registration implementation, Meta `4c0fd44d`, passed
+[validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40240038491)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40240038063).
+Earlier green runs are not relabelled as tests of later revisions.
 
 ## Runtime maintenance
 
@@ -155,26 +166,102 @@ and completed native observations are retained. The final release must be fully
 consistent and held unchanged before the independent final successor/host check;
 these intermediate observations are not claimed as its acceptance.
 
+### Final native owner and bounded host acceptance
+
+The independent final owner is `8ed2564832624471a693726a35917416`, using Deploy
+`bfcfd18a`. Its native recovery passed at `2026-10-25T21:14:28Z`: 19 migrations,
+33 tables, isolated restore equality across all 33 tables and 433,849 event-audit
+rows, native duplicate-delivery/hash-conflict/Redis replay checks and real
+five-symbol closed-bar catch-up. Native receipt SHA-256:
+`e30217481d588e56697dd72aa4f2f18ed0ed785c5afd5bf15886436114bebd4e`.
+Old owners, volumes, queues, partial evidence and signed failures were preserved;
+none was adopted as the new owner's queue.
+
+The final owner passed a same-owner native boot rehearsal with backup-before,
+restore verification, backup-after and restore verification. Its initial host
+wrapper then failed while reading nullable Windows `NextRunTime`, after installing
+the original never-run V1 task. That failed whole-host attempt remains failed.
+The separately reviewed V2 registration also corrected native module resolution
+before any registration, with its failed preflight preserved separately.
+
+A fresh signed same-owner host acceptance is retained in
+`D:/Kairos/runtime/prod-runtime-inputs-20261024/host-acceptance-9849bd33fe884b97a4ffd55a0c7a5fad/acceptance.report.json`,
+SHA-256 `2129072392ae19533fd2c6d779160178020b71bfa5cc955a92407a5056eb05c2`.
+It joins the genuine native boot/restore receipts to a new 309.765-second source
+progress observation. The original failed host directory, old task XML and V1
+binding are retained. The old V1 and previous-owner boot tasks were disabled
+recoverably, not deleted. No failed report or failure latch was overwritten.
+
+The actual `Kairos-CurrentRuntime-8ed256483262-Boot-ReviewedV2` scheduled action
+completed with exit zero, zero new container starts and zero new boot directories
+when the owner was already healthy. This proves the scheduled healthy no-op path,
+not a Windows reboot or recovery from the later failure. The signed result is
+`reviewed-current-host-v2.report.json`, SHA-256
+`72fa7580ebac10d8ac99718d04ed22afbfc54214cbde57c022d34e5b200e196e`.
+An actual OS reboot was not performed or claimed.
+
+The owner-bound `Kairos-CURRENT-TechnicalAlerts-V1` task was installed and real
+scheduled polls completed with exit zero. Its 60-second polling and 120-second
+status freshness rules are unchanged. One benign qualification send was accepted
+by Telegram as message 97 in the agreed group; the original sender receipt is
+retained, with no retry. Server acceptance is not human confirmation of visibility.
+
+### Latest real runtime failure — launch remains blocked
+
+At `2026-10-25T22:42:58.328447Z` the serving container exited 1 with
+`REDIS_RECOVERY_DEADLINE_EXCEEDED`. The original status records `attempts=1`,
+`elapsed_ms=95038`, prior `TimeoutError` and stage `pending_read`. PostgreSQL and
+Redis remained running, and the serving container was not OOM-killed. These facts
+do not identify the infrastructure root cause or establish current queue health.
+
+The existing code sets the next stage before checking the recovery deadline.
+Thus the record does not show a 95-second pending Redis read: the deadline can
+expire before that read is dispatched. A delayed event loop, synchronous status
+filesystem work, or host/VM scheduling remain distinguishable hypotheses, not
+confirmed causes. Existing telemetry cannot resolve them. No timeout was relaxed,
+queue or cursor reset, failed owner restarted/adopted, or artificial healthy
+status written. The prepared artificial outage test was not executed because a
+genuine failure had already occurred.
+
+The real automatic firing alert was accepted at
+`2026-10-25T22:45:23.310890Z` as Telegram message 98, without a duplicate send.
+No recovery/resolved alert or subsequent stable runtime is claimed. Boot admission
+already refuses `FAILED_CLOSED_OWNER_STATUS_REQUIRES_REVIEW`; the scheduled
+task is not a mechanism for clearing that failure.
+
+Original status bytes and a factual signed incident are retained under the same
+launch evidence directory in `final-runtime-incident.report.json`, SHA-256
+`d7725d0bc53e974473fa73cb364ebdb5d2619bf79795b310cfe30f5fd0b85d6a`.
+Earlier native/host passes remain historical bounded checks, not continuous
+availability or present launch acceptance.
+
 ## Conditions still blocking real money
 
-1. **Trusted upstream deployment.** The native invocation and persistence APIs
-   now exist, but a qualified real producer and the complete trusted assembler
-   joining original Macro, bars, market and venue witnesses into the signed
-   source envelope are not deployed or accepted. A prepared unsigned manifest,
+1. **Runtime diagnosis and qualified recovery.** The final worker is failed
+   closed, not stably serving. The actual scheduling/I/O cause needs evidence,
+   an appropriately scoped correction if indicated, and a new accepted recovery
+   without erasing the failure or adopting unknown queue state.
+2. **Trusted upstream deployment.** The generic envelope assembler and service
+   forwarding boundary already exist: `prepare_native_input_envelope`,
+   `verify_signed_native_input_envelope`, `ProductionEntryEnvelope` and the
+   service entry worker. The remaining piece is a qualified producer-specific
+   projection joining genuine original Macro, bars, market and venue witnesses
+   to their original persistence receipts, plus an independently accepted
+   producer identity/key. It is not another generic serializer. A prepared unsigned manifest,
    caller-supplied DTO or synthetic registered verifier cannot fill this role.
-2. **Authoritative venue facts.** EVEDEX account consistency, complete recoverable
+3. **Authoritative venue facts.** EVEDEX account consistency, complete recoverable
    fills, fees/funding finality, protection lineage and the accepted PROD signing
    domain remain unqualified. The existing support thread contained only the
    two sent inquiries at the latest check, with no response. The
    [official SDK](https://github.com/evedex-official/exchange-bot-sdk) describes
    capabilities, not all of those recovery guarantees. API-key possession and
    a visible delegate do not establish them.
-3. **One deployed trading service.** The ordinary Compose configuration still
+4. **One deployed trading service.** The ordinary Compose configuration still
    selects `evedex` and `DRY_RUN`; it does not enable the new optional native
    composition. The supported settings/factory path intentionally refuses LIVE.
    A functioning non-trading data worker and lifecycle fixtures are not a full
    deployed decision-to-close-to-reconciliation trader.
-4. **Final operational and owner admission.** The selected real source/account
+5. **Final operational and owner admission.** The selected real source/account
    set must pass the existing service, protection, recovery and notification
    acceptance, with concrete dollar-cap and daily-loss limits and a separately
    validated manual arm. An unqualified balance or LLM confidence cannot assign
