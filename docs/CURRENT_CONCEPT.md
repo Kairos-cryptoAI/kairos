@@ -4,6 +4,13 @@ Updated: 2026-10-23 Europe/Moscow. This is the living target and scope index, no
 plan/evaluator, frozen candidate, readiness receipt or launch authorization.
 Historical dated receipts and Trial 15/V4/V5 evidence remain immutable.
 
+The [October 25 launch status](LAUNCH-STATUS-2026-10-25.md) is the latest
+engineering and remaining-admission summary. Native analytical invocation,
+original Text/model capture and durable local witnesses are now implemented;
+the trusted complete real-source producer, authoritative venue facts and
+deployed trading service are not qualified. Source/fixture success does not
+remove LIVE refusal or turn the accepted non-trading worker into a trader.
+
 ## Current capability and operating-scope reconciliation — 2026-10-23
 
 The [whole-project audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md) covers all 14
