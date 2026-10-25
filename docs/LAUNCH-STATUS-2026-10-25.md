@@ -73,7 +73,7 @@ engineering tests are not a trading admission.
 | Local Text | 115 passed, one existing deselection |
 | Local Execution, including final causality correction | 1126 passed, six skipped, 54 integration deselections, eight subtests passed |
 | Local Deploy after validator correction | 1163 tests, six skipped |
-| Technical alerts | 245 offline tests, including 38 CURRENT and legacy notifier tests |
+| Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; actual task qualification is separate |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 
