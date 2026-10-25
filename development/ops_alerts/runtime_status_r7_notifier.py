@@ -46,6 +46,7 @@ CURRENT_STATUS_SCHEMA = "current-controlled-v1"
 CURRENT_MIGRATION_COUNT = 19
 CURRENT_PUBLIC_TABLE_COUNT = 33
 CURRENT_STATUS_STALE_SECONDS = 120.0
+CURRENT_STATUS_MAX_FUTURE_SECONDS = 5.0
 CURRENT_MAX_STATUS_BYTES = 32_768
 CURRENT_ALERT_KIND = "kairos.current-runtime-health-binding.v1"
 CURRENT_ALERT_TASK_NAME = "Kairos-CURRENT-TechnicalAlerts-V1"
@@ -1201,7 +1202,9 @@ def _classify_current_status(
     observed = observed.astimezone(UTC)
     current = current.astimezone(UTC)
     age = (current - observed).total_seconds()
-    if age < 0:
+    # Match the native non-trading status validator. This is a technical
+    # status clock tolerance, never the two-second execution quote gate.
+    if age < -CURRENT_STATUS_MAX_FUTURE_SECONDS:
         return "invalid"
 
     owner = value.get("owner")

@@ -1060,7 +1060,16 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
         )
         self.assertEqual(
             r7.classify_status(
-                current_status(now=now + timedelta(seconds=1)),
+                current_status(now=now + timedelta(seconds=5)),
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "running_fresh",
+        )
+        self.assertEqual(
+            r7.classify_status(
+                current_status(now=now + timedelta(seconds=5, microseconds=1)),
                 profile="current",
                 expected_owner=CURRENT_TEST_OWNER,
                 now=now,
