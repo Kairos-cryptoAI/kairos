@@ -46,6 +46,7 @@ class ReviewedBootRegistrationTests(unittest.TestCase):
     def test_native_bootstrap_and_readonly_admission_are_not_replaced(self) -> None:
         self.assertIn("Install-CurrentRuntimeBootTask.ps1", self.source)
         self.assertIn("$bootstrapTemplate", self.source)
+        self.assertIn("sys.path.insert(0,r'$DeployRoot/scripts');sys.argv", self.source)
         self.assertIn("SIGNED_STOCK_BOOTSTRAP_TEMPLATE_CHANGED", self.source)
         self.assertIn("$($bindingPath.Replace('\\','/'))", self.source)
         self.assertIn("$bindingHash", self.source)

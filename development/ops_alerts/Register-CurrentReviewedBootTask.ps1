@@ -265,7 +265,7 @@ try {
     $bootPath = Join-Path $DeployRoot 'scripts\runtime_epoch_current_boot.py'
     $cli = @($bootPath, '--receipt', $fullReceipt, '--receipt-sha256', $ReceiptSha256,
         '--signature', $fullSignature)
-    $planCode = "import runpy,sys;sys.path.insert(0,r'$DeployRoot');sys.argv=sys.argv[1:];runpy.run_path(sys.argv[0],run_name='__main__')"
+    $planCode = "import runpy,sys;sys.path.insert(0,r'$DeployRoot/scripts');sys.argv=sys.argv[1:];runpy.run_path(sys.argv[0],run_name='__main__')"
     $planText = & $fullPython -I -B -c $planCode @cli 2>$null
     if ($LASTEXITCODE -ne 0) { Stop-Safe 'READONLY_NATIVE_OWNER_ADMISSION_FAILED' }
     try { $plan = ($planText -join "`n") | ConvertFrom-Json -ErrorAction Stop }
@@ -423,6 +423,6 @@ try {
 catch {
     $safeReason = [string]$_.Exception.Message
     if ($safeReason -cnotmatch '^[A-Z0-9_]{1,160}$') { $safeReason = 'DETAILS_NOT_DISCLOSED' }
-    [ordered]@{ state='FAILED_CLOSED'; reason=$safeReason; trading_started=$false } | ConvertTo-Json -Compress
+    [ordered]@{ state='FAILED_CLOSED'; reason=$safeReason; error_type=$_.Exception.GetType().Name; source_line=$_.InvocationInfo.ScriptLineNumber; trading_started=$false } | ConvertTo-Json -Compress
     exit 2
 }
