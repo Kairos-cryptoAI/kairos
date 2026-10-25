@@ -1796,7 +1796,16 @@ def poll_once(
             transition = "resolved"
         if transition and sender is None:
             sender = _monitor_sender(source, root)
-        if observed_state != current:
+        # CURRENT retains the original native status file as phase evidence.
+        # Benign catch-up/wait/fresh jitter must not exhaust the finite incident
+        # journal; real faults, recoveries and unknown sends remain unchanged.
+        quiet_current_jitter = (
+            source.get("profile") == "current"
+            and current in _QUIET_STATES
+            and observed_state in _QUIET_STATES
+            and not (active and observed_state == "running_fresh")
+        )
+        if observed_state != current and not quiet_current_jitter:
             journal._append(
                 {
                     "schema_version": 1,

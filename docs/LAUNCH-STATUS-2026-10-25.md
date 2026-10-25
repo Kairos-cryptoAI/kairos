@@ -49,6 +49,12 @@ resilience is not established by a backup stored on that same computer.
   native receipt and host-acceptance report. It retains the existing incident,
   recovery, re-failure and unknown-send/no-retry journal semantics. Legacy
   notifier bindings are not repointed.
+- CURRENT-only quiet-state jitter no longer appends incident-journal rows.
+  A 512-poll offline regression retains only its baseline, beyond the unchanged
+  256-row journal bound; real firing/recovery/re-failure, unknown-send guards
+  and legacy R7 observation behavior remain covered. Original native phase
+  evidence is still in the protected status file; its clocks and freshness
+  checks are unchanged. The journal is not rotated, reset or enlarged.
 - Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
@@ -67,7 +73,7 @@ engineering tests are not a trading admission.
 | Local Text | 115 passed, one existing deselection |
 | Local Execution, including final causality correction | 1126 passed, six skipped, 54 integration deselections, eight subtests passed |
 | Local Deploy after validator correction | 1163 tests, six skipped |
-| Technical alerts | 243 offline tests, including 36 CURRENT and legacy notifier tests |
+| Technical alerts | 245 offline tests, including 38 CURRENT and legacy notifier tests |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 

@@ -1143,6 +1143,88 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             )
             self.assertTrue(all("CURRENT" in event["text"] for event in sent))
 
+    def test_current_quiet_state_jitter_does_not_consume_transition_journal(self) -> None:
+        source = self._current_source()
+        sent: list[dict[str, Any]] = []
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory) / "current-v1"
+            root = base / (
+                "owner-"
+                + CURRENT_TEST_OWNER
+                + "-"
+                + current_binding()["native_receipt_sha256"][:12]
+            )
+            root.mkdir(parents=True)
+            with patch.object(r7, "CURRENT_PRIVATE_ROOT", base):
+                r7.initialize(
+                    source_admitter=lambda: source,
+                    observer=lambda *_args: "running_fresh",
+                )
+                for index in range(512):
+                    quiet = (
+                        "catching_up_nontrading"
+                        if index % 2 == 0
+                        else "waiting_source_nontrading"
+                    )
+                    result = r7.poll_once(
+                        source_admitter=lambda: source,
+                        observer=lambda *_args, state=quiet: state,
+                        sender=lambda event: sent.append(dict(event)) is None,
+                    )
+                    self.assertEqual(result["state"], quiet)
+                    self.assertEqual(result["send_attempts"], 0)
+                journal = r7.R7Journal(
+                    root / "events.jsonl",
+                    source["continuation"],
+                    source["delivery"],
+                    source["helpers"],
+                    source["binding_sha256"],
+                )
+                with journal.locked():
+                    rows = journal.read()
+                self.assertEqual(len(rows), 1)
+                self.assertEqual(rows[0]["state"], "running_fresh")
+
+                for quiet in (
+                    "invalid",
+                    "catching_up_nontrading",
+                    "waiting_source_nontrading",
+                    "running_fresh",
+                    "invalid",
+                ):
+                    r7.poll_once(
+                        source_admitter=lambda: source,
+                        observer=lambda *_args, state=quiet: state,
+                        sender=lambda event: sent.append(dict(event)) is None,
+                    )
+        self.assertEqual(
+            [event["transition"] for event in sent],
+            ["firing", "resolved", "firing"],
+        )
+
+    def test_r7_quiet_state_observations_keep_existing_journal_semantics(self) -> None:
+        source = self._source()
+        MemoryJournal.rows = []
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(r7, "R7Journal", MemoryJournal):
+                r7.initialize(
+                    source_admitter=lambda: source,
+                    observer=lambda *_args: "running_fresh",
+                    root=root,
+                )
+            r7.poll_once(
+                source_admitter=lambda: source,
+                observer=lambda *_args: "catching_up_nontrading",
+                sender=lambda _event: self.fail("quiet R7 change must not send"),
+                root=root,
+                journal_factory=MemoryJournal,
+            )
+        self.assertEqual(
+            [row["state"] for row in MemoryJournal.rows],
+            ["running_fresh", "catching_up_nontrading"],
+        )
+
     def test_current_unknown_send_is_latched_without_retry(self) -> None:
         source = self._current_source()
         attempts = 0
