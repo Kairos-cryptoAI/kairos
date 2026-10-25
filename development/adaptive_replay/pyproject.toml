@@ -29,6 +29,7 @@ dev = ["pytest>=9.0.3,<10", "ruff>=0.16,<0.17"]
 [tool.uv]
 required-version = "==0.12.3"
 override-dependencies = [
+  "opentelemetry-api>=1.45.1",
   "kairos-core @ git+https://github.com/Kairos-cryptoAI/kairos-core.git@6937eb4773fc00afaf5ba4e020b28b689f48e377",
   "kairos-quant-scouts @ git+https://github.com/Kairos-cryptoAI/kairos-quant-scouts.git@927f5730d09383736c1dfc7dc5c400b06851019f",
   "kairos-strategy-engine @ git+https://github.com/Kairos-cryptoAI/kairos-strategy-engine.git@cde8e9c00af0cc19848e800ee76472a800a5fd5d",
