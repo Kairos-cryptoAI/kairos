@@ -1,10 +1,11 @@
 # Kairos launch status
 
 The current source release is internally consistent and passes the checks below,
-but it is **not cleared for real-money operation**. The final non-trading worker
-subsequently failed closed at `2026-10-25T22:42:58.328447Z`; its real emergency
-notification was accepted by Telegram. Earlier bounded acceptance does not
-establish present runtime health. The complete independently qualified producer,
+but it is **not cleared for real-money operation**. The separate CURRENT
+non-trading contour was retired at the owner's request on 26 October 2026
+(Europe/Moscow), with data and evidence preserved. Its earlier failure and bounded
+acceptance are historical; this contour is no longer an active deployment target
+or a mandatory recovery project. The complete independently qualified producer,
 account, signing and deployed service path is still absent. Do not
 replace those proofs with `LIVE_READY=true`, an environment switch or a caller
 signature. All readiness flags remain false and policy remains `REJECT_ALL`.
@@ -235,12 +236,37 @@ launch evidence directory in `final-runtime-incident.report.json`, SHA-256
 Earlier native/host passes remain historical bounded checks, not continuous
 availability or present launch acceptance.
 
+### Owner requested CURRENT retirement
+
+At `2026-10-26T02:10:34+03:00`, the separate CURRENT owner
+`8ed2564832624471a693726a35917416` was taken out of operation. Exactly these
+Windows tasks were disabled, with their original XML retained for recovery:
+
+- `Kairos-CURRENT-TechnicalAlerts-V1`;
+- `Kairos-CurrentRuntime-8ed256483262-Boot-ReviewedV2`.
+
+The already failed worker remained stopped. Only this owner's PostgreSQL and
+Redis containers were gracefully stopped, both exiting zero. Containers,
+database/Redis volumes, queues, backups, receipts and source history were not
+deleted. No primary, legacy or R7 resource, cursor, lease or risk gate was changed.
+No real orders, paid model calls or replacement runtime were started.
+
+The signed retirement result is
+`D:/Kairos/runtime/current-retirement-20261026/719780494ad94e329827ada907ae290a/retirement.report.json`,
+SHA-256 `b63b027d33233fc0270fdfa57a699446c8df0dabfeb982ad5341931b1a1e27a4`.
+Retirement is reversible using the retained data and task definitions, but it is
+not authorization to resume this failed owner. Do not automatically recreate or
+resume this experimental contour or make repairing it a release prerequisite.
+The actually selected trading service still needs its own verified data,
+execution, account and operational admission; disabling CURRENT grants none.
+
 ## Conditions still blocking real money
 
-1. **Runtime diagnosis and qualified recovery.** The final worker is failed
-   closed, not stably serving. The actual scheduling/I/O cause needs evidence,
-   an appropriately scoped correction if indicated, and a new accepted recovery
-   without erasing the failure or adopting unknown queue state.
+1. **An operational selected trading service.** The retired experimental CURRENT
+   owner is not the future trading service. Restoring that owner is not required
+   merely to continue the project. The service actually selected for trading
+   must demonstrate working data delivery, bounded restart/recovery and safe
+   failure handling; no replacement or LIVE service was activated by retirement.
 2. **Trusted upstream deployment.** The generic envelope assembler and service
    forwarding boundary already exist: `prepare_native_input_envelope`,
    `verify_signed_native_input_envelope`, `ProductionEntryEnvelope` and the
