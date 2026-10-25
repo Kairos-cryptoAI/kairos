@@ -34,12 +34,15 @@ account-bound PROD GET-only observation passed; it is not authoritative atomic
 reconciliation. No new key is requested.
 See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
 
-The [October 24 real-source and current-PC checks](docs/REAL-SOURCE-HOST-QUALIFICATION-2026-10-24.md)
-retain actual account/public-data captures and distinguish historical-worker
-samples from a deployed current-release PROD service. An unexplained invalid
-status sample prevents claiming runtime stability. The installed entrypoint
-still refuses LIVE; source availability is not authoritative account/upstream
-qualification, positive startup acceptance or permission to trade.
+The [October 25 engineering checkpoint](docs/PRODUCTION-ENGINEERING-2026-10-25.md)
+adds a bounded production lifecycle driver, original EVEDEX read-response
+capture and immutable, budget-bound model-call records. Native PostgreSQL
+fixtures exercise the driver with an explicitly synthetic venue; they are not
+an accepted EVEDEX deployment. The previously accepted non-trading owner stopped
+during a later host restart, and its old source-bound boot receipt does not
+authorize the new release. Recovery/current-source boot acceptance remains open
+at that checkpoint. The installed default entrypoint still refuses LIVE;
+upstream and venue authority are not manufactured by these engineering changes.
 
 The [LIVE Risk/lifecycle wiring continuation](docs/PRODUCTION-PATH-WIRING-2026-10-23.md)
 connects the actual entry evaluator and independent per-effect protective/exit

@@ -1,8 +1,16 @@
 # EVEDEX DEV PAPER readiness
 
 _Original baseline: 2026-08-27; current scope reconciliation: 2026-10-23.
-Latest source/host evidence: 2026-10-24.
+Latest engineering/incident checkpoint: 2026-10-25.
 This document records capability and permission separately._
+
+The [October 25 checkpoint](PRODUCTION-ENGINEERING-2026-10-25.md) supersedes
+older present-tense runtime statements: the accepted current-schema owner
+subsequently stopped during a host restart. Its historical restore/restart
+receipt is preserved, not reused as current uptime or new-release boot proof.
+The new lifecycle driver and model/transport evidence hooks pass bounded
+engineering tests; the real upstream producer, authoritative EVEDEX sources,
+deployed production service and real-money admission remain unqualified.
 
 The [October 24 real-source/current-PC checkpoint](REAL-SOURCE-HOST-QUALIFICATION-2026-10-24.md)
 records a fresh installed GET-only PROD account observation, actual public
