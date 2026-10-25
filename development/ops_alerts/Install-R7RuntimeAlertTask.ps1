@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('legacy', 'r7-dns', 'r7-sql')][string]$ProfileName = 'legacy',
+    [ValidateSet('legacy', 'r7-dns', 'r7-sql', 'current')][string]$ProfileName = 'legacy',
     [switch]$Execute
 )
 
@@ -9,12 +9,14 @@ $ErrorActionPreference = 'Stop'
 $taskName = switch ($ProfileName) {
     'r7-dns' { 'Kairos-R7-DNS-TechnicalAlerts-V1-20261015' }
     'r7-sql' { 'Kairos-R7-SQL-TechnicalAlerts-V1-20261016' }
+    'current' { 'Kairos-CURRENT-TechnicalAlerts-V1' }
     default { 'Kairos-R7-TechnicalAlerts-V1-20261013' }
 }
 $metaRoot = 'D:\Kairos\kairos'
 $privateRoot = switch ($ProfileName) {
     'r7-dns' { 'D:\Kairos\runtime\alert-delivery-20261015\operational-r7-dns' }
     'r7-sql' { 'D:\Kairos\runtime\alert-delivery-20261016\operational-r7-sql' }
+    'current' { $null }
     default { 'D:\Kairos\runtime\alert-delivery-20261013\operational-r7' }
 }
 $profileArgs = @('--profile', $ProfileName)
@@ -34,7 +36,7 @@ if (-not $Execute) {
         status = 'PLAN_ONLY'
         profile = $ProfileName
         task = $taskName
-        interval_seconds = 120
+        interval_seconds = if ($ProfileName -eq 'current') { 60 } else { 120 }
         protected_status_file_only = $true
         database_or_queue_access = $false
         business_signals_muted = $true
@@ -42,6 +44,10 @@ if (-not $Execute) {
         task_started = $false
     } | ConvertTo-Json -Compress
     exit 0
+}
+
+if ($ProfileName -eq 'current') {
+    $privateRoot = $null
 }
 
 foreach ($path in @($driverPath, $pythonPath, $PSCommandPath)) {
@@ -76,6 +82,22 @@ $changes = & $gitPath -C $metaRoot status --porcelain --untracked-files=normal -
 if ($LASTEXITCODE -ne 0 -or $changes) { throw 'COMMITTED_R7_SOURCES_REQUIRED' }
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf)) { throw 'PINNED_PYTHON_REQUIRED' }
 if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) { throw 'NEW_R7_TASK_MUST_BE_ABSENT' }
+
+if ($ProfileName -eq 'current') {
+    # Validate signed binding, accepted evidence and a fresh quiet status before
+    # creating any owner-specific journal directory or registering a task.
+    $validationJson = & $pythonPath -B -E -s $driverPath --validate-only --armed @profileArgs
+    if ($LASTEXITCODE -ne 0) { throw 'CURRENT_ADMISSION_OR_QUIET_STATUS_REQUIRED' }
+    try { $validation = $validationJson | ConvertFrom-Json }
+    catch { throw 'CURRENT_ADMISSION_OR_QUIET_STATUS_REQUIRED' }
+    if ($validation.status -ne 'CURRENT_ADMISSION_VALIDATED' -or
+        $validation.state -ne 'running_fresh' -or
+        $validation.trading_authority -ne $false -or
+        $validation.private_root -cnotmatch '^D:\\Kairos\\runtime\\alert-delivery-current\\current-v1\\owner-[0-9a-f]{32}-[0-9a-f]{12}$') {
+        throw 'CURRENT_ADMISSION_OR_QUIET_STATUS_REQUIRED'
+    }
+    $privateRoot = $validation.private_root
+}
 
 # Create a new isolated owner/Admin/SYSTEM-only journal directory. Never reuse
 # the R5/R6 roots or modify their bindings, journals, or scheduled tasks.
@@ -119,7 +141,8 @@ if ($LASTEXITCODE -ne 0) { throw 'R7_ACCEPTED_RECEIPT_OR_QUIET_STATUS_REQUIRED' 
 $identityName = $identity.Name
 $pollCommand = "& '" + $pythonPath + "' -B -E -s '" + $driverPath + "' --poll-once --armed --profile '" + $ProfileName + "'; exit " + '$LASTEXITCODE'
 $action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -Argument ('-NoProfile -NonInteractive -WindowStyle Hidden -Command "' + $pollCommand + '"') -WorkingDirectory $metaRoot
-$timer = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(2)) -RepetitionInterval ([TimeSpan]::FromMinutes(2))
+    $intervalMinutes = if ($ProfileName -eq 'current') { 1 } else { 2 }
+    $timer = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes($intervalMinutes)) -RepetitionInterval ([TimeSpan]::FromMinutes($intervalMinutes))
 $logon = New-ScheduledTaskTrigger -AtLogOn -User $identityName
 $principal = New-ScheduledTaskPrincipal -UserId $identityName -LogonType Interactive -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet -Hidden -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::FromMinutes(5)) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
@@ -129,7 +152,7 @@ Register-ScheduledTask -TaskName $taskName -InputObject $definition | Out-Null
     status = 'REGISTERED_NOT_YET_DISPATCH_VERIFIED'
     task = $taskName
     profile = $ProfileName
-    interval_seconds = 120
+    interval_seconds = if ($ProfileName -eq 'current') { 60 } else { 120 }
     hidden = $true
     run_level = 'Limited'
     task_started = $false

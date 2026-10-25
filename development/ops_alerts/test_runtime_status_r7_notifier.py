@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import io
 import json
 import os
 import tempfile
+import threading
 import unittest
 from contextlib import redirect_stdout
 from datetime import UTC, datetime, timedelta
@@ -85,6 +87,60 @@ def valid_dns_status(*, state: str = "WAITING_SOURCE_NONTRADING") -> dict[str, A
     )
     status["source_fresh"] = state == "RUNNING_NONTRADING"
     return status
+
+
+CURRENT_TEST_OWNER = "a" * 32
+CURRENT_TEST_DEPLOY_REVISION = "b" * 40
+CURRENT_TEST_ACCEPTANCE_ID = "c" * 32
+
+
+def current_binding() -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "kind": r7.CURRENT_ALERT_KIND,
+        "owner": CURRENT_TEST_OWNER,
+        "host_acceptance_id": CURRENT_TEST_ACCEPTANCE_ID,
+        "native_receipt_sha256": "1" * 64,
+        "native_receipt_signature_sha256": "2" * 64,
+        "host_report_sha256": "3" * 64,
+        "host_report_signature_sha256": "4" * 64,
+        "deploy_revision": CURRENT_TEST_DEPLOY_REVISION,
+        "status_schema": r7.CURRENT_STATUS_SCHEMA,
+    }
+
+
+def current_status(
+    *,
+    owner: str = CURRENT_TEST_OWNER,
+    state: str = "RUNNING_NONTRADING",
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    observed = now or datetime.now(UTC)
+    minute = int(observed.timestamp() * 1000) // 60_000 * 60_000
+    waiting = state == "WAITING_SOURCE_NONTRADING"
+    return {
+        "state": state,
+        "owner": owner,
+        "schema_profile": r7.CURRENT_STATUS_SCHEMA,
+        "schema_migration_count": r7.CURRENT_MIGRATION_COUNT,
+        "schema_public_table_count": r7.CURRENT_PUBLIC_TABLE_COUNT,
+        "observed_at_utc": observed.isoformat(),
+        "mode": "serve",
+        "cycles": 1,
+        "pending_outbox": 0,
+        "unresolved_inbox": 0,
+        "completed_inbox": 1,
+        "uncompleted_publications": 0,
+        "new_publications": 0,
+        "watermarks_ms": {symbol: minute for symbol in r7.SYMBOLS},
+        "source_fresh": not waiting and state != "CATCHING_UP_NONTRADING",
+        "source_wait_reason": "SOURCE_TIMEOUT" if waiting else None,
+        "trading_started": False,
+        "PAPER_QUALIFIED": False,
+        "ALPHA_READY": False,
+        "LIVE_READY": False,
+        "STRATEGY_POLICY": "REJECT_ALL",
+    }
 
 
 class FakeDelivery:
@@ -706,12 +762,474 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
 
     def _source(self) -> dict[str, Any]:
         return {
-            "helpers": SimpleNamespace(R5Journal=r5.R5Journal, R5Error=r5.R5Error),
+            "helpers": SimpleNamespace(
+                R5Journal=r5.R5Journal,
+                R5Error=r5.R5Error,
+                _read_private=FileReader()._read_private,
+            ),
             "continuation": FakeContinuation(),
             "delivery": FakeDelivery(),
             "binding": r7._binding_record(),
             "binding_sha256": r7._binding_sha256(),
         }
+
+    def _current_source(self) -> dict[str, Any]:
+        binding = current_binding()
+        return {
+            "helpers": SimpleNamespace(
+                R5Journal=r5.R5Journal,
+                R5Error=r5.R5Error,
+                _read_private=FileReader()._read_private,
+            ),
+            "continuation": FakeContinuation(),
+            "delivery": FakeDelivery(),
+            "profile": "current",
+            "binding": binding,
+            "binding_sha256": r7._binding_sha256("current", binding),
+        }
+
+    def _current_signed_evidence(self, root: Path) -> tuple[dict[str, Any], Any]:
+        binding = current_binding()
+        work = root / ("run-" + binding["owner"])
+        report_root = root / ("host-acceptance-" + binding["host_acceptance_id"])
+        work.mkdir(parents=True)
+        report_root.mkdir(parents=True)
+        profile = {
+            "schema": "kairos.current-nontrading-profile.v1",
+            "deploy_revision": binding["deploy_revision"],
+            "runner_receipt_sha256": "5" * 64,
+        }
+        receipt = {
+            "result": "PASS_NONTRADING_RUNTIME_EPOCH",
+            "owner": binding["owner"],
+            "schema_profile": r7.CURRENT_STATUS_SCHEMA,
+            "schema_migration_count": r7.CURRENT_MIGRATION_COUNT,
+            "schema_public_table_count": r7.CURRENT_PUBLIC_TABLE_COUNT,
+            "trading_started": False,
+            "orders_submitted": 0,
+            "paid_calls": 0,
+            "production_trading_qualified": False,
+            "root_cause_fixed": False,
+            "prior_successor_preserved": True,
+            "runner_receipt_sha256": profile["runner_receipt_sha256"],
+            "source_profile": profile,
+        }
+        receipt_raw = json.dumps(receipt, sort_keys=True).encode()
+        report = {
+            "schema": "kairos.current-runtime-host-acceptance.v1",
+            "state": "PASS_CURRENT_NONTRADING_HOST_ACCEPTANCE",
+            "owner": binding["owner"],
+            "receipt_sha256": hashlib.sha256(receipt_raw).hexdigest(),
+            "deploy_revision": binding["deploy_revision"],
+            "old_resources_preserved": True,
+            "production_trading_qualified": False,
+            "trading_started": False,
+            "orders_submitted": 0,
+            "paid_calls": 0,
+        }
+        report_raw = json.dumps(report, sort_keys=True).encode()
+        receipt_signature = b"synthetic receipt signature"
+        report_signature = b"synthetic host report signature"
+        receipt_path = work / "current-runtime-receipt.json"
+        report_path = report_root / "acceptance.report.json"
+        receipt_path.write_bytes(receipt_raw)
+        receipt_path.with_name(receipt_path.name + ".asc").write_bytes(receipt_signature)
+        report_path.write_bytes(report_raw)
+        report_path.with_name(report_path.name + ".asc").write_bytes(report_signature)
+        binding.update(
+            native_receipt_sha256=hashlib.sha256(receipt_raw).hexdigest(),
+            native_receipt_signature_sha256=hashlib.sha256(receipt_signature).hexdigest(),
+            host_report_sha256=hashlib.sha256(report_raw).hexdigest(),
+            host_report_signature_sha256=hashlib.sha256(report_signature).hexdigest(),
+        )
+        helper = SimpleNamespace(
+            SIGNER=r7.CURRENT_SIGNER,
+            _read_private=FileReader()._read_private,
+            _verify_signature=lambda _data, _signature: None,
+        )
+        return binding, helper
+
+    def test_current_binding_is_signed_identity_not_a_qualification_boolean(self) -> None:
+        binding = current_binding()
+        self.assertEqual(r7._parse_current_binding(json.dumps(binding).encode()), binding)
+        self.assertFalse(
+            {"qualified", "accepted", "trading_ready", "readiness"} & set(binding)
+        )
+        with self.assertRaisesRegex(r7.R7Error, "CURRENT_BINDING_INVALID"):
+            r7._parse_current_binding(
+                json.dumps({**binding, "qualified": True}).encode()
+            )
+        with self.assertRaisesRegex(r7.R7Error, "CURRENT_BINDING_INVALID"):
+            r7._parse_current_binding(json.dumps({**binding, "owner": "../"}).encode())
+
+    def test_current_binding_file_requires_pinned_signer_and_detached_signature(self) -> None:
+        binding = current_binding()
+        raw = json.dumps(binding, sort_keys=True).encode()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "current-owner-binding.json"
+            path.write_bytes(raw)
+            path.with_name(path.name + ".asc").write_bytes(b"synthetic config signature")
+            with patch.object(r7, "CURRENT_CONFIG_PATH", path):
+                helper = SimpleNamespace(
+                    SIGNER=r7.CURRENT_SIGNER,
+                    _read_private=FileReader()._read_private,
+                    _verify_signature=lambda _data, _signature: None,
+                )
+                actual, digest = r7._read_current_signed_binding(
+                    helpers=helper, delivery=FakeDelivery()
+                )
+                self.assertEqual(actual, binding)
+                self.assertEqual(digest, r7._binding_sha256("current", binding))
+                helper.SIGNER = "0" * 40
+                with self.assertRaisesRegex(
+                    r7.R7Error, "CURRENT_TRUSTED_SIGNER_MISMATCH"
+                ):
+                    r7._read_current_signed_binding(
+                        helpers=helper, delivery=FakeDelivery()
+                    )
+                helper.SIGNER = r7.CURRENT_SIGNER
+                helper._verify_signature = lambda *_args: (_ for _ in ()).throw(
+                    ValueError("synthetic signature failure")
+                )
+                with self.assertRaisesRegex(
+                    r7.R7Error, "CURRENT_BINDING_SIGNATURE_INVALID"
+                ):
+                    r7._read_current_signed_binding(
+                        helpers=helper, delivery=FakeDelivery()
+                    )
+
+    def test_current_native_receipt_and_host_acceptance_must_both_verify(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binding, helper = self._current_signed_evidence(root)
+            with (
+                patch.object(r7, "CURRENT_RUNTIME_ROOT", root),
+                patch.object(r7, "CURRENT_HOST_ACCEPTANCE_ROOT", root),
+            ):
+                receipt, report = r7._verify_current_acceptance(
+                    binding=binding, helpers=helper, delivery=FakeDelivery()
+                )
+                self.assertEqual(receipt["owner"], CURRENT_TEST_OWNER)
+                self.assertEqual(report["receipt_sha256"], binding["native_receipt_sha256"])
+                report_path = (
+                    root
+                    / ("host-acceptance-" + binding["host_acceptance_id"])
+                    / "acceptance.report.json"
+                )
+                bad_report = json.loads(report_path.read_text(encoding="utf-8"))
+                bad_report["deploy_revision"] = "d" * 40
+                bad_raw = json.dumps(bad_report, sort_keys=True).encode()
+                report_path.write_bytes(bad_raw)
+                binding["host_report_sha256"] = hashlib.sha256(bad_raw).hexdigest()
+                with self.assertRaisesRegex(r7.R7Error, "CURRENT_ACCEPTANCE_INVALID"):
+                    r7._verify_current_acceptance(
+                        binding=binding, helpers=helper, delivery=FakeDelivery()
+                    )
+                helper._verify_signature = lambda *_args: (_ for _ in ()).throw(
+                    ValueError("synthetic invalid signature")
+                )
+                with self.assertRaisesRegex(
+                    r7.R7Error, "CURRENT_ACCEPTANCE_SIGNATURE_INVALID"
+                ):
+                    r7._verify_current_acceptance(
+                        binding=binding, helpers=helper, delivery=FakeDelivery()
+                    )
+
+    def test_current_admission_binds_signed_config_receipt_report_and_deploy_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binding, helper = self._current_signed_evidence(root)
+            config_path = root / "current-owner-binding.json"
+            config_path.write_bytes(json.dumps(binding, sort_keys=True).encode())
+            config_path.with_name(config_path.name + ".asc").write_bytes(
+                b"synthetic config signature"
+            )
+            helper._continuation = lambda: (FakeContinuation(), FakeDelivery())
+            verified: list[tuple[str, str]] = []
+
+            def verify_source(_helpers: Any, *, profile: str, current_source_revision: str | None = None) -> None:
+                verified.append((profile, current_source_revision or ""))
+
+            with (
+                patch.object(r7, "CURRENT_CONFIG_PATH", config_path),
+                patch.object(r7, "CURRENT_RUNTIME_ROOT", root),
+                patch.object(r7, "CURRENT_HOST_ACCEPTANCE_ROOT", root),
+                patch.object(r7, "_verify_signed_source", side_effect=verify_source),
+            ):
+                source = r7.admit_r7(helpers=helper, profile="current")
+        self.assertEqual(source["profile"], "current")
+        self.assertEqual(source["binding"]["owner"], CURRENT_TEST_OWNER)
+        self.assertEqual(
+            source["binding_sha256"],
+            r7._binding_sha256("current", source["binding"]),
+        )
+        self.assertEqual(
+            verified, [("current", CURRENT_TEST_DEPLOY_REVISION)]
+        )
+
+    def test_legacy_signed_source_verification_precedes_continuation_setup(self) -> None:
+        calls: list[str] = []
+        helper = SimpleNamespace(_continuation=lambda: calls.append("continuation"))
+
+        def verify_source(*_args: Any, **_kwargs: Any) -> None:
+            calls.append("source")
+            raise r7.R7Error("SIGNED_R7_SOURCE_REQUIRED")
+
+        with patch.object(r7, "_verify_signed_source", side_effect=verify_source):
+            with self.assertRaisesRegex(r7.R7Error, "SIGNED_R7_SOURCE_REQUIRED"):
+                r7.admit_r7(helpers=helper, profile="legacy")
+        self.assertEqual(calls, ["source"])
+
+    def test_current_status_uses_expected_owner_native_schema_and_120_second_clock(self) -> None:
+        now = datetime.now(UTC)
+        fresh = current_status(now=now)
+        self.assertEqual(
+            r7.classify_status(
+                fresh,
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "running_fresh",
+        )
+        boolean_counts = current_status(now=now)
+        boolean_counts["schema_migration_count"] = True
+        self.assertEqual(
+            r7.classify_status(
+                boolean_counts,
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "invalid",
+        )
+        self.assertEqual(
+            r7.classify_status(
+                current_status(owner="d" * 32, now=now),
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "unknown_owner",
+        )
+        unknown_schema = current_status(now=now)
+        unknown_schema["schema_profile"] = "unknown"
+        self.assertEqual(
+            r7.classify_status(
+                unknown_schema,
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "invalid",
+        )
+        self.assertEqual(
+            r7.classify_status(
+                current_status(now=now - timedelta(seconds=121)),
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "running_stale",
+        )
+        self.assertEqual(
+            r7.classify_status(
+                current_status(now=now - timedelta(seconds=120)),
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "running_fresh",
+        )
+        self.assertEqual(
+            r7.classify_status(
+                current_status(now=now + timedelta(seconds=1)),
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "invalid",
+        )
+        unsafe = current_status(now=now)
+        unsafe["LIVE_READY"] = True
+        self.assertEqual(
+            r7.classify_status(
+                unsafe,
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "invalid",
+        )
+        failed = {
+            "state": "FAILED_CLOSED",
+            "owner": CURRENT_TEST_OWNER,
+            "observed_at_utc": now.isoformat(),
+            "mode": "serve",
+            "trading_started": False,
+        }
+        self.assertEqual(
+            r7.classify_status(
+                failed,
+                profile="current",
+                expected_owner=CURRENT_TEST_OWNER,
+                now=now,
+            ),
+            "failed_closed",
+        )
+
+    def test_current_status_reader_missing_and_timestamp_is_not_refreshed(self) -> None:
+        source = self._current_source()
+        original = datetime.now(UTC) - timedelta(seconds=121)
+        status = current_status(now=original)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "status.json"
+            self.assertEqual(r7.read_status(path, source=source), "missing")
+            path.write_text(json.dumps(status), encoding="utf-8")
+            self.assertEqual(r7.read_status(path, source=source), "running_stale")
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(loaded["observed_at_utc"], original.isoformat())
+
+    def test_current_incident_recovery_and_refailure_reuse_r7_transition_journal(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory) / "current-v1"
+            root = base / ("owner-" + CURRENT_TEST_OWNER + "-" + current_binding()["native_receipt_sha256"][:12])
+            root.mkdir(parents=True)
+            source = self._current_source()
+            MemoryJournal.rows = []
+            with patch.object(r7, "CURRENT_PRIVATE_ROOT", base):
+                with patch.object(r7, "R7Journal", MemoryJournal):
+                    r7.initialize(
+                        source_admitter=lambda: source,
+                        observer=lambda *_args: "running_fresh",
+                    )
+                sent: list[dict[str, Any]] = []
+                for observed in ("invalid", "invalid", "running_fresh", "invalid"):
+                    r7.poll_once(
+                        source_admitter=lambda: source,
+                        observer=lambda *_args, state=observed: state,
+                        sender=lambda event: sent.append(dict(event)) is None,
+                        journal_factory=MemoryJournal,
+                    )
+            self.assertEqual(
+                [event["transition"] for event in sent],
+                ["firing", "resolved", "firing"],
+            )
+            self.assertTrue(all("CURRENT" in event["text"] for event in sent))
+
+    def test_current_unknown_send_is_latched_without_retry(self) -> None:
+        source = self._current_source()
+        attempts = 0
+
+        def unknown(_event: dict[str, Any]) -> bool:
+            nonlocal attempts
+            attempts += 1
+            return False
+
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / ("owner-" + CURRENT_TEST_OWNER + "-" + current_binding()["native_receipt_sha256"][:12])
+            root.mkdir()
+            journal = r7.R7Journal(
+                root / "events.jsonl",
+                source["continuation"],
+                source["delivery"],
+                source["helpers"],
+                source["binding_sha256"],
+            )
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+            with patch.object(r7, "CURRENT_PRIVATE_ROOT", base):
+                for _ in range(2):
+                    with self.assertRaisesRegex(r7.R7Error, "R7_SEND_OUTCOME_UNKNOWN"):
+                        r7.poll_once(
+                            source_admitter=lambda: source,
+                            observer=lambda *_args: "failed_closed",
+                            sender=unknown,
+                        )
+        self.assertEqual(attempts, 1)
+
+    def test_current_profile_cli_default_is_plan_only_and_does_not_arm_delivery(self) -> None:
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(r7.main(["--profile", "current"]), 0)
+        result = json.loads(output.getvalue())
+        self.assertEqual(result["status"], "PLAN_ONLY")
+        self.assertEqual(result["task"], r7.CURRENT_ALERT_TASK_NAME)
+        self.assertIs(result["trading_authority"], False)
+
+    def test_current_duplicate_concurrent_polls_reserve_only_one_send(self) -> None:
+        source = self._current_source()
+        sends: list[dict[str, Any]] = []
+        send_lock = threading.Lock()
+        sender_entered = threading.Event()
+        second_poll_started = threading.Event()
+        results: list[dict[str, Any]] = []
+        failures: list[BaseException] = []
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory) / "current-v1"
+            root = base / ("owner-" + CURRENT_TEST_OWNER + "-" + current_binding()["native_receipt_sha256"][:12])
+            root.mkdir(parents=True)
+            journal = r7.R7Journal(
+                root / "events.jsonl",
+                source["continuation"],
+                source["delivery"],
+                source["helpers"],
+                source["binding_sha256"],
+            )
+            with journal.locked():
+                journal._append(
+                    {
+                        "schema_version": 1,
+                        "seq": 0,
+                        "kind": "baseline",
+                        "state": "running_fresh",
+                        "binding_sha256": source["binding_sha256"],
+                    }
+                )
+
+            def sender(event: dict[str, Any]) -> bool:
+                with send_lock:
+                    sends.append(dict(event))
+                sender_entered.set()
+                second_poll_started.wait(5)
+                return True
+
+            def poll(*, second: bool = False) -> None:
+                try:
+                    if second:
+                        second_poll_started.set()
+                    results.append(
+                        r7.poll_once(
+                            source_admitter=lambda: source,
+                            observer=lambda *_args: "invalid",
+                            sender=sender,
+                        )
+                    )
+                except BaseException as error:  # surface thread failures to unittest.
+                    failures.append(error)
+
+            with patch.object(r7, "CURRENT_PRIVATE_ROOT", base):
+                first = threading.Thread(target=poll)
+                first.start()
+                self.assertTrue(sender_entered.wait(5))
+                second = threading.Thread(target=lambda: poll(second=True))
+                second.start()
+                second.join(10)
+                first.join(10)
+                threads = [first, second]
+            self.assertTrue(all(not thread.is_alive() for thread in threads))
+        self.assertLessEqual(len(failures), 1)
+        self.assertEqual(len(sends), 1)
+        self.assertEqual(sum(result["send_attempts"] for result in results), 1)
 
     def test_alert_is_reserved_before_send_and_duplicate_state_is_quiet(self) -> None:
         events: list[dict[str, Any]] = []

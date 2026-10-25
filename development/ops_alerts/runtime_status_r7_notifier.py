@@ -32,6 +32,24 @@ R7SQL_PREDECESSOR_ROOT = Path(
 R7SQL_PRIVATE_ROOT = Path(
     r"D:\Kairos\runtime\alert-delivery-20261018\operational-r7-sql-successor"
 )
+CURRENT_CONFIG_PATH = Path(
+    r"D:\Kairos\runtime\prod-runtime-inputs-20261024\current-alert-binding.json"
+)
+CURRENT_RUNTIME_ROOT = Path(r"D:\Kairos\runtime\current-runtime-20261024")
+CURRENT_HOST_ACCEPTANCE_ROOT = Path(
+    r"D:\Kairos\runtime\prod-runtime-inputs-20261024"
+)
+CURRENT_PRIVATE_ROOT = Path(
+    r"D:\Kairos\runtime\alert-delivery-current\current-v1"
+)
+CURRENT_STATUS_SCHEMA = "current-controlled-v1"
+CURRENT_MIGRATION_COUNT = 19
+CURRENT_PUBLIC_TABLE_COUNT = 33
+CURRENT_STATUS_STALE_SECONDS = 120.0
+CURRENT_MAX_STATUS_BYTES = 32_768
+CURRENT_ALERT_KIND = "kairos.current-runtime-health-binding.v1"
+CURRENT_ALERT_TASK_NAME = "Kairos-CURRENT-TechnicalAlerts-V1"
+CURRENT_SIGNER = "40AF365C6682B73D056A6A274DBFF6B65BE9F827"
 R7SQL_PREDECESSOR_EVENT_ID = "6c06d9673800c48c297d05211d9d31abb7f062ac9a483ac3dc38a16e5b25091b"
 R7SQL_PREDECESSOR_GUARD_NAME = (
     "events.jsonl." + R7SQL_PREDECESSOR_EVENT_ID + ".guard"
@@ -142,7 +160,13 @@ def _json(raw: bytes) -> Any:
     return json.loads(raw, object_pairs_hook=unique)
 
 
-def _binding_record(profile: str = "legacy") -> dict[str, Any]:
+def _binding_record(
+    profile: str = "legacy", current_binding: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    if profile == "current":
+        if not isinstance(current_binding, dict):
+            raise R7Error("CURRENT_SIGNED_BINDING_REQUIRED")
+        return dict(current_binding)
     if profile == "r7-dns":
         return {
             "schema_version": 1,
@@ -192,17 +216,30 @@ def _binding_record(profile: str = "legacy") -> dict[str, Any]:
     }
 
 
-def _binding_bytes(profile: str = "legacy") -> bytes:
+def _binding_bytes(
+    profile: str = "legacy", current_binding: dict[str, Any] | None = None
+) -> bytes:
     return json.dumps(
-        _binding_record(profile), sort_keys=True, separators=(",", ":")
+        _binding_record(profile, current_binding),
+        sort_keys=True,
+        separators=(",", ":"),
     ).encode()
 
 
-def _binding_sha256(profile: str = "legacy") -> str:
-    return hashlib.sha256(_binding_bytes(profile)).hexdigest()
+def _binding_sha256(
+    profile: str = "legacy", current_binding: dict[str, Any] | None = None
+) -> str:
+    return hashlib.sha256(_binding_bytes(profile, current_binding)).hexdigest()
 
 
-def _source_revision(profile: str) -> str:
+def _source_revision(profile: str, current_source_revision: str | None = None) -> str:
+    if profile == "current":
+        if (
+            not isinstance(current_source_revision, str)
+            or re.fullmatch(r"[0-9a-f]{40}", current_source_revision) is None
+        ):
+            raise R7Error("CURRENT_SIGNED_DEPLOY_REVISION_REQUIRED")
+        return current_source_revision
     if profile == "r7-dns":
         return _R7DNS["source_revision"]
     if profile == "r7-sql":
@@ -415,7 +452,221 @@ def _initializer_source_bytes(raw: bytes) -> bytes:
     return raw
 
 
-def _verify_signed_source(helpers: Any, *, profile: str = "legacy") -> None:
+_CURRENT_BINDING_FIELDS = frozenset(
+    {
+        "schema_version",
+        "kind",
+        "owner",
+        "host_acceptance_id",
+        "native_receipt_sha256",
+        "native_receipt_signature_sha256",
+        "host_report_sha256",
+        "host_report_signature_sha256",
+        "deploy_revision",
+        "status_schema",
+    }
+)
+
+
+def _parse_current_binding(raw: bytes) -> dict[str, Any]:
+    """Validate the signed, owner-specific CURRENT monitor binding."""
+    try:
+        value = _json(raw)
+    except (UnicodeDecodeError, ValueError):
+        raise R7Error("CURRENT_BINDING_INVALID") from None
+    if (
+        not isinstance(value, dict)
+        or set(value) != _CURRENT_BINDING_FIELDS
+        or type(value.get("schema_version")) is not int
+        or value.get("schema_version") != 1
+        or value.get("kind") != CURRENT_ALERT_KIND
+        or value.get("status_schema") != CURRENT_STATUS_SCHEMA
+        or not isinstance(value.get("owner"), str)
+        or re.fullmatch(r"[0-9a-f]{32}", value["owner"]) is None
+        or not isinstance(value.get("host_acceptance_id"), str)
+        or re.fullmatch(r"[0-9a-f]{32}", value["host_acceptance_id"]) is None
+        or not isinstance(value.get("deploy_revision"), str)
+        or re.fullmatch(r"[0-9a-f]{40}", value["deploy_revision"]) is None
+        or any(
+            not isinstance(value.get(key), str)
+            or _HEX64.fullmatch(value[key]) is None
+            for key in (
+                "native_receipt_sha256",
+                "native_receipt_signature_sha256",
+                "host_report_sha256",
+                "host_report_signature_sha256",
+            )
+        )
+    ):
+        raise R7Error("CURRENT_BINDING_INVALID")
+    return value
+
+
+def _current_owner_paths(binding: dict[str, Any]) -> tuple[Path, Path, Path]:
+    owner = binding.get("owner")
+    acceptance_id = binding.get("host_acceptance_id")
+    if (
+        not isinstance(owner, str)
+        or re.fullmatch(r"[0-9a-f]{32}", owner) is None
+        or not isinstance(acceptance_id, str)
+        or re.fullmatch(r"[0-9a-f]{32}", acceptance_id) is None
+    ):
+        raise R7Error("CURRENT_BINDING_INVALID")
+    work = CURRENT_RUNTIME_ROOT / ("run-" + owner)
+    receipt = work / "current-runtime-receipt.json"
+    status = work / "output-serve" / "status.json"
+    report = (
+        CURRENT_HOST_ACCEPTANCE_ROOT
+        / ("host-acceptance-" + acceptance_id)
+        / "acceptance.report.json"
+    )
+    return receipt, report, status
+
+
+def _read_current_signed_binding(
+    *, helpers: Any, delivery: Any
+) -> tuple[dict[str, Any], str]:
+    if getattr(helpers, "SIGNER", None) != CURRENT_SIGNER:
+        raise R7Error("CURRENT_TRUSTED_SIGNER_MISMATCH")
+    signature_path = CURRENT_CONFIG_PATH.with_name(
+        CURRENT_CONFIG_PATH.name + ".asc"
+    )
+    for path in (CURRENT_CONFIG_PATH, signature_path):
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+    raw = _protected_read(
+        CURRENT_CONFIG_PATH, helpers=helpers, delivery=delivery, maximum=16_384
+    )
+    signature = _protected_read(
+        signature_path, helpers=helpers, delivery=delivery, maximum=16_384
+    )
+    try:
+        helpers._verify_signature(CURRENT_CONFIG_PATH, signature_path)
+    except Exception:  # noqa: BLE001 -- exact trusted signer failure is redacted.
+        raise R7Error("CURRENT_BINDING_SIGNATURE_INVALID") from None
+    if (
+        _protected_read(
+            CURRENT_CONFIG_PATH, helpers=helpers, delivery=delivery, maximum=16_384
+        )
+        != raw
+        or _protected_read(
+            signature_path, helpers=helpers, delivery=delivery, maximum=16_384
+        )
+        != signature
+    ):
+        raise R7Error("CURRENT_BINDING_CHANGED")
+    binding = _parse_current_binding(raw)
+    return binding, hashlib.sha256(_binding_bytes("current", binding)).hexdigest()
+
+
+def _verify_current_acceptance(
+    *, binding: dict[str, Any], helpers: Any, delivery: Any
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Verify the exact signed native receipt and signed host acceptance."""
+    receipt_path, report_path, _status_path = _current_owner_paths(binding)
+    receipt_signature_path = receipt_path.with_name(receipt_path.name + ".asc")
+    report_signature_path = report_path.with_name(report_path.name + ".asc")
+    for path in (
+        receipt_path,
+        receipt_signature_path,
+        report_path,
+        report_signature_path,
+    ):
+        delivery._no_reparse(path)
+        delivery._private_acl(path)
+    receipt_raw = _protected_read(
+        receipt_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
+    )
+    receipt_signature = _protected_read(
+        receipt_signature_path,
+        helpers=helpers,
+        delivery=delivery,
+        maximum=16_384,
+    )
+    report_raw = _protected_read(
+        report_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
+    )
+    report_signature = _protected_read(
+        report_signature_path,
+        helpers=helpers,
+        delivery=delivery,
+        maximum=16_384,
+    )
+    if (
+        hashlib.sha256(receipt_raw).hexdigest() != binding["native_receipt_sha256"]
+        or hashlib.sha256(receipt_signature).hexdigest()
+        != binding["native_receipt_signature_sha256"]
+        or hashlib.sha256(report_raw).hexdigest() != binding["host_report_sha256"]
+        or hashlib.sha256(report_signature).hexdigest()
+        != binding["host_report_signature_sha256"]
+    ):
+        raise R7Error("CURRENT_ACCEPTANCE_HASH_MISMATCH")
+    try:
+        helpers._verify_signature(receipt_path, receipt_signature_path)
+        helpers._verify_signature(report_path, report_signature_path)
+    except Exception:  # noqa: BLE001 -- verifier details are never surfaced.
+        raise R7Error("CURRENT_ACCEPTANCE_SIGNATURE_INVALID") from None
+    if (
+        _protected_read(
+            receipt_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
+        )
+        != receipt_raw
+        or _protected_read(
+            report_path, helpers=helpers, delivery=delivery, maximum=MAX_RECEIPT_BYTES
+        )
+        != report_raw
+    ):
+        raise R7Error("CURRENT_ACCEPTANCE_CHANGED")
+    try:
+        receipt = _json(receipt_raw)
+        report = _json(report_raw)
+    except (UnicodeDecodeError, ValueError):
+        raise R7Error("CURRENT_ACCEPTANCE_INVALID") from None
+    profile = receipt.get("source_profile") if isinstance(receipt, dict) else None
+    owner = binding["owner"]
+    revision = binding["deploy_revision"]
+    if (
+        not isinstance(receipt, dict)
+        or receipt.get("result") != "PASS_NONTRADING_RUNTIME_EPOCH"
+        or receipt.get("owner") != owner
+        or receipt.get("schema_profile") != CURRENT_STATUS_SCHEMA
+        or type(receipt.get("schema_migration_count")) is not int
+        or receipt.get("schema_migration_count") != CURRENT_MIGRATION_COUNT
+        or type(receipt.get("schema_public_table_count")) is not int
+        or receipt.get("schema_public_table_count") != CURRENT_PUBLIC_TABLE_COUNT
+        or receipt.get("trading_started") is not False
+        or receipt.get("orders_submitted") != 0
+        or receipt.get("paid_calls") != 0
+        or receipt.get("production_trading_qualified") is not False
+        or receipt.get("root_cause_fixed") is not False
+        or receipt.get("prior_successor_preserved") is not True
+        or not isinstance(profile, dict)
+        or profile.get("schema") != "kairos.current-nontrading-profile.v1"
+        or profile.get("deploy_revision") != revision
+        or receipt.get("runner_receipt_sha256")
+        != profile.get("runner_receipt_sha256")
+        or not isinstance(report, dict)
+        or report.get("schema") != "kairos.current-runtime-host-acceptance.v1"
+        or report.get("state") != "PASS_CURRENT_NONTRADING_HOST_ACCEPTANCE"
+        or report.get("owner") != owner
+        or report.get("receipt_sha256") != binding["native_receipt_sha256"]
+        or report.get("deploy_revision") != revision
+        or report.get("old_resources_preserved") is not True
+        or report.get("production_trading_qualified") is not False
+        or report.get("trading_started") is not False
+        or report.get("orders_submitted") != 0
+        or report.get("paid_calls") != 0
+    ):
+        raise R7Error("CURRENT_ACCEPTANCE_INVALID")
+    return receipt, report
+
+
+def _verify_signed_source(
+    helpers: Any,
+    *,
+    profile: str = "legacy",
+    current_source_revision: str | None = None,
+) -> None:
     """Require this runner and its installer/tests to be the exact signed main bytes."""
     try:
         for namespace_init in (
@@ -446,14 +697,14 @@ def _verify_signed_source(helpers: Any, *, profile: str = "legacy") -> None:
                     "show",
                     "-s",
                     "--format=%H %G? %GF",
-                    _source_revision(profile),
+                    _source_revision(profile, current_source_revision),
                 ],
             )
             .decode("ascii", "strict")
             .strip()
             .split()
         )
-        source_revision = _source_revision(profile)
+        source_revision = _source_revision(profile, current_source_revision)
         if deploy_source != [source_revision, "G", helpers.SIGNER]:
             raise R7Error("SIGNED_R7_SOURCE_REQUIRED")
         deploy_head = (
@@ -632,6 +883,22 @@ def _verify_r7sql_successor_adjudication(source: dict[str, Any]) -> None:
 
 def _profile_root(source: dict[str, Any], requested: Path | None) -> Path:
     profile = source.get("profile", "legacy")
+    if profile == "current":
+        binding = source.get("binding")
+        owner = binding.get("owner") if isinstance(binding, dict) else None
+        if not isinstance(owner, str) or re.fullmatch(r"[0-9a-f]{32}", owner) is None:
+            raise R7Error("CURRENT_BINDING_INVALID")
+        if source.get("binding_sha256") != _binding_sha256("current", binding):
+            raise R7Error("CURRENT_BINDING_INVALID")
+        receipt_sha = binding.get("native_receipt_sha256")
+        if not isinstance(receipt_sha, str) or _HEX64.fullmatch(receipt_sha) is None:
+            raise R7Error("CURRENT_BINDING_INVALID")
+        fixed = CURRENT_PRIVATE_ROOT / (
+            "owner-" + owner + "-" + receipt_sha[:12]
+        )
+        if requested is not None and requested != fixed:
+            raise R7Error("CURRENT_ROOT_OVERRIDE_REJECTED")
+        return fixed
     fixed = {
         "legacy": PRIVATE_ROOT,
         "r7-dns": R7DNS_PRIVATE_ROOT,
@@ -661,10 +928,10 @@ def _write_new(path: Path, raw: bytes, continuation: Any, delivery: Any) -> None
 
 
 def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str, Any]:
-    """Admit only the immutable accepted R7 receipt and its protected status path."""
+    """Admit one signed R7 profile or the signed, accepted CURRENT owner."""
     helpers = helpers or _load_r5_helpers()
     try:
-        if profile not in {"legacy", "r7-dns", "r7-sql"}:
+        if profile not in {"legacy", "r7-dns", "r7-sql", "current"}:
             raise R7Error("R7_PROFILE_INVALID")
         spec = (
             _R7DNS
@@ -673,6 +940,31 @@ def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str
             if profile == "r7-sql"
             else None
         )
+        if profile == "current":
+            # The R5 helper is byte-pinned before import. It is required to
+            # read the signed binding whose Deploy revision pins this source.
+            continuation, delivery = helpers._continuation()
+            current_binding, binding_sha256 = _read_current_signed_binding(
+                helpers=helpers, delivery=delivery
+            )
+            _verify_signed_source(
+                helpers,
+                profile="current",
+                current_source_revision=current_binding["deploy_revision"],
+            )
+            receipt, report = _verify_current_acceptance(
+                binding=current_binding, helpers=helpers, delivery=delivery
+            )
+            return {
+                "helpers": helpers,
+                "continuation": continuation,
+                "delivery": delivery,
+                "profile": "current",
+                "binding": current_binding,
+                "binding_sha256": binding_sha256,
+                "receipt": receipt,
+                "host_acceptance": report,
+            }
         _verify_signed_source(helpers, profile=profile)
         continuation, delivery = helpers._continuation()
         work = spec["runtime_root"] / spec["work"] if spec else RUNTIME_ROOT / WORK
@@ -878,10 +1170,167 @@ def _source_pause_valid(
     )
 
 
+def _classify_current_status(
+    value: Any, *, expected_owner: str | None, now: datetime | None = None
+) -> str:
+    """Validate CURRENT's native non-trading status with its 120s clock."""
+    if not isinstance(value, dict):
+        return "invalid"
+    try:
+        observed = datetime.fromisoformat(
+            value["observed_at_utc"].replace("Z", "+00:00")
+        )
+    except (KeyError, AttributeError, TypeError, ValueError):
+        return "invalid"
+    current = now or datetime.now(UTC)
+    if (
+        observed.tzinfo is None
+        or observed.utcoffset() is None
+        or current.tzinfo is None
+        or current.utcoffset() is None
+    ):
+        return "invalid"
+    observed = observed.astimezone(UTC)
+    current = current.astimezone(UTC)
+    age = (current - observed).total_seconds()
+    if age < 0:
+        return "invalid"
+
+    owner = value.get("owner")
+    if (
+        not isinstance(expected_owner, str)
+        or re.fullmatch(r"[0-9a-f]{32}", expected_owner) is None
+    ):
+        return "invalid"
+    state = value.get("state")
+    if state == "FAILED_CLOSED":
+        if value.get("mode", "serve") != "serve" or value.get("trading_started") is not False:
+            return "invalid"
+        if expected_owner is not None and owner not in (None, expected_owner):
+            return "unknown_owner"
+        if (
+            (
+                "schema_profile" in value
+                and value.get("schema_profile") != CURRENT_STATUS_SCHEMA
+            )
+            or (
+                "schema_migration_count" in value
+                and (
+                    type(value.get("schema_migration_count")) is not int
+                    or value.get("schema_migration_count") != CURRENT_MIGRATION_COUNT
+                )
+            )
+            or (
+                "schema_public_table_count" in value
+                and (
+                    type(value.get("schema_public_table_count")) is not int
+                    or value.get("schema_public_table_count")
+                    != CURRENT_PUBLIC_TABLE_COUNT
+                )
+            )
+            or any(
+                key in value and value.get(key) is not False
+                for key in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
+            )
+            or (
+                "STRATEGY_POLICY" in value
+                and value.get("STRATEGY_POLICY") != "REJECT_ALL"
+            )
+        ):
+            return "invalid"
+        if age > CURRENT_STATUS_STALE_SECONDS:
+            return "running_stale"
+        return "failed_closed"
+
+    phase = {
+        "RUNNING_NONTRADING": "running",
+        "CATCHING_UP_NONTRADING": "catching_up",
+        "WAITING_SOURCE_NONTRADING": "waiting_source",
+    }.get(state) if isinstance(state, str) else None
+    if phase is None:
+        return "invalid"
+    if expected_owner is not None and owner != expected_owner:
+        return "unknown_owner"
+    if (
+        value.get("schema_profile") != CURRENT_STATUS_SCHEMA
+        or type(value.get("schema_migration_count")) is not int
+        or value.get("schema_migration_count") != CURRENT_MIGRATION_COUNT
+        or type(value.get("schema_public_table_count")) is not int
+        or value.get("schema_public_table_count") != CURRENT_PUBLIC_TABLE_COUNT
+        or value.get("mode", "serve") != "serve"
+        or value.get("trading_started") is not False
+        or any(
+            value.get(flag) is not False
+            for flag in ("PAPER_QUALIFIED", "ALPHA_READY", "LIVE_READY")
+        )
+        or value.get("STRATEGY_POLICY") != "REJECT_ALL"
+    ):
+        return "invalid"
+
+    counters = (
+        "cycles",
+        "pending_outbox",
+        "unresolved_inbox",
+        "completed_inbox",
+        "uncompleted_publications",
+        "new_publications",
+    )
+    if any(type(value.get(key)) is not int or value[key] < 0 for key in counters):
+        return "invalid"
+    if value["cycles"] < 1 or any(
+        value[key] != 0
+        for key in ("pending_outbox", "unresolved_inbox", "uncompleted_publications")
+    ):
+        return "invalid"
+    watermarks = value.get("watermarks_ms")
+    if (
+        not isinstance(watermarks, dict)
+        or set(watermarks) != SYMBOLS
+        or any(
+            type(watermarks.get(symbol)) is not int
+            or watermarks[symbol] <= 0
+            or watermarks[symbol] % 60_000 != 0
+            for symbol in SYMBOLS
+        )
+    ):
+        return "invalid"
+    watermark_values = [watermarks[symbol] for symbol in SYMBOLS]
+    if max(watermark_values) > int(observed.timestamp() * 1000):
+        return "invalid"
+    if phase == "running":
+        if len(set(watermark_values)) != 1 or value.get("source_fresh") is not True:
+            return "invalid"
+    elif (
+        value.get("source_fresh") is not False
+        or (
+            phase == "waiting_source"
+            and (
+                not isinstance(value.get("source_wait_reason"), str)
+                or not 1 <= len(value["source_wait_reason"]) <= 160
+            )
+        )
+        or (phase == "catching_up" and value.get("source_wait_reason") is not None)
+    ):
+        return "invalid"
+    if age > CURRENT_STATUS_STALE_SECONDS:
+        return "running_stale"
+    if phase == "running":
+        return "running_fresh"
+    return "waiting_source_nontrading" if phase == "waiting_source" else "catching_up_nontrading"
+
+
 def classify_status(
-    value: Any, *, now: datetime | None = None, profile: str = "legacy"
+    value: Any,
+    *,
+    now: datetime | None = None,
+    profile: str = "legacy",
+    expected_owner: str | None = None,
 ) -> str:
     """Validate the R7 status contract and return a quiet or alert state."""
+    if profile == "current":
+        return _classify_current_status(
+            value, expected_owner=expected_owner, now=now
+        )
     if not isinstance(value, dict):
         return "invalid"
     state = value.get("state")
@@ -963,10 +1412,22 @@ def read_status(path: Path, *, source: dict[str, Any]) -> str:
             return "missing"
         except Exception:  # noqa: BLE001 - local path errors become a technical alert.
             return "invalid"
+        profile = source.get("profile", "legacy")
+        maximum = CURRENT_MAX_STATUS_BYTES if profile == "current" else MAX_BYTES
         raw = _protected_read(
-            path, helpers=helpers, delivery=delivery, maximum=MAX_BYTES
+            path, helpers=helpers, delivery=delivery, maximum=maximum
         )
-        return classify_status(_json(raw), profile=source.get("profile", "legacy"))
+        binding = source.get("binding")
+        expected_owner = (
+            binding.get("owner")
+            if profile == "current" and isinstance(binding, dict)
+            else None
+        )
+        return classify_status(
+            _json(raw),
+            profile=profile,
+            expected_owner=expected_owner,
+        )
     except R7Error:
         return "invalid"
     except Exception:  # noqa: BLE001 - malformed status is a redacted alert.
@@ -974,6 +1435,8 @@ def read_status(path: Path, *, source: dict[str, Any]) -> str:
 
 
 def _status_path(binding: dict[str, Any]) -> Path:
+    if binding.get("kind") == CURRENT_ALERT_KIND:
+        return _current_owner_paths(binding)[2]
     if binding == _binding_record():
         return RUNTIME_ROOT / WORK / "output-serve" / "status.json"
     if binding == _binding_record("r7-dns"):
@@ -1138,22 +1601,41 @@ def initialize(
     delivery._no_reparse(root)
     delivery._private_acl(root)
     binding_path = root / "binding.json"
-    binding_bytes = _binding_bytes(source.get("profile", "legacy"))
-    successor = source.get("profile") == "r7-sql"
+    profile = source.get("profile", "legacy")
+    binding_bytes = _binding_bytes(
+        profile, source.get("binding") if profile == "current" else None
+    )
+    successor = profile in {"r7-sql", "current"}
     if successor:
-        expected_entries = {
-            R7SQL_SUCCESSOR_ADJUDICATION_NAME,
-            R7SQL_SUCCESSOR_ADJUDICATION_NAME + ".asc",
-        }
+        expected_entries = (
+            {
+                R7SQL_SUCCESSOR_ADJUDICATION_NAME,
+                R7SQL_SUCCESSOR_ADJUDICATION_NAME + ".asc",
+            }
+            if profile == "r7-sql"
+            else set()
+        )
         try:
             if {entry.name for entry in root.iterdir()} != expected_entries:
-                raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN")
+                raise R7Error(
+                    "R7SQL_SUCCESSOR_ROOT_NOT_CLEAN"
+                    if profile == "r7-sql"
+                    else "CURRENT_OWNER_ROOT_NOT_CLEAN"
+                )
         except R7Error:
             raise
         except Exception:  # noqa: BLE001 - private root errors remain redacted.
-            raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN") from None
+            raise R7Error(
+                "R7SQL_SUCCESSOR_ROOT_NOT_CLEAN"
+                if profile == "r7-sql"
+                else "CURRENT_OWNER_ROOT_NOT_CLEAN"
+            ) from None
         if binding_path.exists() or (root / "events.jsonl").exists():
-            raise R7Error("R7SQL_SUCCESSOR_ROOT_NOT_CLEAN")
+            raise R7Error(
+                "R7SQL_SUCCESSOR_ROOT_NOT_CLEAN"
+                if profile == "r7-sql"
+                else "CURRENT_OWNER_ROOT_NOT_CLEAN"
+            )
     if binding_path.exists():
         if (
             _protected_read(
@@ -1188,7 +1670,11 @@ def initialize(
                 "binding_sha256": source["binding_sha256"],
             }
         )
-    return {"status": "R7_BASELINE_CREATED", "state": state, "trading_authority": False}
+    return {
+        "status": "CURRENT_BASELINE_CREATED" if profile == "current" else "R7_BASELINE_CREATED",
+        "state": state,
+        "trading_authority": False,
+    }
 
 
 def _monitor_sender(
@@ -1221,7 +1707,11 @@ def _monitor_sender(
                 raise R7Error("R7_SEND_OUTCOME_UNKNOWN")
             receipt = {
                 "schema_version": 1,
-                "kind": "kairos.r7.runtime-alert-receipt.v1",
+                "kind": (
+                    "kairos.current.runtime-alert-receipt.v1"
+                    if source.get("profile") == "current"
+                    else "kairos.r7.runtime-alert-receipt.v1"
+                ),
                 "event_id": alert["event_id"],
                 "transition": alert["transition"],
                 "state": alert["state"],
@@ -1232,8 +1722,9 @@ def _monitor_sender(
                 "binding_sha256": source["binding_sha256"],
                 "trading_authority": False,
             }
+            delivery_prefix = "current" if source.get("profile") == "current" else "r7"
             _write_new(
-                root / f"r7-telegram-{alert['event_id']}.json",
+                root / f"{delivery_prefix}-telegram-{alert['event_id']}.json",
                 json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode(),
                 continuation,
                 delivery,
@@ -1313,13 +1804,19 @@ def poll_once(
         event_id = hashlib.sha256(
             f"{source['binding_sha256']}|{len(rows)}|{transition}|{observed_state}".encode()
         ).hexdigest()
+        runtime_label = "CURRENT" if source.get("profile") == "current" else "R7"
+        runtime_description = (
+            "Non-trading current runtime; technical monitoring only."
+            if source.get("profile") == "current"
+            else "Non-trading shadow runtime; technical monitoring only."
+        )
         event = {
             "event_id": event_id,
             "transition": transition,
             "state": observed_state,
             "text": (
-                f"Kairos R7 technical status: {observed_state}. "
-                "Non-trading shadow runtime; technical monitoring only."
+                f"Kairos {runtime_label} technical status: {observed_state}. "
+                f"{runtime_description}"
             ),
         }
         journal._append(
@@ -1357,12 +1854,13 @@ def main(argv: list[str] | None = None) -> int:
     actions = parser.add_mutually_exclusive_group()
     actions.add_argument("--initialize", action="store_true")
     actions.add_argument("--poll-once", action="store_true")
+    actions.add_argument("--validate-only", action="store_true")
     parser.add_argument("--armed", action="store_true")
     parser.add_argument(
-        "--profile", choices=("legacy", "r7-dns", "r7-sql"), default="legacy"
+        "--profile", choices=("legacy", "r7-dns", "r7-sql", "current"), default="legacy"
     )
     args = parser.parse_args(argv)
-    if not (args.initialize or args.poll_once) or not args.armed:
+    if not (args.initialize or args.poll_once or args.validate_only) or not args.armed:
         print(
             json.dumps(
                 {
@@ -1371,6 +1869,7 @@ def main(argv: list[str] | None = None) -> int:
                         "legacy": TASK_NAME,
                         "r7-dns": _R7DNS["task_name"],
                         "r7-sql": _R7SQL["task_name"],
+                        "current": CURRENT_ALERT_TASK_NAME,
                     }[args.profile],
                     "profile": args.profile,
                     "business_signals_muted": True,
@@ -1381,6 +1880,21 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     try:
         source_admitter = lambda: admit_r7(profile=args.profile)
+        if args.validate_only:
+            if args.profile != "current":
+                raise R7Error("VALIDATE_ONLY_CURRENT_PROFILE_REQUIRED")
+            source = source_admitter()
+            state = read_status(_status_path(source["binding"]), source=source)
+            if state != "running_fresh":
+                raise R7Error("CURRENT_QUIET_STATUS_REQUIRED")
+            result = {
+                "status": "CURRENT_ADMISSION_VALIDATED",
+                "state": state,
+                "private_root": str(_profile_root(source, None)),
+                "trading_authority": False,
+            }
+            print(json.dumps(result, sort_keys=True))
+            return 0
         result = (
             initialize(source_admitter=source_admitter)
             if args.initialize
