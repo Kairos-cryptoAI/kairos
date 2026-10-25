@@ -28,11 +28,18 @@ resilience is not established by a backup stored on that same computer.
   native Text input, prompt, schema, result and output. Failed persistence blocks
   publication; explicit local fallback is not labeled a model answer. An exact
   replay of the existing pure Text transform checks the retained output.
-- Execution `291905da5eec0a331ebede4543493f407cf3dca7` invokes the actual native
-  Text, Macro, Router, context store and review classes through an explicit
+- Execution `6cd322d4eb19f7ea6934dee601ab2b509b5f4e4c` invokes the actual native
+  Text, Router, context store and review classes through an explicit
   composition API. Durable claims precede calls; expiry and cancellation keep
   unknown attempts fenced. Original model reservations, committed cost, provider
   request identities and input-token cache semantics are retained.
+- The final causal-order correction refuses fresh Macro work inside an
+  already-created intent before any claim, source request or model cost. It
+  reuses only the native store's eligible pre-intent allocation and its original
+  identity, digest and receipt, or records Macro as unavailable. The selection
+  is not relabeled as a new model output. Original Macro preparation remains a
+  separate existing component. Post-intent articles remain captured but are
+  excluded before paid Text dispatch; neither news nor intent clocks are moved.
 - The native capture sink reuses the existing owner-only create-only file
   primitive. Its separate witness records an actual clock after the raw write
   is fsynced. Exact replay preserves the first witness; partial writes are
@@ -42,7 +49,7 @@ resilience is not established by a backup stored on that same computer.
   native receipt and host-acceptance report. It retains the existing incident,
   recovery, re-failure and unknown-send/no-retry journal semantics. Legacy
   notifier bindings are not repointed.
-- Deploy `d9750256f9a056a70e0b57a4969ba2b5707762f4` aligns the current source
+- Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
 - The current adaptive tooling locks OpenTelemetry API 1.45.1. GitHub marks
@@ -58,10 +65,11 @@ engineering tests are not a trading admission.
 | Check | Verified scope |
 | --- | --- |
 | Local Text | 115 passed, one existing deselection |
-| Local Execution | 1122 passed, six skipped, 54 integration deselections, eight subtests passed |
+| Local Execution, including final causality correction | 1126 passed, six skipped, 54 integration deselections, eight subtests passed |
 | Local Deploy after validator correction | 1163 tests, six skipped |
 | Technical alerts | 243 offline tests, including 36 CURRENT and legacy notifier tests |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
+| Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 
 The native traversal tests instantiate the real analytical classes and budgeted
 gateway, but supply explicitly synthetic offline provider, transport and budget
@@ -75,14 +83,29 @@ wait for a favorable fresh story, qualify a producer or restart the stopped
 real-news research automation. Its signed report and original native records
 are retained under
 `D:/Kairos/runtime/launch-finish-20261025/f3e65dcdbed44331a627d8c007f7837a/`.
+The final source-aligned observation is `final-public-rss-native.report.json`
+and its create-only `final-public-rss-native-session`; the earlier inspection
+is retained separately, not relabeled as the final installed version.
+`installed-launch-guards.report.json` is a signed refusal/identity check, not
+an admission to trade.
 
-Exact-source hosted results:
+Hosted results for the first native implementation:
 [Text](https://github.com/Kairos-cryptoAI/kairos-text-scouts/actions/runs/40223704623),
 [Execution](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40224810380),
 [Deploy](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40225685720),
 [installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40225685697).
+The existing [adaptive offline matrix](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40224438733)
+also completed successfully on all eight jobs with the corrected dependency
+lock, including its existing 36,000-cell horizon-one cases. These are offline
+regressions, not new market or model evidence.
 The earlier Deploy source-validation failure and the rejected manifest identifier
 are retained in their failed CI runs; neither validation rule was disabled.
+The final causal correction additionally passed
+[all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536164)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536231).
+Final Deploy projection checks are tracked on revision
+`bfcfd18a1edbf2b54bebfb2c477b7883655435b6`; earlier green runs are not
+relabelled as tests of that revision.
 
 ## Runtime maintenance
 
@@ -107,6 +130,24 @@ backup or successor had been started by that wrapper. Its signed failure and
 claim remain unchanged. A separate operator completion is bound to the exact
 failure, native stop bytes and exited-zero container; it does not rerun the
 stopped worker or clear an unknown latch.
+
+The separate native successor `45bb5e5873a7446883a4a6a648fc01de` passed its
+19-migration/33-table recovery admission and isolated restore equality with
+433,489 event-audit rows, duplicate-delivery/hash-conflict/Redis replay checks
+and live closed-bar catch-up. The retained native receipt hash is
+`7eac6ef6b10e4869f4f09da18f2ef66512e002c4b89b02f16de06811695cbf27`.
+Owner `629d61c2245743e880af3c40e58416c1` was gracefully stopped; its volumes,
+queue and fresh 53,226,316-byte backup were retained, not adopted.
+
+That intermediate successor also passed same-owner native restart, before/after
+backup-restore checks and both bounded source-progress observations. Its final
+host wrapper nevertheless failed closed at boot-task installation. The late
+read-only installer admission rechecks all 14 repositories; Execution had
+advanced to the causal correction while the manifest still named its previous
+revision. No boot task or binding was installed. The signed original failure
+and completed native observations are retained. The final release must be fully
+consistent and held unchanged before the independent final successor/host check;
+these intermediate observations are not claimed as its acceptance.
 
 ## Conditions still blocking real money
 
