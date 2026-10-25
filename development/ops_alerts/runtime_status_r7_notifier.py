@@ -941,8 +941,16 @@ def admit_r7(*, helpers: Any | None = None, profile: str = "legacy") -> dict[str
             else None
         )
         if profile == "current":
-            # The R5 helper is byte-pinned before import. It is required to
-            # read the signed binding whose Deploy revision pins this source.
+            # The pinned helper's continuation imports delivery modules before
+            # checking their hashes. Admit those exact source bytes BEFORE
+            # allowing that import, without trusting the not-yet-read binding.
+            current_head = (
+                helpers._git(DEPLOY_ROOT, ["rev-parse", "HEAD"])
+                .decode("ascii", "strict").strip()
+            )
+            _verify_signed_source(
+                helpers, profile="current", current_source_revision=current_head
+            )
             continuation, delivery = helpers._continuation()
             current_binding, binding_sha256 = _read_current_signed_binding(
                 helpers=helpers, delivery=delivery

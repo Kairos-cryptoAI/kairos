@@ -945,6 +945,7 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
                 b"synthetic config signature"
             )
             helper._continuation = lambda: (FakeContinuation(), FakeDelivery())
+            helper._git = lambda *_args: ("a" * 40).encode("ascii")
             verified: list[tuple[str, str]] = []
 
             def verify_source(_helpers: Any, *, profile: str, current_source_revision: str | None = None) -> None:
@@ -964,8 +965,24 @@ class RuntimeStatusR7NotifierTests(unittest.TestCase):
             r7._binding_sha256("current", source["binding"]),
         )
         self.assertEqual(
-            verified, [("current", CURRENT_TEST_DEPLOY_REVISION)]
+            verified, [("current", "a" * 40), ("current", CURRENT_TEST_DEPLOY_REVISION)]
         )
+
+    def test_current_source_verification_precedes_delivery_import(self) -> None:
+        calls: list[str] = []
+        helper = SimpleNamespace(
+            _continuation=lambda: calls.append("continuation"),
+            _git=lambda *_args: ("a" * 40).encode("ascii"),
+        )
+
+        def refuse(*_args: Any, **_kwargs: Any) -> None:
+            calls.append("source")
+            raise r7.R7Error("SIGNED_R7_SOURCE_REQUIRED")
+
+        with patch.object(r7, "_verify_signed_source", side_effect=refuse):
+            with self.assertRaisesRegex(r7.R7Error, "SIGNED_R7_SOURCE_REQUIRED"):
+                r7.admit_r7(helpers=helper, profile="current")
+        self.assertEqual(calls, ["source"])
 
     def test_legacy_signed_source_verification_precedes_continuation_setup(self) -> None:
         calls: list[str] = []
