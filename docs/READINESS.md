@@ -5,9 +5,11 @@ Latest engineering/incident checkpoint: 2026-10-25.
 This document records capability and permission separately._
 
 The [October 25 checkpoint](PRODUCTION-ENGINEERING-2026-10-25.md) supersedes
-older present-tense runtime statements: the accepted current-schema owner
-subsequently stopped during a host restart. Its historical restore/restart
-receipt is preserved, not reused as current uptime or new-release boot proof.
+older present-tense runtime statements: owner `3652...` stopped during a host
+restart. Its receipt is preserved, not reused as new-release proof. Separate
+owner `629d...` subsequently passed current-source native recovery, owned boot,
+bounded observations and the actual scheduled already-running action. This
+does not qualify a new OS reboot sequence or current-owner Telegram alerting.
 The new lifecycle driver and model/transport evidence hooks pass bounded
 engineering tests; the real upstream producer, authoritative EVEDEX sources,
 deployed production service and real-money admission remain unqualified.

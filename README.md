@@ -38,10 +38,12 @@ The [October 25 engineering checkpoint](docs/PRODUCTION-ENGINEERING-2026-10-25.m
 adds a bounded production lifecycle driver, original EVEDEX read-response
 capture and immutable, budget-bound model-call records. Native PostgreSQL
 fixtures exercise the driver with an explicitly synthetic venue; they are not
-an accepted EVEDEX deployment. The previously accepted non-trading owner stopped
-during a later host restart, and its old source-bound boot receipt does not
-authorize the new release. Recovery/current-source boot acceptance remains open
-at that checkpoint. The installed default entrypoint still refuses LIVE;
+an accepted EVEDEX deployment. After the host restart, a separate current-source
+data owner passed fresh history/restore, queue, owned boot and real scheduled
+action checks. The old owner's source-bound task was backed up and disabled,
+not silently retargeted. This is bounded non-trading acceptance, not an actual
+new OS reboot test or qualified current-owner Telegram alerting.
+The installed default entrypoint still refuses LIVE;
 upstream and venue authority are not manufactured by these engineering changes.
 
 The [LIVE Risk/lifecycle wiring continuation](docs/PRODUCTION-PATH-WIRING-2026-10-23.md)

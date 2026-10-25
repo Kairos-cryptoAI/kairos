@@ -9,8 +9,8 @@ All readiness flags remain false and `STRATEGY_POLICY=REJECT_ALL`.
 
 No real order, paid provider call, credential disclosure, legacy database/queue
 mutation or frozen research change was made by this work. The old Windows boot
-binding was not silently retargeted. Runtime recovery after the newly observed
-host restart remains separate from these code results.
+binding was not silently retargeted. The subsequently accepted non-trading
+recovery below remains separate from the production-code results.
 
 ## Implemented
 
@@ -66,8 +66,15 @@ Affected exact-commit CI:
 [Aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator/actions/runs/40205499275),
 [Macro](https://github.com/Kairos-cryptoAI/kairos-macro-strategist/actions/runs/40205499234),
 [Text](https://github.com/Kairos-cryptoAI/kairos-text-scouts/actions/runs/40205498506).
-Deploy's final source-set CI is recorded separately on its exact HEAD; a local
-pass does not stand in for a pending remote job.
+The final Deploy `50af49e` passed its
+[Windows/Linux/image CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40206385338)
+and [installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40206385406).
+The unchanged source projections at `9d7fd47` passed
+[current-release](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40205995188)
+and [full-path SIM](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40205995114).
+Initial Debian snapshot connection/503 failures and bounded image-build
+timeouts are retained. Only completed failed CI jobs were rerun; no dependency
+pin or build gate was weakened to obtain green results.
 
 Local JUnit evidence is retained under
 `D:/Kairos/runtime/production-finish-20261025/d5fc09160294416696baa1840156fb6b/`.
@@ -91,7 +98,84 @@ requires an exact clean signed release; it does not permit silently treating
 the new metadata-only descendant as the old receipt. New-source recovery and
 boot acceptance must use the supported owned path, not edited receipts, removed
 locks or a weakened source gate. No actual post-restart recovery is credited
-by this document.
+by the original checkpoint; the subsequent result is recorded separately below.
+
+## Subsequent current-source data recovery and launch acceptance
+
+The existing native launcher created **one** new owner,
+`629d61c2245743e880af3c40e58416c1`, using the original accepted 173,164-row
+historical seed. It did not import or adopt owner 3652's database or queue.
+Deploy remains pinned to `50af49e`; Core, Persistence, Quant, the independently
+admitted image recipe, image and wheel identities are explicit in the new
+profile and signed receipt. No source gate was relaxed to reuse the old owner.
+
+Native recovery passed catch-up for all five symbols, a fresh backup, separate
+restore and equality of **33 tables**, three sequences and **432,329 event-audit
+rows**. Duplicate delivery, hash-conflict refusal, Redis replay and the serving
+restart passed. The controlled schema remains `current-controlled-v1`, 19
+migrations; this is not an assertion that every production service/migration ran.
+
+The exact new owned PostgreSQL/Redis/serve resources then passed the existing
+boot rehearsal: backup/restore before and after history-only catch-up,
+queue/original-history preservation, integrity/Redis checks and a fresh,
+advancing `RUNNING_NONTRADING` worker. Neither old owners nor their queues were
+restarted or adopted by this acceptance.
+
+| Observation | Elapsed | Healthy samples | Separately retained transient samples |
+| --- | ---: | ---: | ---: |
+| Before owned boot | 309.204 s | 11 | 0 |
+| After owned boot | 319.344 s | 11 | 5 |
+
+The post-boot sampled settling totaled 12.875 s, under the unchanged per-settle
+30-second bound. All five watermarks advanced in each window. These are bounded
+healthy samples, not continuous availability, long soak or execution latency.
+
+The original launch wrapper reported `FAILED_CLOSED` after the native launcher
+had already returned `PASS_NONTRADING_RUNTIME_EPOCH`: Docker changed only the
+ordering of the old PostgreSQL container's two mount records. A separate signed
+read-only adjudication verified unique destinations and equality of **every**
+container/mount field after sorting that set. It did not discard fields, hash
+old volume contents, rewrite the failed wrapper or repeat native recovery.
+
+Administrative registration initially refused execution under PowerShell's
+`Restricted` policy. One subsequent fixed plan also refused; its specific
+reason was not retained and is not claimed solved retrospectively. An
+independent elevated read-only probe then passed both native `ALREADY_RUNNING`
+and the installer `PLAN_ONLY` check with zero resource starts/registrations.
+A separate administrative completion registered the new task once, reusing
+the completed same-owner gates. Only the verified child installer received
+`-ExecutionPolicy Bypass` and `PATHEXT=.EXE`; machine/user policies were unchanged.
+All earlier failures and original observation bytes remain retained.
+
+`Kairos-CurrentRuntime-629d61c22457-Boot` uses the existing hidden, exact-source,
+same-user Highest/Interactive `pythonw -I -B` logon action: two-minute delay,
+IgnoreNew and zero retries. Read-back checked its full policy, binding and
+bootstrap hash. The real action returned **LastTaskResult=0** at 19:52 Moscow,
+with **zero container starts and zero new boot attempts**. No actual Windows
+reboot was performed for this new acceptance; it is not a pre-logon service.
+
+After that pass, only the exact superseded owner-3652 boot task was disabled,
+not deleted. Its original XML, binding, history and signed retirement receipt
+remain recoverable. Other tasks and paused research automations were unchanged.
+
+Key retained evidence:
+
+- Native receipt:
+  `D:/Kairos/runtime/current-runtime-20261024/run-629d61c2245743e880af3c40e58416c1/current-runtime-receipt.json`,
+  SHA-256 `2c18f607aa6856ded1f61b79dae050b36e2c66dc456b9eed3209a01582879f4f`.
+- Signed host acceptance:
+  `D:/Kairos/runtime/prod-runtime-inputs-20261024/host-acceptance-198cc18d72d64451a142f5aebafb4bf4/acceptance.report.json`,
+  SHA-256 `33acfa6c19959d3507139fd30f970b9bd47630bf3d670a40c4431be2651baa8e`.
+- Signed scheduled action in that host directory: `scheduled-action/report.json`,
+  SHA-256 `1c383232e54ba90a296833ff95712b2dbfc3b53fe558b6283879cfd096c1dc46`.
+- Engineering evidence parent:
+  `D:/Kairos/runtime/production-finish-20261025/d5fc09160294416696baa1840156fb6b/`
+  retains the original failed wrapper, `mount-order-adjudication-629d-v1.json`,
+  the read-only installer diagnostic, and `retired-3652-task.xml/json`.
+
+The final current-status/source closeout is retained under
+`final-closeout-629d-v1/` in that evidence parent. Its snapshot preserves the
+original status bytes/timestamps; it never arms a trader.
 
 ## Still required for real-money operation
 
@@ -104,7 +188,13 @@ by this document.
   incomplete evidence; possessing an API key is not qualification.
 - Deploy and accept the complete current service, current-owner recovery,
   boot and alert path, then confirm explicit capital/loss limits and separate
-  manual arming. The non-trading data worker is not that service.
+  manual arming. The accepted non-trading data worker is not that service.
+  The existing read-only Prometheus observer supports an exact CURRENT owner
+  and status path, but does not establish signed source admission or Telegram
+  delivery. The signed one-shot receipt dispatcher is not a live health poller,
+  and R7's historical notifier/journal was not repointed. Current-owner alert
+  transition/recovery/re-failure and delivery qualification remain open;
+  no additional temporary notifier framework was introduced.
 
 No profitability, professional-trader equivalence or permission to trade is
 inferred from fixture success or the requested release date.
