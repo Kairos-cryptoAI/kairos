@@ -32,7 +32,7 @@ resilience is not established by a backup stored on that same computer.
   native Text input, prompt, schema, result and output. Failed persistence blocks
   publication; explicit local fallback is not labeled a model answer. An exact
   replay of the existing pure Text transform checks the retained output.
-- Execution `2d2f1bdaeaa495a296e5543d4a0ef6557126f944` invokes the actual native
+- Execution `58ebf3438ab6f710c14d0fcc09c4a52dcbdf017d` invokes the actual native
   Text, Router, context store and review classes through an explicit
   composition API. Durable claims precede calls; expiry and cancellation keep
   unknown attempts fenced. Original model reservations, committed cost, provider
@@ -59,7 +59,7 @@ resilience is not established by a backup stored on that same computer.
   and legacy R7 observation behavior remain covered. Original native phase
   evidence is still in the protected status file; its clocks and freshness
   checks are unchanged. The journal is not rotated, reset or enlarged.
-- Deploy `e39cb31ebe628ac76a6d64c44c03c8e27bc9ae29` aligns the current source
+- Deploy `87f8d16a9aab7fa8063fef9a230372c0d568ff8f` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
 - The current adaptive tooling locks OpenTelemetry API 1.45.1. GitHub marks
@@ -90,7 +90,7 @@ normal no-entry result consumes the admission. This is not proof of a flat
 account or permission to bypass current exposure. Expiry blocks entries, not
 ongoing protective/reconciliation maintenance. No real service was started.
 
-Risk `0da885aac20c5bae0173bf2d2ca81d528c458777` can calculate a deterministic
+Risk `d8c031eb35ae54263c355ee6ad9c4f7719d306d2` can calculate a deterministic
 capital/stop-loss proposal from already qualified fresh account facts, the
 frozen starting scope and supplied venue minimums. The public evaluator requires
 its registered source verifier first; the pinned real EVEDEX verifier still
@@ -121,18 +121,87 @@ operational receipts, a qualified account/input producer and an explicit owner
 arm have not been produced or substituted with fixtures. The supported generic
 settings/factory still refuses LIVE. The retired CURRENT owner was not resumed.
 
+## PROD integration closure, 27 October
+
+The existing components now have one explicit `build_production_assembly` API:
+the actual PROD SDK client/read transport, entry and protective-exit LIVE Risk,
+shared durable bindings/writers, protected lifecycle, schema-v2 reconciliation
+and mandatory accounting are joined with exact custody, account, symbol, clock
+and isolated database/pool checks. Canary start is a one-attempt latch before
+the first await; a second call, changed nonce, cancelled or unknown first attempt
+cannot restart it. Its `run` method does not start the driver a second time.
+Final account reconciliation takes the same driver account lock and only reports
+release after both terminal reconciliation and the accounting receipt succeed.
+Construction itself performs no I/O, provisioning, producer registration or arm.
+
+`ProductionEvedexReads` now uses the exact SDK client of the mutation sender,
+not a DEV signer or a separate account client. It retains the original HTTP body,
+digest, request/receive clocks, route, query and status for identity, balance,
+positions, orders, depth, instruments, TP/SL and history. Explicit per-order fills,
+fill-history and funding-transfer reads are bounded pages, not a completeness or
+finality assertion. Financial decimals are parsed from retained HTTP bytes before
+JavaScript conversion. Native singular `position`/`openOrder` summary arrays are
+validated and mapped without inventing empty or zero account facts.
+
+The original instrument HTTP capture can be included as a signed singleton
+input stage. Its digest/scope/symbol/clocks are verified by the registered input
+verifier before LIVE Risk uses the rules. PROD assembly requires those rules:
+quantity is rounded downward by the actual venue step before the immutable Core
+decision, then checked against price/quantity/notional limits. Off-grid immutable
+stop, target or actual entry-book price is refused, not rewritten. The existing
+0.25% per-trade, 1% aggregate stop-risk and 1x ceilings are unchanged. Instrument
+`updatedAt` remains its original rule revision clock; capture freshness uses the
+retained original HTTP receive clock and body, never a fabricated new timestamp.
+
+The actual Node mutation send boundary now enforces the local 30/60-second
+budget with entry/protection/compensation headroom. Failed or ambiguous sends
+remain spent; reads and health checks do not reset it. Health reports that same
+enforced counter and the original successful identity-capture age, while unknown
+venue quota/auth expiry remain explicitly unknown. The separate durable FSM
+budget is retained. No provider retries or real mutations were used to test it.
+
+These closures do **not** constitute a deployed or accepted real-money path.
+Private recoverable events, coherent account authority, fee/funding finality,
+protection-parent authority and the current PROD signing domain remain
+unqualified. Raw history readers cannot grant those authorities. Official
+[order-creation documentation](https://docs.evedex.com/developers/developers/order_creation)
+also states that API limit orders are GTC; an unsigned IOC field is not proof of
+an IOC limit contract. No order-type substitution was made to bypass that issue.
+The existing support thread still contained only the two sent inquiries at the
+check in this task; no response or signing approval was inferred.
+
+The assembly still needs genuinely qualified source implementations and one
+accepted upstream producer/policy, then deployment configuration and bounded
+acceptance of that exact service. It is an integration API, **not a runnable
+configured LIVE launcher**. The ordinary settings, factory and Compose LIVE
+denials remain. Synthetic constructor/transport tests do not register production
+authorities. Neither the retired CURRENT contour nor any database/queue was
+restarted or modified, and no key, paid model call or real order was used.
+
 ## Executed checks
 
 | Check | Verified scope |
 | --- | --- |
 | Local Text | 115 passed, one existing deselection |
-| Local Risk | 331 non-integration tests; Ruff, mypy and Bandit passed |
-| Local Execution, including native receipt linkage and technical canary | 1175 passed, one skipped, 54 integration deselections, eight subtests passed; Ruff, mypy (67 files) and Bandit passed |
+| Local Risk | 369 non-integration tests; Ruff, mypy (21 files) and Bandit passed |
+| Local Execution, including native reads, instrument-aware Risk and assembly | 1290 passed, one skipped, 54 integration deselections, eight subtests passed; Ruff, mypy (69 files) and Bandit passed. The later cross-platform fixture-path correction separately passed all 65 affected tests. |
+| Local Node PROD transport and existing sidecar | 47 tests passed; actual send-counter, native HTTP capture and refusal paths use explicit offline transports, not real orders. |
+| Hosted Execution PostgreSQL integration, final 27 October source | 54 passed, three skipped, 1248 deselected. The fresh disposable databases test journals, immutable evidence, concurrency, loss floor and accounting; they are not venue/account qualification. |
 | Local Deploy after validator correction | 1163 tests, six skipped |
 | Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; real reviewed-V2 scheduled action, CURRENT monitoring polls and Telegram delivery were separately checked below |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 | Current opt-in modules, 26 October | Nine installed noneditable Execution/Risk/Aggregator modules matched current source after CRLF-only normalization; Git dependency metadata matched Risk/Aggregator revisions. This task-owned validation environment is not a deployed trading service. |
+| Current PROD modules, 27 October | Nine noneditable installed Execution assembly/read/transport/lifecycle/input/reconciliation/accounting modules matched current worktree bytes after CRLF-only normalization; installed Risk Git metadata matched `d8c031e`. An explicit package reinstall was needed after ordinary sync retained an earlier wheel; the failed import was not counted as a pass. This is a validation environment, not a running trader. |
+
+CI exposed two fixture defects in the new source series: Windows drive-letter
+dummy paths were not absolute on Linux, and concurrent accounting-fixture
+preparation read through one shared asyncpg audit connection. The former now
+uses host-absolute synthetic paths; the latter prepares the fixtures sequentially
+while retaining both real concurrent publication-replay and account-reservation
+checks. Production validation, database functions, authority, freshness and arm
+limits were not weakened. The failed CI runs remain historical failures, not
+accepted proof for the final source.
 
 The native traversal tests instantiate the real analytical classes and budgeted
 gateway, but supply explicitly synthetic offline provider, transport and budget
@@ -191,6 +260,17 @@ The exact current Deploy revision separately passed
 and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247385748).
 Hosted PostgreSQL/SDK and composition tests still use synthetic account/venue
 evidence; no live EVEDEX acceptance or deployed source authority is inferred.
+
+The final 27 October PROD integration source set separately passed
+[Risk CI](https://github.com/Kairos-cryptoAI/kairos-risk-manager/actions/runs/40409808602),
+[all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40413684614),
+[Execution CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40413684531),
+[Deploy CI and image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413719174),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413719213),
+[current release](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413719087),
+[full-path simulator](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413719240)
+and [Deploy CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413717538).
+These jobs verify the recorded source revisions, not an armed real-money service.
 
 ## Runtime maintenance
 
@@ -343,13 +423,18 @@ execution, account and operational admission; disabling CURRENT grants none.
    producer identity/key. It is not another generic serializer. A prepared unsigned manifest,
    caller-supplied DTO or synthetic registered verifier cannot fill this role.
 3. **Authoritative venue facts.** EVEDEX account consistency, complete recoverable
-   fills, fees/funding finality, protection lineage and the accepted PROD signing
-   domain remain unqualified. The existing support thread contained only the
+   private events/fills, fees/funding finality, protection lineage, native order
+   time-in-force semantics and the accepted PROD signing domain remain
+   unqualified. The new bounded raw REST readers do not turn these into accepted
+   real account/exit/cancellation/terminal verifiers. The existing support thread contained only the
    two sent inquiries at the latest check, with no response. The
    [official SDK](https://github.com/evedex-official/exchange-bot-sdk) describes
    capabilities, not all of those recovery guarantees. API-key possession and
    a visible delegate do not establish them.
-4. **One deployed trading service.** The ordinary Compose configuration still
+4. **One deployed trading service.** The concrete assembly API now joins the
+   existing execution components, but its real source implementations and
+   upstream producer remain prerequisites for a configured launcher and bounded
+   acceptance of the exact selected service. The ordinary Compose configuration still
    selects `evedex` and `DRY_RUN`; it does not enable the new optional native
    composition. The supported settings/factory path intentionally refuses LIVE.
    A functioning non-trading data worker and lifecycle fixtures are not a full
