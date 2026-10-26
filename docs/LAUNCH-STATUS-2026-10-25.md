@@ -32,7 +32,7 @@ resilience is not established by a backup stored on that same computer.
   native Text input, prompt, schema, result and output. Failed persistence blocks
   publication; explicit local fallback is not labeled a model answer. An exact
   replay of the existing pure Text transform checks the retained output.
-- Execution `6cd322d4eb19f7ea6934dee601ab2b509b5f4e4c` invokes the actual native
+- Execution `2d2f1bdaeaa495a296e5543d4a0ef6557126f944` invokes the actual native
   Text, Router, context store and review classes through an explicit
   composition API. Durable claims precede calls; expiry and cancellation keep
   unknown attempts fenced. Original model reservations, committed cost, provider
@@ -59,7 +59,7 @@ resilience is not established by a backup stored on that same computer.
   and legacy R7 observation behavior remain covered. Original native phase
   evidence is still in the protected status file; its clocks and freshness
   checks are unchanged. The journal is not rotated, reset or enlarged.
-- Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` aligns the current source
+- Deploy `e39cb31ebe628ac76a6d64c44c03c8e27bc9ae29` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
 - The current adaptive tooling locks OpenTelemetry API 1.45.1. GitHub marks
@@ -70,16 +70,69 @@ The [current manifest](../config/current-release.json) records all 14 clean,
 signed `main` sources matching their local `origin/main`. Source identity and
 engineering tests are not a trading admission.
 
+## Bounded technical-canary preparation, 26 October
+
+The owner selected a short real-money technical test rather than waiting for
+the full research campaign. A separate fixed seven-proof canary profile now
+exists in Execution: recovery, security review, custody, delivered alerts,
+global operator control, PROD account pairing and signed production limits.
+It does not require the full profile's 365-day/500-trade research proofs, crash
+gate, DEMO campaigns or off-host restore. The full production verifier was not
+weakened, and this narrower profile does not establish alpha or LIVE readiness.
+
+The opt-in `start_technical_canary_service` API reuses the existing coordinator,
+Risk, protected lifecycle and service driver. It re-verifies the exact signed
+safety proofs without changing their timestamps, validates an owner-signed arm,
+and consumes its one-use nonce in the same isolated PostgreSQL claims store.
+Unknown commit/startup outcomes remain fenced. The session allows one candidate
+admission, within at most 600 seconds, bound to that exact signed arm; even a
+normal no-entry result consumes the admission. This is not proof of a flat
+account or permission to bypass current exposure. Expiry blocks entries, not
+ongoing protective/reconciliation maintenance. No real service was started.
+
+Risk `0da885aac20c5bae0173bf2d2ca81d528c458777` can calculate a deterministic
+capital/stop-loss proposal from already qualified fresh account facts, the
+frozen starting scope and supplied venue minimums. The public evaluator requires
+its registered source verifier first; the pinned real EVEDEX verifier still
+refuses unqualified facts. The existing 0.25% per-trade and 1% aggregate stop-risk
+ceilings remain. Proposed daily loss is at most 1% of the scoped capital basis,
+not a return optimization or owner arm. Portfolio notional and stop risk are
+separate limits; balances below actual venue minimums refuse rather than round
+up. Deposits/profits cannot silently raise the starting cap. A changed proposal
+requires a newly accepted scope and fresh verification; no key, reservation,
+scope change or order is created by the calculator.
+
+Aggregator `8f96df46b657e6403b5c4355f9603f38a50868cd` now requires exact retained
+market/closed-bar observations and returns their original first-receive receipts.
+The native composition no longer reinserts them with a later receive clock.
+Missing, altered, quarantined or stale observations refuse before claims/models.
+This fixes native receipt linkage; it does not authenticate a raw HTTP producer.
+
+Pure negative LIVE Risk evaluations now return an explicit no-entry result
+before staging, signing or reservations. They do not falsely mark the entire
+driver as having an unknown trading effect. Independent subsequent candidates
+remain possible in the ordinary driver, while the canary still has its one
+admission cap. Wrong-scope evidence, unknown writes, substituted coordinators,
+cancellation and ambiguous external effects retain the fail-closed behavior.
+
+These changes have offline synthetic boundary coverage and existing native
+integration coverage, not a real EVEDEX entry/close. Genuine seven-proof
+operational receipts, a qualified account/input producer and an explicit owner
+arm have not been produced or substituted with fixtures. The supported generic
+settings/factory still refuses LIVE. The retired CURRENT owner was not resumed.
+
 ## Executed checks
 
 | Check | Verified scope |
 | --- | --- |
 | Local Text | 115 passed, one existing deselection |
-| Local Execution, including final causality correction | 1126 passed, six skipped, 54 integration deselections, eight subtests passed |
+| Local Risk | 331 non-integration tests; Ruff, mypy and Bandit passed |
+| Local Execution, including native receipt linkage and technical canary | 1175 passed, one skipped, 54 integration deselections, eight subtests passed; Ruff, mypy (67 files) and Bandit passed |
 | Local Deploy after validator correction | 1163 tests, six skipped |
 | Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; real reviewed-V2 scheduled action, CURRENT monitoring polls and Telegram delivery were separately checked below |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
+| Current opt-in modules, 26 October | Nine installed noneditable Execution/Risk/Aggregator modules matched current source after CRLF-only normalization; Git dependency metadata matched Risk/Aggregator revisions. This task-owned validation environment is not a deployed trading service. |
 
 The native traversal tests instantiate the real analytical classes and budgeted
 gateway, but supply explicitly synthetic offline provider, transport and budget
@@ -96,8 +149,8 @@ are retained under
 The final source-aligned observation is `final-public-rss-native.report.json`
 and its create-only `final-public-rss-native-session`; the earlier inspection
 is retained separately, not relabeled as the final installed version.
-`installed-final-launch-guards.report.json` is the final source-aligned signed
-refusal/identity check, not
+`installed-final-launch-guards.report.json` is the historical source-aligned signed
+refusal/identity check for its recorded release, not
 an admission to trade.
 
 Hosted results for the first native implementation:
@@ -114,7 +167,7 @@ are retained in their failed CI runs; neither validation rule was disabled.
 The final causal correction additionally passed
 [all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536164)
 and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40230536231).
-Final Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` passed
+Earlier Deploy `bfcfd18a1edbf2b54bebfb2c477b7883655435b6` passed
 [CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160482),
 [installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160405),
 [current release](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40231160406),
@@ -124,6 +177,20 @@ The final reviewed task-registration implementation, Meta `4c0fd44d`, passed
 [validation](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40240038491)
 and [CodeQL](https://github.com/Kairos-cryptoAI/kairos/actions/runs/40240038063).
 Earlier green runs are not relabelled as tests of later revisions.
+
+The 26 October source set separately passed
+[Risk CI](https://github.com/Kairos-cryptoAI/kairos-risk-manager/actions/runs/40245405050),
+[Aggregator CI](https://github.com/Kairos-cryptoAI/kairos-aggregator/actions/runs/40245571187),
+[all six current Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40247284335)
+and [Execution CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40247284315).
+The exact current Deploy revision separately passed
+[CI](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247386263),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247386105),
+[current release](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247386215),
+[full-path simulator](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247386194)
+and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247385748).
+Hosted PostgreSQL/SDK and composition tests still use synthetic account/venue
+evidence; no live EVEDEX acceptance or deployed source authority is inferred.
 
 ## Runtime maintenance
 
@@ -290,8 +357,11 @@ execution, account and operational admission; disabling CURRENT grants none.
 5. **Final operational and owner admission.** The selected real source/account
    set must pass the existing service, protection, recovery and notification
    acceptance, with concrete dollar-cap and daily-loss limits and a separately
-   validated manual arm. An unqualified balance or LLM confidence cannot assign
-   those authority fields. Technical success never automatically arms LIVE.
+   validated manual arm. Those amounts may come from the deterministic qualified
+   account proposal; they need not be typed by the owner, but the proposal alone
+   is not a signed limits policy or arm. An unqualified balance or LLM confidence
+   cannot assign those authority fields. Technical success never automatically
+   arms LIVE. The short canary does not wait for the full research gates.
 
 There is no accepted real EVEDEX entry/close, profitable full-system test or
 professional-trader equivalence in this release. No real order or paid provider
