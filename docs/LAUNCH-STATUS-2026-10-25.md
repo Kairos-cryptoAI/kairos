@@ -32,7 +32,7 @@ resilience is not established by a backup stored on that same computer.
   native Text input, prompt, schema, result and output. Failed persistence blocks
   publication; explicit local fallback is not labeled a model answer. An exact
   replay of the existing pure Text transform checks the retained output.
-- Execution `fe6e538a90793d496c3d388cdb4b207efabad5e6` invokes the actual native
+- Execution `1e8afe6f4a87fba070d7ae8889eb9afdf9d6a6e8` invokes the actual native
   Text, Router, context store and review classes through an explicit
   composition API. Durable claims precede calls; expiry and cancellation keep
   unknown attempts fenced. Original model reservations, committed cost, provider
@@ -59,7 +59,7 @@ resilience is not established by a backup stored on that same computer.
   and legacy R7 observation behavior remain covered. Original native phase
   evidence is still in the protected status file; its clocks and freshness
   checks are unchanged. The journal is not rotated, reset or enlarged.
-- Deploy `935a7f386489ba680ae0c368e495e993031d0f69` aligns the current source
+- Deploy `3684dd89f7b70dfa099a36d18856a3f49fecb6eb` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
 - The current adaptive tooling locks OpenTelemetry API 1.45.1. GitHub marks
@@ -216,16 +216,90 @@ Original body, source/request/receive clocks and fsync witness are retained in
 This is one source-capture check only, not five-symbol qualification, latency
 acceptance, a full system traversal, an entry or a completed trade.
 
+## Original market source closure, 27 October
+
+Quant `647c8b5f9fe40d5b9db51e9f62a2f67ad2d9a42c` now has an opt-in capture
+path in its existing collector and service. It retains original Binance REST
+entity-body bytes and WebSocket text payloads (not wire-frame bytes), original
+source/request/receive clocks and selected closed-bar,
+depth, open-interest, funding and liquidation parents. It persists the selected
+parent closure before publishing its derived event. Bounds, failure latches,
+verified TLS, exact official hosts and create-only fsync witnesses remain in
+force. Unselected staged WS frames are not a complete feed archive and are not
+claimed as durable evidence. The ordinary uncaptured collector is unchanged.
+
+Independent replay executes the existing Quant transforms against those retained
+parents and checks the exact published DTO, including its original metadata.
+Execution's current native profile requires both market-source and closed-bar
+source bundles. An explicit composition preflight verifies their lineage before
+claims or model work; the preparer independently checks it again. Missing,
+altered, stale, inconsistent or incomplete lineage refuses. This is an explicit
+integration seam and an unsigned producer preparation, not registration of a
+production authority or wiring of the ordinary Compose profile into LIVE.
+
+A first real five-symbol source check failed and remains failed at
+`C:/Users/loval/AppData/Local/Kairos/source-verification-20261027/eb85e6044b324b1b86d37deadebeb0ba`.
+All 995 bars replayed, but snapshot validation exposed new replay metadata and
+a real promotion race: the collector's newest confirmed bar volume could advance
+while the service's copied publication queue still represented the previous bar.
+The fix preserves original metadata and defers a captured snapshot until that
+newly pending confirmed bar is published. It does not retime observations,
+weaken freshness or retrofit the failed capture's parents. Original failures and
+partial evidence were retained, not adopted into a passing run.
+
+The corrected, separately claimed source check completed at
+`2026-10-27T13:27:12.157945Z`.
+It observed all five symbols in 41.953 seconds: 995 closed bars (199 per symbol)
+and 10 market snapshots (two per symbol), with 1,066 source/output records and
+3,293,643 retained record bytes. Offline replay exactly reproduced all 1,005
+published events from their original parent bytes. Worker cleanup was confirmed;
+there were zero account reads, database mutations, paid model calls or orders.
+The result is explicitly `OBSERVED_NOT_QUALIFIED`, not a latency/service,
+EVEDEX, strategy, full-system lifecycle or LIVE acceptance.
+
+The script, expected identities of 20 installed noneditable modules, original
+records/witnesses, phase counts, inventory and signed report are retained under
+`C:/Users/loval/AppData/Local/Kairos/source-verification-20261027/8a51e68743e447dfb9375ef2ce3a5e5e`.
+Report SHA-256:
+`ff91f990e609a02c68fcdb9c0f1d319689e3932b839d2994d9393effef0750e9`.
+Task-local storage was selected after the same durable primitive measured much
+slower on D: than C:. This observation is not a proven disk/OS root cause, a
+storage-bypass permission or deployment qualification; fsync was not disabled.
+
+### EVEDEX contract disposition
+
+Python dispatch validation and the actual Node SDK boundary now reject an
+unsupported limit-IOC request before dispatch. The official API documentation
+states that limit orders are GTC. No automatic substitution to market or GTC,
+new order policy, real order or trial signature was used to hide that mismatch.
+The currently selected limit-IOC entry contract therefore remains blocked.
+
+The public version check still found SDK 1.2.11 / exchange-api 1.0.70.
+The newer networks 3.9.1 package retains chain 42161, while the SDK repository's
+master parameters use 161803. The published API-key SDK session does not provide
+the JWT needed for private subscriptions, and the available contract does not
+establish account-wide consistency, recoverable complete fills, funding finality
+or entry-parent protection lineage. REST capture readers are not proof of these
+guarantees. No browser token, guessed signing domain or fabricated empty account
+state was substituted. The support thread was checked again at
+`2026-10-27T13:27Z`: it still contained only the two sent inquiries, no reply.
+
+Thus the public market capture/replay implementation is now exercised on actual
+data, but **a deployed PROD trader has not been started or accepted**. Genuine
+EVEDEX source/signing/order authority, the accepted producer/policy and exact
+service deployment/admission remain prerequisites. The retired CURRENT runtime,
+old databases and queues were not restarted or changed to produce this result.
+
 ## Executed checks
 
 | Check | Verified scope |
 | --- | --- |
 | Local Text | 115 passed, one existing deselection |
 | Local Risk | 369 non-integration tests; Ruff, mypy (21 files) and Bandit passed |
-| Local Execution, including native producer, capture and host | 1357 passed, one skipped, 54 integration deselections, eight subtests passed on verified Node 22.23.4; Ruff, format, mypy (73 files) and Bandit passed. |
+| Local Execution, including native producer, source lineage, capture and host | 1366 passed, one skipped, 54 integration deselections, eight subtests passed on verified Node 22.23.4; Ruff, format, mypy (74 files) and Bandit passed. |
 | Local Macro, including durable captured processing claims | 110 passed, one skipped; Ruff, format, mypy (12 files) and Bandit passed. |
-| Local Quant, including explicit PROD venue-quality calculation | 283 passed; Ruff, format, mypy (20 files) and Bandit passed. |
-| Local Node PROD transport and existing sidecar | 47 tests passed; actual send-counter, native HTTP capture and refusal paths use explicit offline transports, not real orders. |
+| Local Quant, including original-source capture/replay and publication-race regression | 294 passed; Ruff, format, mypy (22 files) and Bandit passed. |
+| Local Node PROD transport and existing sidecar | 48 tests passed, including rejection of unsupported limit IOC; actual send-counter, native HTTP capture and refusal paths use explicit offline transports, not real orders. |
 | Hosted Execution PostgreSQL integration, final 27 October source | 54 passed, five skipped, 1287 deselected. The fresh disposable databases test journals, immutable evidence, concurrency, loss floor and accounting; they are not venue/account qualification. |
 | Local Deploy after validator correction | 1165 tests, six skipped, using the workflow's `unittest discover -s tests`; changed validator files also passed Ruff. |
 | Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; real reviewed-V2 scheduled action, CURRENT monitoring polls and Telegram delivery were separately checked below |
@@ -234,6 +308,7 @@ acceptance, a full system traversal, an entry or a completed trade.
 | Current opt-in modules, 26 October | Nine installed noneditable Execution/Risk/Aggregator modules matched current source after CRLF-only normalization; Git dependency metadata matched Risk/Aggregator revisions. This task-owned validation environment is not a deployed trading service. |
 | Current PROD modules, 27 October | Nine noneditable installed Execution assembly/read/transport/lifecycle/input/reconciliation/accounting modules matched current worktree bytes after CRLF-only normalization; installed Risk Git metadata matched `d8c031e`. An explicit package reinstall was needed after ordinary sync retained an earlier wheel; the failed import was not counted as a pass. This is a validation environment, not a running trader. |
 | Final native producer/host modules, 27 October | Ten noneditable Execution/Macro/Quant module byte identities matched source after CRLF-only normalization; installed Macro/Quant Git metadata matched `1f0d262` / `f1a7490`. Default LIVE settings and factory independently refused without network, credentials or orders. |
+| Corrected real public Quant check, 27 October | 20 installed noneditable module identities matched; exact original-source replay passed for 995 real bars and 10 real snapshots across five symbols. Source check only, not a deployed service or trading acceptance. |
 
 Two earlier local full-suite attempts under the default Node 24 environment
 contained SDK subprocess timeouts or a local-custody child-process failure.
@@ -341,6 +416,19 @@ The unchanged source-projection revision `71c85d5` had already passed its
 and [full-path simulator gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40495949465).
 Their exact evidence remains attributed to that earlier Deploy revision, not
 silently relabeled as the later validator correction.
+
+The corrected original-source release separately passed
+[Quant CI](https://github.com/Kairos-cryptoAI/kairos-quant-scouts/actions/runs/40510338267),
+[Quant CodeQL](https://github.com/Kairos-cryptoAI/kairos-quant-scouts/actions/runs/40510337396),
+[all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40510775210),
+[Execution CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40510775115),
+[Deploy CI and image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40512188991),
+[installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40512189028),
+[current-release gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40512188986),
+[full-path simulator gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40512189003)
+and [Deploy CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40512189216).
+These hosted integration fixtures remain distinct from the actual public source
+capture above and from the still-unperformed deployed PROD service acceptance.
 
 ## Runtime maintenance
 
@@ -486,9 +574,10 @@ execution, account and operational admission; disabling CURRENT grants none.
    failure handling; no replacement or LIVE service was activated by retirement.
 2. **Trusted upstream deployment.** The concrete native producer now projects
    retained RSS/Macro/venue/model evidence through the existing envelope preflight.
-   Raw market/closed-bar ingress still needs qualified original source authority,
-   and the producer needs an independently accepted identity/key and deployment
-   acceptance. A prepared unsigned manifest, caller-supplied DTO or synthetic
+   Original market/closed-bar capture and exact replay have now passed the bounded
+   real public check above, but the producer still needs an independently accepted
+   identity/key, the remaining genuine source contracts and deployment acceptance.
+   A prepared unsigned manifest, caller-supplied DTO or synthetic
    registered verifier cannot fill this role.
 3. **Authoritative venue facts.** EVEDEX account consistency, complete recoverable
    private events/fills, fees/funding finality, protection lineage, native order
