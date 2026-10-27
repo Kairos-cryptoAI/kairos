@@ -32,7 +32,7 @@ resilience is not established by a backup stored on that same computer.
   native Text input, prompt, schema, result and output. Failed persistence blocks
   publication; explicit local fallback is not labeled a model answer. An exact
   replay of the existing pure Text transform checks the retained output.
-- Execution `58ebf3438ab6f710c14d0fcc09c4a52dcbdf017d` invokes the actual native
+- Execution `fe6e538a90793d496c3d388cdb4b207efabad5e6` invokes the actual native
   Text, Router, context store and review classes through an explicit
   composition API. Durable claims precede calls; expiry and cancellation keep
   unknown attempts fenced. Original model reservations, committed cost, provider
@@ -59,7 +59,7 @@ resilience is not established by a backup stored on that same computer.
   and legacy R7 observation behavior remain covered. Original native phase
   evidence is still in the protected status file; its clocks and freshness
   checks are unchanged. The journal is not rotated, reset or enlarged.
-- Deploy `87f8d16a9aab7fa8063fef9a230372c0d568ff8f` aligns the current source
+- Deploy `935a7f386489ba680ae0c368e495e993031d0f69` aligns the current source
   projections and validates the exact optional native dependencies. Execution
   is still not granted model secrets by the ordinary deployment profile.
 - The current adaptive tooling locks OpenTelemetry API 1.45.1. GitHub marks
@@ -178,21 +178,72 @@ denials remain. Synthetic constructor/transport tests do not register production
 authorities. Neither the retired CURRENT contour nor any database/queue was
 restarted or modified, and no key, paid model call or real order was used.
 
+## Native producer and host integration, 27 October follow-up
+
+The canonical opt-in front door is now `build_production_host`: it constructs
+the actual assembly and supervises its existing entry/lifecycle workers. A lost
+worker closes entry admission; surviving protective maintenance is not silently
+restarted or replaced. One owner-bound admission is latched before awaiting an
+input. After a naturally terminal `FLAT` trade, bounded read-only evidence polling
+can lead to exactly one reconciliation/accounting attempt. Pending evidence is
+not proof; ambiguous outcomes retain reservations and the unknown-attempt fence.
+No forced close, background re-arm, cleanup retry or authority was added.
+
+`NativeProductionInputPreparer` joins exact retained RSS, Macro, Binance,
+EVEDEX instrument/book and native Text/Router/review records using their original
+persistence witnesses. Macro now retains the exact application input/output and
+claims each stable message identity durably before a provider call; a restart
+cannot pay again through this captured allocation path. Projection replays the
+existing native transforms and model-call linkage instead of accepting arbitrary
+caller digests. Application context and local fsync evidence are explicitly not
+provider authentication or a historical macro-feed qualification.
+
+Quant calculates a new PROD venue-quality measurement from the exact selected
+Binance/EVEDEX pair and original clocks under the unchanged ceilings. It cannot
+retag DEV measurements as PROD; default DEV behavior remains compatible. The
+producer returns an **unsigned, unregistered preparation**, not an accepted input
+authority. Raw market/closed-bar ingress authority, independently accepted
+producer identity, real account verifiers and actual deployment acceptance remain
+unresolved. The host is a concrete library entry point, not an installed and
+qualified continuously running trading service. Strategy code was not changed.
+
+One actual free public Binance BTCUSDT depth request was retained and replayed
+through the installed capture adapter/projector, with no authentication or orders:
+capture `848230dab7cc66f896cae3fb787026db`, 4285 raw body bytes, SHA-256
+`fac0284a5bf95bd43904fd8bec65534505cc8f2cab1bff52c54135da2573e47e`.
+Original body, source/request/receive clocks and fsync witness are retained in
+`D:/Kairos/runtime/launch-finish-20261025/f3e65dcdbed44331a627d8c007f7837a/public-depth-20261027-cc69157c8675428289a7ab840275b010`.
+This is one source-capture check only, not five-symbol qualification, latency
+acceptance, a full system traversal, an entry or a completed trade.
+
 ## Executed checks
 
 | Check | Verified scope |
 | --- | --- |
 | Local Text | 115 passed, one existing deselection |
 | Local Risk | 369 non-integration tests; Ruff, mypy (21 files) and Bandit passed |
-| Local Execution, including native reads, instrument-aware Risk and assembly | 1290 passed, one skipped, 54 integration deselections, eight subtests passed; Ruff, mypy (69 files) and Bandit passed. The later cross-platform fixture-path correction separately passed all 65 affected tests. |
+| Local Execution, including native producer, capture and host | 1357 passed, one skipped, 54 integration deselections, eight subtests passed on verified Node 22.23.4; Ruff, format, mypy (73 files) and Bandit passed. |
+| Local Macro, including durable captured processing claims | 110 passed, one skipped; Ruff, format, mypy (12 files) and Bandit passed. |
+| Local Quant, including explicit PROD venue-quality calculation | 283 passed; Ruff, format, mypy (20 files) and Bandit passed. |
 | Local Node PROD transport and existing sidecar | 47 tests passed; actual send-counter, native HTTP capture and refusal paths use explicit offline transports, not real orders. |
-| Hosted Execution PostgreSQL integration, final 27 October source | 54 passed, three skipped, 1248 deselected. The fresh disposable databases test journals, immutable evidence, concurrency, loss floor and accounting; they are not venue/account qualification. |
-| Local Deploy after validator correction | 1163 tests, six skipped |
+| Hosted Execution PostgreSQL integration, final 27 October source | 54 passed, five skipped, 1287 deselected. The fresh disposable databases test journals, immutable evidence, concurrency, loss floor and accounting; they are not venue/account qualification. |
+| Local Deploy after validator correction | 1165 tests, six skipped, using the workflow's `unittest discover -s tests`; changed validator files also passed Ruff. |
 | Technical operations | 250 offline tests, including 38 notifier tests and five reviewed-registration source/PowerShell-AST checks; real reviewed-V2 scheduled action, CURRENT monitoring polls and Telegram delivery were separately checked below |
 | Real free RSS inspection | Cointelegraph HTTP 200, original 53404-byte body and 30 native parsed items retained and replay-checked; CoinDesk HTTP 308 retained without following or counting it as a successful feed |
 | Installed launch guards | Seven noneditable native module byte identities matched; both default LIVE settings and the adapter factory independently refused LIVE without network, credentials or orders |
 | Current opt-in modules, 26 October | Nine installed noneditable Execution/Risk/Aggregator modules matched current source after CRLF-only normalization; Git dependency metadata matched Risk/Aggregator revisions. This task-owned validation environment is not a deployed trading service. |
 | Current PROD modules, 27 October | Nine noneditable installed Execution assembly/read/transport/lifecycle/input/reconciliation/accounting modules matched current worktree bytes after CRLF-only normalization; installed Risk Git metadata matched `d8c031e`. An explicit package reinstall was needed after ordinary sync retained an earlier wheel; the failed import was not counted as a pass. This is a validation environment, not a running trader. |
+| Final native producer/host modules, 27 October | Ten noneditable Execution/Macro/Quant module byte identities matched source after CRLF-only normalization; installed Macro/Quant Git metadata matched `1f0d262` / `f1a7490`. Default LIVE settings and factory independently refused without network, credentials or orders. |
+
+Two earlier local full-suite attempts under the default Node 24 environment
+contained SDK subprocess timeouts or a local-custody child-process failure.
+Targeted repeats passed, followed by the complete passing suite on a task-local
+Node 22.23.4 runtime verified against the official archive SHA-256. The cause was
+not fully isolated, so a Node-version root cause is not claimed. Timeouts, test
+selection and production guards were not relaxed; failed runs are not passes.
+An unscoped Deploy pytest collection produced no terminal result and was
+cancelled by stopping only its two verified task-owned processes. It is not a
+pass; the complete workflow-selected unittest discovery subsequently passed.
 
 CI exposed two fixture defects in the new source series: Windows drive-letter
 dummy paths were not absolute on Linux, and concurrent accounting-fixture
@@ -261,7 +312,7 @@ and [CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40247
 Hosted PostgreSQL/SDK and composition tests still use synthetic account/venue
 evidence; no live EVEDEX acceptance or deployed source authority is inferred.
 
-The final 27 October PROD integration source set separately passed
+The first 27 October PROD integration source set separately passed
 [Risk CI](https://github.com/Kairos-cryptoAI/kairos-risk-manager/actions/runs/40409808602),
 [all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40413684614),
 [Execution CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40413684531),
@@ -271,6 +322,25 @@ The final 27 October PROD integration source set separately passed
 [full-path simulator](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413719240)
 and [Deploy CodeQL](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40413717538).
 These jobs verify the recorded source revisions, not an armed real-money service.
+
+The later native producer/host source set separately passed
+[Macro CI](https://github.com/Kairos-cryptoAI/kairos-macro-strategist/actions/runs/40493100569),
+[Quant CI](https://github.com/Kairos-cryptoAI/kairos-quant-scouts/actions/runs/40493329538),
+[all six Execution jobs](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40494914392)
+and [Execution CodeQL](https://github.com/Kairos-cryptoAI/kairos-execution-engine/actions/runs/40494913588).
+Deploy CI first refused the newly required sixth `native-inputs` dependency,
+Quant, because its remote validator still expected five. The exact-six
+declaration and lock check is now aligned, with a negative regression proving
+that Quant's separate `recorder` extra cannot substitute for a native input.
+No source pin or trading rule was loosened to fix that failure.
+The corrected exact Deploy source then passed
+[CI and image builds](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40497269454)
+and [installed composition](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40497269485).
+The unchanged source-projection revision `71c85d5` had already passed its
+[current-release gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40495949457)
+and [full-path simulator gate](https://github.com/Kairos-cryptoAI/kairos-deploy/actions/runs/40495949465).
+Their exact evidence remains attributed to that earlier Deploy revision, not
+silently relabeled as the later validator correction.
 
 ## Runtime maintenance
 
@@ -414,14 +484,12 @@ execution, account and operational admission; disabling CURRENT grants none.
    merely to continue the project. The service actually selected for trading
    must demonstrate working data delivery, bounded restart/recovery and safe
    failure handling; no replacement or LIVE service was activated by retirement.
-2. **Trusted upstream deployment.** The generic envelope assembler and service
-   forwarding boundary already exist: `prepare_native_input_envelope`,
-   `verify_signed_native_input_envelope`, `ProductionEntryEnvelope` and the
-   service entry worker. The remaining piece is a qualified producer-specific
-   projection joining genuine original Macro, bars, market and venue witnesses
-   to their original persistence receipts, plus an independently accepted
-   producer identity/key. It is not another generic serializer. A prepared unsigned manifest,
-   caller-supplied DTO or synthetic registered verifier cannot fill this role.
+2. **Trusted upstream deployment.** The concrete native producer now projects
+   retained RSS/Macro/venue/model evidence through the existing envelope preflight.
+   Raw market/closed-bar ingress still needs qualified original source authority,
+   and the producer needs an independently accepted identity/key and deployment
+   acceptance. A prepared unsigned manifest, caller-supplied DTO or synthetic
+   registered verifier cannot fill this role.
 3. **Authoritative venue facts.** EVEDEX account consistency, complete recoverable
    private events/fills, fees/funding finality, protection lineage, native order
    time-in-force semantics and the accepted PROD signing domain remain
@@ -431,8 +499,8 @@ execution, account and operational admission; disabling CURRENT grants none.
    [official SDK](https://github.com/evedex-official/exchange-bot-sdk) describes
    capabilities, not all of those recovery guarantees. API-key possession and
    a visible delegate do not establish them.
-4. **One deployed trading service.** The concrete assembly API now joins the
-   existing execution components, but its real source implementations and
+4. **One deployed trading service.** The concrete assembly and supervising host
+   APIs now join the existing execution components, but real source implementations and
    upstream producer remain prerequisites for a configured launcher and bounded
    acceptance of the exact selected service. The ordinary Compose configuration still
    selects `evedex` and `DRY_RUN`; it does not enable the new optional native
