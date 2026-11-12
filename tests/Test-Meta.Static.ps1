@@ -96,8 +96,8 @@ $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 if ($manifest.schemaVersion -ne 1) { throw "Unexpected manifest schema" }
 if ($manifest.requiredUvVersion -ne "0.12.3") { throw "Unexpected uv version" }
 if (@($manifest.pythonVersions) -join "," -ne "3.11,3.14") { throw "Unexpected Python matrix" }
-if (@($manifest.repositories).Count -ne 12) { throw "Expected 12 Python repositories" }
-if (@($manifest.repositories.name | Sort-Object -Unique).Count -ne 12) {
+if (@($manifest.repositories).Count -ne 13) { throw "Expected 13 Python repositories" }
+if (@($manifest.repositories.name | Sort-Object -Unique).Count -ne 13) {
     throw "Repository names are not unique"
 }
 foreach ($entry in $manifest.repositories) {

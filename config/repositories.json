@@ -75,6 +75,12 @@
       "path": "kairos-backtest",
       "source": "kairos_backtest",
       "pytestArgs": ["-q", "--tb=short"]
+    },
+    {
+      "name": "kairos-autotrader",
+      "path": "kairos-autotrader",
+      "source": "kairos_autotrader",
+      "pytestArgs": ["-q", "--tb=short"]
     }
   ]
 }

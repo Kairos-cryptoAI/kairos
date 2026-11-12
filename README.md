@@ -153,6 +153,7 @@ and the missing evaluation gates.
 | [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale inbox/outbox, facts, lifecycle, TCA, budgets, equity and readiness metrics |
 | [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic replay using the exact Strategy Engine generators and fill modelling |
 | [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned DRY_RUN and isolated `kairos-paper` Compose projects, monitoring and recovery tools |
+| `kairos-autotrader` (local checkout, not yet published) | live runner: one process that runs the layers on EVEDEX PROD with real orders; deviations from the contracts are listed in its `docs/ALIGNMENT.md` |
 | [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
 
 ## Windows-first local verification
