@@ -11,6 +11,10 @@ Current scope and implementation priorities are defined in
 candidate contract path, not an accepted continuously running adaptive deployment.
 The existing PAPER Compose profile is a bounded technical DEV-canary profile.
 
+The owner's end goal for the whole system (in Russian) is [PHILOSOPHY.md](docs/PHILOSOPHY.md):
+an adaptive trader that manages capital, risk, leverage, instruments and open positions
+itself, inside a fixed owner constitution. It is a target, not a readiness claim.
+
 The [whole-project capability audit](docs/PROJECT-CAPABILITY-AUDIT-2026-10-23.md)
 separates implemented components, CURRENT research SIM, the non-trading runtime
 and still-incomplete production trading. Kairos is not yet established as an
