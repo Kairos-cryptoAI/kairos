@@ -50,11 +50,11 @@ The [engineering release manifest](config/current-release.json) records the sour
 and readiness of its own assessed release.
 
 In PowerShell, start in an empty directory. To find the catalog commit for the
-[November 19 portfolio snapshot](https://github.com/Kairos-cryptoAI/kairos/tree/workspace-2026-11-19-portfolio.3),
+[November 19 portfolio snapshot](https://github.com/Kairos-cryptoAI/kairos/tree/workspace-2026-11-19-portfolio.4),
 run the command below. The first column gives the full commit SHA.
 
 ```powershell
-git ls-remote --tags https://github.com/Kairos-cryptoAI/kairos.git 'refs/tags/workspace-2026-11-19-portfolio.3^{}'
+git ls-remote --tags https://github.com/Kairos-cryptoAI/kairos.git 'refs/tags/workspace-2026-11-19-portfolio.4^{}'
 ```
 
 Enter that SHA, or the full catalog commit for another snapshot. Each checkout
