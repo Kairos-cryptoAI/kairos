@@ -41,6 +41,43 @@ records its own 14-repository source set.
 | [kairos-autotrader](https://github.com/Kairos-cryptoAI/kairos-autotrader) | standalone paper/live runner, sibling workers, file-based trading state and executor selection |
 | [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
 
+## Restore a workspace snapshot
+
+Each catalog commit containing the [workspace manifest](config/workspace-sources.json)
+identifies all 15 public repositories. Its own commit selects the revision of `kairos`
+(`SELF` in the manifest). Each of the 14 sibling repositories has a full Git commit ID.
+The [engineering release manifest](config/current-release.json) records the sources
+and readiness of its own assessed release.
+
+In PowerShell, start in an empty directory. To find the catalog commit for the
+[November 19 snapshot](https://github.com/Kairos-cryptoAI/kairos/tree/workspace-2026-11-19),
+run the command below. The first column gives the full commit SHA.
+
+```powershell
+git ls-remote --tags https://github.com/Kairos-cryptoAI/kairos.git 'refs/tags/workspace-2026-11-19^{}'
+```
+
+Enter that SHA, or the full catalog commit for another snapshot. Each checkout
+opens at its recorded commit.
+
+```powershell
+$catalogCommit = Read-Host 'Full kairos catalog commit SHA'
+if ($catalogCommit -notmatch '^[0-9a-f]{40}$') { throw 'Expected a full Git commit SHA' }
+
+function Restore-Repository($name, $origin, $revision) {
+    git clone --filter=blob:none --no-checkout $origin $name
+    if ($LASTEXITCODE -ne 0) { throw "Could not clone $name" }
+    git -C $name switch --detach $revision
+    if ($LASTEXITCODE -ne 0) { throw "Could not check out $name at $revision" }
+}
+
+Restore-Repository 'kairos' 'https://github.com/Kairos-cryptoAI/kairos.git' $catalogCommit
+$snapshot = Get-Content -Raw ./kairos/config/workspace-sources.json | ConvertFrom-Json
+foreach ($repo in $snapshot.repositories) {
+    Restore-Repository $repo.name $repo.origin $repo.revision
+}
+```
+
 ## Windows-first local verification
 
 The meta-repository runner discovers `uv`, reads [`config/repositories.json`](config/repositories.json),
