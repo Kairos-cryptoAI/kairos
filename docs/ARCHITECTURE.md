@@ -12,7 +12,26 @@ target, capability boundaries and critical path are in
 [the current manifest](../config/current-release.json). The candidate path below
 is not a claim that the technical-canary Compose profile launches every component.
 
-## Current path taxonomy — 2026-10-23
+## Standalone runner
+
+`kairos-autotrader` orchestrates workers in sibling checkouts. The Strategy
+Engine produces a typed intent from closed Binance bars. Router selects the
+review tier, the configured reviewer evaluates the candidate, and Risk Manager
+decides whether to admit an entry and how much to trade. The runner persists
+its orchestration state in files. [Runner source](https://github.com/Kairos-cryptoAI/kairos-autotrader)
+
+| Runner mode | Owner of order effects | Where to follow a trade |
+| --- | --- | --- |
+| Paper | `PaperBroker` simulates fills. | Paper runtime directory and its journal. |
+| Live with `executor=runner` | The runner's `LiveBroker` submits the entry and manages the EVEDEX position. | Live runtime directory and its journal. |
+| Live with `executor=execution_engine` | The separately provisioned production session verifies its configuration and evidence, evaluates Risk again, and handles a single protected trade. | Runner handoff and session result, then the Execution Engine's durable journal and reconciliation records. |
+
+The service release manifest covers a specific set of revisions. The runner
+has its own configuration and source dependencies. Its paper-mode journal,
+the EVEDEX DEV PAPER service journal and a live execution journal each
+describe a different account context. [Production session](https://github.com/Kairos-cryptoAI/kairos-execution-engine/blob/main/docs/PRODUCTION-SESSION.md)
+
+## Service and research paths — 2026-10-23
 
 The [whole-project audit](PROJECT-CAPABILITY-AUDIT-2026-10-23.md) reconciles
 capability and acceptance across the source set. Do not collapse these paths:
@@ -31,7 +50,7 @@ PAPER has loss-at-stop sizing; legacy TacticalCommand sizing and caller-quantity
 SIM admission have different semantics. The generic Macro service's unavailable
 release/on-chain factors do not mean CURRENT has no official context: CURRENT
 also captures bounded Fed/BLS publications, with explicit missing/partial fields.
-The latest engineering evidence is the
+The engineering evidence for that source set is the
 [October 23 checkpoint](RUNTIME-PRODUCTION-2026-10-23.md), not a LIVE approval.
 
 ## Data and control flow
@@ -136,13 +155,10 @@ they are not a direct Risk/order path or a production-admitted policy. The
 offline prospective V3 combined rule is also distinct from the historical
 static evaluator. New lifetime/rearming/ranking values remain unselected.
 
-The Router carries the complete intent unchanged and deterministically selects `NORMAL` or
-`CONFLICT` from candidate-specific text evidence. The Aggregator's strict schema contains only
-review decision, priority and reason codes:
-
-- normal review: `gpt-6-luna`, `medium`;
-- conflict review: `gpt-6.1-sol`, `high`;
-- allowed outputs: `ALLOW`, `VETO` or `DEFER`.
+The Router carries the complete intent unchanged and deterministically selects
+`NORMAL` or `CONFLICT` from candidate-specific text evidence. The Aggregator
+returns `ALLOW`, `VETO` or `DEFER`, a priority, and reason codes. Its workload
+selects the model and effort. [Gateway defaults](../SPEC.md#model-strategy--workload-specific-openai-routing)
 
 The normal service first publishes immutable `DecisionContextV1`: exact route and
 intent identity, compact market payload, the intent-declared bar tail and explicit
@@ -158,7 +174,7 @@ output, provider error or deadline miss terminates the current intent without a 
 a later closed bar may create a new intent. Priority only orders otherwise eligible competing
 candidates and never changes quantity.
 
-Macro Strategist uses `gpt-6.1-sol` at `xhigh` to produce portfolio allocation and shock context.
+The Macro Strategist service uses the gateway's Macro workload for portfolio allocation and shock context.
 It is not a qualified external macro-release/onchain feed; those inputs are explicitly
 unavailable. Risk treats capital allocation as a cap, not an instruction to alter a candidate.
 Text extraction defaults to `gpt-6-luna` at `low`. These are implementation defaults, not

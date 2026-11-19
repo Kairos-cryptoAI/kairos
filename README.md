@@ -1,26 +1,76 @@
 # Kairos — AI Futures Trader
 
-Kairos is a pre-production, LLM-assisted futures-trading system with deterministic strategy,
-risk and execution boundaries. Models receive compact typed context, never raw streams, cannot
-change a strategy's side or exit plan, and cannot call an exchange. Every PAPER mutation must
-come from an immutable strategy intent, pass deterministic risk and EVEDEX DEV venue gates, and
-be submitted by the crash-recoverable Execution Engine.
+Kairos is a futures-trading system for EVEDEX. It derives signals from closed
+Binance USD-M bars, uses models to review market context, and delegates sizing
+and order handling to deterministic code. Its design goal is to choose instruments,
+allocate capital and manage open positions within limits set by the owner.
+[Design philosophy (Russian)](docs/PHILOSOPHY.md) · [Concept and research scope](docs/CURRENT_CONCEPT.md)
 
-Current scope and implementation priorities are defined in
-[CURRENT_CONCEPT.md](docs/CURRENT_CONCEPT.md). The diagram below describes the
-candidate contract path, not an accepted continuously running adaptive deployment.
-The existing PAPER Compose profile is a bounded technical DEV-canary profile.
+## Runtime paths
 
-The owner's end goal for the whole system (in Russian) is [PHILOSOPHY.md](docs/PHILOSOPHY.md):
-an adaptive trader that manages capital, risk, leverage, instruments and open positions
-itself, inside a fixed owner constitution. It is a target, not a readiness claim.
+| Path | Components and execution |
+| --- | --- |
+| Service stack | The services exchange typed messages over Redis Streams and record processing in PostgreSQL. The technical PAPER profile targets EVEDEX DEV and uses the Execution Engine's durable order journal. The engineering release records the pinned sources and their readiness. [Architecture](docs/ARCHITECTURE.md) · [Release manifest](config/current-release.json) |
+| Standalone runner | `kairos-autotrader` calls workers in sibling checkouts to compute and route candidates, review them and obtain a Risk decision. Paper mode simulates fills. In live mode the configured executor selects the runner's own EVEDEX broker or the Execution Engine's production session. [Runner](https://github.com/Kairos-cryptoAI/kairos-autotrader) · [Execution paths](docs/ARCHITECTURE.md#standalone-runner) |
+
+For the component owners, see the [repository map](#repositories). The offline
+research and replay results have separate [promotion criteria](#offline-strategy-promotion-gate).
+
+## Repositories
+
+The workspace has 15 repositories. The [local verification manifest](config/repositories.json)
+covers the 13 Python repositories. This project and `kairos-deploy` provide
+cross-project verification and deployment tooling. The [engineering release manifest](config/current-release.json)
+records its own 14-repository source set.
+
+| repository | role |
+| --- | --- |
+| [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | typed contracts, Redis Streams bus, config and logging |
+| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI-only default gateway, optional provider compatibility, strict output validation, cost and health events |
+| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | complete closed Binance bars, gap recovery, indicators and EVEDEX quality polling |
+| [kairos-strategy-engine](https://github.com/Kairos-cryptoAI/kairos-strategy-engine) | pure strategy generators shared byte-for-byte by research and runtime |
+| [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | text ingestion, local filtering, sentiment and local fallback |
+| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | candidate-specific deterministic NORMAL/CONFLICT routing plus legacy DRY_RUN FSM |
+| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | immutable `ALLOW/VETO/DEFER` candidate review plus legacy DRY_RUN tactical decisions |
+| [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
+| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | loss-at-stop sizing and deterministic account, portfolio and venue admission |
+| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | protected PAPER/SIM lifecycle, execution journal and reconciliation, plus the separately configured production session for one trade |
+| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale inbox/outbox, facts, lifecycle, TCA, budgets, equity and readiness metrics |
+| [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic replay using the exact Strategy Engine generators and fill modelling |
+| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned DRY_RUN and isolated `kairos-paper` Compose projects, monitoring and recovery tools |
+| [kairos-autotrader](https://github.com/Kairos-cryptoAI/kairos-autotrader) | standalone paper/live runner, sibling workers, file-based trading state and executor selection |
+| [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
+
+## Windows-first local verification
+
+The meta-repository runner discovers `uv`, reads [`config/repositories.json`](config/repositories.json),
+and verifies every repository in that manifest without Docker or live credentials. It does not read
+`.env` files, change Git state, or clean dirty worktrees.
+
+```powershell
+# Full 3.11 + 3.14 matrix for repositories listed in the manifest.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1
+
+# Faster focused iteration.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 `
+  -Repository kairos-core,kairos-router -PythonVersion 3.11 -FailFast
+
+# Validate only the manifest and execution plan.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 -ValidateOnly
+```
+
+For each selected Python version, the runner performs locked dependency checks, Ruff lint and
+format checks, mypy, Bandit, network-free pytest, and a package build. Persistence integration
+tests that require TimescaleDB are deliberately excluded from this Docker-free pass.
+
+## Service engineering checkpoints
 
 The [whole-project capability audit](docs/PROJECT-CAPABILITY-AUDIT-2026-10-23.md)
 separates implemented components, CURRENT research SIM, the non-trading runtime
 and still-incomplete production trading. Kairos is not yet established as an
 autonomous professional trader or a profitable complete system.
 
-Current [non-strategy launch engineering](docs/RUNTIME-PRODUCTION-2026-10-23.md)
+The [October 23 launch engineering checkpoint](docs/RUNTIME-PRODUCTION-2026-10-23.md)
 adds native lifecycle/claim checks, encrypted local signing and a separate
 single-server evidence profile. DEMO books/campaigns, independent backup hosting
 and cloud KMS are not mandatory gates of that revised engineering profile;
@@ -36,7 +86,7 @@ policy and PostgreSQL state-reader components are tested, but qualified independ
 PROD risk/exposure producers and a complete service are not deployed. The actual
 account-bound PROD GET-only observation passed; it is not authoritative atomic
 reconciliation. No new key is requested.
-See the [active remaining list](docs/LAUNCH-REMAINING-2026-10-18.md).
+See the [October 18 remaining work](docs/LAUNCH-REMAINING-2026-10-18.md).
 
 The [October 25 engineering checkpoint](docs/PRODUCTION-ENGINEERING-2026-10-25.md)
 adds a bounded production lifecycle driver, original EVEDEX read-response
@@ -47,7 +97,7 @@ data owner passed fresh history/restore, queue, owned boot and real scheduled
 action checks. The old owner's source-bound task was backed up and disabled,
 not silently retargeted. This is bounded non-trading acceptance, not an actual
 new OS reboot test or qualified current-owner Telegram alerting.
-The installed default entrypoint still refuses LIVE;
+The service entrypoint in that source set refuses LIVE;
 upstream and venue authority are not manufactured by these engineering changes.
 
 The [LIVE Risk/lifecycle wiring continuation](docs/PRODUCTION-PATH-WIRING-2026-10-23.md)
@@ -140,50 +190,6 @@ it cannot reverse an intent or place a trade. The [adaptive decision research
 note](docs/ADAPTIVE-DECISION-RESEARCH-2026-09-28.md) describes the paired ledger
 and the missing evaluation gates.
 
-## Repositories
-
-| repository | role |
-| --- | --- |
-| [kairos-core](https://github.com/Kairos-cryptoAI/kairos-core) | typed contracts, Redis Streams bus, config and logging |
-| [kairos-llm](https://github.com/Kairos-cryptoAI/kairos-llm) | OpenAI-only default gateway, optional provider compatibility, strict output validation, cost and health events |
-| [kairos-quant-scouts](https://github.com/Kairos-cryptoAI/kairos-quant-scouts) | complete closed Binance bars, gap recovery, indicators and EVEDEX quality polling |
-| [kairos-strategy-engine](https://github.com/Kairos-cryptoAI/kairos-strategy-engine) | pure strategy generators shared byte-for-byte by research and runtime |
-| [kairos-text-scouts](https://github.com/Kairos-cryptoAI/kairos-text-scouts) | text ingestion, local filtering, sentiment and local fallback |
-| [kairos-router](https://github.com/Kairos-cryptoAI/kairos-router) | candidate-specific deterministic NORMAL/CONFLICT routing plus legacy DRY_RUN FSM |
-| [kairos-aggregator](https://github.com/Kairos-cryptoAI/kairos-aggregator) | immutable `ALLOW/VETO/DEFER` candidate review plus legacy DRY_RUN tactical decisions |
-| [kairos-macro-strategist](https://github.com/Kairos-cryptoAI/kairos-macro-strategist) | strategic allocation, shock detection and account-aware context |
-| [kairos-risk-manager](https://github.com/Kairos-cryptoAI/kairos-risk-manager) | loss-at-stop sizing and deterministic account, portfolio and venue admission |
-| [kairos-execution-engine](https://github.com/Kairos-cryptoAI/kairos-execution-engine) | protected PAPER/SIM lifecycle and journals; separate guarded PROD custody/state/one-effect dispatch components, not a complete PROD service |
-| [kairos-persistence](https://github.com/Kairos-cryptoAI/kairos-persistence) | Timescale inbox/outbox, facts, lifecycle, TCA, budgets, equity and readiness metrics |
-| [kairos-backtest](https://github.com/Kairos-cryptoAI/kairos-backtest) | deterministic replay using the exact Strategy Engine generators and fill modelling |
-| [kairos-deploy](https://github.com/Kairos-cryptoAI/kairos-deploy) | pinned DRY_RUN and isolated `kairos-paper` Compose projects, monitoring and recovery tools |
-| `kairos-autotrader` (local checkout, not yet published) | live runner: one process that runs the layers on EVEDEX PROD with real orders; deviations from the contracts are listed in its `docs/ALIGNMENT.md` |
-| [kairos](https://github.com/Kairos-cryptoAI/kairos) | architecture, ADRs and cross-repository verification |
-
-## Windows-first local verification
-
-The meta-repository runner discovers `uv`, reads [`config/repositories.json`](config/repositories.json),
-and verifies every repository in that manifest without Docker or live credentials. It does not read
-`.env` files, change Git state, or clean dirty worktrees.
-
-```powershell
-Set-Location D:\Kairos\kairos
-
-# Full 3.11 + 3.14 matrix for repositories listed in the manifest.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1
-
-# Faster focused iteration.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 `
-  -Repository kairos-core,kairos-router -PythonVersion 3.11 -FailFast
-
-# Validate only the manifest and execution plan.
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Kairos.ps1 -ValidateOnly
-```
-
-For each selected Python version, the runner performs locked dependency checks, Ruff lint and
-format checks, mypy, Bandit, network-free pytest, and a package build. Persistence integration
-tests that require TimescaleDB are deliberately excluded from this Docker-free pass.
-
 ## Offline strategy promotion gate
 
 The frozen validation candidate is `confirmation_bars=12`, `minimum_hold_bars=48`, and
@@ -246,11 +252,11 @@ cannot enter PAPER or LIVE and may not be retuned against the same data.
 Its immutable [forward plan](https://github.com/Kairos-cryptoAI/kairos-backtest/blob/main/reports/regime-aligned-forward/plan.json)
 has SHA-256 `38fe7512b4e4c318e5bc8dd6baa66b48eedd63112a4a447eaaf36c1175f623e8`.
 Blind observation begins no earlier than `2026-09-01` and requires both 365 complete future days
-and 500 simulated closed trades before one sealed evaluation. The local read-only ledger already
-contains 64,800 checksum-verified feature-warmup bars with zero gaps, conflicts or intents; its
+and 500 simulated closed trades before one sealed evaluation. The warmup checkpoint recorded
+64,800 checksum-verified feature-warmup bars with zero gaps, conflicts or intents; its
 backup/recovery drill preserved evidence SHA-256
 `d4fcfa3d3c838e11a62fcffa2b6bf067b0d641c682d6aad7a564c0a1372af232` without changing the
-primary database. No forward PnL is available or disclosed yet.
+primary database. The observation protocol withholds forward PnL until its evaluation gates pass.
 
 ## Current delivery state
 
@@ -285,7 +291,7 @@ The OpenAI-only defaults and their qualification boundary are in
 spending observations are historical evidence, not qualification of the current
 model routes or permission to reset the shared budget. See [BUDGET.md](docs/BUDGET.md).
 
-The latest [runtime/production checkpoint](docs/RUNTIME-PRODUCTION-2026-10-23.md)
+The [October 23 runtime/production checkpoint](docs/RUNTIME-PRODUCTION-2026-10-23.md)
 accepts a separately owned non-trading successor, not recovery/adoption of old
 DB/queue state or trading positions. Its historical 18-migration source profile
 is distinct from the current production source set. Real venue safety,

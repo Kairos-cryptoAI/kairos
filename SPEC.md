@@ -23,15 +23,17 @@ permission to investigate or trade as permission to bypass these controls.
 
 ## Model strategy — workload-specific OpenAI routing
 
-The current default workload routes in
-[`kairos-llm/kairos_llm/models.py`](https://github.com/Kairos-cryptoAI/kairos-llm/blob/c2207a5bd8bbf39e7d5728f95e52c96a47eca344/kairos_llm/models.py) are:
+The table describes the defaults in the gateway source at revision `3a47819`.
+Each deployment uses the gateway revision selected by its own dependency lock.
+The standalone runner also has separate settings for its Macro and Text calls.
+[Gateway model routes](https://github.com/Kairos-cryptoAI/kairos-llm/blob/3a4781965f4d6d4d05d233fe525986409f1a5f12/kairos_llm/models.py)
 
 | workload | default model | reasoning effort |
 | --- | --- | --- |
 | Text Scouts | `gpt-6-luna` | `low` |
 | Aggregator normal review | `gpt-6-luna` | `medium` |
-| Aggregator conflict review | `gpt-6.1-sol` | `high` |
-| Macro Strategist | `gpt-6.1-sol` | `xhigh` |
+| Aggregator conflict review | `gpt-6.2-sol` | `high` |
+| Macro Strategist | `gpt-6.2-sol` | `xhigh` |
 
 The default router permits OpenAI only. Workload-specific routing is
 authoritative for production callers; the effort-only map is retained for
@@ -51,6 +53,9 @@ Existing code exposes distinct paths that must not be conflated:
 - Candidate contracts and handlers connect closed bars, strategy intents,
   candidate routes, causal review context and risk decisions. Their presence
   does not establish one running end-to-end target composition.
+- The [standalone runner](docs/ARCHITECTURE.md#standalone-runner) invokes
+  sibling components directly. It supports paper simulation and two live
+  execution paths, each with its own order journal.
 - An isolated sealed simulator path has an accepted proof from closed bars
   through Strategy, Router, a deterministic review test double, SIM risk and
   durable simulator execution. It is not real-provider review, EVEDEX PAPER,
