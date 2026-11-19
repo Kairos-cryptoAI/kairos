@@ -14,7 +14,7 @@
     {
       "name": "kairos-autotrader",
       "origin": "https://github.com/Kairos-cryptoAI/kairos-autotrader.git",
-      "revision": "443c6da4c62123da8408878a8189542c66fa1f63"
+      "revision": "933eed3f6a0d1a30e8a79955e2abed26401a05b3"
     },
     {
       "name": "kairos-backtest",
