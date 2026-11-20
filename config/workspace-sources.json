@@ -14,7 +14,7 @@
     {
       "name": "kairos-autotrader",
       "origin": "https://github.com/Kairos-cryptoAI/kairos-autotrader.git",
-      "revision": "2f244cf9f1b38847c9adb873107c9bbd84b44c6d"
+      "revision": "cc2a28839360598ed47b2559159c0c80b2c4592f"
     },
     {
       "name": "kairos-backtest",
@@ -34,7 +34,7 @@
     {
       "name": "kairos-execution-engine",
       "origin": "https://github.com/Kairos-cryptoAI/kairos-execution-engine.git",
-      "revision": "b2b8def43fd32832e89f87af336e77813f5baf16"
+      "revision": "2c356dce6218a6d512d2910dac683fb2ecaf96ce"
     },
     {
       "name": "kairos-llm",
